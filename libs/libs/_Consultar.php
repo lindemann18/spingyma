@@ -7,7 +7,7 @@
 		{
 			R::begin();
 			    try{
-			       $user = R::getRow("SELECT * FROM sg_usuarios where nb_usuario=? and pw_password=?",[$usuario,$pass]);
+			       $user = R::getRow("SELECT * FROM sgusuarios where nb_usuario=? and pw_password=?",[$usuario,$pass]);
 			        R::commit();
 			    }
 			    catch(Exception $e) {
@@ -301,6 +301,38 @@
 			return $musculos;
 		}//_ConsultarMusculos
 
+		function _ConsultarMusculosPorId($id)
+		{
+			$query='
+			select  
+			Mus.id,
+			Mus.nb_musculo,
+			Mus.desc_musculo,
+			Mus.id_tiporutina,
+			us.nb_nombre,
+			us.nb_apellidos,
+			Rut.nb_tiporutina
+			from 
+			sgmusculos Mus
+			INNER JOIN sgusuarios us
+			on Mus.id_usuario_creacion=us.id
+			INNER JOIN sgtiposrutina Rut
+			ON Rut.id=Mus.id_tiporutina
+			WHERE Mus.sn_activo=1 AND Mus.id= ? 
+			';	
+			R::begin();
+			    try{
+			       $musculo = R::getRow($query,[$id]);
+			        R::commit();
+			    }
+			    catch(Exception $e) {
+			       $musculo =  R::rollback();
+			       $musculo = "error";
+			    }
+			R::close();
+			return $musculo;
+		}//_ConsultarMusculosPorId
+
 		function _ConsultarMusculosPorRutina($Tipo_Rutina)
 		{
 			$query='
@@ -324,6 +356,8 @@
 			$result=$con->query($query) or die("Error en: $query ".mysqli_error($query));
 			return $result;
 		}//_ConsultarMusculos
+
+		
 
 		//queries viejos
 
@@ -1059,7 +1093,7 @@
 		return $result;
 	}//_ConsultarMusculos
 	
-	function _ConsultarMusculosPorId($id)
+	function _ConsultarMusculosPorId1($id)
 	{
 		$query='
 		select  

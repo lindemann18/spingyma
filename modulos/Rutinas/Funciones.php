@@ -43,6 +43,21 @@
 			echo json_encode($salidaJson);
 		break;
 
+		case 'BuscarMusculoPorId':
+			$salidaJson = BuscarMusculoPorId($Parametros);
+			echo json_encode($salidaJson);
+		break;
+
+		case 'EditarMusculo':
+			$salidaJson = EditarMusculo($Parametros);
+			echo json_encode($salidaJson);
+		break;
+
+		case 'EliminarMusculo':
+			$salidaJson = EliminarMusculo($Parametros);
+			echo json_encode($salidaJson);
+		break;
+
 		//Secciones Viejas
 		case 'AgregaMusculo':
 			$nb_musculo	   = $Parametros['nb_musculo'];
@@ -56,7 +71,7 @@
 			echo json_encode($salidaJson);
 		break;
 		
-		case 'EditarMusculo':
+		case 'EditarMusculo1':
 			$nb_musculo	   =$Parametros['nb_musculo'];
 			$desc_musculo  =$Parametros['desc_musculo'];
 			$id_usuario	   =$Parametros['id_usuario'];
@@ -64,13 +79,15 @@
 			$id_TipoRutina =$Parametros['id_TipoRutina'];
 			
 			//Llamando a la función de edición
-			EditarMusculo($nb_musculo, $desc_musculo,$id_usuario, $id_musculo,$id_TipoRutina);
+			EditarMusculo1($nb_musculo, $desc_musculo,$id_usuario, $id_musculo,$id_TipoRutina);
 			//DEvolviendo parámetros para la notificación				
 			$salidaJson=array("Editado"=>"1" );
 			echo json_encode($salidaJson);
 		break;
 		
-		case 'EliminarMusculo':
+
+		//funciones viejas
+		case 'EliminarMusculo1':
 			$id_musculo = $Parametros['id_musculo'];
 			//Llamando a la función de edición
 			$salidaJson = EliminarMusculo($id_musculo);
@@ -485,6 +502,65 @@
 		$datos = array("exito"=>$exito);
 		return $datos;
 	}//AgregarMusculo
+
+	function BuscarMusculoPorId($Parametros)
+	{
+		$id = $Parametros['id'];
+		R::freeze(1);
+		$consultar = new Consultar();
+		$musculo   = $consultar->_ConsultarMusculosPorId($id);
+		$cantidad  = count($musculo);
+		$exito     = 0;
+		$existe    = 0;
+		if($cantidad>0 && $musculo!="error"){$exito = 1;}
+
+		//buscando los tipos de rutina
+		$tiposRut  = $consultar->_ConsultarTiposRutina();
+		$cantidad  = count($tiposRut);
+		if($cantidad>0){$existe = 1;}
+
+		$datos = array("exito"=>$exito,"musculo"=>$musculo,"existe"=>$existe,"tiposRut"=>$tiposRut);
+		return $datos;
+	}//BuscarMusculoPorId
+
+	function EditarMusculo($Parametros)
+	{
+		//Tomando los datos y creando el objeto de la tabla.
+		$id 		   = $Parametros['id'];
+		$nb_musculo    = $Parametros['nb_musculo'];
+		$desc_musculo  = $Parametros['desc_musculo'];
+		$id_tiporutina = $Parametros['id_tiporutina'];
+		$musculo       = R::load("sgmusculos",$id);
+
+		//Editando los datos
+		$musculo->nb_musculo    = $nb_musculo;
+		$musculo->desc_musculo  = $desc_musculo;
+		$musculo->id_tiporutina = $id_tiporutina;
+
+		//Editar el músculo
+		R::freeze(1);
+		R::begin();
+		    try{
+		       $respuesta = R::store($musculo);
+		        R::commit();
+		    }
+		    catch(Exception $e) {
+		       $respuesta =  R::rollback();
+		       $respuesta = "Error";
+		    }
+		R::close();
+		$datos = array("respuesta"=>$respuesta);
+		return $datos;
+	}//EditarMusculo
+
+	function EliminarMusculo($Parametros)
+	{
+		$id        = $Parametros['id'];
+		$consultar = new Consultar();
+		//Se debe verificar si existen ejercicios ligados a este músculo
+		
+	}//EliminarMusculo
+
 	// funciones Viejas
 
 	//Apartado de músculos	
@@ -495,13 +571,13 @@
 	}//Editarconsejo
 	
 	
-	function EditarMusculo($nb_musculo, $desc_musculo,$id_usuario, $id_musculo,$id_TipoRutina)
+	function EditarMusculo1($nb_musculo, $desc_musculo,$id_usuario, $id_musculo,$id_TipoRutina)
 	{
 		$actualizar = new Actualizar();
 		$result		= $actualizar->_EditarMusculo($nb_musculo, $desc_musculo,$id_usuario, $id_musculo,$id_TipoRutina);
 	}//EditarMusculo
 	
-	function EliminarMusculo($id_musculo)
+	function EliminarMusculo1($id_musculo)
 	{
 		$actualizar = new Actualizar();
 		$consultar  = new Consultar();

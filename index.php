@@ -119,6 +119,11 @@
 	      	templateUrl:'modulos/Rutinas/Registro_Musculos.html'
 	    })
 
+	    .when('/EditarMusculo',{
+	    	controller: 'MusculosEditar',
+	      	templateUrl:'modulos/Rutinas/Editar_Musculo.html'
+	    })
+
 	    .otherwise({
 	      redirectTo:'/'
 	    });/*otherwhise*/

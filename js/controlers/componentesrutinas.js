@@ -263,6 +263,47 @@ $scope.Agregar = function()
 	});
 }//Agregar
 
+$scope.Editar = function()
+{
+	if($scope.mustr!=0)
+	{
+		bootbox.confirm("Desea Editar este tipo de rutina?", function(result) {
+			if(result==true)
+			{
+				$scope.$apply(function(){
+					$location.path('/EditarMusculo').search({cat: $scope.mustr});
+				});
+			}//if
+		});//bootbox
+	}//if
+}//Editar
+
+$scope.Eliminar = function()
+{
+	if($scope.mustr!=0)
+	{
+		bootbox.confirm("Desea Eliminar este músculo?", function(result) {
+			if(result==true)
+			{
+				params = $methodsService.Json("EliminarMusculo",$scope.mustr);
+				var url = 'modulos/Rutinas/Funciones.php';
+			     $http({method: "post",url: url,data: $.param({Params:params}), 
+			      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+			    })
+			     .success(function(data, status, headers, config) 
+			     {          	
+			     		
+			      })  
+			     .error(function(data, status, headers, config){
+			     	$methodsService.alerta(2,"algo falló, disculpe las molestias");
+			     });
+			}//if
+		});//bootbox
+	}//if
+	else
+		{$methodsService.alerta(2,"Seleccione un músculo");}
+}//Eliminar
+
 //Buscando las pruebas por la número 1, condición física
 params = $methodsService.Json("ConsultarMusculos",1);
 var url = 'modulos/Rutinas/Funciones.php';
@@ -351,3 +392,77 @@ var url = 'modulos/Rutinas/Funciones.php';
      });
 
 })//MusculosAgregar
+
+.controller('MusculosEditar',function($scope,$http,$location,$methodsService,$routeParams){
+//Variables
+$scope.id 			   = $routeParams.cat;
+$scope.mostrarbuscando = true;	
+$scope.mostrarContent  = false;
+
+$scope.Redirigir = function(direccion)
+{
+	$methodsService.Redirigir(direccion);
+}//Redirigir
+
+
+
+
+//Funciones
+$scope.Editar = function()
+{
+	bootbox.confirm("Desea Editar este Músculo?", function(result) {
+		console.log(result);
+	  	if(result==true)
+	  	{
+	  		$scope.$apply(function(){
+	  			$scope.mus.Accion   = "EditarMusculo";
+	  			params              = JSON.stringify($scope.mus);
+	  			//Mandando por ajax al controler la edición.
+	  			var url = 'modulos/Rutinas/Funciones.php';
+						 $http({method: "post",url: url,data: $.param({Params:params}), 
+						  headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+						})
+						 .success(function(data, status, headers, config) 
+						 {          	
+						 		respuesta = data.respuesta;
+						 		if(respuesta==$scope.id)
+						 		{
+						 			$methodsService.alerta(1,"Músculo Editado")
+						 		}else{$methodsService.alerta(2,"algo falló, disculpe las molestias");}
+						 		
+						  })  
+						 .error(function(data, status, headers, config){
+						 	$methodsService.alerta(2,"algo falló, disculpe las molestias");
+						 });
+	  		});//aply
+	  	}//if
+	  	});//bootbox
+}//Editar
+
+params = $methodsService.Json("BuscarMusculoPorId",$scope.id);
+var url = 'modulos/Rutinas/Funciones.php';
+     $http({method: "post",url: url,data: $.param({Params:params}), 
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
+     .success(function(data, status, headers, config) 
+     {          	
+       		exito  = data.exito;
+       		existe = data.existe;
+       		console.log(data);
+       		if(exito==1 && existe==1)
+       		{
+       			console.log(data);
+       			$scope.mus             = data.musculo;
+       			$scope.TiposRutina 	   = data.tiposRut;
+       			$scope.mostrarbuscando = false;	
+				$scope.mostrarContent  = true;	
+
+       		}
+       		else{$methodsService.alerta(2,"algo falló, disculpe las molestias");}
+       		
+      })  
+     .error(function(data, status, headers, config){
+     	$methodsService.alerta(2,"algo falló, disculpe las molestias");
+     });
+
+})
