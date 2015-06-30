@@ -1,0 +1,1 @@
+[22-Oct-2014 03:05:30 UTC] PHP Warning:  mysqli_error() expects parameter 1 to be mysqli, string given in /home/asherne1/public_html/Spinpgym/libs/libs/_Agregar.php on line 281

@@ -1,0 +1,33 @@
+﻿log de cambios a la base de datos  a las tablas de la 
+base de datos de spingym
+
+Glosario 
+1) Noguion = El _ no es soportado en redbean
+
+Cambios
+1) id_usuario fue cambiado a ids
+2) nombré la tabla sg_usuario a sgusuarios, problem: Noguion
+3) sg_consejos fue renombrado a sgconsejos, problema: Noguion
+4) sg_tipopruebas es cambiado a sgpruebas, problema: Noguion
+5) El campo Consejo de sgconsejos se cambió  consejo, redbean no acepta mayúsculas.
+6) Se cambió la tabla de sg_maquinas por sgmaquinas, problema: Noguion
+7) se cambió de sg_categoriamaquina a sgcategoriamaquina, problema: Noguion
+8) en sgcategoriamaquina se agregó la opción 0, ninguna.
+9) se cambió id_CategoriaMaquina por id_categoriamaquina, problemas ocn mayúsculas.ç
+10) se cambió el campo nb_CategoriaMaquina en sgcategoriamaquina por nb_categoriamaquina,
+	problemas con mayúsculas.
+11) se cambi´el campo Desc_CategoriaMaquina por desc_categoriamaquina, de la tabla sgcategoriamaquina, por problemas con mayúsculas.
+12) se cambió el campo Id_UsuarioRegistro por id_usuarioregistro en sgcategoriamaquina,
+por problemas con mayúsculas.
+13) la tabla sg_tiposrutina se cambió por sgtiposrutina, problema : Noguion.
+14) el campo id_UsuarioRegistro se cambió por id_usuarioregistro de la tabla sgtiposrutina
+	por problemas con las mayúsculas.
+15) el campo nb_TipoRutina se cambió por nb_tiporutina de la tabla sgtiposrutina por
+	problemas coon las mayúsculas.
+16) el campo desc_TipoRutina de la tabla sgtiposrutina se cambió por desc_tiporutina
+	por problemas con mayúsculas.
+17) se cambió el nombre  de sg_musculos por sgmusculos, problema: Noguion.
+18) el campo id_TipoRutina de la tabla sgmusculos se cambió por id_tiporutina por
+	problemas con mayúsculas.
+	
+

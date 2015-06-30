@@ -1,0 +1,1 @@
+[14-Nov-2014 16:23:00 America/Chihuahua] PHP Warning:  mysqli_error() expects parameter 1 to be mysqli, string given in /home/asherne1/public_html/Spinpgym/libs/libs/_Consultar.php on line 863
