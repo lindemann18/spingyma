@@ -25,7 +25,7 @@
 	<!-- Begin Page Content -->
 	
 	<div id="container" ng-controller="LoginController">
-		<h1>login</h1>
+		
 		<form  ng-submit="LoginUsuario()" role="form" name="form">
 		
 		<label for="name">Username:</label>
