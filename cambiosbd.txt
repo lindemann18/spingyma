@@ -29,5 +29,9 @@ por problemas con mayúsculas.
 17) se cambió el nombre  de sg_musculos por sgmusculos, problema: Noguion.
 18) el campo id_TipoRutina de la tabla sgmusculos se cambió por id_tiporutina por
 	problemas con mayúsculas.
-	
+19) se cambió el nombre de sg_ejercicios a sgejercicios, problema :Noguion
+20) se cambió el campo id_UsuarioCreacion de la tabla sgejercicios, por 
+	id_usuariocreacion.
+21) se cambió el campo de la tabla id_TipoRutina sgejercicios por el campo	
+	id_tiporutina.
 

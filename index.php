@@ -123,6 +123,10 @@
 	    	controller: 'MusculosEditar',
 	      	templateUrl:'modulos/Rutinas/Editar_Musculo.html'
 	    })
+	    .when('/Error',{
+	    	controller: 'Errors',
+	      	templateUrl:'modulos/Rutinas/Error.html'
+	    })
 
 	    .otherwise({
 	      redirectTo:'/'

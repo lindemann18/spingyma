@@ -58,6 +58,11 @@
 			echo json_encode($salidaJson);
 		break;
 
+		case 'ConsultarEjerciciosLigados':
+			$salidaJson = ConsultarEjerciciosLigados($Parametros);
+			echo json_encode($salidaJson);
+		break;
+
 		//Secciones Viejas
 		case 'AgregaMusculo':
 			$nb_musculo	   = $Parametros['nb_musculo'];
@@ -555,11 +560,64 @@
 
 	function EliminarMusculo($Parametros)
 	{
-		$id        = $Parametros['id'];
-		$consultar = new Consultar();
+		$id          = $Parametros['id'];
+		$consultar   = new Consultar();
 		//Se debe verificar si existen ejercicios ligados a este músculo
-		
+		$ejercicios  = $consultar->_ConsultarEjerciciosPorMusculo($id);
+		$cantidadeje = count($ejercicios);
+		$existeneje  = 0;
+		$exito       = 0;
+		$musculos    = [];
+		$exitomus    = 0;
+		if($cantidadeje>0){$existeneje=1;}
+		else
+		{
+			// Si no existen ejercicios ligados a este músculo se 
+ 			// procede a eliminar el músculo.
+ 			$musculo = R::load("sgmusculos",$id);
+ 			$musculo->sn_activo = 0;
+
+ 			//Ejecutando la tranasacción
+ 			$respuesta = EjecutarTransaccion($musculo);
+ 			if($respuesta!="Error"){$exito=1;}
+
+ 			//buscando los músculos restantes.
+ 			$musculos  = $consultar->_ConsultarMusculos();
+			$cantidad  = count($musculos);
+			$exitomus  = 0;
+			if($cantidad>0){$exitomus = 1;}
+		}//else
+		$datos = array("existeneje"=>$existeneje,"exito"=>$exito,
+					   "exitomus"=>$exitomus,"musculos"=>$musculos);
+		return $datos;
 	}//EliminarMusculo
+
+	function ConsultarEjerciciosLigados($Parametros)
+	{
+		$id 		 = $Parametros['id'];
+		$consultar   = new Consultar();
+		$ejercicios  = $consultar->_ConsultarEjerciciosPorMusculo($id);
+		$cantidadeje = count($ejercicios);
+		$exito       = ($cantidadeje>0)?1:0;
+		$datos       = array("exito"=>$exito,"ejercicios"=>$ejercicios);
+		return $datos;
+	}//ConsultarMusculosLigados
+
+	function EjecutarTransaccion($objeto)
+	{
+		R::freeze(1);
+		R::begin();
+		    try{
+		       $respuesta = R::store($objeto);
+		        R::commit();
+		    }
+		    catch(Exception $e) {
+		       $respuesta =  R::rollback();
+		       $respuesta = "Error";
+		    }
+		R::close();
+		return $respuesta;
+	}//EjecutarTransacción
 
 	// funciones Viejas
 

@@ -292,7 +292,28 @@ $scope.Eliminar = function()
 			    })
 			     .success(function(data, status, headers, config) 
 			     {          	
-			     		
+			     	console.log(data);
+			     	//verificando que no existan ejercicios ligados al músculo
+			     	existeneje = data.existeneje;
+			     	exito      = data.exito;
+			     	exitomus   = data.exitomus;
+			     	switch(true)
+			     	{
+			     		case existeneje==1:
+			     			//Si existen ejercicios debe redirijirse a la pantalla de error.
+			     			//diccionario de errores mus = musculos.
+			     			$location.path('/Error').search({error: "mus",id:$scope.mustr});
+			     		break;
+
+			     		case exito!=1 && exitomus!=1:
+			     			$methodsService.alerta(2,"algo falló, disculpe las molestias");
+			     		break;
+
+			     		case exitomus==1 && exito==1:
+			     			$scope.musculos = data.musculos;
+			     			$methodsService.alerta(1,"Músculo eliminado correctamente.");
+			     		break;
+			     	}//switch
 			      })  
 			     .error(function(data, status, headers, config){
 			     	$methodsService.alerta(2,"algo falló, disculpe las molestias");
@@ -428,6 +449,7 @@ $scope.Editar = function()
 						 		if(respuesta==$scope.id)
 						 		{
 						 			$methodsService.alerta(1,"Músculo Editado")
+						 			
 						 		}else{$methodsService.alerta(2,"algo falló, disculpe las molestias");}
 						 		
 						  })  
@@ -466,3 +488,87 @@ var url = 'modulos/Rutinas/Funciones.php';
      });
 
 })
+
+.controller('Errors',function($scope,$http,$location,$methodsService,$routeParams){
+// Variables
+$scope.Error = $routeParams.error;
+$scope.id    = $routeParams.id;
+$scope.currentPage     = 1; // Página actual, para paginación
+$scope.pageSize 	   = 5;   // Tamaño de la página, para paginación.
+
+//funciones 
+$scope.Volver = function()
+{
+	dir = $scope.obtenerdir($scope.Error);
+	$location.path(dir).search({});
+}//Volver
+
+$scope.obtenerdir = function(dir)
+{
+	switch(dir)
+	{
+		case 'mus':
+			direccion = '/Musculos';
+		break;
+	}//switch
+	return direccion;
+}//obtenerdir
+
+	// Definiendo el tipo de error.
+	switch($scope.Error)
+		{
+			case "mus":
+				$scope.mensaje = 	'Si llegó a este apartado, es por que hay Musculos ligados a ejercicios que dependen de este Ejercicio';
+				$scope.mensaje+=	'Para poder eliminar este músculo es necesario eliminar los ejercicios que dependen de este.';
+				$scope.mensaje+=	'En la tabla inferior se muestran cuales son los ejercicios dependientes de estos músculos.';
+				//Buscando los ejercicios ligados a estos músculos.
+				params = $methodsService.Json("ConsultarEjerciciosLigados",$scope.id);
+				var url = 'modulos/Rutinas/Funciones.php';
+				     $http({method: "post",url: url,data: $.param({Params:params}), 
+				      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+				    })
+				     .success(function(data, status, headers, config) 
+				     {          	console.log(data);
+				       		exito = data.exito;
+				       		if(exito==1)
+				       		{
+				       			$scope.ejercicios = data.ejercicios;
+				       			$scope.url = 'modulos/Rutinas/ErroresEliminar/DeleteMusculos.html';
+				       		}
+				       		else{$methodsService.alerta(2,"algo falló, disculpe las molestias");}
+				       		
+				      }).error(function(data, status, headers, config){
+				     	$methodsService.alerta(2,"algo falló, disculpe las molestias");
+				     });	
+			break;
+			case "Ejercicios":
+				//Se toman las rutinas en las que existen los ejercicios
+				
+			$scope.mensaje =  'Si llegó a este apartado, es por que hay rutinas TEMPLATE existentes que dependen de estos ejercicios,';
+			$scope.mensaje+=  'para poder eliminar los ejercicios es necesario eliminar estas rutinas. En la tabla inferior';
+			$scope.mensaje+=  'se muestran cuales son las rutinas dependientes del ejercicio a eliminar.';
+			break;
+			
+			case "EjerciciosClientes":
+				
+			$scope.mensaje = 'Si llegó a este apartado, es por que hay rutinas Personalizadas existentes que dependen de estos ejercicios,';
+			$scope.mensaje+= 'para poder eliminar los ejercicios es necesario eliminar estas rutinas. En la tabla inferior';
+			$scope.mensaje+= 'se muestran cuales son las rutinas dependientes del ejercicio a eliminar.';
+			break;
+			
+			
+			
+			case "TipoRutina":
+				$scope.mensaje = 'Si llegó a este apartado, es por que hay Tipos de Rutinas ligadas a <strong>Músculos</strong> que dependen'; 
+				$scope.mensaje+= 'de estos <strong>Tipos De Rutinas</strong>. Para poder eliminar este músculo es necesario eliminar los ejercicios';
+				$scope.mensaje+= 'que dependen de este. En la tabla inferior se muestran cuales son los ejercicios dependientes de estos músculos.';
+			break;
+			
+			case "Maquina":
+			$scope.mensaje = 'Si llegó a este apartado, es por que hay ejercicios ligados a <strong>Máquina</strong> que dependen'; 
+			$scope.mensaje+= 'de estos <strong>ejercicios</strong>. Para poder eliminar esta máquina es necesario eliminar los ejercicios '
+			$scope.mensaje+= 'que dependen de esta. En la tabla inferior se muestran cuales son los ejercicios dependientes de esta máquina.';
+			break;
+			
+		}//switch
+})//Error

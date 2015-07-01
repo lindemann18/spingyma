@@ -47,6 +47,31 @@
 			return $Usuarios;
 		}
 		
+		function _ConsultarEjerciciosPorMusculo($id)
+		{
+			$query = '
+			SELECT
+			eje.id as id_ejercicio,
+			eje.nb_ejercicio,
+			mus.nb_musculo,
+			mus.id as id_musculo
+			from sgejercicios eje
+			LEFT JOIN sgmusculos mus
+			ON mus.id = eje.id_musculo
+			where eje.id_musculo = ? ';
+			R::begin();
+			    try{
+			       $musculos = R::getAll($query,[$id]);
+			        R::commit();
+			    }
+			    catch(Exception $e) {
+			       $musculos =  R::rollback();
+			       $musculos = "Error";
+			    }
+			R::close();
+			return $musculos;
+		}//_ConsultarEjerciciosPorMusculo
+
 		//Final de queries de usuarios
 
 		//Queries de Utilidades
