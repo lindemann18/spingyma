@@ -73,6 +73,11 @@
 			echo json_encode($salidaJson);
 		break;
 
+		case 'ConsultarInfoEjercicios':
+			$salidaJson = ConsultarInfoEjercicios($Parametros);
+			echo json_encode($salidaJson);
+		break;
+
 		//Secciones Viejas
 		case 'AgregaMusculo':
 			$nb_musculo	   = $Parametros['nb_musculo'];
@@ -656,6 +661,20 @@
 		R::close();
 		return $respuesta;
 	}//EjecutarTransacción
+
+
+	function ConsultarInfoEjercicios()
+	{
+		//Consultar los tipos de rutina.
+		$consultar = new Consultar();
+		$tiposRut  = $consultar->_ConsultarTiposRutina();
+		$cantidad  = count($tiposRut);
+		$exister   = 0;
+		if($cantidad>0){$exister = 1;}
+		print_r($tiposRut);
+		$datos    = array("exister"=>$exister,"tiposRut"=>$tiposRut);
+		return $datos;
+	}//ConsultarInfoEjercicios
 
 	// funciones Viejas
 

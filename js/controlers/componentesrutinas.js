@@ -510,7 +510,15 @@ $scope.showfilter      = false;
 //Funciones 
 $scope.Agregar = function()
 {
-	alert("hola");
+	bootbox.confirm("Desea Agregar Ejercicio?", function(result) {
+		console.log(result);
+	  	if(result==true)
+	  	{
+	  		$scope.$apply(function(){
+	  			$location.path('/RegistrarEjercicio').search({});
+	  		});
+	  	}//if
+	});
 }//Agregar
 
 	//Buscando las pruebas por la número 1, condición física
@@ -530,6 +538,29 @@ $scope.Agregar = function()
 				$scope.mostrarcontent  = true;		
        		}
        		else{$methodsService.alerta(2,"algo falló, disculpe las molestias");}
+       		
+      })  
+     .error(function(data, status, headers, config){
+     	$methodsService.alerta(2,"algo falló, disculpe las molestias");
+     });	
+})
+
+.controller('EjercicioRegistrar',function($scope,$http,$location,$methodsService,$routeParams){
+	// Consultar Info Para Registro de ejercicios
+	params = $methodsService.Json("ConsultarInfoEjercicios",1);
+	var url = 'modulos/Rutinas/Funciones.php';
+     $http({method: "post",url: url,data: $.param({Params:params}), 
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
+     .success(function(data, status, headers, config) 
+     {          	
+       		exister =  data.exister;
+       		switch(true)
+       		{
+       			case exister==1:
+       				$scope.tiposrut = data.tiposRut;
+       			break;
+       		}//switch
        		
       })  
      .error(function(data, status, headers, config){

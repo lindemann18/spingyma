@@ -128,11 +128,15 @@
 	    	controller: 'Ejercicios',
 	      	templateUrl:'modulos/Rutinas/Ejercicios.html'
 	    })
-
+	    .when('/RegistrarEjercicio',{
+	    	controller: 'EjercicioRegistrar',
+	      	templateUrl:'modulos/Rutinas/Ejercicios_registrar.html'
+	    })
 	    .when('/Error',{
 	    	controller: 'Errors',
 	      	templateUrl:'modulos/Rutinas/Error.html'
 	    })
+
 
 	    .otherwise({
 	      redirectTo:'/'
