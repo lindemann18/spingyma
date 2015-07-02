@@ -72,7 +72,7 @@
                             </a>
                             <ul class="treeview-menu">
                                 <li><a href="index.php?nav=Rutinas"><i class="fa fa-angle-double-right"></i>Rutinas</a></li>
-                                <li><a href="index.php?nav=Ejercicios"><i class="fa fa-angle-double-right"></i> Ejercicios</a></li>
+                                <li><a href="#/Ejercicios"><i class="fa fa-angle-double-right"></i> Ejercicios</a></li>
                                 <li><a href="#/Musculos"><i class="fa fa-angle-double-right"></i> M&uacute;sculos</a></li>
                                 <li><a href="#/TiposRutina"><i class="fa fa-angle-double-right"></i> Tipos de Rutina</a></li>
                             </ul>

@@ -123,6 +123,12 @@
 	    	controller: 'MusculosEditar',
 	      	templateUrl:'modulos/Rutinas/Editar_Musculo.html'
 	    })
+
+	    .when('/Ejercicios',{
+	    	controller: 'Ejercicios',
+	      	templateUrl:'modulos/Rutinas/Ejercicios.html'
+	    })
+
 	    .when('/Error',{
 	    	controller: 'Errors',
 	      	templateUrl:'modulos/Rutinas/Error.html'

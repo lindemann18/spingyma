@@ -449,7 +449,7 @@ $scope.Editar = function()
 						 		if(respuesta==$scope.id)
 						 		{
 						 			$methodsService.alerta(1,"Músculo Editado")
-						 			
+
 						 		}else{$methodsService.alerta(2,"algo falló, disculpe las molestias");}
 						 		
 						  })  
@@ -487,6 +487,43 @@ var url = 'modulos/Rutinas/Funciones.php';
      	$methodsService.alerta(2,"algo falló, disculpe las molestias");
      });
 
+})
+
+.controller('Ejercicios',function($scope,$http,$location,$methodsService,$routeParams){
+// Variables
+$scope.mostrarbuscando = true;
+$scope.mostrarcontent  = false;
+$scope.currentPage     = 1; // Página actual, para paginación
+$scope.pageSize 	   = 5;   // Tamaño de la página, para paginación.
+$scope.showfilter      = false;
+//Funciones 
+$scope.Agregar = function()
+{
+	alert("hola");
+}//Agregar
+
+	//Buscando las pruebas por la número 1, condición física
+	params = $methodsService.Json("ConsultarEjercicios",1);
+	var url = 'modulos/Rutinas/Funciones.php';
+     $http({method: "post",url: url,data: $.param({Params:params}), 
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
+     .success(function(data, status, headers, config) 
+     {          	
+       		exito = data.exito;
+       		console.log(data);
+       		if(exito==1)
+       		{
+       			$scope.ejercicios      = data.ejercicios;
+       			$scope.mostrarbuscando = false;	
+				$scope.mostrarcontent  = true;		
+       		}
+       		else{$methodsService.alerta(2,"algo falló, disculpe las molestias");}
+       		
+      })  
+     .error(function(data, status, headers, config){
+     	$methodsService.alerta(2,"algo falló, disculpe las molestias");
+     });	
 })
 
 .controller('Errors',function($scope,$http,$location,$methodsService,$routeParams){
@@ -555,8 +592,6 @@ $scope.obtenerdir = function(dir)
 			$scope.mensaje+= 'para poder eliminar los ejercicios es necesario eliminar estas rutinas. En la tabla inferior';
 			$scope.mensaje+= 'se muestran cuales son las rutinas dependientes del ejercicio a eliminar.';
 			break;
-			
-			
 			
 			case "TipoRutina":
 				$scope.mensaje = 'Si llegó a este apartado, es por que hay Tipos de Rutinas ligadas a <strong>Músculos</strong> que dependen'; 

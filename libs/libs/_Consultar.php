@@ -358,6 +358,59 @@
 			return $musculo;
 		}//_ConsultarMusculosPorId
 
+		function _ConsultarEjercicios()
+		{
+			$query='
+			select 
+			Ej.id,
+			Ej.desc_ejercicio,
+			Ej.nb_ejercicio,
+			Ej.id_tiporutina,
+			Us.nb_nombre,
+			Us.nb_apellidos,
+			Mus.nb_musculo,
+			Tip.nb_tiporutina,
+			MA.nb_maquina
+			FROM sgejercicios Ej
+			INNER JOIN sgusuarios Us
+			ON Us.id=Ej.id_UsuarioCreacion
+			INNER JOIN sgmusculos Mus
+			ON Mus.id= Ej.id_musculo
+			INNER JOIN sgtiposrutina Tip
+			ON Tip.id=Ej.id_TipoRutina
+			LEFT JOIN sgmaquinas MA
+			ON Ej.id_maquina=MA.id
+			WHERE  Ej.sn_activo=1
+		';
+		R::begin();
+			    try{
+			       $ejercicios = R::getAll($query);
+			        R::commit();
+			    }
+			    catch(Exception $e) {
+			       $ejercicios =  R::rollback();
+			       $ejercicios = "error";
+			    }
+			R::close();
+			return $ejercicios;
+		}//_ConsultarEjercicios
+
+		function _ConsultarTiposRutinas()
+		{
+			$query = 'select * from sgtiposrutina where sn_activo = 1';
+			R::begin();
+			    try{
+			       $ejercicios = R::getAll($query);
+			        R::commit();
+			    }
+			    catch(Exception $e) {
+			       $ejercicios =  R::rollback();
+			       $ejercicios = "error";
+			    }
+			R::close();
+			return $ejercicios;
+		}//_ConsultarTiposRutinas
+
 		function _ConsultarMusculosPorRutina($Tipo_Rutina)
 		{
 			$query='
@@ -382,7 +435,36 @@
 			return $result;
 		}//_ConsultarMusculos
 
-		
+
+		function _ConsultarEjerciciosPorTipoRutina($Tipo_Rutina)
+	{
+		$query='
+			select 
+			Ej.id,
+			Ej.desc_ejercicio,
+			Ej.nb_ejercicio,
+			Ej.id_TipoRutina,
+			Us.nb_nombre,
+			Us.nb_apellidos,
+			Mus.nb_musculo,
+			Tip.nb_TipoRutina,
+			MA.nb_maquina
+			FROM sg_ejercicios Ej
+			INNER JOIN sg_usuarios Us
+			ON Us.id_usuario=Ej.id_UsuarioCreacion
+			INNER JOIN sg_musculos Mus
+			ON Mus.id= Ej.id_musculo
+			INNER JOIN sg_tiposrutina Tip
+			ON Tip.id=Ej.id_TipoRutina
+			LEFT JOIN sg_maquinas MA
+			ON Ej.id_maquina=MA.id
+			WHERE Tip.id="'.$Tipo_Rutina.'"
+			AND Ej.sn_activo=1
+		';
+		$con	= Conectar::_con();
+		$result = $con->query($query) or die("Error en: $query ".mysqli_error($query));
+		return $result;
+	}//_ConsultarEjerciciosPorId
 
 		//queries viejos
 
@@ -1253,7 +1335,7 @@
 		return $result;	
 	}//_ConsultarGenerosRutina
 	
-	function _ConsultarEjercicios()
+	function _ConsultarEjercicios1()
 	{
 		$query='
 			select 
@@ -1339,7 +1421,7 @@
 		return $result;	
 	}//_ConsultarEjerciciosTipoRutinaGeneral
 	
-	function _ConsultarEjerciciosPorTipoRutina($Tipo_Rutina)
+	function _ConsultarEjerciciosPorTipoRutina1($Tipo_Rutina)
 	{
 		$query='
 			select 

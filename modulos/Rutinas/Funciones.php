@@ -63,6 +63,11 @@
 			echo json_encode($salidaJson);
 		break;
 
+		case 'ConsultarEjercicios':
+			$salidaJson = ConsultarEjercicios($Parametros);
+			echo json_encode($salidaJson);
+		break;
+
 		//Secciones Viejas
 		case 'AgregaMusculo':
 			$nb_musculo	   = $Parametros['nb_musculo'];
@@ -602,6 +607,20 @@
 		$datos       = array("exito"=>$exito,"ejercicios"=>$ejercicios);
 		return $datos;
 	}//ConsultarMusculosLigados
+
+	function ConsultarEjercicios()
+	{
+		$consultar  = new Consultar();
+		$ejercicios = $consultar->_ConsultarEjercicios();
+		$cantidad   = count($ejercicios);
+		$exito      = ($cantidad>0)?1:0;
+		$tiposRut   = $consultar->_ConsultarTiposRutinas();
+		$cantidadru = count($tiposRut);
+		$exitorut   = ($cantidadru>0)?1:0;
+		$datos      = array("exito"=>$exito,"exitorut"=>$exitorut,
+							"ejercicios"=>$ejercicios,"tiposRut"=>$tiposRut);
+		return $datos;
+	}//ConsultarEjercicios
 
 	function EjecutarTransaccion($objeto)
 	{
