@@ -411,7 +411,7 @@
 			return $ejercicios;
 		}//_ConsultarTiposRutinas
 
-		function _ConsultarMusculosPorRutina($Tipo_Rutina)
+		function _ConsultarMusculosPorRutina($id)
 		{
 			$query='
 			select  
@@ -422,17 +422,25 @@
 			us.nb_apellidos,
 			Rut.nb_TipoRutina
 			from 
-			sg_musculos Mus
-			INNER JOIN sg_usuarios us
-			on Mus.id_usuario_creacion=us.id_usuario
-			INNER JOIN sg_tiposrutina Rut
-			ON Rut.id=Mus.id_TipoRutina
+			sgmusculos Mus
+			INNER JOIN sgusuarios us
+			on Mus.id_usuario_creacion=us.id
+			INNER JOIN sgtiposrutina Rut
+			ON Rut.id=Mus.id_tiporutina
 			WHERE Mus.sn_activo=1
-			AND Rut.id="'.$Tipo_Rutina.'" 
+			AND Rut.id= ?
 			';	
-			$con=Conectar::_con();
-			$result=$con->query($query) or die("Error en: $query ".mysqli_error($query));
-			return $result;
+			R::begin();
+			    try{
+			       $musculos = R::getAll($query,[$id]);
+			        R::commit();
+			    }
+			    catch(Exception $e) {
+			       $musculos =  R::rollback();
+			       $musculos = "error";
+			    }
+			R::close();
+			return $musculos;
 		}//_ConsultarMusculos
 
 
@@ -465,6 +473,30 @@
 		$result = $con->query($query) or die("Error en: $query ".mysqli_error($query));
 		return $result;
 	}//_ConsultarEjerciciosPorId
+
+		function _ConsultarMusculosPorTipoRutinaId($id)
+		{
+			$query = '
+				SELECT
+				Mus.id,
+				Mus.nb_musculo,
+				Tip.nb_tiporutina
+				FROM sgmusculos Mus
+				INNER JOIN sgtiposrutina Tip on Mus.id_tiporutina = Tip.id
+				WHERE Tip.id =? and Mus.sn_activo=1
+			';
+		    R::begin();
+			    try{
+			       $musculos = R::getAll($query,[$id]);
+			        R::commit();
+			    }
+			    catch(Exception $e) {
+			       $musculos =  R::rollback();
+			       $musculos = "error";
+			    }
+			R::close();
+			return $musculos;
+		}//_ConsultarMusculosPorTipoRutinaId
 
 		//queries viejos
 
@@ -1010,7 +1042,7 @@
 		return $result;
 	}//_ConsultarTiposMusculos
 	
-	function _ConsultarMusculosPorTipoRutinaId($id_rutina)
+	function _ConsultarMusculosPorTipoRutinaId1($id_rutina)
 	{
 		$query = '
 			SELECT

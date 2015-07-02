@@ -68,6 +68,11 @@
 			echo json_encode($salidaJson);
 		break;
 
+		case 'ConsultarMusculosLigados':
+			$salidaJson = ConsultarMusculosLigados($Parametros);
+			echo json_encode($salidaJson);
+		break;
+
 		//Secciones Viejas
 		case 'AgregaMusculo':
 			$nb_musculo	   = $Parametros['nb_musculo'];
@@ -95,8 +100,6 @@
 			echo json_encode($salidaJson);
 		break;
 		
-
-		//funciones viejas
 		case 'EliminarMusculo1':
 			$id_musculo = $Parametros['id_musculo'];
 			//Llamando a la función de edición
@@ -408,29 +411,34 @@
 	function EliminarTipoRutina($Parametros)
 	{
 		$id = $Parametros['id'];
-		$tipo_rutina = R::load("sgtiposrutina",$id);
-		$tipo_rutina->sn_activo = 0;
-		$exito = 0;
-		//editando tipo rutina
-		R::freeze(1);
-		R::begin();
-		    try{
-		       $respuesta = R::store($tipo_rutina);
-		        R::commit();
-		    }
-		    catch(Exception $e) {
-		       $respuesta =  R::rollback();
-		       $respuesta = "Error";
-		    }
-		R::close();
-		if($respuesta!="Error"){$exito = 1;}
-		$consultar = new Consultar();
-		$tiposRut  = $consultar->_ConsultarTiposRutina();
-		$cantidad  = count($tiposRut);
-		$existe    = 0;
-		if($cantidad>0){$existe = 1;}
 
-		$datos = array("exito"=>$exito,"existe"=>$existe,"tiposRut"=>$tiposRut);
+		//Verificar que músculos están ligados a este tipo de rutina.
+		$consultar  = new Consultar();
+		$musculos   = $consultar->_ConsultarMusculosPorRutina($id);
+		$cantidadm  = count($musculos);
+		$existenmus = ($cantidadm>0)?1:0;
+		$tiposRut   = [];
+		$exitorut   = 0;
+		$exito      = 0;
+		if($existenmus>0){$existenmus=1;}
+		else
+		{	
+			// Si no existen músculos ligados a este tipo de rutina
+			// se eliminan
+			$tipo_rutina = R::load("sgtiposrutina",$id);
+			$tipo_rutina->sn_activo = 0;
+			$exito = 0;
+			//editando tipo rutina
+			$respuesta = EjecutarTransaccion($tipo_rutina);
+			if($respuesta!="Error"){$exito = 1;}
+			$tiposRut  = $consultar->_ConsultarTiposRutina();
+			$cantidad  = count($tiposRut);
+			$exitorut  = 0;
+			if($cantidad>0){$exitorut = 1;}
+		}//if
+
+		$datos = array("exito"=>$exito,"exitorut"=>$exitorut,
+					   "tiposRut"=>$tiposRut,"existenmus"=>$existenmus);
 		return $datos;
 	}//EliminarTipoRutina
 
@@ -605,6 +613,17 @@
 		$cantidadeje = count($ejercicios);
 		$exito       = ($cantidadeje>0)?1:0;
 		$datos       = array("exito"=>$exito,"ejercicios"=>$ejercicios);
+		return $datos;
+	}//ConsultarEjerciciosLigados
+
+	function ConsultarMusculosLigados($Parametros)
+	{
+		$id 		 = $Parametros['id'];
+		$consultar   = new Consultar();
+		$musculos    = $consultar->_ConsultarMusculosPorTipoRutinaId($id);
+		$cantidad    = count($musculos);
+		$exito       = ($cantidad>0)?1:0;
+		$datos       = array("exito"=>$exito,"musculos"=>$musculos);
 		return $datos;
 	}//ConsultarMusculosLigados
 

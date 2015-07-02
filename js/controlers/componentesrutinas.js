@@ -78,15 +78,26 @@ $scope.Eliminar = function()
 				})
 				 .success(function(data, status, headers, config) 
 				 {          	
-				   		//Tomando los datos
-				   		exito = data.exito;
-				   		existe = data.existe;
-				   		if( existe==1 && exito==1)
-				   		{
-				   			$scope.TiposRutina = data.tiposRut
-				   			$methodsService.alerta(1,"Tipo de rutina eliminada");
-				   		}//if
-				   		else{$methodsService.alerta(2,"algo falló, disculpe las molestias");}
+				   		existenmus = data.existenmus;
+				     	exito      = data.exito;
+				     	exitorut   = data.exitorut;
+			     	switch(true)
+			     	{
+			     		case existenmus==1:
+			     			//Si existen ejercicios debe redirijirse a la pantalla de error.
+			     			//diccionario de errores mus = musculos.
+			     			$location.path('/Error').search({error: "rut",id:$scope.tipmtr});
+			     		break;
+
+			     		case exito!=1 && exitorut!=1:
+			     			$methodsService.alerta(2,"algo falló, disculpe las molestias");
+			     		break;
+
+			     		case exitorut==1 && exito==1:
+			     			$scope.TiposRutina = data.tiposRut;
+			     			$methodsService.alerta(1,"Músculo eliminado correctamente.");
+			     		break;
+			     	}//switch
 				  })  
 				 .error(function(data, status, headers, config){
 				 	$methodsService.alerta(2,"algo falló, disculpe las molestias");
@@ -547,6 +558,10 @@ $scope.obtenerdir = function(dir)
 		case 'mus':
 			direccion = '/Musculos';
 		break;
+
+		case 'rut':
+			direccion = '/TiposRutina';
+		break;
 	}//switch
 	return direccion;
 }//obtenerdir
@@ -593,10 +608,29 @@ $scope.obtenerdir = function(dir)
 			$scope.mensaje+= 'se muestran cuales son las rutinas dependientes del ejercicio a eliminar.';
 			break;
 			
-			case "TipoRutina":
-				$scope.mensaje = 'Si llegó a este apartado, es por que hay Tipos de Rutinas ligadas a <strong>Músculos</strong> que dependen'; 
-				$scope.mensaje+= 'de estos <strong>Tipos De Rutinas</strong>. Para poder eliminar este músculo es necesario eliminar los ejercicios';
+			case "rut":
+				$scope.mensaje = 'Si llegó a este apartado, es por que hay Tipos de Rutinas ligadas a Músculos que dependen'; 
+				$scope.mensaje+= 'de estos Tipos De Rutinas. Para poder eliminar este músculo es necesario eliminar los ejercicios';
 				$scope.mensaje+= 'que dependen de este. En la tabla inferior se muestran cuales son los ejercicios dependientes de estos músculos.';
+				params = $methodsService.Json("ConsultarMusculosLigados",$scope.id);
+				var url = 'modulos/Rutinas/Funciones.php';
+				     $http({method: "post",url: url,data: $.param({Params:params}), 
+				      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+				    })
+				     .success(function(data, status, headers, config) 
+				     {     
+				       		   
+				       		exito = data.exito;
+				       		console.log(data);
+				       		if(exito==1)
+				       		{
+				       			$scope.musculos = data.musculos;
+				       			$scope.url = 'modulos/Rutinas/ErroresEliminar/DeleteTipoRutina.html';
+				       		}
+				       		else{$methodsService.alerta(2,"algo falló, disculpe las molestias");}
+				      }).error(function(data, status, headers, config){
+				     	$methodsService.alerta(2,"algo falló, disculpe las molestias");
+				     });
 			break;
 			
 			case "Maquina":
