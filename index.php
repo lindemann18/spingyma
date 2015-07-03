@@ -132,6 +132,10 @@
 	    	controller: 'EjercicioRegistrar',
 	      	templateUrl:'modulos/Rutinas/Ejercicios_registrar.html'
 	    })
+	    .when('/EditarEjercicio',{
+	    	controller: 'EjercicioEditar',
+	      	templateUrl:'modulos/Rutinas/Ejercicio_Editar.html'
+	    })
 	    .when('/Error',{
 	    	controller: 'Errors',
 	      	templateUrl:'modulos/Rutinas/Error.html'

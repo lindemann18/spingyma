@@ -507,7 +507,30 @@ $scope.mostrarcontent  = false;
 $scope.currentPage     = 1; // Página actual, para paginación
 $scope.pageSize 	   = 5;   // Tamaño de la página, para paginación.
 $scope.showfilter      = false;
+$scope.ejetr 		   = 0;
 //Funciones 
+
+$scope.Selecciontr = function(tr)
+{
+	//Verificando que no se le hizo click al mismo tr
+	if(tr.eje.id == $scope.ejetr)
+	{
+		//Si es el mismo tr se le asigna un 0.
+		$scope.ejetr = 0;
+		idtr = "#table"+tr.eje.id;
+		$(idtr).removeClass("bg-blue");
+		console.log($scope.ejetr);
+	}//if
+	else
+	{
+		$("tr").removeClass("bg-blue");
+		$scope.ejetr = tr.eje.id;
+		idtr          = "#table"+tr.eje.id;
+		$(idtr).addClass("bg-blue");
+		console.log($scope.ejetr);
+	}
+}//Selecciontr
+
 $scope.Agregar = function()
 {
 	bootbox.confirm("Desea Agregar Ejercicio?", function(result) {
@@ -520,6 +543,24 @@ $scope.Agregar = function()
 	  	}//if
 	});
 }//Agregar
+
+$scope.Editar = function()
+{
+	if($scope.ejetr!=0)
+	{
+		bootbox.confirm("Desea Editar este Ejercicio?", function(result) {
+		console.log(result);
+	  	if(result==true)
+	  	{
+	  		$scope.$apply(function(){
+	  			$location.path('/EditarEjercicio').search({eje:$scope.ejetr});
+	  		});
+	  	}//if
+	});
+	}//if
+	else{$methodsService.alerta(2,"Favor de seleccionar un ejercicio");}
+	
+}//Editar
 
 	//Buscando las pruebas por la número 1, condición física
 	params = $methodsService.Json("ConsultarEjercicios",1);
@@ -650,6 +691,11 @@ $scope.AgregarEjercicio = function()
 	  });//bootbox
 }//AgregarEjercicio
 
+$scope.Redirigir = function(direccion)
+{
+	$methodsService.Redirigir(direccion);
+}//Redirigir
+
 	// Consultar Info Para Registro de ejercicios
 	params = $methodsService.Json("ConsultarInfoEjercicios",1);
 	var url = 'modulos/Rutinas/Funciones.php';
@@ -679,6 +725,125 @@ $scope.AgregarEjercicio = function()
      	$methodsService.alerta(2,"algo falló, disculpe las molestias");
      });	
 })
+
+.controller('EjercicioEditar',function($scope,$http,$location,$methodsService,$routeParams){
+//Variables
+$scope.id = $routeParams.eje;
+
+//funciones
+$scope.BuscarMusculos = function()
+{
+	if($scope.ejercicio.id_tiporutina>0)
+	{
+		//Tomando el valor del tipo de rutina para buscar los músculos.
+	params = $methodsService.Json("ConsultarMusculosLigados",$scope.ejercicio.id_tiporutina);
+	var url = 'modulos/Rutinas/Funciones.php';
+     $http({method: "post",url: url,data: $.param({Params:params}), 
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
+     .success(function(data, status, headers, config) 
+     {          	
+       		exito = data.exito;
+       		if(exito==1)
+       		{
+       			$scope.musculos = data.musculos;
+       			
+       		}
+       		else
+       		{
+       			//$methodsService.alerta(2,"algo falló, disculpe las molestias");
+       			$scope.musculos = {};
+       			$scope.ejercicio.id_musculo = ""; //se debe blanquear por que queda el del último seleccionado.
+       		}
+      })  
+     .error(function(data, status, headers, config){
+     	$methodsService.alerta(2,"algo falló, disculpe las molestias");
+     });
+	}
+}//BuscarMusculos
+
+$scope.BuscarMaquina = function()
+{
+	if($scope.ejercicio.id_categoriamaquina>0)
+	{
+			//Tomando el valor del tipo de rutina para buscar los músculos.
+	params = $methodsService.Json("FiltrarMaquinas",$scope.ejercicio.id_categoriamaquina);
+	var url = 'modulos/Utilidades/Funciones.php';
+     $http({method: "post",url: url,data: $.param({Params:params}), 
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
+     .success(function(data, status, headers, config) 
+     {          	
+       		existe = data.existe;
+       		console.log(data); 
+       		if(existe==1)
+       		{
+       			$scope.maquinas = data.maquinas;
+       			//Si el array viene vacío vacíaos la variable ejercicio
+       			var cantidad    = $scope.maquinas.length;
+       			if(cantidad==0){$scope.ejercicio.maquina = "";}//bleanqueando el model máquina, se queda pegado en algún cambio.
+       		}
+       		else
+       		{
+       			$methodsService.alerta(2,"algo falló, disculpe las molestias");
+       			$scope.maquinas          = {};
+       			 
+       		}
+      })  
+     .error(function(data, status, headers, config){
+     	$methodsService.alerta(2,"algo falló, disculpe las molestias");
+     });
+	}//if
+}//BuscarMaquina
+
+$scope.EditarEjercicio = function()
+{
+	//Agregando el ejercicio
+	bootbox.confirm("Desea Agregar un tipo de rutina?", function(result) {
+		console.log(result);
+	  	if(result==true)
+	  	{
+			$scope.ejercicio.Accion = 'EditarEjercicio';
+			console.log($scope.ejercicio);
+		}//if
+	});
+}//EditarEjercicio
+
+//Buscando los datos del ejercicio.
+params = $methodsService.Json("BuscarEjercicioPorId",$scope.id);
+	var url = 'modulos/Rutinas/Funciones.php';
+	     $http({method: "post",url: url,data: $.param({Params:params}), 
+	      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+	    })
+	     .success(function(data, status, headers, config) 
+	     {          	
+	       		exito  = data.exito;
+	       		exitor = data.exitor;
+	       		exitom = data.exitom;
+	       		console.log(data);
+	       		switch(true)
+	       		{
+	       			case exito==1 && exitor==1 && exitom==1:
+	       				//Tomando las variables correspondientes.
+	       				$scope.ejercicio   = data.ejercicio;
+	       				$scope.tiposrut    = data.tiposRut;
+	       				$scope.TipoMaquina = data.TipoMaquina;
+	       				$scope.musculos    = data.musculos;
+	       				$scope.maquinas    = data.maquinas;
+	       			break;
+
+	       			case exito!=1 && exitor!=1 && exitom!=1:
+	       				$methodsService.alerta(2,"algo falló, disculpe las molestias");
+	       			break;
+	       		}//switch
+	      }).error(function(data, status, headers, config){
+	     	$methodsService.alerta(2,"algo falló, disculpe las molestias");
+	     });	
+
+
+})//EjercicioEditar
+
+
 
 .controller('Errors',function($scope,$http,$location,$methodsService,$routeParams){
 // Variables

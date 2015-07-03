@@ -372,11 +372,11 @@
 			Tip.nb_tiporutina,
 			MA.nb_maquina
 			FROM sgejercicios Ej
-			INNER JOIN sgusuarios Us
+			LEFT JOIN sgusuarios Us
 			ON Us.id=Ej.id_UsuarioCreacion
-			INNER JOIN sgmusculos Mus
+			LEFT JOIN sgmusculos Mus
 			ON Mus.id= Ej.id_musculo
-			INNER JOIN sgtiposrutina Tip
+			LEFT JOIN sgtiposrutina Tip
 			ON Tip.id=Ej.id_TipoRutina
 			LEFT JOIN sgmaquinas MA
 			ON Ej.id_maquina=MA.id
@@ -443,6 +443,54 @@
 			return $musculos;
 		}//_ConsultarMusculos
 
+		function _ConsultarEjercicioPorId($id)
+		{
+			$query='
+			select 
+			Ej.id,
+			Ej.desc_ejercicio,
+			Ej.nb_ejercicio,
+			Us.nb_nombre,
+			Us.nb_apellidos,
+			Mus.nb_musculo,
+			Mus.id as "id_musculo",
+			Tip.nb_TipoRutina,
+			Tip.id as "id_tiporutina",
+			Maq.id as "id_maquina",
+			CatMaq.id as "id_categoriamaquina",
+			CatMaq.nb_CategoriaMaquina
+			FROM sgejercicios Ej
+			LEFT JOIN sgusuarios Us
+			ON Us.id=Ej.id_UsuarioCreacion
+			LEFT JOIN sgmusculos Mus
+			ON Mus.id= Ej.id_musculo
+			LEFT JOIN sgtiposrutina Tip
+			ON Tip.id=Ej.id_tiporutina
+			LEFT JOIN sgmaquinas Maq
+			on Maq.id=Ej.id_maquina
+			LEFT JOIN sgcategoriamaquina CatMaq
+			on CatMaq.id = Maq.id_CategoriaMaquina
+			WHERE Ej.id= ?
+			';
+			$respuesta = $this->EjecutarTransaccionSinglerow($query,$id);
+			return $respuesta;
+		}//_ConsultarEjercicioPorId
+
+		function EjecutarTransaccionSinglerow($query,$id)
+		{
+			
+			R::begin();
+			    try{
+			       $objeto = R::getRow($query,[$id]);
+			        R::commit();
+			    }
+			    catch(Exception $e) {
+			       $objeto =  R::rollback();
+			       $objeto = "Error";
+			    }
+			R::close();
+			return $objeto;
+		}
 
 		function _ConsultarEjerciciosPorTipoRutina($Tipo_Rutina)
 	{
@@ -1390,39 +1438,7 @@
 		return $result;	
 	}//_ConsultarEjercicios
 	
-	function _ConsultarEjercicioPorId($id_Ejercicio)
-	{
-		$query='
-		select 
-		Ej.id,
-		Ej.desc_ejercicio,
-		Ej.nb_ejercicio,
-		Us.nb_nombre,
-		Us.nb_apellidos,
-		Mus.nb_musculo,
-		Mus.id as "id_Musculo",
-		Tip.nb_TipoRutina,
-		Tip.id as "id_TipoRutina",
-		Maq.id as "id_Maquina",
-		CatMaq.id as "id_CategoriaMaquina",
-		CatMaq.nb_CategoriaMaquina
-		FROM sg_ejercicios Ej
-		INNER JOIN sg_usuarios Us
-		ON Us.id_usuario=Ej.id_UsuarioCreacion
-		INNER JOIN sg_musculos Mus
-		ON Mus.id= Ej.id_musculo
-		INNER JOIN sg_tiposrutina Tip
-		ON Tip.id=Ej.id_TipoRutina
-		LEFT JOIN sg_maquinas Maq
-		on Maq.id=Ej.id_maquina
-		LEFT JOIN sg_categoriamaquina CatMaq
-		on CatMaq.id = Maq.id_CategoriaMaquina
-		WHERE Ej.id="'.$id_Ejercicio.'"
-		';
-		$con=Conectar::_con();
-		$result=$con->query($query) or die("Error en: $query ".mysqli_error($query));
-		return $result;	
-	}//_ConsultarEjercicioPorId
+	
 	
 	function _ConsultarEjerciciosTipoRutinaGeneral()
 	{

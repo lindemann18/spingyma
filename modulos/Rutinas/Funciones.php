@@ -78,13 +78,14 @@
 			echo json_encode($salidaJson);
 		break;
 
-		case 'ConsultarInfoEjercicios':
-			$salidaJson = ConsultarInfoEjercicios($Parametros);
-			echo json_encode($salidaJson);
-		break;
 
 		case 'AgregarEjercicio':
 			$salidaJson = AgregarEjercicio($Parametros);
+			echo json_encode($salidaJson);
+		break;
+
+		case 'BuscarEjercicioPorId':
+			$salidaJson = BuscarEjercicioPorId($Parametros);
 			echo json_encode($salidaJson);
 		break;
 
@@ -727,6 +728,38 @@
 		$datos     = array("exito"=>$exito);
 		return $datos;
 	}//AgregarEjercicio
+
+	function BuscarEjercicioPorId($Parametros)
+	{
+		$id        = $Parametros['id'];
+		$consultar = new Consultar();
+		//Buscando información del ejercicio
+		$ejercicio = $consultar->_ConsultarEjercicioPorId($id);
+		$cantidad  = count($ejercicio);
+		$exito     = ($cantidad>0)?1:0;
+
+		//Consultando los tipos de rutina
+		$tiposRut  = $consultar->_ConsultarTiposRutina();
+		$cantidad  = count($tiposRut);
+		$exitor    = ($cantidad>0)?1:0;
+		
+		//Consultando los tipos de máquinas
+		$TipoMaquina  = $consultar->_ConsultarTiposMaquina();
+		$cantidadm = count($TipoMaquina);
+		$exitom    = ($cantidadm>0)?1:0;
+
+		//Consultar los musculos por el tipo de rutina.
+		$musculos  = $consultar->_ConsultarMusculosPorTipoRutinaId($ejercicio['id_tiporutina']);
+
+		//Consultar Máquina por id
+		$maquinas = $consultar->_BuscarMaquinaPorCategoria($ejercicio['id_categoriamaquina']);
+
+		$datos     = array("exito"=>$exito,"ejercicio"=>$ejercicio,"exitor"=>$exitor,
+						   "tiposRut"=>$tiposRut,"exitom"=>$exitom,"TipoMaquina"=>$TipoMaquina,
+						   "musculos"=>$musculos,"maquinas"=>$maquinas);
+		return $datos;
+	}//BuscarEjercicioPorId
+
 
 	// funciones Viejas
 
