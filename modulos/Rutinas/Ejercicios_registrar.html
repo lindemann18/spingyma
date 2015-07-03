@@ -1,13 +1,3 @@
-
-	
-		
-		<!--//Buscando los tipos de musculo y de rutina
-		$result=$consultar->_ConsultarTiposMusculos();	
-		$ResultMusculo = $consultar->_ConsultarMusculos();
-		$ResultRutinas = $consultar->_ConsultarTiposDeRutina();
-		$ResultCMaq    = $consultar->_ConsultarCategoriaMaquinasGeneral();-->
-		
-
 <style>
 .Cuestionario{margin-right: 20%;}
 .Botones {margin-right: 4%;}
@@ -42,7 +32,7 @@
                     <!-- HEADER DEL CONTENIDO-->
 
                     <!-- FORMULARIO -->
-                    <form name="MusculosRegistrar" id="MusculosRegistrar" method="post" role="form">
+                    <form ng-submit="AgregarEjercicio()">
                     <!-- RENGLON CON EL FORMULARIO Y DOS COLUMNAS-->
                     <div class="row">
                     	<!-- COLUMNA IZQUIERDA -->
@@ -62,18 +52,18 @@
                                 	
                                     <div class="form-group">
                                         <label for="nb_cliente">Nombre </label>
-                                        <input type="text" name="nb_ejercicio" id="nb_ejercicio" campo="Nombres" class="form-control requerido" placeholder="Nombre del Ejercicio">
+                                        <input type="text" class="form-control" placeholder="Nombre del Ejercicio" required ng-model="ejercicio.nb_ejercicio">
                                     </div>
                                     
                                     <div class="form-group">
                                         <label for="nb_apellidos">Descripci&oacute;n</label>
-                                        <textarea name="desc_ejercicio" id="desc_ejercicio" class="form-control requerido"></textarea>
+                                        <textarea class="form-control" required ng-model="ejercicio.desc_ejercicio"></textarea>
                                     </div>
                                     
                                     <div class="form-group">
                                         <label for="nb_apellidos">Tipos Rutina</label>
                                        <select class="form-control" required ng-model="ejercicio.tiporut"
-                                            ng-options="tipr.id as tipr.nb_tiporutina for tipr in tiposrut">
+                                            ng-options="tipr.id as tipr.nb_tiporutina for tipr in tiposrut"ng-change="BuscarMusculos()">
                                        	<option value="">Seleccionar...</option>
                                         
                                        </select>
@@ -81,7 +71,8 @@
 
                                     <div class="form-group">
                                         <label for="nb_apellidos">M&uacute;sculo</label>
-                                       <select name="id_musculo" id="id_musculo" class="form-control requerido" onChange="TraertiposRutina()">
+                                       <select class="form-control" ng-model="ejercicio.musculo"
+                                            ng-options="mus.id as mus.nb_musculo for mus in musculos">
                                        	<option value="">Seleccionar...</option>
                                         
                                        </select>
@@ -89,8 +80,8 @@
                                     
                                     <div class="form-group">
                                         <label for="nb_apellidos">Categoría Máquina</label>
-                                       <select name="id_CategoriaMaquina" id="id_CategoriaMaquina" class="form-control requerido"
-                                        onChange="TraerMaquinasPorCategoria()">
+                                       <select ng-model="ejercicio.tipomaquina"
+                                            ng-options="tipm.id as tipm.nb_categoriamaquina for tipm in tipomaquina" class="form-control" ng-change="BuscarMaquina()" required>
                                             <option value="">Seleccionar...</option>
                                            
                                         	<option value="0">Ninguna</option >
@@ -99,17 +90,9 @@
                                     
                                      <div class="form-group">
                                         <label for="nb_apellidos">Máquina</label>
-                                       <select name="id_maquina" id="id_maquina" class="form-control requerido" onChange="">
+                                       <select class="form-control" ng-model="ejercicio.maquina"
+                                            ng-options="maq.id as maq.nb_maquina for maq in maquinas" class="form-control">
                                        		<option value="">Seleccionar...</option>
-                                        	<option value="0">Ninguna</option>
-                                        </select>
-                                    </div>
-                                    
-                                    <div class="form-group">
-                                    	<label for="nb_apellidos">Tipo De Rutina</label>
-                                        <select name="id_TipoRutina" id="id_TipoRutina" class="form-control requerido">
-                                       	<option value="">Seleccionar...</option>
-                                       
                                         </select>
                                     </div>
                                     
@@ -131,8 +114,8 @@
                     <!-- RENGLON CON EL FORMULARIO Y DOS COLUMNAS-->
                     
                     <div class="row Botones">
-                    	<div class="col-md-6" align="right"><button type="button" class="btn btn-primary" onclick=" checkRequeridos();">REGISTRAR</button></div>
-                        <div class="col-md-6" align="left"><button type="reset" class="btn btn-danger" onclick="window.location='index.php?nav=Ejercicios';">CANCELAR</button></div>
+                    	<div class="col-md-6" align="right"><button type="submit" class="btn btn-primary" ng-disabled="actbtn==true" >REGISTRAR</button></div>
+                        <div class="col-md-6" align="left"><button type="button" class="btn btn-danger" ng-click="">CANCELAR</button></div>
                     </div>
                     </form>
                     <!-- FORMULARIO -->

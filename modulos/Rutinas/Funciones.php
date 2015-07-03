@@ -78,6 +78,16 @@
 			echo json_encode($salidaJson);
 		break;
 
+		case 'ConsultarInfoEjercicios':
+			$salidaJson = ConsultarInfoEjercicios($Parametros);
+			echo json_encode($salidaJson);
+		break;
+
+		case 'AgregarEjercicio':
+			$salidaJson = AgregarEjercicio($Parametros);
+			echo json_encode($salidaJson);
+		break;
+
 		//Secciones Viejas
 		case 'AgregaMusculo':
 			$nb_musculo	   = $Parametros['nb_musculo'];
@@ -671,10 +681,52 @@
 		$cantidad  = count($tiposRut);
 		$exister   = 0;
 		if($cantidad>0){$exister = 1;}
-		print_r($tiposRut);
-		$datos    = array("exister"=>$exister,"tiposRut"=>$tiposRut);
+		//Consultando los tipos de máquinas
+		$maquinas  = $consultar->_ConsultarTiposMaquina();
+		$cantidadm = count($maquinas);
+		$exitom    = ($cantidadm>0)?1:0;
+		
+		//Consultar los tipos de rutinas.
+		$tiposRut    = $consultar->_ConsultarTiposRutina();
+		$cantidadtr  = count($tiposRut);
+		$exitotr     = ($cantidadtr>0)?1:0;
+		
+
+		//Enviando los datos
+		$datos     = array("exister"=>$exister,"tiposRut"=>$tiposRut,
+						  "exitom"=>$exitom,"TiposMaquina"=>$maquinas);
 		return $datos;
 	}//ConsultarInfoEjercicios
+
+	function AgregarEjercicio($Parametros)
+	{
+		//Tomando los datos que se deben llenar
+		$nb_ejercicio   = $Parametros['nb_ejercicio'];
+		$desc_ejercicio = $Parametros['desc_ejercicio'];
+		$id_tiporutina  = $Parametros['tiporut'];
+		$id_maquina     = $Parametros['tipomaquina'];
+		//Tomando los datos opcionales
+		$id_musculo     = ($Parametros['musculo']!=0)?$Parametros['musculo']:"";
+		$maquina        = ($Parametros['maquina']!=0)?$Parametros['maquina']:"";
+
+		//tomando el id del usuario que lo creó.
+		session_start();
+		$id_usuario     = $_SESSION['usuario']['id'];
+
+		//creando el objeto y asignando los valores al objeto de la tabla
+		$ejercicio = R::dispense("sgejercicios");
+		$ejercicio->id_usuariocreacion = $id_usuario;
+		$ejercicio->id_musculo         = $id_musculo; // opcional.
+		$ejercicio->id_maquina         = $maquina; // opcional.
+		$ejercicio->nb_ejercicio       = $nb_ejercicio;
+		$ejercicio->desc_ejercicio     = $desc_ejercicio;
+		$ejercicio->id_tiporutina      = $id_tiporutina;
+		$ejercicio->sn_activo          = 1;
+		$respuesta = EjecutarTransaccion($ejercicio);
+		$exito     = ($respuesta!="Error")?1:0;
+		$datos     = array("exito"=>$exito);
+		return $datos;
+	}//AgregarEjercicio
 
 	// funciones Viejas
 

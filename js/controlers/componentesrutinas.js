@@ -546,6 +546,110 @@ $scope.Agregar = function()
 })
 
 .controller('EjercicioRegistrar',function($scope,$http,$location,$methodsService,$routeParams){
+//Variables
+$scope.actbtn = false; //Variable para desactivar el botón.	
+//Funciones 
+$scope.BuscarMusculos = function()
+{
+	if($scope.ejercicio.tiporut>0)
+	{
+		//Tomando el valor del tipo de rutina para buscar los músculos.
+	params = $methodsService.Json("ConsultarMusculosLigados",$scope.ejercicio.tiporut);
+	var url = 'modulos/Rutinas/Funciones.php';
+     $http({method: "post",url: url,data: $.param({Params:params}), 
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
+     .success(function(data, status, headers, config) 
+     {          	
+       		exito = data.exito;
+       		if(exito==1)
+       		{
+       			$scope.musculos = data.musculos;
+       			
+       		}
+       		else
+       		{
+       			//$methodsService.alerta(2,"algo falló, disculpe las molestias");
+       			$scope.musculos = {};
+       			$scope.ejercicio.musculo = ""; //se debe blanquear por que queda el del último seleccionado.
+       		}
+      })  
+     .error(function(data, status, headers, config){
+     	$methodsService.alerta(2,"algo falló, disculpe las molestias");
+     });
+	}
+}//BuscarMusculos
+
+$scope.BuscarMaquina = function()
+{
+	if($scope.ejercicio.tipomaquina>0)
+	{
+			//Tomando el valor del tipo de rutina para buscar los músculos.
+	params = $methodsService.Json("FiltrarMaquinas",$scope.ejercicio.tipomaquina);
+	var url = 'modulos/Utilidades/Funciones.php';
+     $http({method: "post",url: url,data: $.param({Params:params}), 
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
+     .success(function(data, status, headers, config) 
+     {          	
+       		existe = data.existe;
+       		console.log(data); 
+       		if(existe==1)
+       		{
+       			$scope.maquinas = data.maquinas;
+       			//Si el array viene vacío vacíaos la variable ejercicio
+       			var cantidad    = $scope.maquinas.length;
+       			if(cantidad==0){$scope.ejercicio.maquina = "";}//bleanqueando el model máquina, se queda pegado en algún cambio.
+       		}
+       		else
+       		{
+       			$methodsService.alerta(2,"algo falló, disculpe las molestias");
+       			$scope.maquinas          = {};
+       			 
+       		}
+      })  
+     .error(function(data, status, headers, config){
+     	$methodsService.alerta(2,"algo falló, disculpe las molestias");
+     });
+	}//if
+}//BuscarMaquina
+
+$scope.AgregarEjercicio = function()
+{
+	//Agregando el ejercicio
+	bootbox.confirm("Desea Agregar un tipo de rutina?", function(result) {
+		console.log(result);
+	  	if(result==true)
+	  	{
+	  		//Verificando si los datos opcionales tienen algo.
+	  		$scope.ejercicio.musculo = ($scope.ejercicio.musculo!="")?$scope.ejercicio.musculo:0;
+	  		$scope.ejercicio.maquina = ($scope.ejercicio.maquina!="")?$scope.ejercicio.maquina:0;
+	  		$scope.actbtn 			 = true; //desactivando el botón
+	  		$scope.$apply(function(){
+	  			$scope.ejercicio.Accion = "AgregarEjercicio";
+		  			params  = JSON.stringify($scope.ejercicio);
+		  			var url = 'modulos/Rutinas/Funciones.php';
+			         $http({method: "post",url: url,data: $.param({Params:params}), 
+			          headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+			        })
+			         .success(function(data, status, headers, config) 
+			         {          	
+			         	$scope.actbtn = false;
+			         	exito         = data.exito;
+			         	if(exito==1)
+			         	{
+			         		$methodsService.alerta(1,"Ejercicio Agregado!");
+			         		$scope.ejercicio = {};
+			         	}else{$methodsService.alerta(2,"algo falló, disculpe las molestias");}
+			          })  
+			         .error(function(data, status, headers, config){
+			         	$methodsService.alerta(2,"algo falló, disculpe las molestias");
+			         });
+			     });//apply
+	  	}//if
+	  });//bootbox
+}//AgregarEjercicio
+
 	// Consultar Info Para Registro de ejercicios
 	params = $methodsService.Json("ConsultarInfoEjercicios",1);
 	var url = 'modulos/Rutinas/Funciones.php';
@@ -555,10 +659,18 @@ $scope.Agregar = function()
      .success(function(data, status, headers, config) 
      {          	
        		exister =  data.exister;
+       		exitom  = data.exitom;
+       		exitotr = data.exitotr;
+       		console.log(data);
        		switch(true)
        		{
-       			case exister==1:
-       				$scope.tiposrut = data.tiposRut;
+       			case exister==1 && exitom==1:
+       				$scope.tiposrut    = data.tiposRut;
+       				$scope.tipomaquina = data.TiposMaquina;
+       			break;
+
+       			case exister!=1 || exitom!=1:
+       				$methodsService.alerta(2,"algo falló, disculpe las molestias");
        			break;
        		}//switch
        		
