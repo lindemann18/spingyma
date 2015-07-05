@@ -562,6 +562,82 @@ $scope.Editar = function()
 	
 }//Editar
 
+$scope.Eliminar = function()
+{
+	if($scope.ejetr!=0)
+	{
+		bootbox.confirm("Desea Eliminar este Ejercicio?", function(result) {
+		console.log(result);
+	  	if(result==true)
+	  	{
+	  		//Mandando el ejercicio a eliminar
+	  		params = $methodsService.Json("EliminarEjercicio",$scope.ejetr);
+
+	  		//Mandando por ajax el ejercicio a eliminar
+	  		var url = 'modulos/Rutinas/Funciones.php';
+		     $http({method: "post",url: url,data: $.param({Params:params}), 
+		      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+		    })
+		     .success(function(data, status, headers, config) 
+		     {          	
+		       		existenr  = data.existenr;
+		       		exitoelim = data.exitoelim;
+		       		exitoeje  = data.exitoeje;
+
+		       		switch(true)
+		       		{
+		       			case existenr ==1:
+		       				//redirigiendo a la pantalla de error.
+		       				$location.path('/Error').search({error: "Eje",id:$scope.ejetr});
+		       			break;
+
+		       			case exitoelim==1 && exitoeje==1:
+		       				$scope.ejercicios = data.ejercicios;
+		       				$methodsService.alerta(1,"Ejercicio Eliminado!");
+		       			break;
+
+		       			case exitoelim!=1 && exitoeje!=1:
+		       				$methodsService.alerta(2,"Algo falló, disculpe las molestias.");
+		       			break;
+		       		}//switch
+		       		
+		      })  
+		     .error(function(data, status, headers, config){
+		     	$methodsService.alerta(2,"algo falló, disculpe las molestias");
+		     });
+
+	  	}//if
+	});
+	}//if
+	
+}//Eliminar
+
+$scope.Filtrar = function()
+{
+	params = $methodsService.Json("FiltrarEjerciciosTipoRutina",$scope.ejercicio.opcion);
+	var url = 'modulos/Rutinas/Funciones.php';
+     $http({method: "post",url: url,data: $.param({Params:params}), 
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
+     .success(function(data, status, headers, config) 
+     {          	
+       		exito = data.exito;
+       		if(exito==1)
+       		{
+       			$scope.ejercicios = data.ejercicios;
+       			cantidad	      = $scope.ejercicios.length;
+       			if(cantidad>0){$methodsService.alerta(1,"Ejercicios Filtrados!");}			
+       			else{$methodsService.alerta(2,"No hay ejercicios para esta categoría");}
+       			
+       		}
+       		else{$methodsService.alerta(2,"algo falló, disculpe las molestias");}
+       		
+      })  
+     .error(function(data, status, headers, config){
+     	$methodsService.alerta(2,"algo falló, disculpe las molestias");
+     });
+}//Filtrar
+
 	//Buscando las pruebas por la número 1, condición física
 	params = $methodsService.Json("ConsultarEjercicios",1);
 	var url = 'modulos/Rutinas/Funciones.php';
@@ -575,8 +651,10 @@ $scope.Editar = function()
        		if(exito==1)
        		{
        			$scope.ejercicios      = data.ejercicios;
+       			$scope.tiposRut        = data.tiposRut;
        			$scope.mostrarbuscando = false;	
 				$scope.mostrarcontent  = true;		
+				console.log($scope.tiposRut);
        		}
        		else{$methodsService.alerta(2,"algo falló, disculpe las molestias");}
        		
@@ -799,15 +877,38 @@ $scope.BuscarMaquina = function()
 $scope.EditarEjercicio = function()
 {
 	//Agregando el ejercicio
-	bootbox.confirm("Desea Agregar un tipo de rutina?", function(result) {
+	bootbox.confirm("Desea Editar este ejercicio?", function(result) {
 		console.log(result);
 	  	if(result==true)
 	  	{
 			$scope.ejercicio.Accion = 'EditarEjercicio';
-			console.log($scope.ejercicio);
+				params              = JSON.stringify($scope.ejercicio);
+	  			//Mandando por ajax al controler la edición.
+	  			var url = 'modulos/Rutinas/Funciones.php';
+						 $http({method: "post",url: url,data: $.param({Params:params}), 
+						  headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+						})
+						 .success(function(data, status, headers, config) 
+						 {          	
+						 		exito     = data.exito;
+						 		if(exito==1)
+						 		{
+						 			$methodsService.alerta(1,"Ejercicio Editado");
+						 		}//if
+						 		else{$methodsService.alerta(2,"algo falló, disculpe las molestias");}
+						  })  
+						 .error(function(data, status, headers, config){
+						 	$methodsService.alerta(2,"algo falló, disculpe las molestias");
+						 });
+
 		}//if
 	});
 }//EditarEjercicio
+
+$scope.Redirigir = function(direccion)
+	{
+		$methodsService.Redirigir(direccion);
+	}//Redirigir
 
 //Buscando los datos del ejercicio.
 params = $methodsService.Json("BuscarEjercicioPorId",$scope.id);
@@ -870,6 +971,10 @@ $scope.obtenerdir = function(dir)
 		case 'rut':
 			direccion = '/TiposRutina';
 		break;
+
+		case 'Eje':
+			direccion = '/Ejercicios';
+		break;
 	}//switch
 	return direccion;
 }//obtenerdir
@@ -901,12 +1006,30 @@ $scope.obtenerdir = function(dir)
 				     	$methodsService.alerta(2,"algo falló, disculpe las molestias");
 				     });	
 			break;
-			case "Ejercicios":
+			case "Eje":
 				//Se toman las rutinas en las que existen los ejercicios
 				
-			$scope.mensaje =  'Si llegó a este apartado, es por que hay rutinas TEMPLATE existentes que dependen de estos ejercicios,';
-			$scope.mensaje+=  'para poder eliminar los ejercicios es necesario eliminar estas rutinas. En la tabla inferior';
-			$scope.mensaje+=  'se muestran cuales son las rutinas dependientes del ejercicio a eliminar.';
+				$scope.mensaje =  'Si llegó a este apartado, es por que hay rutinas TEMPLATE existentes que dependen de estos ejercicios,';
+				$scope.mensaje+=  'para poder eliminar los ejercicios es necesario eliminar estas rutinas. En la tabla inferior';
+				$scope.mensaje+=  'se muestran cuales son las rutinas dependientes del ejercicio a eliminar.';
+				// Buscando las rutinas ligadas a estos ejercicios.
+				params = $methodsService.Json("ConsultarRutinasLigadas",$scope.id);
+				var url = 'modulos/Rutinas/Funciones.php';
+				     $http({method: "post",url: url,data: $.param({Params:params}), 
+				      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+				    })
+				     .success(function(data, status, headers, config) 
+				     {          	console.log(data);
+				       	exito = data.exito;
+				       	if(exito==1)		
+				       	{
+				       		$scope.Rutinas = data.rutinas;
+				       		$scope.url     = 'modulos/Rutinas/ErroresEliminar/DeleteEjercicios.html';
+				       	}
+										       		
+				      }).error(function(data, status, headers, config){
+				     	$methodsService.alerta(2,"algo falló, disculpe las molestias");
+				     });
 			break;
 			
 			case "EjerciciosClientes":

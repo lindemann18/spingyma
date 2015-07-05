@@ -89,6 +89,26 @@
 			echo json_encode($salidaJson);
 		break;
 
+		case 'EditarEjercicio':
+			$salidaJson = EditarEjercicio($Parametros);
+			echo json_encode($salidaJson);
+		break;
+
+		case 'EliminarEjercicio':
+			$salidaJson = EliminarEjercicio($Parametros);
+			echo json_encode($salidaJson);
+		break;
+
+		case 'ConsultarRutinasLigadas':
+			$salidaJson = ConsultarRutinasLigadas($Parametros);
+			echo json_encode($salidaJson);
+		break;
+
+		case 'FiltrarEjerciciosTipoRutina':
+			$salidaJson = FiltrarEjerciciosTipoRutina($Parametros);
+			echo json_encode($salidaJson);
+		break;
+
 		//Secciones Viejas
 		case 'AgregaMusculo':
 			$nb_musculo	   = $Parametros['nb_musculo'];
@@ -180,7 +200,7 @@
 			echo json_encode($salidaJson);
 		break;
 		
-		case 'EditarEjercicio':
+		case 'EditarEjercicio1':
 			$nb_ejercicio	= $Parametros['nb_ejercicio'];
 			$desc_ejercicio	= $Parametros['desc_ejercicio'];
 			$id_musculo		= $Parametros['id_musculo'];
@@ -195,7 +215,7 @@
 			echo json_encode($salidaJson);
 		break;
 		
-		case 'EliminarEjercicio':
+		case 'EliminarEjercicio1':
 			$id_Ejercicio = $Parametros['id_Ejercicio'];
 			//Llamando a la función de edición
 			$Rutinas = EliminarEjercicio($id_Ejercicio);
@@ -650,6 +670,9 @@
 		$cantidad   = count($ejercicios);
 		$exito      = ($cantidad>0)?1:0;
 		$tiposRut   = $consultar->_ConsultarTiposRutinas();
+		//Ingresando la opción Todos a los tipos de rutina
+		$todos      = array("desc_tiporutina"=>"Todos","id"=>"Todos","id_usuarioregistro"=>"1","nb_tiporutina"=>"Todos","sn_activo"=>"1");
+		array_push($tiposRut,$todos);
 		$cantidadru = count($tiposRut);
 		$exitorut   = ($cantidadru>0)?1:0;
 		$datos      = array("exito"=>$exito,"exitorut"=>$exitorut,
@@ -745,8 +768,8 @@
 		
 		//Consultando los tipos de máquinas
 		$TipoMaquina  = $consultar->_ConsultarTiposMaquina();
-		$cantidadm = count($TipoMaquina);
-		$exitom    = ($cantidadm>0)?1:0;
+		$cantidadm    = count($TipoMaquina);
+		$exitom       = ($cantidadm>0)?1:0;
 
 		//Consultar los musculos por el tipo de rutina.
 		$musculos  = $consultar->_ConsultarMusculosPorTipoRutinaId($ejercicio['id_tiporutina']);
@@ -760,6 +783,76 @@
 		return $datos;
 	}//BuscarEjercicioPorId
 
+
+	function EditarEjercicio($Parametros)
+	{
+		//Tomando los datos
+		$id = $Parametros['id'];
+		$ejercicio  = R::load("sgejercicios",$id);
+		//Ingresando los valores
+		$ejercicio->id_musculo 	   = $Parametros['id_musculo']	 ;
+		$ejercicio->id_maquina     = $Parametros['id_maquina']  ;
+		$ejercicio->nb_ejercicio   = $Parametros['nb_ejercicio'];
+		$ejercicio->desc_ejercicio = $Parametros['desc_ejercicio'];
+		$ejercicio->id_tiporutina  = $Parametros['id_tiporutina'];	
+
+		//Guardándolo en Bd
+		$respuesta = EjecutarTransaccion($ejercicio);
+		$exito     = ($respuesta!="Error")?1:0;
+		$datos     = array("exito"=>$exito);
+		return $datos;
+	}//EditarEjercicio
+
+	function EliminarEjercicio($Parametros)
+	{
+		$id         = $Parametros['id'];
+		$consultar  = new Consultar();
+		//Buscando si hay rutinas relacionadas con este ejercicioso.
+		$rutinas    = $consultar->_ConsultarEjerciciosDeRutinas($id);
+		$cantidad   = count($rutinas);
+		$existenr   = ($cantidad>0)?1:0;
+		$exitoelim  = 0;
+		$exitoeje   = 0;
+		$ejercicios = [];
+
+		if($existenr!=1)
+		{
+			// si entra aquí es por que no hay rutinas ligadas a este ejercicio.
+			// Entonces se procede a dar de baja el ejercicio.
+			$ejercicio  = R::load("sgejercicios",$id);
+			$ejercicio->sn_activo = 0;
+			$respuesta  = EjecutarTransaccion($ejercicio);
+			$exitoelim  = ($respuesta!="Error")?1:0; // Se indica que se eliminó correctaente.
+			$ejercicios = $consultar->_ConsultarEjercicios();
+			$cantidadej = count($ejercicios);
+			$exitoeje   = ($cantidadej>0)?1:0; // indica si se traen los ejercicios.
+		}//if
+		$datos = array("existenr"=>$existenr,"exitoelim"=>$exitoelim,"exitoeje"=>$exitoeje,
+					   "ejercicios"=>$ejercicios,"rutinas"=>$rutinas);
+		return $datos;
+	}//EliminarEjercicio
+
+	function ConsultarRutinasLigadas($Parametros)
+	{
+		$consultar = new Consultar();
+		$id        = $Parametros['id'];
+		$rutinas   = $consultar->_ConsultarEjerciciosDeRutinas($id);
+		$cantidad  = count($rutinas);
+		$exito     = ($cantidad>0)?1:0;
+		$datos     = array("rutinas"=>$rutinas,"exito"=>$exito);
+		return $datos;
+	}//ConsultarRutinasLigadas
+
+	function FiltrarEjerciciosTipoRutina($Parametros)
+	{
+		$id   	    = $Parametros['id'];
+		$consultar  = new Consultar();
+		$ejercicios = $consultar->_ConsultarEjerciciosPorTipoRutina($id);
+		$cantidad   = count($ejercicios);
+		$exito      = ($ejercicios!="Error")?1:0;
+		$datos      = array("exito"=>$exito,"ejercicios"=>$ejercicios);
+		return $datos;
+	}//FiltrarEjerciciosTipoRutina
 
 	// funciones Viejas
 
@@ -896,13 +989,13 @@
 		$result  = $agregar->_AgregaEjercicio($nb_ejercicio, $desc_ejercicio, $id_musculo, $id_TipoRutina,$id_maquina, $id_usuario);
 	}//AgregaEjercicio
 	
-	function EditarEjercicio($nb_ejercicio, $desc_ejercicio, $id_musculo, $id_TipoRutina, $id_maquina,$id_usuario, $id_Ejercicio)
+	function EditarEjercicio1($nb_ejercicio, $desc_ejercicio, $id_musculo, $id_TipoRutina, $id_maquina,$id_usuario, $id_Ejercicio)
 	{
 		$actualizar = new Actualizar();
 		$result=$actualizar->_EditarEjercicio($nb_ejercicio, $desc_ejercicio, $id_musculo, $id_TipoRutina, $id_maquina,$id_usuario, $id_Ejercicio);
 	}//EditarEjercicio
 	
-	function EliminarEjercicio($id_Ejercicio)
+	function EliminarEjercicio1($id_Ejercicio)
 	{
 		//Verificando que no haya rutinas registradas con estos ejercicios.
 		$consultar = new Consultar();

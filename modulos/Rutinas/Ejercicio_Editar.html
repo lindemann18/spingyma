@@ -12,7 +12,8 @@
                     </h1>
                     <ol class="breadcrumb">
                         <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
-                        <li class="active">Rutinas</li>
+                        <li class="">Rutinas</li>
+                        <li class="active">Agregar Ejercicio</li>
                     </ol>
                 </section>
                 
@@ -20,9 +21,10 @@
                 <!-- Main content -->
                 <section class="content">
                 	<!-- HEADER DEL CONTENIDO-->
-                    <div class="alert alert-success alert-dismissible" role="alert" style="display:none;" id="EjercicioEditadoNotificacion">
-  <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-  <strong>Bien Hecho!</strong> Ejercicios Registrado.</div>
+                    <div class="alert alert-danger alert-dismissible col-md-12" role="alert" id="alerta" style="display:none;">
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                  <strong>Atención!</strong> <p id="ErrorTexto"></p>
+                    </div>
                     <h4 class="page-header">
                         Formulario De Ejercicios
                         <small>
@@ -119,7 +121,7 @@
                     
                     <div class="row Botones">
                     	<div class="col-md-6" align="right"><button type="submit" class="btn btn-primary" >EDITAR</button></div>
-                        <div class="col-md-6" align="left"><button type="reset" class="btn btn-danger" onclick="window.location='index.php?nav=Ejercicios';">CANCELAR</button></div>
+                        <div class="col-md-6" align="left"><button type="reset" class="btn btn-danger" ng-click="Redirigir('Ejercicios')">CANCELAR</button></div>
                     </div>
                     </form>
                     <!-- FORMULARIO -->

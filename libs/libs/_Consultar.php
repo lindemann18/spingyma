@@ -492,8 +492,26 @@
 			return $objeto;
 		}
 
-		function _ConsultarEjerciciosPorTipoRutina($Tipo_Rutina)
+		function EjecutarTransaccionAll($query,$id)
+		{
+			
+			R::begin();
+			    try{
+			       $objeto = R::getAll($query,[$id]);
+			        R::commit();
+			    }
+			    catch(Exception $e) {
+			       $objeto =  R::rollback();
+			       $objeto = "Error";
+			    }
+			R::close();
+			return $objeto;
+		}
+
+
+		function _ConsultarEjerciciosPorTipoRutina($id)
 	{
+		$condicion = ($id!="Todos")?"Tip.id=? AND":"";
 		$query='
 			select 
 			Ej.id,
@@ -503,23 +521,38 @@
 			Us.nb_nombre,
 			Us.nb_apellidos,
 			Mus.nb_musculo,
-			Tip.nb_TipoRutina,
+			Tip.nb_tiporutina,
 			MA.nb_maquina
-			FROM sg_ejercicios Ej
-			INNER JOIN sg_usuarios Us
-			ON Us.id_usuario=Ej.id_UsuarioCreacion
-			INNER JOIN sg_musculos Mus
+			FROM sgejercicios Ej
+			LEFT JOIN sgusuarios Us
+			ON Us.id=Ej.id_usuariocreacion
+			LEFT JOIN sgmusculos Mus
 			ON Mus.id= Ej.id_musculo
-			INNER JOIN sg_tiposrutina Tip
+			LEFT JOIN sgtiposrutina Tip
 			ON Tip.id=Ej.id_TipoRutina
-			LEFT JOIN sg_maquinas MA
+			LEFT JOIN sgmaquinas MA
 			ON Ej.id_maquina=MA.id
-			WHERE Tip.id="'.$Tipo_Rutina.'"
-			AND Ej.sn_activo=1
+			WHERE '.$condicion.' Ej.sn_activo=1
 		';
-		$con	= Conectar::_con();
-		$result = $con->query($query) or die("Error en: $query ".mysqli_error($query));
-		return $result;
+		R::begin();
+			    try{
+			    	if($id!="Todos")
+			    	{
+			    		$respuesta = R::getAll($query,[$id]);
+			        	R::commit();
+			    	}
+			    	else
+			    	{
+			    		$respuesta = R::getAll($query);
+			        	R::commit();
+			    	}//else
+			    }
+			    catch(Exception $e) {
+			       $respuesta =  R::rollback();
+			       $respuesta = "Error";
+			    }
+			R::close();
+		return $respuesta;
 	}//_ConsultarEjerciciosPorId
 
 		function _ConsultarMusculosPorTipoRutinaId($id)
@@ -545,6 +578,31 @@
 			R::close();
 			return $musculos;
 		}//_ConsultarMusculosPorTipoRutinaId
+
+
+		function _ConsultarEjerciciosDeRutinas($id)
+		{
+			$query = '
+			select DISTINCT
+			eje.nb_ejercicio,
+			eje.desc_ejercicio,
+			rut.nb_rutina,
+			rut.desc_rutina,
+			ejeru.id_ejercicio
+
+			from sgrutinas rut
+
+			LEFT JOIN sgejerciciosrutina ejeru
+			ON  rut.id = ejeru.id_rutina
+
+			LEFT JOIN sgejercicios eje
+			ON eje.id  = ejeru.id_ejercicio
+
+			WHERE ejeru.id_ejercicio =?  AND ejeru.sn_activo = 1 AND rut.sn_activo=1
+			';
+			$respuesta = $this->EjecutarTransaccionAll($query,$id);
+			return $respuesta;
+		}//_ConsultarEjerciciosDeRutinas
 
 		//queries viejos
 

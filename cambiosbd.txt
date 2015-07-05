@@ -34,4 +34,34 @@ por problemas con mayúsculas.
 	id_usuariocreacion.
 21) se cambió el campo de la tabla id_TipoRutina sgejercicios por el campo	
 	id_tiporutina.
+22) se cambió el nombre de la tabla sg_ejerciciosrutina por sgejerciciosrutina, 
+	problema: Noguion.
+23) el campo id_Ejercicio de la tabla sgejerciciosrutina se cambió por id_ejercicio,
+	por problemas con mayúsculas.		
+24) el campo id_UsuarioCreacion, de la tabla sgejerciciosrutina se cambió por
+	id_usuariocreacion por problemas con mayúsculas.
+25) el campo id_Rutina de la tabla sgejerciciosrutina se cambió por	id_rutina por
+	problemas con mayúsculas.
+26) el campo id_CategoriaRutina de la tabla	sgejerciciosrutina se cambió por 
+	id_categoriarutina, por problemas con mayúsculas.
+27) el campo id_TipoRutinaEjercicio de la tabla	sgejerciciosrutina se cambió por
+	id_tiporutinaejercicio por problemas con mayúsculas.
+28) el campo id_PosicionEjercicio  de la tabla sgejerciciosrutina se cambió por el campo 	
+	id_posicionejercicio por problemas con mayúsculas.
+29) el campo nb_Ejerciciorutina de la tabla	sgejerciciosrutina se cambió por 
+	nb_ejerciciorutina por problemas con mayúsculas.
+30) el campo desc_EjercicioRutina de la tabla sgejerciciosrutina se cambió por 
+	desc_ejerciciorutina por problemas con mayúsculas.
+31) el campo num_Circuitos de la tabla sgejerciciosrutina se cambió por num_circuitos por
+	problemas con mayúsculas.
+32) el campo num_Repeticiones de la tabla sgejerciciosrutina se cambió por 	num_repeticiones
+	por problemas con mayúsculas
+33) la tabla sg_rutinas se cambió por sgrutinas  problema, Noguion.
+34) se cambió el campo id_rutina de la tabla sgrutinas por id, por notación correcta.
+35) se cambió el campo id_UsuarioCreacion de la tabla sgrutinas por id_usuariocreacion
+	por problemas con mayúsculas.
+36) el campo id_CategoriaRutina de la tabla  sgrutinas se cambió por id_categoriarutina
+	por problemas con mayúsculas.
+37) el campo id_GeneroRutina de la tabla sgrutinas se cambió por id_generorutina por
+	problemas con mayúsculas.		
 
