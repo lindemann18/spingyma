@@ -15,6 +15,7 @@
 <script src="js/methods.js"></script>
 <script src="js/controlers/utilidades.js"></script>
 <script src="js/controlers/componentesrutinas.js"></script>
+<script src="js/controlers/clientes.js"></script>
 <!-- css -->
 <link rel="stylesheet" href="css/loading.css" />
 <!-- jQuery 2.0.2 -->
@@ -42,7 +43,7 @@
 </html>
 
 <script type="text/javascript">
-	angular.module('app',['ngRoute','AppUsuarios','Methods','AppUtilidades','AppRutinasComp'])
+	angular.module('app',['ngRoute','AppUsuarios','Methods','AppUtilidades','AppRutinasComp','AppClientes'])
 	.config(function($routeProvider)
 	{
 	    $routeProvider
@@ -136,10 +137,23 @@
 	    	controller: 'EjercicioEditar',
 	      	templateUrl:'modulos/Rutinas/Ejercicio_Editar.html'
 	    })
+
 	    .when('/Error',{
 	    	controller: 'Errors',
 	      	templateUrl:'modulos/Rutinas/Error.html'
 	    })
+
+	    //direcciones de Clientes
+	    .when('/Clientes',{
+	    	controller: 'Clientes',
+	      	templateUrl:'modulos/Clientes/clientes_listado.html'
+	    })
+
+	    .when('/AgregarCliente',{
+	    	controller: 'ClientesAgregar',
+	      	templateUrl:'modulos/Clientes/clientes_registrar.html'
+	    })
+	    
 
 
 	    .otherwise({

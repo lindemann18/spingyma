@@ -34,7 +34,7 @@
                         </li>
 						
                         <li id="m-clientes">
-                            <a href="index.php?nav=Clientes">
+                            <a href="#/Clientes">
                                 <i class="fa fa-users"></i> <span>Clientes</span>
                             </a>
                         </li>

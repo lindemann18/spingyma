@@ -508,6 +508,22 @@
 			return $objeto;
 		}
 
+		function EjecutarTransaccionAllNoParams($query)
+		{
+			
+			R::begin();
+			    try{
+			       $objeto = R::getAll($query);
+			        R::commit();
+			    }
+			    catch(Exception $e) {
+			       $objeto =  R::rollback();
+			       $objeto = "Error";
+			    }
+			R::close();
+			return $objeto;
+		}
+
 
 		function _ConsultarEjerciciosPorTipoRutina($id)
 	{
@@ -604,6 +620,29 @@
 			return $respuesta;
 		}//_ConsultarEjerciciosDeRutinas
 
+
+		//Querys de clientes
+		function _ConsultarClientes()
+		{
+			$query='
+				SELECT
+				clientes.id,
+				clientes.nb_cliente,
+				clientes.nb_apellidos,
+				clientes.de_email,
+				clientes.num_celular,
+				usuarios.nb_nombre as "Ins_nombre", 
+				usuarios.nb_apellidos as "Ins_apellido" 
+				FROM sgclientes clientes
+				left join sgusuarios  usuarios on clientes.id_usuario_registro=usuarios.id
+				where clientes.sn_activo=1
+				ORDER BY clientes.id ASC
+			
+			';
+			$clientes = $this->EjecutarTransaccionAllNoParams($query);
+			return $clientes;
+		}//_ConsultarClientes
+
 		//queries viejos
 
 		function _ConsultarInformacionUsuarioPorId($id)
@@ -647,28 +686,7 @@
 			return $result;
 		}//_ConsultarUsuarioVerificarSiTieneRutinas
 		
-		//Querys de clientes
-		function _ConsultarClientes()
-		{
-			$query='
-				SELECT
-				clientes.id_cliente,
-				clientes.nb_cliente,
-				clientes.nb_apellidos,
-				clientes.de_email,
-				clientes.num_celular,
-				usuarios.nb_nombre as "Ins_nombre", 
-				usuarios.nb_apellidos as "Ins_apellido" 
-				FROM sg_clientes clientes
-				inner join sg_usuarios  usuarios on clientes.id_usuario_registro=usuarios.id_usuario
-				where clientes.sn_activo=1
-			
-			';
-			$conectar=new Conectar();
-			$con=Conectar::_con();
-			$result=$con->query($query)or die("Error en $query ".mysqli_error($query));
-			return $result;
-		}//_ConsultarClientes
+		
 		
 		function _ConsultarClientesPorId($id_Cliente)
 		{

@@ -64,4 +64,7 @@ por problemas con mayúsculas.
 	por problemas con mayúsculas.
 37) el campo id_GeneroRutina de la tabla sgrutinas se cambió por id_generorutina por
 	problemas con mayúsculas.		
+38) la tabla sg_clientes se cambió por sgclientes, problema: Noguion.
+39) el campo id_cliente de la tabla sgclientes se cambió por id.
+40) el campo num_codigoPostal de la tbla sgclientes se cambió por num_codigopostal
 

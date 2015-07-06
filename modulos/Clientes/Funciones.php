@@ -3,11 +3,18 @@
 	$Params=(isset($_GET['Params']))?$_GET['Params']:$_POST['Params'];
 	
 	$Parametros = json_decode($Params,true);
+	$conexion   = new ConexionBean(); //Variable de conexión
+	$con        = $conexion->_con(); //Variable de conexión
 	
 	$Accion=$Parametros['Accion'];
 	//Switch de las funciones
 	switch($Accion)
 	{
+		case 'Clientes':
+			$salidaJson = Clientes($Parametros);
+			echo json_encode($salidaJson);
+		break;
+
 		case 'Agregar'://Agregando a la BD
 			AgregarCliente($Parametros);
 				
@@ -246,6 +253,15 @@
 		
 	}//switch
 	
+	function Clientes($Parametros)
+	{
+		$consultar = new Consultar();
+		$clientes  = $consultar->_ConsultarClientes();
+		$cantidad  = count($clientes);
+		$exito     = ($cantidad>0)?1:0;
+		$datos     = array("exito"=>$exito,"clientes"=>$clientes);
+		return $datos;
+	}//clientes
 	
 	function AgregarCliente($Parametros)
 	{

@@ -48,4 +48,126 @@ var miModulo = angular.module("Methods", []);
 		{
 			$location.path('/'+direcction).search({});
 		};
+
+		this.dias = function()
+		{
+			dias = [];
+			for(i=1; i<32; i++)
+			{
+				var dia = new Object();
+				dia['dia'] = i;
+				dias.push(dia);
+			}//for;
+			return dias;
+		}///dias
+
+		this.meses = function()
+		{
+			var meses = [];
+			
+			for(i=1; i<12; i++)
+			{
+				switch(i)
+				{
+					case 1:
+						var mes = new Object();
+						mes['num'] = 1;
+						mes['mes'] = "Enero";
+						meses.push(mes);
+					break;
+
+					case 2:
+						var mes = new Object();
+						mes['num'] = 2;
+						mes['mes'] = "Febrero";
+						meses.push(mes);
+					break;
+
+					case 3:
+						var mes = new Object();
+						mes['num'] = 3;
+						mes['mes'] = "Marzo";
+						meses.push(mes);
+					break;
+
+					case 4:
+						var mes = new Object();
+						mes['num'] = 4;
+						mes['mes'] = "Abril";
+						meses.push(mes);
+					break;
+
+					case 5:
+						var mes = new Object();
+						mes['num'] = 5;
+						mes['mes'] = "Mayo";
+						meses.push(mes);
+					break;
+
+					case 6:
+						var mes = new Object();
+						mes['num'] = 6;
+						mes['mes'] = "Junio";
+						meses.push(mes);
+					break;
+
+					case 7:
+						var mes = new Object();
+						mes['num'] = 7;
+						mes['mes'] = "Julio";
+						meses.push(mes);
+					break;
+
+					case 8:
+						var mes = new Object();
+						mes['num'] = 8;
+						mes['mes'] = "Agosto";
+						meses.push(mes);
+					break;
+
+					case 9:
+						var mes = new Object();
+						mes['num'] = 9;
+						mes['mes'] = "Septiembre";
+						meses.push(mes);
+					break;
+
+					case 10:
+						var mes = new Object();
+						mes['num'] = 10;
+						mes['mes'] = "Octubre";
+						meses.push(mes);
+					break;
+
+					case 11:
+						var mes = new Object();
+						mes['num'] = 10;
+						mes['mes'] = "Noviembre";
+						meses.push(mes);
+					break;
+
+					case 12:
+						var mes = new Object();
+						mes['num'] = 11;
+						mes['mes'] = "Diciembre";
+						meses.push(mes);
+					break;
+				}//switch	
+			}//for
+			return meses;
+		}//meses
+
+		this.years = function()
+		{
+			var years = [];
+
+			for(i=1950; i<2008; i++)
+			{
+				year = new Object();
+				year['num']  = i;
+				year['year'] = i;
+				years.push(year);
+			}
+			return years;
+		};
     })	
