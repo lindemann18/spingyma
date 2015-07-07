@@ -6,6 +6,7 @@ $scope.currentPage     = 1; // Página actual, para paginación
 $scope.pageSize 	   = 5;   // Tamaño de la página, para paginación.
 $scope.mostrarbuscando = true;	
 $scope.mostrarcontent  = false;	
+$scope.showfilter      = false;
 $scope.clitr           = 0;
 
 //Funciones
@@ -54,13 +55,55 @@ $scope.Editar = function()
 	  	if(result==true)
 	  	{
 	  		$scope.$apply(function(){
-	  			$location.path('/EditarCliente').search({cliente:});
+	  			$location.path('/EditarCliente').search({cliente:$scope.clitr});
 	  		});
 	  	}//if
 	});
 	}//if
-	else{$methodsService.alerta(2,"Favor de seleccionar un cliente");}
+	else{$methodsService.alerta(2,"Favor de seleccionar un Cliente");}
 }//Agregar
+
+$scope.Eliminar = function()
+{
+	if($scope.clitr!=0)
+	{
+		bootbox.confirm("Desea Editar este Cliente?", function(result) {
+		console.log(result);
+	  	if(result==true)
+	  	{
+	  		$scope.$apply(function(){
+	  			params = $methodsService.Json("EliminarCliente",$scope.clitr);
+	  			//Enviando por ajax la peetición
+	  			var url = 'modulos/Clientes/Funciones.php';
+				 $http({method: "post",url: url,data: $.param({Params:params}), 
+				  headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+				})
+				 .success(function(data, status, headers, config) 
+				 {          	
+				   		exito    = data.exito;
+				   		exitocli = data.exitocli;
+			         	
+			         	switch(true)
+			         	{
+			         		case exito==1 && exitocli==1:
+			         			$scope.clientes = data.clientes;
+			         			$methodsService.alerta(1,"Cliente Eliminado");
+			         		break;
+
+			         		case exito!=1 && exitocli!=1:
+			         			$methodsService.alerta(2,"algo falló, disculpe las molestias");
+			         		break;
+			         	}//switch
+				  })  
+				 .error(function(data, status, headers, config){
+				 	$methodsService.alerta(2,"algo falló, disculpe las molestias");
+				 });
+	  		});
+	  	}//if
+	});
+	}//if
+	else{$methodsService.alerta(2,"Favor de seleccionar un Cliente");}
+}//Eliminar
 
 //Buscando los clientes
 //Buscando las pruebas por la número 1, condición física
@@ -71,12 +114,25 @@ var url = 'modulos/Clientes/Funciones.php';
     })
      .success(function(data, status, headers, config) 
      {          	
-       		exito = data.exito;
+       		exito    = data.exito;
+       		exitoent = data.exito;
+
+       		switch(true)
+       		{
+       			case exito==1 && exitoent==1:
+       				$scope.clientes        = data.clientes;
+       				$scope.entrenadores    = data.entrenadores;
+	       			$scope.mostrarbuscando = false;	
+					$scope.mostrarcontent  = true;	
+       			break;
+
+       			case exito!=1 && exitoent!=1:
+       				$methodsService.alerta(2,"algo falló, disculpe las molestias");
+       			break;
+       		}//switch
        		if(exito==1)
        		{
-       			$scope.clientes = data.clientes;
-       			$scope.mostrarbuscando = false;	
-				$scope.mostrarcontent  = true;	
+       			
 	
        		}//if
        		else{$methodsService.alerta(2,"algo falló, disculpe las molestias");}
@@ -153,7 +209,70 @@ var url = 'modulos/Clientes/Funciones.php';
 })
 
 .controller('ClientesEditar',function($scope,$http,$location,$methodsService,$routeParams){
+//Variables
+//Días
+$scope.dias = $methodsService.dias();
+//meses
+$scope.meses =$methodsService.meses();
+//años
+$scope.years = $methodsService.years();
 
-	$scope.id = $routeParams.cliente;
+//Funciones
+$scope.modal = function()
+{
+	$("#ModalCuerpo").modal("show");
+}//modal
 
-})
+$scope.Editar = function()
+{
+	bootbox.confirm("Desea Editar este cliente?", function(result) {
+		console.log(result);
+	  	if(result==true)
+	  	{
+	  		$scope.cliente.Accion = "Editarcliente";
+	  		params   			  = JSON.stringify($scope.cliente);
+	  		var url = 'modulos/Clientes/Funciones.php';
+		         $http({method: "post",url: url,data: $.param({Params:params}), 
+		          headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+		        })
+		         .success(function(data, status, headers, config) 
+		         {          	
+			         	exito = data.exito;
+			         	if(exito==1)
+			         	{
+			         		$methodsService.alerta(1,"Cliente Editado");
+			         	}else{$methodsService.alerta(2,"algo falló, disculpe las molestias");}
+		          })  
+		         .error(function(data, status, headers, config){
+		         	$methodsService.alerta(2,"algo falló, disculpe las molestias");
+		         });
+	  	}//if
+	});//bootbox
+}//Editar
+
+$scope.Redirigir = function(direccion)
+	{
+		$methodsService.Redirigir(direccion);
+	}//Redirigir
+
+$scope.id = $routeParams.cliente;
+params    = $methodsService.Json("InfoCliente",$scope.id);
+//Mandando por ajax el ejercicio a eliminar
+  		var url = 'modulos/Clientes/Funciones.php';
+	     $http({method: "post",url: url,data: $.param({Params:params}), 
+	      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+	    })
+	     .success(function(data, status, headers, config) 
+	     {          	
+	       		exito = data.exito;
+	       		if(exito==1)
+	       		{
+	       			$scope.cliente = data.cliente;
+	       			console.log($scope.cliente);
+	       		}//if
+	       		else{$methodsService.alerta(2,"algo falló, disculpe las molestias");}
+	      })  
+	     .error(function(data, status, headers, config){
+	     	$methodsService.alerta(2,"algo falló, disculpe las molestias");
+	     });
+})//ClientesEditar

@@ -20,6 +20,21 @@
 			echo json_encode($salidaJson);
 		break;
 
+		case 'InfoCliente':
+			$salidaJson = InfoCliente($Parametros);
+			echo json_encode($salidaJson);
+		break;
+
+		case 'Editarcliente':
+			$salidaJson = Editarcliente($Parametros);
+			echo json_encode($salidaJson);
+		break;
+
+		case 'EliminarCliente':
+			$salidaJson = EliminarCliente($Parametros);
+			echo json_encode($salidaJson);
+		break;
+
 		case 'Agregar'://Agregando a la BD
 			AgregarCliente($Parametros);
 				
@@ -30,7 +45,7 @@
 		
 		case 'Editar':
 			//Agregando a la BD
-			EditarCliente($Parametros);
+			EditarCliente1($Parametros);
 			//DEvolviendo parámetros para la notificación				
 			$salidaJson=array("Editado"=>"1" );
 			echo json_encode($salidaJson);
@@ -264,7 +279,13 @@
 		$clientes  = $consultar->_ConsultarClientes();
 		$cantidad  = count($clientes);
 		$exito     = ($cantidad>0)?1:0;
-		$datos     = array("exito"=>$exito,"clientes"=>$clientes);
+
+		//Consultando los entrenadores
+		$entrenadores = $consultar->_ConsultarUsuarios();
+		$cantidaden   = count($entrenadores);
+		$exitoent     = ($cantidaden>0)?1:0;
+		$datos     = array("exito"=>$exito,"clientes"=>$clientes,
+						   "exitoent"=>$exitoent,"entrenadores"=>$entrenadores);
 		return $datos;
 	}//clientes
 	
@@ -304,7 +325,65 @@
 		$datos 						  = array("exito"=>$exito);
 		return $datos;
 	}//AgregarCliente
+
+	function InfoCliente($Parametros)
+	{
+		$id        = $Parametros['id'];
+		$consultar = new Consultar();
+		$cliente   = $consultar->_ConsultarclientePorId($id);
+		$cantidad  = count($cliente);
+		$exito     = ($cantidad>0)?1:0;
+		$datos     = array("exito"=>$exito,"cliente"=>$cliente);
+		return $datos;
+	}//InfoCliente
 	
+	function Editarcliente($Parametros)
+	{
+		$id = $Parametros['id'];
+		//Pegando la fecha
+		$fecha = $Parametros['birth_year']."-".$Parametros['birth_month']."-".$Parametros['birth_day'];
+		$cliente = R::load("sgclientes",$id);
+
+		//Consultar el id del tipo cuerpo
+		$consultar = new Consultar();
+		$cuerpo    = $consultar->_ConsultarCuerposPorNombre($Parametros['nb_cuerpo']);
+
+		//Guardando los valores de los clientes.
+		$cliente->nb_cliente       = $Parametros['nb_cliente'];
+		$cliente->nb_apellidos     = $Parametros['nb_apellidos'];
+		$cliente->de_genero        = $Parametros['de_genero'];
+		$cliente->fh_nacimiento    = $fecha;
+		$cliente->de_email         = $Parametros['de_email'];
+		$cliente->num_telefono     = $Parametros['num_telefono'];
+		$cliente->num_celular      = $Parametros['num_celular'];
+		$cliente->de_domicilio     = $Parametros['de_domicilio'];
+		$cliente->de_colonia       = $Parametros['de_colonia'];
+		$cliente->num_codigopostal = $Parametros['num_codigopostal'];
+		$cliente->id_tipocuerpo    = $cuerpo['id'];
+		$respuesta 				   = EjecutarTransaccion($cliente);
+		$exito 					   = ($respuesta!="Error")?1:0;
+		$datos 					   = array("exito"=>$exito);
+		return $datos;
+	}//Editarcliente
+
+	function EliminarCliente($Parametros)
+	{
+		$id      = $Parametros['id'];
+		$cliente = R::load("sgclientes",$id);
+		$cliente->sn_activo = 0;
+		$respuesta = EjecutarTransaccion($cliente);
+		$exito 	   = ($respuesta!="Error")?1:0;
+
+		//Consultando los clientes restantes.
+		$consultar = new Consultar();
+		$clientes  = $consultar->_ConsultarClientes();
+		$cantidad  = count($clientes);
+		$exitocli  = ($cantidad>0)?1:0;
+
+		$datos 	   = array("exito"=>$exito,"exitocli"=>$exitocli,"clientes"=>$clientes);
+		return $datos;
+	}//EliminarCliente
+
 	function EjecutarTransaccion($objeto)
 	{
 		R::freeze(1);
@@ -321,7 +400,7 @@
 		return $respuesta;
 	}//EjecutarTransacción
 
-	function EditarCliente($Parametros)
+	function EditarCliente1($Parametros)
 	{
 		//Tomamos los datos.
 		$consultar        = new Consultar();
@@ -345,7 +424,7 @@
 				$num_telefono,$num_celular,$de_colonia,$de_domicilio,$num_codigoPostal,$nb_cliente, $id_cliente,$id_tipoCuerpo);
 	}
 	
-	function EliminarCliente($id)
+	function EliminarCliente1($id)
 	{
 		$eliminar=new Actualizar();
 		$result=$eliminar->_Eliminarcliente($id);

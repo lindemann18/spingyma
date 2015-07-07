@@ -602,6 +602,8 @@
 			return $respuesta;
 		}//_ConsultarCuerposPorNombre
 
+
+
 		function _ConsultarEjerciciosDeRutinas($id)
 		{
 			$query = '
@@ -648,6 +650,32 @@
 			$clientes = $this->EjecutarTransaccionAllNoParams($query);
 			return $clientes;
 		}//_ConsultarClientes
+
+		function _ConsultarclientePorId($id)
+		{
+			$query = 'SELECT 
+			cliente.id,
+			cliente.nb_cliente,
+			cliente.nb_apellidos,
+			cliente.de_genero,
+			cliente.de_email,
+			cliente.num_telefono,
+			cliente.num_celular,
+			cliente.de_colonia,
+			cliente.de_domicilio,
+			cliente.num_codigopostal,
+			cuerpo.id as id_cuerpo,
+			cuerpo.nb_cuerpo,
+			SPLIT_STR(fh_nacimiento, "-", 1) as birth_year,
+			SPLIT_STR(fh_nacimiento, "-", 2) as birth_month,
+			SPLIT_STR(fh_nacimiento, "-", 3) as birth_day
+			FROM sgclientes cliente
+			LEFT JOIN sgtipocuerpo cuerpo
+			ON cliente.id_tipocuerpo = cuerpo.id
+			where cliente.id= ?';
+			$respuesta = $this->EjecutarTransaccionSinglerow($query,$id);
+			return $respuesta;
+		}//_ConsultarclientePorId
 
 		//queries viejos
 

@@ -55,7 +55,8 @@ var miModulo = angular.module("Methods", []);
 			for(i=1; i<32; i++)
 			{
 				var dia = new Object();
-				dia['dia'] = i;
+				dia['dia'] = i.toString();
+				dia['num'] = i.toString();
 				dias.push(dia);
 			}//for;
 			return dias;
@@ -71,84 +72,84 @@ var miModulo = angular.module("Methods", []);
 				{
 					case 1:
 						var mes = new Object();
-						mes['num'] = 1;
+						mes['num'] = (1).toString();
 						mes['mes'] = "Enero";
 						meses.push(mes);
 					break;
 
 					case 2:
 						var mes = new Object();
-						mes['num'] = 2;
+						mes['num'] = (2).toString();
 						mes['mes'] = "Febrero";
 						meses.push(mes);
 					break;
 
 					case 3:
 						var mes = new Object();
-						mes['num'] = 3;
+						mes['num'] = (3).toString();
 						mes['mes'] = "Marzo";
 						meses.push(mes);
 					break;
 
 					case 4:
 						var mes = new Object();
-						mes['num'] = 4;
+						mes['num'] = (4).toString();
 						mes['mes'] = "Abril";
 						meses.push(mes);
 					break;
 
 					case 5:
 						var mes = new Object();
-						mes['num'] = 5;
+						mes['num'] = (5).toString();
 						mes['mes'] = "Mayo";
 						meses.push(mes);
 					break;
 
 					case 6:
 						var mes = new Object();
-						mes['num'] = 6;
+						mes['num'] = (6).toString();
 						mes['mes'] = "Junio";
 						meses.push(mes);
 					break;
 
 					case 7:
 						var mes = new Object();
-						mes['num'] = 7;
+						mes['num'] = (7).toString();
 						mes['mes'] = "Julio";
 						meses.push(mes);
 					break;
 
 					case 8:
 						var mes = new Object();
-						mes['num'] = 8;
+						mes['num'] = (8).toString();
 						mes['mes'] = "Agosto";
 						meses.push(mes);
 					break;
 
 					case 9:
 						var mes = new Object();
-						mes['num'] = 9;
+						mes['num'] = (9).toString();
 						mes['mes'] = "Septiembre";
 						meses.push(mes);
 					break;
 
 					case 10:
 						var mes = new Object();
-						mes['num'] = 10;
+						mes['num'] = (10).toString();
 						mes['mes'] = "Octubre";
 						meses.push(mes);
 					break;
 
 					case 11:
 						var mes = new Object();
-						mes['num'] = 10;
+						mes['num'] = (11).toString();
 						mes['mes'] = "Noviembre";
 						meses.push(mes);
 					break;
 
 					case 12:
 						var mes = new Object();
-						mes['num'] = 11;
+						mes['num'] = (12).toString();
 						mes['mes'] = "Diciembre";
 						meses.push(mes);
 					break;
@@ -164,8 +165,8 @@ var miModulo = angular.module("Methods", []);
 			for(i=1950; i<2008; i++)
 			{
 				year = new Object();
-				year['num']  = i;
-				year['year'] = i;
+				year['num']  = i.toString();
+				year['year'] = i.toString();
 				years.push(year);
 			}
 			return years;
