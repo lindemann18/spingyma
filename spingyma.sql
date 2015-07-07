@@ -2,21 +2,21 @@
 Navicat MySQL Data Transfer
 
 Source Server         : localhost
-Source Server Version : 50620
+Source Server Version : 50616
 Source Host           : localhost:3306
 Source Database       : spingyma
 
 Target Server Type    : MYSQL
-Target Server Version : 50620
+Target Server Version : 50616
 File Encoding         : 65001
 
-Date: 2015-07-05 23:22:28
+Date: 2015-07-07 16:03:54
 */
 
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
--- Table structure for `sgcategoriamaquina`
+-- Table structure for sgcategoriamaquina
 -- ----------------------------
 DROP TABLE IF EXISTS `sgcategoriamaquina`;
 CREATE TABLE `sgcategoriamaquina` (
@@ -42,7 +42,7 @@ INSERT INTO `sgcategoriamaquina` VALUES ('13', 'Cochapacha', 'chocobanana', '1',
 INSERT INTO `sgcategoriamaquina` VALUES ('14', 'Ninguna', 'Ninguna máquina', '1', '1');
 
 -- ----------------------------
--- Table structure for `sgclientes`
+-- Table structure for sgclientes
 -- ----------------------------
 DROP TABLE IF EXISTS `sgclientes`;
 CREATE TABLE `sgclientes` (
@@ -64,7 +64,7 @@ CREATE TABLE `sgclientes` (
   `num_codigopostal` varchar(5) DEFAULT NULL,
   `sn_activo` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=117 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=120 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of sgclientes
@@ -93,7 +93,7 @@ INSERT INTO `sgclientes` VALUES ('34', 'Maguila', '1', null, 'Gorila', 'MASCULIN
 INSERT INTO `sgclientes` VALUES ('35', 'Maguila', '1', null, 'Gorila', 'MASCULINO', '1988-1-1', 'ashernetz@hotmail.com', '(212) 131-2312', '(132) 123-1231', '0', '0', '0', 'cañadas', 'cañadas\ncañadas', '80227', '0');
 INSERT INTO `sgclientes` VALUES ('36', 'Omelete', '1', null, 'du fomach', 'MASCULINO', '1991-4-15', 'sergio_ric3@hotmail.com', '(667) 154-8899', '(667) 154-0133', '0', '0', '0', 'Lomas del sol', 'Hortencia cabada', '80016', '0');
 INSERT INTO `sgclientes` VALUES ('37', 'SERGIO', '1', null, 'RIVAS', 'MASCULINO', '1991-4-15', 'sergio_ric3@hotmail.com', '(667) 154-0133', '(667) 154-0189', '0', '0', '0', 'LOMAS DEL SOL', '  CALLE HORTENCIA CABADA 993', '80016', '1');
-INSERT INTO `sgclientes` VALUES ('38', 'Arlu', '1', null, 'Parra', 'FEMENINO', '1991-8-29', 'Arlu.ppc@gmail.com', '(654) 645-6464', '(465) 456-4564', '0', '0', '0', 'Colonia', 'su casa', '80920', '1');
+INSERT INTO `sgclientes` VALUES ('38', 'Arlou', '1', '3', 'Perez Parra Castro', 'FEMENINO', '1991-8-29', 'Arlu.ppc@gmail.com', '(654) 645-6464', '(465) 456-4564', '0', '0', '0', 'Ciudad universitaria', 'su casa', '80920', '1');
 INSERT INTO `sgclientes` VALUES ('39', 'LUIS FERNANDO', '1', null, 'AGUILAR PEREZ', 'MASCULINO', '1981-4-1', 'takotaka669@hotmail.com', '(667) 177-7156', '(667) 177-7158', '0', '0', '0', '', 'efef', '', '1');
 INSERT INTO `sgclientes` VALUES ('40', 'ELISA JUDITH', '1', null, 'ARREDONDO ONTIVEROS', 'FEMENINO', '1974-4-1', 'ontiveros.e@hotmail.com', '(667) 222-0045', '(667) 222-0046', '0', '0', '0', '', '3f', 'd', '1');
 INSERT INTO `sgclientes` VALUES ('41', 'VERONICA ', '1', null, 'CALDERON SOTO', 'FEMENINO', '1975-4-1', 'vrnc_soto@hotmail.com', '(667) 996-7126', '(667) 996-7125', '0', '0', '0', '', 'efw', 'f', '1');
@@ -172,9 +172,10 @@ INSERT INTO `sgclientes` VALUES ('113', 'MARIO ROBERTO ', '1', null, 'VELARDE RO
 INSERT INTO `sgclientes` VALUES ('114', 'CRISTINA ', '1', null, 'CARRASCO ANGULO', 'MASCULINO', '1985-9-1', 'cristina.carrasco.angulo@gmail.com', '(789) 504-4___', '(667) 144-0953', '0', '0', '0', '-', '-', '-', '1');
 INSERT INTO `sgclientes` VALUES ('115', 'GLORIA MARIA', '1', null, 'PEÑUÑURI LOPEZ', 'FEMENINO', '1983-4-2', 'gpenunurilopez@gmail.com', '(777) 777-7777', '(667) 189-0371', '0', '0', '0', '-', '-', '-', '1');
 INSERT INTO `sgclientes` VALUES ('116', 'MARIA DE LOS ANGELES', '1', null, 'ROMERO LOPEZ', 'FEMENINO', '1979-8-2', 'angelesromero@hotmail.com', '(777) 777-7777', '(667) 323-8129', '0', '0', '0', '-', '-', '-', '1');
+INSERT INTO `sgclientes` VALUES ('119', 'Chumel', '1', '3', 'Torres', 'MASCULINO', '1980-1-1', 'chjumel@pulso.com', '321235645456', '65454556', '0', '0', '0', 'montebello', 'blvd virreyes', '80227', '1');
 
 -- ----------------------------
--- Table structure for `sgconsejos`
+-- Table structure for sgconsejos
 -- ----------------------------
 DROP TABLE IF EXISTS `sgconsejos`;
 CREATE TABLE `sgconsejos` (
@@ -229,7 +230,7 @@ INSERT INTO `sgconsejos` VALUES ('37', '8', 'Promedio', 'Es recomendable estirar
 INSERT INTO `sgconsejos` VALUES ('38', '8', 'Pobre', 'Es recomendable estirar durante y después de cada entrenamiento para aumentar la flexibilidad de la persona.', '2015-03-27 12:42:02');
 
 -- ----------------------------
--- Table structure for `sgejercicios`
+-- Table structure for sgejercicios
 -- ----------------------------
 DROP TABLE IF EXISTS `sgejercicios`;
 CREATE TABLE `sgejercicios` (
@@ -567,7 +568,7 @@ INSERT INTO `sgejercicios` VALUES ('325', '1', '1', '64', 'Chocochocho', 'cochap
 INSERT INTO `sgejercicios` VALUES ('326', '1', '9', '0', 'asdasda', 'adad', '1', '0');
 
 -- ----------------------------
--- Table structure for `sgejerciciosrutina`
+-- Table structure for sgejerciciosrutina
 -- ----------------------------
 DROP TABLE IF EXISTS `sgejerciciosrutina`;
 CREATE TABLE `sgejerciciosrutina` (
@@ -2518,7 +2519,7 @@ INSERT INTO `sgejerciciosrutina` VALUES ('2158', '2', '1', '6', '130', '1', '1',
 INSERT INTO `sgejerciciosrutina` VALUES ('2159', '2', '1', '7', '130', '1', '1', '40', null, null, null, null, '', '1');
 
 -- ----------------------------
--- Table structure for `sgmaquinas`
+-- Table structure for sgmaquinas
 -- ----------------------------
 DROP TABLE IF EXISTS `sgmaquinas`;
 CREATE TABLE `sgmaquinas` (
@@ -2606,7 +2607,7 @@ INSERT INTO `sgmaquinas` VALUES ('70', 'maquinosa', 'adsa', '2', '0', '1');
 INSERT INTO `sgmaquinas` VALUES ('71', 'Maquinosa mundial', 'alkdsjalkdla', '213', '0', '1');
 
 -- ----------------------------
--- Table structure for `sgmusculos`
+-- Table structure for sgmusculos
 -- ----------------------------
 DROP TABLE IF EXISTS `sgmusculos`;
 CREATE TABLE `sgmusculos` (
@@ -2655,7 +2656,7 @@ INSERT INTO `sgmusculos` VALUES ('34', '1', '3', 'Chocobanana', 'salkjdakldjla',
 INSERT INTO `sgmusculos` VALUES ('35', '1', '4', 'Chocofresa', 'cocha pacha', '0');
 
 -- ----------------------------
--- Table structure for `sgrutinas`
+-- Table structure for sgrutinas
 -- ----------------------------
 DROP TABLE IF EXISTS `sgrutinas`;
 CREATE TABLE `sgrutinas` (
@@ -2758,7 +2759,26 @@ INSERT INTO `sgrutinas` VALUES ('129', '1', '1', '3', null, 'HMTJENN1V3', 'HOMBR
 INSERT INTO `sgrutinas` VALUES ('130', '1', '1', '3', null, 'HMTJAMEN1V1', 'HOMBRE O MUJER TEEN JOVEN ADULTO MESOMORFO NIVEL 1 VERSION 1', '1', '2015-03-04');
 
 -- ----------------------------
--- Table structure for `sgtipospruebas`
+-- Table structure for sgtipocuerpo
+-- ----------------------------
+DROP TABLE IF EXISTS `sgtipocuerpo`;
+CREATE TABLE `sgtipocuerpo` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nb_cuerpo` varchar(150) DEFAULT NULL,
+  `desc_tipocuerpo` varchar(150) DEFAULT NULL,
+  `url_img` varchar(150) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of sgtipocuerpo
+-- ----------------------------
+INSERT INTO `sgtipocuerpo` VALUES ('1', 'ECTOMORFO', 'ECTOMORFO', 'css/ectomorfo.jpg');
+INSERT INTO `sgtipocuerpo` VALUES ('2', 'MESOMORFO', 'MESOMORFO', 'css/mesomorfo.jpg');
+INSERT INTO `sgtipocuerpo` VALUES ('3', 'ENDOMORFO', 'ENDOMORFO', 'css/endomorfo.jpg');
+
+-- ----------------------------
+-- Table structure for sgtipospruebas
 -- ----------------------------
 DROP TABLE IF EXISTS `sgtipospruebas`;
 CREATE TABLE `sgtipospruebas` (
@@ -2780,7 +2800,7 @@ INSERT INTO `sgtipospruebas` VALUES ('7', 'Resistencia');
 INSERT INTO `sgtipospruebas` VALUES ('8', 'Flexibilidad');
 
 -- ----------------------------
--- Table structure for `sgtiposrutina`
+-- Table structure for sgtiposrutina
 -- ----------------------------
 DROP TABLE IF EXISTS `sgtiposrutina`;
 CREATE TABLE `sgtiposrutina` (
@@ -2813,7 +2833,7 @@ INSERT INTO `sgtiposrutina` VALUES ('18', '0', 'Chicunguaya', 'laksjdklajslda', 
 INSERT INTO `sgtiposrutina` VALUES ('19', '0', 'COchapacha', 'alsdjkak', '0');
 
 -- ----------------------------
--- Table structure for `sgusuarios`
+-- Table structure for sgusuarios
 -- ----------------------------
 DROP TABLE IF EXISTS `sgusuarios`;
 CREATE TABLE `sgusuarios` (
@@ -2855,7 +2875,7 @@ INSERT INTO `sgusuarios` VALUES ('19', 'spingym', 'spingym', 'Spin Gym', 'Spin G
 INSERT INTO `sgusuarios` VALUES ('27', 'jesus perez', 'adadasda', 'jesus', 'perez', 'MASCULINO', '0', 'ashernetz@hotmail.com', '01 667 214 7897', '01 667 214 7897', '0', '0', '0', 'asdada', 'cañadas\ncañadas', null, '0', '1', '80227', '0');
 
 -- ----------------------------
--- Table structure for `sg_actividades`
+-- Table structure for sg_actividades
 -- ----------------------------
 DROP TABLE IF EXISTS `sg_actividades`;
 CREATE TABLE `sg_actividades` (
@@ -2873,7 +2893,7 @@ CREATE TABLE `sg_actividades` (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for `sg_biotestbitacora`
+-- Table structure for sg_biotestbitacora
 -- ----------------------------
 DROP TABLE IF EXISTS `sg_biotestbitacora`;
 CREATE TABLE `sg_biotestbitacora` (
@@ -2984,7 +3004,7 @@ INSERT INTO `sg_biotestbitacora` VALUES ('95', '1', '49', '0', '2015-05-20');
 INSERT INTO `sg_biotestbitacora` VALUES ('96', '1', '110', '0', '2015-05-20');
 
 -- ----------------------------
--- Table structure for `sg_categoriasrutina`
+-- Table structure for sg_categoriasrutina
 -- ----------------------------
 DROP TABLE IF EXISTS `sg_categoriasrutina`;
 CREATE TABLE `sg_categoriasrutina` (
@@ -3004,7 +3024,7 @@ INSERT INTO `sg_categoriasrutina` VALUES ('3', 'Avanzado', 'Rutinas para cliente
 INSERT INTO `sg_categoriasrutina` VALUES ('4', 'Todos', 'Rutinas en general para todos los niveles', '1');
 
 -- ----------------------------
--- Table structure for `sg_dias`
+-- Table structure for sg_dias
 -- ----------------------------
 DROP TABLE IF EXISTS `sg_dias`;
 CREATE TABLE `sg_dias` (
@@ -3026,7 +3046,7 @@ INSERT INTO `sg_dias` VALUES ('6', 'Sábado', 'Sabado');
 INSERT INTO `sg_dias` VALUES ('7', 'Domingo', 'Domingo');
 
 -- ----------------------------
--- Table structure for `sg_ejerciciosrutinacliente`
+-- Table structure for sg_ejerciciosrutinacliente
 -- ----------------------------
 DROP TABLE IF EXISTS `sg_ejerciciosrutinacliente`;
 CREATE TABLE `sg_ejerciciosrutinacliente` (
@@ -4597,7 +4617,7 @@ INSERT INTO `sg_ejerciciosrutinacliente` VALUES ('1786', '2', '0', '1', '28', '2
 INSERT INTO `sg_ejerciciosrutinacliente` VALUES ('1787', '12', '0', '1', '28', '12', '2', '5', '', '', '0', '0', '', '1');
 
 -- ----------------------------
--- Table structure for `sg_formulario`
+-- Table structure for sg_formulario
 -- ----------------------------
 DROP TABLE IF EXISTS `sg_formulario`;
 CREATE TABLE `sg_formulario` (
@@ -4699,7 +4719,7 @@ INSERT INTO `sg_formulario` VALUES ('54', '1', '110', '0', '0', '0', '0', '1', '
 INSERT INTO `sg_formulario` VALUES ('55', '1', '111', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'SANDWICH, HUEVO , JAMON ', 'ENSALADA CO PROTEINA', 'ENSALADA O CEREAL', 'FRUTAS Y FRUTOS SECOS', 'TODOS LOS DIAS', 'SI', '0', '2', '0', '0', '0', '0', 'CAMINAR ', 'NADAR', 'SOFTBOL', '1 HORA', '5', 'CONDICION Y MEJOR SALUD');
 
 -- ----------------------------
--- Table structure for `sg_generosrutina`
+-- Table structure for sg_generosrutina
 -- ----------------------------
 DROP TABLE IF EXISTS `sg_generosrutina`;
 CREATE TABLE `sg_generosrutina` (
@@ -4717,7 +4737,7 @@ INSERT INTO `sg_generosrutina` VALUES ('2', 'Mujer', 'Tipos de rutina exclusivam
 INSERT INTO `sg_generosrutina` VALUES ('3', 'Mixta', 'Tipos de rutina mixta');
 
 -- ----------------------------
--- Table structure for `sg_pruebas`
+-- Table structure for sg_pruebas
 -- ----------------------------
 DROP TABLE IF EXISTS `sg_pruebas`;
 CREATE TABLE `sg_pruebas` (
@@ -5305,7 +5325,7 @@ INSERT INTO `sg_pruebas` VALUES ('1296', '1', '49', '1', 'Condicion Física', '6
 INSERT INTO `sg_pruebas` VALUES ('1297', '1', '110', '1', 'Condicion Física', '70', 'Bueno', '60', '2015-05-20 22:00:00');
 
 -- ----------------------------
--- Table structure for `sg_rutinasclientes`
+-- Table structure for sg_rutinasclientes
 -- ----------------------------
 DROP TABLE IF EXISTS `sg_rutinasclientes`;
 CREATE TABLE `sg_rutinasclientes` (
@@ -5333,26 +5353,7 @@ INSERT INTO `sg_rutinasclientes` VALUES ('27', '0', '0', '0', '0', '', '', '2015
 INSERT INTO `sg_rutinasclientes` VALUES ('28', '0', '0', '0', '0', '', '', '2015-06-08', '1');
 
 -- ----------------------------
--- Table structure for `sg_tipocuerpo`
--- ----------------------------
-DROP TABLE IF EXISTS `sg_tipocuerpo`;
-CREATE TABLE `sg_tipocuerpo` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nb_cuerpo` varchar(150) DEFAULT NULL,
-  `desc_tipocuerpo` varchar(150) DEFAULT NULL,
-  `url_img` varchar(150) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of sg_tipocuerpo
--- ----------------------------
-INSERT INTO `sg_tipocuerpo` VALUES ('1', 'ECTOMORFO', 'ECTOMORFO', 'css/ectomorfo.jpg');
-INSERT INTO `sg_tipocuerpo` VALUES ('2', 'MESOMORFO', 'MESOMORFO', 'css/mesomorfo.jpg');
-INSERT INTO `sg_tipocuerpo` VALUES ('3', 'ENDOMORFO', 'ENDOMORFO', 'css/endomorfo.jpg');
-
--- ----------------------------
--- Function structure for `SPLIT_STR`
+-- Function structure for SPLIT_STR
 -- ----------------------------
 DROP FUNCTION IF EXISTS `SPLIT_STR`;
 DELIMITER ;;
