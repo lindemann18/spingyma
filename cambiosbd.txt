@@ -67,4 +67,4 @@ por problemas con mayúsculas.
 38) la tabla sg_clientes se cambió por sgclientes, problema: Noguion.
 39) el campo id_cliente de la tabla sgclientes se cambió por id.
 40) el campo num_codigoPostal de la tbla sgclientes se cambió por num_codigopostal
-
+41) se cambió el nombre de la tabla sg_tipocuerpo por sgtipocuerpo, problema:  Noguion

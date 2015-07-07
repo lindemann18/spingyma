@@ -45,6 +45,23 @@ $scope.Agregar = function()
 	});
 }//Agregar
 
+$scope.Editar = function()
+{	
+	if($scope.clitr!=0)
+	{
+		bootbox.confirm("Desea Editar este Cliente?", function(result) {
+		console.log(result);
+	  	if(result==true)
+	  	{
+	  		$scope.$apply(function(){
+	  			$location.path('/EditarCliente').search({cliente:});
+	  		});
+	  	}//if
+	});
+	}//if
+	else{$methodsService.alerta(2,"Favor de seleccionar un cliente");}
+}//Agregar
+
 //Buscando los clientes
 //Buscando las pruebas por la número 1, condición física
 params = $methodsService.Json("Clientes",1);
@@ -95,13 +112,48 @@ var url = 'modulos/Clientes/Funciones.php';
 		}
 		else
 		{
-			console.log($scope.cliente);
-		}
+			bootbox.confirm("Desea Agregar un tipo de rutina?", function(result) {
+			console.log(result);
+		  	if(result==true)
+		  	{
+				//Mandando la petición AJAX al controller.
+				$scope.cliente.Accion = "AgregarCliente";
+				params  = JSON.stringify($scope.cliente);
+	  			var url = 'modulos/Clientes/Funciones.php';
+		         $http({method: "post",url: url,data: $.param({Params:params}), 
+		          headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+		        })
+		         .success(function(data, status, headers, config) 
+		         {          	
+		         	exito = data.exito;
+		         	if(exito==1)
+		         	{
+		         		$methodsService.alerta(1,"Cliente Agregado!");
+		         		$scope.cliente = {};
+		         	}else{$methodsService.alerta(2,"algo falló, disculpe las molestias");}
+		          })  
+		         .error(function(data, status, headers, config){
+		         	$methodsService.alerta(2,"algo falló, disculpe las molestias");
+		         });
+	     	}//if
+	     });//botbox
+		}//else
 	}//Agregar
 
 	$scope.modal = function()
 	{
 		$("#ModalCuerpo").modal("show");
 	}//modal
+
+	$scope.Redirigir = function(direccion)
+	{
+		$methodsService.Redirigir(direccion);
+	}//Redirigir
+
+})
+
+.controller('ClientesEditar',function($scope,$http,$location,$methodsService,$routeParams){
+
+	$scope.id = $routeParams.cliente;
 
 })

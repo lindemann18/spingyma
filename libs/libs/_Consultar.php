@@ -595,6 +595,12 @@
 			return $musculos;
 		}//_ConsultarMusculosPorTipoRutinaId
 
+		function _ConsultarCuerposPorNombre($name)
+		{
+			$query     = 'select * from sgtipocuerpo where nb_cuerpo = ?';
+			$respuesta = $this->EjecutarTransaccionSinglerow($query,$name);
+			return $respuesta;
+		}//_ConsultarCuerposPorNombre
 
 		function _ConsultarEjerciciosDeRutinas($id)
 		{

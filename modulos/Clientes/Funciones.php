@@ -15,6 +15,11 @@
 			echo json_encode($salidaJson);
 		break;
 
+		case 'AgregarCliente':
+			$salidaJson = AgregarCliente($Parametros);
+			echo json_encode($salidaJson);
+		break;
+
 		case 'Agregar'://Agregando a la BD
 			AgregarCliente($Parametros);
 				
@@ -265,32 +270,57 @@
 	
 	function AgregarCliente($Parametros)
 	{
-		//Tomamos los datos.
-		$nb_nombre  	  = $Parametros['nb_cliente'];
-		$nb_apellidos	  = $Parametros['nb_apellidos'];
-		$de_genero	 	  = $Parametros['de_genero'];
-		$fh_nacimiento	  = $Parametros['fh_nacimiento'];
-		$de_email	   	  = $Parametros['de_email'];
-		$num_telefono  	  = $Parametros['num_telefono'];
-		$num_celular   	  = $Parametros['num_celular'];
-		$de_colonia	 	  = $Parametros['de_colonia'];
-		$de_domicilio     = $Parametros['de_domicilio'];
-		$num_codigoPostal = $Parametros['num_codigoPostal'];
-		$nb_cliente		  = $Parametros['nb_cliente'];
-		$id_usuario		  = $Parametros['id_usuario'];
-		$id_cuerpo 		  = $Parametros['id_cuerpo'];
-		$agregar 		  = new Agregar();
-		$consultar        = new Consultar();
-		//Buscando el id del tipo de cuerpo por el texto.
-		$resultCuerpo     = $consultar->_ConsultarCuerpoPorTexto($id_cuerpo);
-		$filaCuerpo       = $resultCuerpo->fetch_assoc();
-		$id_tipoCuerpo    = $filaCuerpo['id'];
+		//Creando un objeto del a tabla
+		$cliente = R::dispense("sgclientes");
+		$consultar = new Consultar();
+		//print_r($Parametros);
 
-		// Buscar el valo del tipo de cuerpo.
-		$result=$agregar->_AgregarCliente($nb_apellidos,$de_genero,$fh_nacimiento,$de_email,
-				$num_telefono,$num_celular,$de_colonia,$de_domicilio,$num_codigoPostal,$nb_nombre,$id_usuario,$id_tipoCuerpo);	
-	}
+		//Pegando la fecha
+		$fecha = $Parametros['year']."-".$Parametros['mes']."-".$Parametros['dia_nacimiento'];
+
+		//Consultar el id del tipo cuerpo
+		$cuerpo = $consultar->_ConsultarCuerposPorNombre($Parametros['id_cuerpo']);
+
+		//Scando el id del usuario que registra
+		session_start();
+		$id_usuario = $_SESSION['usuario']['id'];
+
+		//Asignadno los valores
+		$cliente->nb_cliente          = $Parametros['nb_cliente'];
+		$cliente->id_usuario_registro = $id_usuario;
+		$cliente->id_tipocuerpo 	  = $cuerpo['id'];
+		$cliente->nb_apellidos  	  = $Parametros['nb_apellidos'];
+		$cliente->de_genero     	  = $Parametros['de_genero'];
+		$cliente->fh_nacimiento 	  = $fecha;
+		$cliente->num_telefono     	  = $Parametros['num_telefono'];
+		$cliente->num_celular     	  = $Parametros['num_celular'];
+		$cliente->de_colonia     	  = $Parametros['de_colonia'];
+		$cliente->de_domicilio        = $Parametros['de_domicilio'];
+		$cliente->num_codigopostal    = $Parametros['num_codigopostal'];
+		$cliente->de_email            = $Parametros['de_email'];
+		$cliente->sn_activo 	      = 1;
+		$respuesta 					  = EjecutarTransaccion($cliente);
+		$exito                        = ($respuesta!="Error")?1:0;
+		$datos 						  = array("exito"=>$exito);
+		return $datos;
+	}//AgregarCliente
 	
+	function EjecutarTransaccion($objeto)
+	{
+		R::freeze(1);
+		R::begin();
+		    try{
+		       $respuesta = R::store($objeto);
+		        R::commit();
+		    }
+		    catch(Exception $e) {
+		       $respuesta =  R::rollback();
+		       $respuesta = "Error";
+		    }
+		R::close();
+		return $respuesta;
+	}//EjecutarTransacción
+
 	function EditarCliente($Parametros)
 	{
 		//Tomamos los datos.

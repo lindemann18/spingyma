@@ -153,6 +153,11 @@
 	    	controller: 'ClientesAgregar',
 	      	templateUrl:'modulos/Clientes/clientes_registrar.html'
 	    })
+
+	    .when('/EditarCliente',{
+	    	controller: 'ClientesEditar',
+	      	templateUrl:'modulos/Clientes/clientes_editar.html'
+	    })
 	    
 
 
