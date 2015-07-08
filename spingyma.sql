@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50616
 File Encoding         : 65001
 
-Date: 2015-07-07 16:03:54
+Date: 2015-07-08 15:21:00
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -64,7 +64,7 @@ CREATE TABLE `sgclientes` (
   `num_codigopostal` varchar(5) DEFAULT NULL,
   `sn_activo` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=120 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=121 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of sgclientes
@@ -173,6 +173,7 @@ INSERT INTO `sgclientes` VALUES ('114', 'CRISTINA ', '1', null, 'CARRASCO ANGULO
 INSERT INTO `sgclientes` VALUES ('115', 'GLORIA MARIA', '1', null, 'PEÑUÑURI LOPEZ', 'FEMENINO', '1983-4-2', 'gpenunurilopez@gmail.com', '(777) 777-7777', '(667) 189-0371', '0', '0', '0', '-', '-', '-', '1');
 INSERT INTO `sgclientes` VALUES ('116', 'MARIA DE LOS ANGELES', '1', null, 'ROMERO LOPEZ', 'FEMENINO', '1979-8-2', 'angelesromero@hotmail.com', '(777) 777-7777', '(667) 323-8129', '0', '0', '0', '-', '-', '-', '1');
 INSERT INTO `sgclientes` VALUES ('119', 'Chumel', '1', '3', 'Torres', 'MASCULINO', '1980-1-1', 'chjumel@pulso.com', '321235645456', '65454556', '0', '0', '0', 'montebello', 'blvd virreyes', '80227', '1');
+INSERT INTO `sgclientes` VALUES ('120', 'Misael', '1', '2', 'Ecom', 'MASCULINO', '1980-3-1', 'a@a.com', '1232312', '123213123', '0', '0', '0', 'asdada', 'blvd virreyes', '80227', '1');
 
 -- ----------------------------
 -- Table structure for sgconsejos
@@ -2519,6 +2520,108 @@ INSERT INTO `sgejerciciosrutina` VALUES ('2158', '2', '1', '6', '130', '1', '1',
 INSERT INTO `sgejerciciosrutina` VALUES ('2159', '2', '1', '7', '130', '1', '1', '40', null, null, null, null, '', '1');
 
 -- ----------------------------
+-- Table structure for sgformulario
+-- ----------------------------
+DROP TABLE IF EXISTS `sgformulario`;
+CREATE TABLE `sgformulario` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `id_instructor` int(11) NOT NULL,
+  `id_cliente` int(11) NOT NULL,
+  `condicion_cardiaca` int(11) NOT NULL,
+  `condicion_pecho` int(11) NOT NULL,
+  `condicion_pechoreciente` int(11) NOT NULL,
+  `condicion_balance` int(11) NOT NULL,
+  `lesion_fisica` int(11) NOT NULL,
+  `medicamentos_corazon` int(11) NOT NULL,
+  `impedimento_entrenamiento` int(11) NOT NULL,
+  `lecturas_anormales` int(11) NOT NULL,
+  `cirujia_bypass` int(11) NOT NULL,
+  `dificultad_respirar` int(11) NOT NULL,
+  `enfermedades_renales` int(11) NOT NULL,
+  `arritmia` int(11) NOT NULL,
+  `colesterol` int(11) NOT NULL,
+  `presion_alta` int(11) NOT NULL,
+  `cantidad_cigarros` int(11) NOT NULL,
+  `molestias_articulaciones` int(11) NOT NULL,
+  `molestias_espalda` int(11) NOT NULL,
+  `desayuno_diario` varchar(500) NOT NULL,
+  `comida_diaria` varchar(500) NOT NULL,
+  `cena_diaria` varchar(500) NOT NULL,
+  `entrecomida_diaria` varchar(500) NOT NULL,
+  `frecuencia_entrecomida` varchar(500) NOT NULL,
+  `plan_alimenticio` varchar(500) NOT NULL,
+  `intensidad_ejercicio` int(11) NOT NULL,
+  `intensidad_ejercicio2` int(11) NOT NULL,
+  `intensidad_ejercicio3` int(11) NOT NULL,
+  `intensidad_ejercicio4` int(11) NOT NULL,
+  `intensidad_ejercicio5` int(11) NOT NULL,
+  `programa_ejercicio` int(11) NOT NULL,
+  `actividades_deseables` varchar(500) NOT NULL,
+  `actividades_indeseables` varchar(500) NOT NULL,
+  `deporte_frecuente` varchar(500) NOT NULL,
+  `minutos_dia` varchar(500) NOT NULL,
+  `dias_semana` varchar(500) NOT NULL,
+  `resultado_ejercicio` varchar(500) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of sgformulario
+-- ----------------------------
+INSERT INTO `sgformulario` VALUES ('4', '1', '2', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '10', '0', '0', 'Desayuno  muy rico', 'comida rica', 'cena rica', 'fruta', '2', 'Si, dieta de la manzana.', '2', '2', '3', '0', '0', '1', 'Todas', 'Ninguna', 'Ninguna', '200', '6', 'Ponerme muy guapo.');
+INSERT INTO `sgformulario` VALUES ('5', '1', '11', '0', '0', '1', '0', '0', '1', '0', '0', '0', '0', '0', '0', '0', '0', '3', '0', '0', 'desayuno', 'comida', 'cena', 'fruta', '2', 'no', '1', '1', '1', '0', '0', '0', 'Todas', 'Ninguna', 'no', '100', '5', 'estar guapo');
+INSERT INTO `sgformulario` VALUES ('6', '1', '17', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1', '0', '0', '0', '0', '0', '0', '0', 'desyunoreg', 'comida', 'cena', 'fruta', '2', 'ásdasdas', '3', '3', '0', '0', '0', '0', 'todas', 'ninguna', 'soccer', '120', '6', 'Estar saludable');
+INSERT INTO `sgformulario` VALUES ('7', '9', '14', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'desayuno rico', 'comida rica', 'cena rica', 'fruta', '2 veces', 'no', '3', '3', '0', '0', '0', '0', 'todas', 'ninguna', 'gym', '120', '7', 'estar marcado.');
+INSERT INTO `sgformulario` VALUES ('8', '1', '28', '0', '1', '0', '1', '0', '0', '0', '0', '1', '0', '0', '0', '0', '0', '0', '1', '0', 'huevos', 'nada', 'quesadilla', 'ninguno', 'nunca', 'no', '0', '0', '4', '0', '0', '0', 'ninguna', 'adfa', 'adfadf', '15', '3', 'nada');
+INSERT INTO `sgformulario` VALUES ('9', '1', '21', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'Desayuno', 'comida', 'cena', 'fruta', '3', 'No', '5', '4', '0', '0', '0', '0', 'Todas', 'Ninguna', 'ninguno', '120', '6', 'guapo');
+INSERT INTO `sgformulario` VALUES ('10', '1', '25', '0', '0', '0', '0', '0', '1', '0', '1', '1', '0', '1', '1', '0', '1', '0', '1', '1', 'desayuno', 'comida', 'cena', 'fruta', '2', 'no', '4', '5', '0', '0', '0', '0', 'todas', 'ninguna', 'ninguno', '120', '6', 'estar sano.');
+INSERT INTO `sgformulario` VALUES ('11', '1', '29', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'wgtertg', 'eeegge', 'erfvefr', 'egverg', '3', 'no', '0', '3', '0', '0', '0', '1', 'box, correr, yoga', 'pilates y zumba', 'maraton', '60', '4', 'bajar de peso');
+INSERT INTO `sgformulario` VALUES ('12', '1', '30', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '2', '1', '1', 'asdfasf', 'asdfasdf', 'adfasdf', 'asdfasdf', 'adfasdf', 'adsfasdf', '4', '4', '2', '0', '0', '1', 'kjhkjhjk', 'kjkjhkjh', 'kjhkjh', '60', '5', 'bajar de peso');
+INSERT INTO `sgformulario` VALUES ('13', '1', '31', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1', '0', '4', '1', '1', 'dfsfdsf', 'dadad', 'daedade', 'dadsa', 'ewfefeef', 'si', '4', '3', '2', '0', '0', '1', 'zumba, step', 'pesas', 'correr', '50', '4', 'bajar de peso');
+INSERT INTO `sgformulario` VALUES ('14', '1', '37', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'HUEVOS, Y AVENA', 'PECHUGA DE POLLO, ARROZ BLANCO Y AGAUCATE', 'ASALADA DE ATUN ', 'LICUADOS', 'MUY FRECUENTE', 'SI, DIETAS PARA SUBIR DE PESO', '5', '4', '3', '4', '4', '0', 'PESAS', 'NINGUNA', 'NATACION', '60 MIN', '6', 'SUBIR DE PESO');
+INSERT INTO `sgformulario` VALUES ('15', '1', '36', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'huevo', 'carnes', 'cereal', 'ninguna', 'no frecuente', 'no', '0', '4', '0', '0', '0', '0', 'crossfit', 'cardio', 'basketball', '45 min', '6', 'volumen');
+INSERT INTO `sgformulario` VALUES ('16', '1', '38', '0', '0', '0', '0', '0', '1', '1', '1', '0', '1', '1', '1', '0', '1', '2', '1', '1', 'Comida', 'Comida', 'Comida', 'Comida', 'Comida', 'Comida', '3', '2', '0', '0', '0', '1', 'Comida', 'Comida', 'Comida', '60', '6', 'Tomar buen cuerpo.');
+INSERT INTO `sgformulario` VALUES ('17', '1', '39', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'PROTEINA, AVENA', 'CALDOS, BISTEK', 'ATUN, CEREAL', 'NNINGUNO', 'MUY INFRECUENTE', 'SI, PARA BAJAR DE PESO', '0', '0', '3', '0', '0', '0', '-', '-', '-', '-', '-', 'QUEMAR GRASA');
+INSERT INTO `sgformulario` VALUES ('18', '1', '47', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'HUEVO, NOPALES, MACHACA', 'BISTEK, TORTILLA', 'CEREAL, AVENA, YOHURT', 'NO', 'NO', 'SI, ADELGAZAR', '0', '2', '0', '0', '0', '0', 'CROSSFFIT', '-', '-', '-', '-', '-');
+INSERT INTO `sgformulario` VALUES ('19', '1', '49', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'CLARAS DE HUEVO, JAMON ', 'PECHUGA DE POLLO', 'YOGURT', 'NO', 'NO', 'SI, PARA ADELGAZAR', '0', '3', '0', '0', '0', '0', 'CROSSFIT', '-', '-', '-', '-', 'QUEMAR GRASA');
+INSERT INTO `sgformulario` VALUES ('20', '1', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'HUEVO, MACHACA', 'CALDOS, VERDURA, CARNES', 'TACOS, SUSHI POLLO', 'NO', 'NO', 'SI, PARA BAJAR DE PESO', '0', '3', '0', '0', '0', '0', 'POWER TRAINING', '-', '-', '-', '-', 'QUEMAR GRASA');
+INSERT INTO `sgformulario` VALUES ('21', '1', '54', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'CLARAS DE HUEVO, SANDWICH, FRUTA', 'CALDOS', 'TACOS', 'FRUTA', '1 VEZ AL DIA', 'NO, NUNCA', '0', '3', '0', '0', '0', '0', 'TODAS', 'NINGUNA', 'NO', '-', '-', 'QUEMAR GRASA');
+INSERT INTO `sgformulario` VALUES ('22', '1', '57', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'CAFE, YOGURT, HUEVOS, ', 'CARNE ASADA, ENSALA, ARROZ , COCACOLA LIGHT', 'YOGURT CON GRANOLA', 'CAFE CON PAN', '-', 'SI, POR SALUD', '0', '0', '0', '0', '3', '0', 'SPINNING', '-', '-', '-', '-', '-');
+INSERT INTO `sgformulario` VALUES ('23', '1', '58', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'FRUTA, CEREAL ,, YOGURT', 'POLLO, PESCADO', 'CEREAL, AVENA', '-', '-', 'SI, PARA DELGAZAR', '0', '0', '0', '3', '0', '0', '-', '-', '-', '-', '-', '-');
+INSERT INTO `sgformulario` VALUES ('24', '1', '59', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'FRUTA', 'POLLO, JAMON, VERDURA', 'EN LA CALLE', 'ALMENDRA, NUECES, PISTACHES', 'AVECES', 'SI, SUBIR DE PESO', '0', '2', '0', '0', '0', '0', '-', '-', '-', '-', '-', '-');
+INSERT INTO `sgformulario` VALUES ('25', '1', '44', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'HUEVOS REVUELTOS', 'CARNE ROJA, VERDURAS', 'HAMBURGUESA', 'COMIDA CHATARRA', '2-3 VECES POR SEMANA', 'NO, NUNCA', '0', '2', '0', '0', '0', '0', '-', '-', '-', '-', '-', '-');
+INSERT INTO `sgformulario` VALUES ('26', '1', '40', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'SANDWICH DE QUESO, CEREAL, AGUACATE, YOGURT', 'CALDOS DE POLLO,  TACOS', 'LIGERO', '-', 'NUNCA', 'SI, PARA BAJAR DE PESO', '0', '0', '0', '3', '0', '0', 'Box', '-', '-', '-', '-', '-');
+INSERT INTO `sgformulario` VALUES ('27', '1', '43', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'MALTEADA DE PROTEINA, FRUTA (HERBALIFE) + FRUTA', 'PESCADO, ENSALADA DE LENTEJAS', 'POLLO, VERDURA', 'FRUTA', '-', 'NO', '0', '3', '0', '0', '0', '0', 'PESAS', '-', '-', '-', '-', '-');
+INSERT INTO `sgformulario` VALUES ('28', '1', '42', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'JUGO, SANDWICH, FRUTA', 'CALDOS DE VERDURA', '-', '-', 'FRECUENTE', 'NO', '0', '0', '2', '0', '0', '0', '-', '-', '-', '-', '-', '-');
+INSERT INTO `sgformulario` VALUES ('29', '1', '41', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'CAFE, PAN', 'CALDOS, VERDURAS', 'NO CENA', 'FRUTAS, PAPAS FRITAS', 'NADA FRECUENTE', 'NO', '0', '0', '3', '0', '0', '0', '-', '-', '-', '-', '-', 'QUEMAR GRASA');
+INSERT INTO `sgformulario` VALUES ('30', '1', '16', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'ret 3t', 'regqreg', 'rgw', 'th', 'thrw', 'hth', '0', '0', '0', '0', '1', '0', 'fg', 'ubv', 'jhb', 'jhb', 'jhb', 'jhb');
+INSERT INTO `sgformulario` VALUES ('31', '1', '13', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'EF', 'RF', 'FREF', 'RGF', 'RF', 'RF', '0', '3', '0', '0', '0', '0', 'N', 'N', 'N', 'N', 'N', 'N');
+INSERT INTO `sgformulario` VALUES ('32', '1', '87', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'LICUADO DE PROTEINA', 'SANDWICH DE ATUN O POLLO', 'HUEVOS ENTEROS Y QUESO COTTAGE', 'COMIDAS NORMALES ', 'SIEMPRE', 'SI', '0', '4', '0', '0', '0', '0', 'todo', 'nada', '-', 'TODO EL TIEMPO POSIBLE', '6', 'MASA MUSCULAR Y DEFINICION');
+INSERT INTO `sgformulario` VALUES ('33', '1', '88', '0', '0', '0', '0', '1', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'FRUTA', 'CARNE', 'CANRE', 'CHUCHERIAS', 'SIEMPRE', 'NO', '0', '0', '1', '0', '0', '0', 'CAMINAR, TROTAR', 'no', 'no', ' 1 hora', '5', 'bajar de peso');
+INSERT INTO `sgformulario` VALUES ('34', '1', '89', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'FRUTA, AVENA, HUEVO', 'POLLO, CARNES', 'CERELA, AVENA', 'FRUTA, JICAMA, PEPINO', 'TODOS LOS DIAS', 'SI, BAJAR DE PESO', '0', '0', '4', '0', '0', '0', 'CAMINAR, CORREO , CARDIO', 'PESAS', 'NATACION', '1 HORA', '5', 'BAJAR D EPESO  (TONIFICAR)');
+INSERT INTO `sgformulario` VALUES ('35', '1', '90', '0', '0', '0', '0', '0', '0', '1', '0', '0', '0', '0', '0', '0', '0', '0', '1', '0', '2 HUEVOS, VERDURA, YOGURT', 'ENSALADA DE POLLO', 'ENSALADA SIN PROTEINAS', 'PROTEINA EN POLVO Y FRUTOS SECOS, VERDURAS', 'REGULARMENTE', 'SI, BAJAR DE PESO', '0', '2', '0', '0', '0', '0', 'YOGA', 'CROSSFIT', 'no', '1 hora', '6', 'TENER MEJOR CONDICION');
+INSERT INTO `sgformulario` VALUES ('36', '1', '91', '1', '0', '0', '0', '0', '1', '0', '1', '1', '0', '1', '0', '0', '1', '0', '0', '0', 'NADA', 'DE TODO', 'DE TODO', 'FRUTA', 'TODOS LOS DIAS', 'NO', '0', '2', '0', '0', '0', '0', 'CORRER', 'NINGUNA', 'NO', '1 HORA Y MEDIA', '5', 'QUEMAR GRASA, DEFINIR');
+INSERT INTO `sgformulario` VALUES ('37', '1', '93', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'SANDWICH, HUEVOS, CARNES', 'CARNES, DE TODO', 'DE TODO ', 'FRUTA O VERDURA', 'FRECUENTE', 'SI BAJAR DE PESO', '0', '4', '0', '0', '0', '0', 'BOX', 'NINGUNA', 'NO', '1 HORA', '5', 'BAJAR PESO Y TALLA');
+INSERT INTO `sgformulario` VALUES ('38', '1', '92', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'CEREAL , SANDWICH', 'DE TODO, CARNES, ENSALDAS', 'CEREAL ', 'VERDURAS, ALMENDRAS', 'FRECUENTE', 'SI, BAJAR DE PESO', '0', '2', '0', '0', '0', '0', 'DEPORTES EN GENERAL', 'PESAS', 'MUCHAS', 'I HORA', '5', 'BAJAR TALLAS');
+INSERT INTO `sgformulario` VALUES ('39', '1', '94', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', ' CLARAS, ESPINACAS, JAMON, PAN TOSTADAS, O TOSTADAS HORNEADAS', 'ENSALADA CON PROTEINA', 'PAN INTEGRAL , QUESO COTTAGE, O FRUTA', 'FRUTA O VERDURA', 'FRECUENTE', 'SI ', '0', '0', '4', '0', '0', '1', 'CORRER Y FUTBOL', 'BEISBOL', 'CORRER', '2 HORAS', '5', 'SALUD');
+INSERT INTO `sgformulario` VALUES ('40', '1', '95', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '-', '-', '-', '-', '-', '-', '0', '3', '0', '0', '0', '1', '-', '-', '-', '-', '-', '-');
+INSERT INTO `sgformulario` VALUES ('41', '1', '97', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'FRUTA', 'POLLO , CARNES , VERDURAS', 'MACHACA, CERELA, TAMAES', 'GALLETAS, DULCES', 'POCO FRECUENTE', 'NUNCA', '0', '0', '0', '0', '3', '0', 'BOLEY BALL', 'FUTBOL', 'BOLEY BALL', '2 horas', '3 dias a la semana', 'sentirme mejor, salud');
+INSERT INTO `sgformulario` VALUES ('42', '1', '98', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'CLARA DE HUEVOS, NOPALES, MAFE SIN AZUCAR', ' CALDOS, Y CARNES', 'CEREAL, YOGURT, CHIA', 'fruta, yogurt', 'POCO FRECUENTE', 'NO ', '0', '0', '0', '3', '0', '1', 'no', 'no', 'no', '1 hora', '5 dias', 'salud, sentirme bien , condicion ');
+INSERT INTO `sgformulario` VALUES ('43', '1', '99', '0', '0', '0', '0', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1', 'MACHACA,HUEVO ', 'POLLO CON VERDURAS (GUISOS)', 'CEREAL, SANDWICH ', 'VERDURAS, FRUTAS', 'FRECUENTE', 'JAMAS', '0', '1', '0', '0', '0', '0', 'BASKETBALL ', 'CORRER', 'NINGUNA', '1 HORAº', '5', 'ESTAR MAS SANA');
+INSERT INTO `sgformulario` VALUES ('44', '1', '99', '0', '0', '0', '0', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1', 'MACHACA,HUEVO ', 'POLLO CON VERDURAS (GUISOS)', 'CEREAL, SANDWICH ', 'VERDURAS, FRUTAS', 'FRECUENTE', 'JAMAS', '0', '1', '0', '0', '0', '0', 'BASKETBALL ', 'CORRER', 'NINGUNA', '1 HORAº', '5', 'ESTAR MAS SANA');
+INSERT INTO `sgformulario` VALUES ('45', '1', '100', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'HUEVO, SANDWICH', 'ENSALADA CON PROTEINA', 'CEREAL', 'ATUN, SANWICH O FRUTA', 'FRECUENTE', 'NO', '0', '4', '0', '0', '0', '0', 'BOX', 'BEISBOL', 'NINGUNO', '1 HORA', '5 DIAS', 'QUEMAR GRASA');
+INSERT INTO `sgformulario` VALUES ('46', '1', '101', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'MACHACA', 'BISTEK. CARNES', 'SANDWICH, ATUN O CEREAL', 'FRUTA Y VERDURA', 'FRECUENTE (TODOS LOS DIAS)', 'SI', '0', '0', '1', '0', '0', '0', 'BICICLETA', 'CORRER', 'NINGUNO ', '1 HORA', '5', 'SALUD');
+INSERT INTO `sgformulario` VALUES ('47', '1', '102', '0', '0', '0', '0', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1', '0', 'HUEVOS, SALCHICHA, JAMON, CHORIZO', 'CALDOS, POLLO, CARNES ROJAS', 'SANDWICH, CEREAL', 'FRUTAS, FRUTOS SECOS', 'TODOS LOS DIAS ', 'SI', '0', '3', '0', '0', '0', '0', 'DE TODO ', 'NINGUNO', 'CAMINAR, CORRER', '1 HORA', '5', 'LLEGAR A PESO IDEAL');
+INSERT INTO `sgformulario` VALUES ('48', '1', '104', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1', '0', '0', '0', '1', 'CAFE, HUEVO CON MACHACA OMELETE, QUESADILLAS, CLARAS', 'PESCADO, ENSALADAS. POLLO EN C ALDOS', 'AVENA , CEREAL, PAN CON CREMA DE CACAHUATE, TOSTADAS, REQUESON, QUESADILLAS', 'YOGURT, O FRUTA, ALMENDRAS', 'TODOS LOS DIAS', 'NO', '0', '0', '0', '3', '0', '1', 'CAMINAR', 'SPINNING, PROBLEMAS EN RODILLAS', 'NINGUNO', '1 HORA', '5', 'BAJAR DE PESO , QUEMAR GRASA');
+INSERT INTO `sgformulario` VALUES ('49', '1', '105', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'ALMENDRAS, HUEVO, ENSALADA DE ATUN', 'CARNES ORIGEN ANIMAL', 'ENSALADA , QUESADILLAS , YOGUERT CON FRUTA', 'FRUTA Y VERDURAS', 'DE VEZ CUANDO', 'SI, BAJAR DE PESO', '0', '0', '0', '0', '3', '1', 'CAMINAR', 'NINGUNA', 'NO', '1 HORA', '5', 'BAJAR DE PESO');
+INSERT INTO `sgformulario` VALUES ('50', '1', '106', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'HUEVO, SALCHICHA Y JUEGO VERDE', 'EJOTES, CHULETA, ENSALDA', 'ATUN , PESCAOD O POLLO , HUEVOS', 'PEPINO , JICAMA, NARANJA, JAMON', 'TODOS LOS DIAS', 'SI', '0', '0', '0', '2', '0', '0', 'TODO', 'CAMINADORA, BICICLETA', 'NO', '1 HORA', '5', 'SALUD Y BELLEZA');
+INSERT INTO `sgformulario` VALUES ('51', '1', '107', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'AVENA, FRUTA', 'POLLO Y CARNES ROJAS', 'AVENA Y FRUTA , POLLO', 'PEPINO, JICAMA, NARANJA', 'TODOS LOS DIAS', 'SI', '0', '2', '0', '0', '0', '0', 'BICICLETA', 'CAMINADORA', 'NO', '1 HORA', '5', 'SALUD Y BELLEZA');
+INSERT INTO `sgformulario` VALUES ('52', '1', '108', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1', '0', '0', '0', 'HUEVO , LECHE', 'ENSALADA CON PROTEINA', 'CEREALCON LECHE', 'FRUTAS', 'TODOS LOS DIAS , LUNES A VIERNES', 'SI', '0', '3', '0', '0', '0', '0', 'FUTBOL', 'NADAR', 'FUTBOL', '1 HORA', '5', 'BAJAR DE PESO Y CONDICION');
+INSERT INTO `sgformulario` VALUES ('53', '1', '109', '0', '0', '0', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'JUGO VERDE', 'ENSALADA CON PROTEINA', 'JUGO VERDE', 'FRUTA O VERDURA ', 'TODOS LOS DIAS', 'SI', '0', '2', '0', '0', '0', '0', 'BAILAR', 'CORRER', 'NO', '1 HORA ', '5', 'OBTENER CONDICION FISICA ');
+INSERT INTO `sgformulario` VALUES ('54', '1', '110', '0', '0', '0', '0', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1', '1', 'HUEVO, PAN , LICUADO DE AVENA ', 'ENSALADA CON PROTEIN (POLLO)', 'ORIGEN ANIMAL O ARROZ', 'FRUTA Y VERDURA', 'TODOS LOS DIAS', 'SI', '0', '0', '1', '0', '0', '0', 'ARTES MARCIALES Y PESAS', 'TAE BOO', 'NO', '1 HORA ', '5 ', 'BAJAR DE PESO (QUEMAR GRASA), REDUCIR TALLAS');
+INSERT INTO `sgformulario` VALUES ('55', '1', '111', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'SANDWICH, HUEVO , JAMON ', 'ENSALADA CO PROTEINA', 'ENSALADA O CEREAL', 'FRUTAS Y FRUTOS SECOS', 'TODOS LOS DIAS', 'SI', '0', '2', '0', '0', '0', '0', 'CAMINAR ', 'NADAR', 'SOFTBOL', '1 HORA', '5', 'CONDICION Y MEJOR SALUD');
+
+-- ----------------------------
 -- Table structure for sgmaquinas
 -- ----------------------------
 DROP TABLE IF EXISTS `sgmaquinas`;
@@ -4615,108 +4718,6 @@ INSERT INTO `sg_ejerciciosrutinacliente` VALUES ('1784', '2', '0', '3', '28', '2
 INSERT INTO `sg_ejerciciosrutinacliente` VALUES ('1785', '2', '0', '5', '28', '2', '1', '3', '', '', '0', '0', '', '1');
 INSERT INTO `sg_ejerciciosrutinacliente` VALUES ('1786', '2', '0', '1', '28', '2', '1', '4', '', '', '0', '0', '', '1');
 INSERT INTO `sg_ejerciciosrutinacliente` VALUES ('1787', '12', '0', '1', '28', '12', '2', '5', '', '', '0', '0', '', '1');
-
--- ----------------------------
--- Table structure for sg_formulario
--- ----------------------------
-DROP TABLE IF EXISTS `sg_formulario`;
-CREATE TABLE `sg_formulario` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `id_instructor` int(11) NOT NULL,
-  `id_cliente` int(11) NOT NULL,
-  `Condicion_Cardiaca` int(11) NOT NULL,
-  `Condicion_Pecho` int(11) NOT NULL,
-  `Condicion_Pecho_reciente` int(11) NOT NULL,
-  `Condicion_Balance` int(11) NOT NULL,
-  `Lesion_Fisica` int(11) NOT NULL,
-  `Medicamentos_Corazon` int(11) NOT NULL,
-  `Impedimento_Entrenamiento` int(11) NOT NULL,
-  `Lecturas_Anormales` int(11) NOT NULL,
-  `Cirujia_Bypass` int(11) NOT NULL,
-  `Dificultad_Respirar` int(11) NOT NULL,
-  `Enfermedades_Renales` int(11) NOT NULL,
-  `Arritmia` int(11) NOT NULL,
-  `Colesterol` int(11) NOT NULL,
-  `Presion_Alta` int(11) NOT NULL,
-  `cantidad_Cigarros` int(11) NOT NULL,
-  `Molestias_Articulaciones` int(11) NOT NULL,
-  `Molestias_Espalda` int(11) NOT NULL,
-  `Desayuno_Diario` varchar(500) NOT NULL,
-  `Comida_Diaria` varchar(500) NOT NULL,
-  `Cena_Diaria` varchar(500) NOT NULL,
-  `EntreComida_Diaria` varchar(500) NOT NULL,
-  `Frecuencia_EntreComida` varchar(500) NOT NULL,
-  `Plan_Alimenticio` varchar(500) NOT NULL,
-  `Intensidad_Ejercicio` int(11) NOT NULL,
-  `Intensidad_Ejercicio2` int(11) NOT NULL,
-  `Intensidad_Ejercicio3` int(11) NOT NULL,
-  `Intensidad_Ejercicio4` int(11) NOT NULL,
-  `Intensidad_Ejercicio5` int(11) NOT NULL,
-  `Programa_Ejercicio` int(11) NOT NULL,
-  `Actividades_deseables` varchar(500) NOT NULL,
-  `Actividades_indeseables` varchar(500) NOT NULL,
-  `deporte_Frecuente` varchar(500) NOT NULL,
-  `Minutos_Dia` varchar(500) NOT NULL,
-  `Dias_Semana` varchar(500) NOT NULL,
-  `Resultado_Ejercicio` varchar(500) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of sg_formulario
--- ----------------------------
-INSERT INTO `sg_formulario` VALUES ('4', '1', '2', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '10', '0', '0', 'Desayuno  muy rico', 'comida rica', 'cena rica', 'fruta', '2', 'Si, dieta de la manzana.', '2', '2', '3', '0', '0', '1', 'Todas', 'Ninguna', 'Ninguna', '200', '6', 'Ponerme muy guapo.');
-INSERT INTO `sg_formulario` VALUES ('5', '1', '11', '0', '0', '1', '0', '0', '1', '0', '0', '0', '0', '0', '0', '0', '0', '3', '0', '0', 'desayuno', 'comida', 'cena', 'fruta', '2', 'no', '1', '1', '1', '0', '0', '0', 'Todas', 'Ninguna', 'no', '100', '5', 'estar guapo');
-INSERT INTO `sg_formulario` VALUES ('6', '1', '17', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1', '0', '0', '0', '0', '0', '0', '0', 'desyunoreg', 'comida', 'cena', 'fruta', '2', 'ásdasdas', '3', '3', '0', '0', '0', '0', 'todas', 'ninguna', 'soccer', '120', '6', 'Estar saludable');
-INSERT INTO `sg_formulario` VALUES ('7', '9', '14', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'desayuno rico', 'comida rica', 'cena rica', 'fruta', '2 veces', 'no', '3', '3', '0', '0', '0', '0', 'todas', 'ninguna', 'gym', '120', '7', 'estar marcado.');
-INSERT INTO `sg_formulario` VALUES ('8', '1', '28', '0', '1', '0', '1', '0', '0', '0', '0', '1', '0', '0', '0', '0', '0', '0', '1', '0', 'huevos', 'nada', 'quesadilla', 'ninguno', 'nunca', 'no', '0', '0', '4', '0', '0', '0', 'ninguna', 'adfa', 'adfadf', '15', '3', 'nada');
-INSERT INTO `sg_formulario` VALUES ('9', '1', '21', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'Desayuno', 'comida', 'cena', 'fruta', '3', 'No', '5', '4', '0', '0', '0', '0', 'Todas', 'Ninguna', 'ninguno', '120', '6', 'guapo');
-INSERT INTO `sg_formulario` VALUES ('10', '1', '25', '0', '0', '0', '0', '0', '1', '0', '1', '1', '0', '1', '1', '0', '1', '0', '1', '1', 'desayuno', 'comida', 'cena', 'fruta', '2', 'no', '4', '5', '0', '0', '0', '0', 'todas', 'ninguna', 'ninguno', '120', '6', 'estar sano.');
-INSERT INTO `sg_formulario` VALUES ('11', '1', '29', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'wgtertg', 'eeegge', 'erfvefr', 'egverg', '3', 'no', '0', '3', '0', '0', '0', '1', 'box, correr, yoga', 'pilates y zumba', 'maraton', '60', '4', 'bajar de peso');
-INSERT INTO `sg_formulario` VALUES ('12', '1', '30', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '2', '1', '1', 'asdfasf', 'asdfasdf', 'adfasdf', 'asdfasdf', 'adfasdf', 'adsfasdf', '4', '4', '2', '0', '0', '1', 'kjhkjhjk', 'kjkjhkjh', 'kjhkjh', '60', '5', 'bajar de peso');
-INSERT INTO `sg_formulario` VALUES ('13', '1', '31', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1', '0', '4', '1', '1', 'dfsfdsf', 'dadad', 'daedade', 'dadsa', 'ewfefeef', 'si', '4', '3', '2', '0', '0', '1', 'zumba, step', 'pesas', 'correr', '50', '4', 'bajar de peso');
-INSERT INTO `sg_formulario` VALUES ('14', '1', '37', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'HUEVOS, Y AVENA', 'PECHUGA DE POLLO, ARROZ BLANCO Y AGAUCATE', 'ASALADA DE ATUN ', 'LICUADOS', 'MUY FRECUENTE', 'SI, DIETAS PARA SUBIR DE PESO', '5', '4', '3', '4', '4', '0', 'PESAS', 'NINGUNA', 'NATACION', '60 MIN', '6', 'SUBIR DE PESO');
-INSERT INTO `sg_formulario` VALUES ('15', '1', '36', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'huevo', 'carnes', 'cereal', 'ninguna', 'no frecuente', 'no', '0', '4', '0', '0', '0', '0', 'crossfit', 'cardio', 'basketball', '45 min', '6', 'volumen');
-INSERT INTO `sg_formulario` VALUES ('16', '1', '38', '0', '0', '0', '0', '0', '1', '1', '1', '0', '1', '1', '1', '0', '1', '2', '1', '1', 'Comida', 'Comida', 'Comida', 'Comida', 'Comida', 'Comida', '3', '2', '0', '0', '0', '1', 'Comida', 'Comida', 'Comida', '60', '6', 'Tomar buen cuerpo.');
-INSERT INTO `sg_formulario` VALUES ('17', '1', '39', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'PROTEINA, AVENA', 'CALDOS, BISTEK', 'ATUN, CEREAL', 'NNINGUNO', 'MUY INFRECUENTE', 'SI, PARA BAJAR DE PESO', '0', '0', '3', '0', '0', '0', '-', '-', '-', '-', '-', 'QUEMAR GRASA');
-INSERT INTO `sg_formulario` VALUES ('18', '1', '47', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'HUEVO, NOPALES, MACHACA', 'BISTEK, TORTILLA', 'CEREAL, AVENA, YOHURT', 'NO', 'NO', 'SI, ADELGAZAR', '0', '2', '0', '0', '0', '0', 'CROSSFFIT', '-', '-', '-', '-', '-');
-INSERT INTO `sg_formulario` VALUES ('19', '1', '49', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'CLARAS DE HUEVO, JAMON ', 'PECHUGA DE POLLO', 'YOGURT', 'NO', 'NO', 'SI, PARA ADELGAZAR', '0', '3', '0', '0', '0', '0', 'CROSSFIT', '-', '-', '-', '-', 'QUEMAR GRASA');
-INSERT INTO `sg_formulario` VALUES ('20', '1', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'HUEVO, MACHACA', 'CALDOS, VERDURA, CARNES', 'TACOS, SUSHI POLLO', 'NO', 'NO', 'SI, PARA BAJAR DE PESO', '0', '3', '0', '0', '0', '0', 'POWER TRAINING', '-', '-', '-', '-', 'QUEMAR GRASA');
-INSERT INTO `sg_formulario` VALUES ('21', '1', '54', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'CLARAS DE HUEVO, SANDWICH, FRUTA', 'CALDOS', 'TACOS', 'FRUTA', '1 VEZ AL DIA', 'NO, NUNCA', '0', '3', '0', '0', '0', '0', 'TODAS', 'NINGUNA', 'NO', '-', '-', 'QUEMAR GRASA');
-INSERT INTO `sg_formulario` VALUES ('22', '1', '57', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'CAFE, YOGURT, HUEVOS, ', 'CARNE ASADA, ENSALA, ARROZ , COCACOLA LIGHT', 'YOGURT CON GRANOLA', 'CAFE CON PAN', '-', 'SI, POR SALUD', '0', '0', '0', '0', '3', '0', 'SPINNING', '-', '-', '-', '-', '-');
-INSERT INTO `sg_formulario` VALUES ('23', '1', '58', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'FRUTA, CEREAL ,, YOGURT', 'POLLO, PESCADO', 'CEREAL, AVENA', '-', '-', 'SI, PARA DELGAZAR', '0', '0', '0', '3', '0', '0', '-', '-', '-', '-', '-', '-');
-INSERT INTO `sg_formulario` VALUES ('24', '1', '59', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'FRUTA', 'POLLO, JAMON, VERDURA', 'EN LA CALLE', 'ALMENDRA, NUECES, PISTACHES', 'AVECES', 'SI, SUBIR DE PESO', '0', '2', '0', '0', '0', '0', '-', '-', '-', '-', '-', '-');
-INSERT INTO `sg_formulario` VALUES ('25', '1', '44', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'HUEVOS REVUELTOS', 'CARNE ROJA, VERDURAS', 'HAMBURGUESA', 'COMIDA CHATARRA', '2-3 VECES POR SEMANA', 'NO, NUNCA', '0', '2', '0', '0', '0', '0', '-', '-', '-', '-', '-', '-');
-INSERT INTO `sg_formulario` VALUES ('26', '1', '40', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'SANDWICH DE QUESO, CEREAL, AGUACATE, YOGURT', 'CALDOS DE POLLO,  TACOS', 'LIGERO', '-', 'NUNCA', 'SI, PARA BAJAR DE PESO', '0', '0', '0', '3', '0', '0', 'Box', '-', '-', '-', '-', '-');
-INSERT INTO `sg_formulario` VALUES ('27', '1', '43', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'MALTEADA DE PROTEINA, FRUTA (HERBALIFE) + FRUTA', 'PESCADO, ENSALADA DE LENTEJAS', 'POLLO, VERDURA', 'FRUTA', '-', 'NO', '0', '3', '0', '0', '0', '0', 'PESAS', '-', '-', '-', '-', '-');
-INSERT INTO `sg_formulario` VALUES ('28', '1', '42', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'JUGO, SANDWICH, FRUTA', 'CALDOS DE VERDURA', '-', '-', 'FRECUENTE', 'NO', '0', '0', '2', '0', '0', '0', '-', '-', '-', '-', '-', '-');
-INSERT INTO `sg_formulario` VALUES ('29', '1', '41', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'CAFE, PAN', 'CALDOS, VERDURAS', 'NO CENA', 'FRUTAS, PAPAS FRITAS', 'NADA FRECUENTE', 'NO', '0', '0', '3', '0', '0', '0', '-', '-', '-', '-', '-', 'QUEMAR GRASA');
-INSERT INTO `sg_formulario` VALUES ('30', '1', '16', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'ret 3t', 'regqreg', 'rgw', 'th', 'thrw', 'hth', '0', '0', '0', '0', '1', '0', 'fg', 'ubv', 'jhb', 'jhb', 'jhb', 'jhb');
-INSERT INTO `sg_formulario` VALUES ('31', '1', '13', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'EF', 'RF', 'FREF', 'RGF', 'RF', 'RF', '0', '3', '0', '0', '0', '0', 'N', 'N', 'N', 'N', 'N', 'N');
-INSERT INTO `sg_formulario` VALUES ('32', '1', '87', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'LICUADO DE PROTEINA', 'SANDWICH DE ATUN O POLLO', 'HUEVOS ENTEROS Y QUESO COTTAGE', 'COMIDAS NORMALES ', 'SIEMPRE', 'SI', '0', '4', '0', '0', '0', '0', 'todo', 'nada', '-', 'TODO EL TIEMPO POSIBLE', '6', 'MASA MUSCULAR Y DEFINICION');
-INSERT INTO `sg_formulario` VALUES ('33', '1', '88', '0', '0', '0', '0', '1', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'FRUTA', 'CARNE', 'CANRE', 'CHUCHERIAS', 'SIEMPRE', 'NO', '0', '0', '1', '0', '0', '0', 'CAMINAR, TROTAR', 'no', 'no', ' 1 hora', '5', 'bajar de peso');
-INSERT INTO `sg_formulario` VALUES ('34', '1', '89', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'FRUTA, AVENA, HUEVO', 'POLLO, CARNES', 'CERELA, AVENA', 'FRUTA, JICAMA, PEPINO', 'TODOS LOS DIAS', 'SI, BAJAR DE PESO', '0', '0', '4', '0', '0', '0', 'CAMINAR, CORREO , CARDIO', 'PESAS', 'NATACION', '1 HORA', '5', 'BAJAR D EPESO  (TONIFICAR)');
-INSERT INTO `sg_formulario` VALUES ('35', '1', '90', '0', '0', '0', '0', '0', '0', '1', '0', '0', '0', '0', '0', '0', '0', '0', '1', '0', '2 HUEVOS, VERDURA, YOGURT', 'ENSALADA DE POLLO', 'ENSALADA SIN PROTEINAS', 'PROTEINA EN POLVO Y FRUTOS SECOS, VERDURAS', 'REGULARMENTE', 'SI, BAJAR DE PESO', '0', '2', '0', '0', '0', '0', 'YOGA', 'CROSSFIT', 'no', '1 hora', '6', 'TENER MEJOR CONDICION');
-INSERT INTO `sg_formulario` VALUES ('36', '1', '91', '1', '0', '0', '0', '0', '1', '0', '1', '1', '0', '1', '0', '0', '1', '0', '0', '0', 'NADA', 'DE TODO', 'DE TODO', 'FRUTA', 'TODOS LOS DIAS', 'NO', '0', '2', '0', '0', '0', '0', 'CORRER', 'NINGUNA', 'NO', '1 HORA Y MEDIA', '5', 'QUEMAR GRASA, DEFINIR');
-INSERT INTO `sg_formulario` VALUES ('37', '1', '93', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'SANDWICH, HUEVOS, CARNES', 'CARNES, DE TODO', 'DE TODO ', 'FRUTA O VERDURA', 'FRECUENTE', 'SI BAJAR DE PESO', '0', '4', '0', '0', '0', '0', 'BOX', 'NINGUNA', 'NO', '1 HORA', '5', 'BAJAR PESO Y TALLA');
-INSERT INTO `sg_formulario` VALUES ('38', '1', '92', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'CEREAL , SANDWICH', 'DE TODO, CARNES, ENSALDAS', 'CEREAL ', 'VERDURAS, ALMENDRAS', 'FRECUENTE', 'SI, BAJAR DE PESO', '0', '2', '0', '0', '0', '0', 'DEPORTES EN GENERAL', 'PESAS', 'MUCHAS', 'I HORA', '5', 'BAJAR TALLAS');
-INSERT INTO `sg_formulario` VALUES ('39', '1', '94', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', ' CLARAS, ESPINACAS, JAMON, PAN TOSTADAS, O TOSTADAS HORNEADAS', 'ENSALADA CON PROTEINA', 'PAN INTEGRAL , QUESO COTTAGE, O FRUTA', 'FRUTA O VERDURA', 'FRECUENTE', 'SI ', '0', '0', '4', '0', '0', '1', 'CORRER Y FUTBOL', 'BEISBOL', 'CORRER', '2 HORAS', '5', 'SALUD');
-INSERT INTO `sg_formulario` VALUES ('40', '1', '95', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '-', '-', '-', '-', '-', '-', '0', '3', '0', '0', '0', '1', '-', '-', '-', '-', '-', '-');
-INSERT INTO `sg_formulario` VALUES ('41', '1', '97', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'FRUTA', 'POLLO , CARNES , VERDURAS', 'MACHACA, CERELA, TAMAES', 'GALLETAS, DULCES', 'POCO FRECUENTE', 'NUNCA', '0', '0', '0', '0', '3', '0', 'BOLEY BALL', 'FUTBOL', 'BOLEY BALL', '2 horas', '3 dias a la semana', 'sentirme mejor, salud');
-INSERT INTO `sg_formulario` VALUES ('42', '1', '98', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'CLARA DE HUEVOS, NOPALES, MAFE SIN AZUCAR', ' CALDOS, Y CARNES', 'CEREAL, YOGURT, CHIA', 'fruta, yogurt', 'POCO FRECUENTE', 'NO ', '0', '0', '0', '3', '0', '1', 'no', 'no', 'no', '1 hora', '5 dias', 'salud, sentirme bien , condicion ');
-INSERT INTO `sg_formulario` VALUES ('43', '1', '99', '0', '0', '0', '0', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1', 'MACHACA,HUEVO ', 'POLLO CON VERDURAS (GUISOS)', 'CEREAL, SANDWICH ', 'VERDURAS, FRUTAS', 'FRECUENTE', 'JAMAS', '0', '1', '0', '0', '0', '0', 'BASKETBALL ', 'CORRER', 'NINGUNA', '1 HORAº', '5', 'ESTAR MAS SANA');
-INSERT INTO `sg_formulario` VALUES ('44', '1', '99', '0', '0', '0', '0', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1', 'MACHACA,HUEVO ', 'POLLO CON VERDURAS (GUISOS)', 'CEREAL, SANDWICH ', 'VERDURAS, FRUTAS', 'FRECUENTE', 'JAMAS', '0', '1', '0', '0', '0', '0', 'BASKETBALL ', 'CORRER', 'NINGUNA', '1 HORAº', '5', 'ESTAR MAS SANA');
-INSERT INTO `sg_formulario` VALUES ('45', '1', '100', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'HUEVO, SANDWICH', 'ENSALADA CON PROTEINA', 'CEREAL', 'ATUN, SANWICH O FRUTA', 'FRECUENTE', 'NO', '0', '4', '0', '0', '0', '0', 'BOX', 'BEISBOL', 'NINGUNO', '1 HORA', '5 DIAS', 'QUEMAR GRASA');
-INSERT INTO `sg_formulario` VALUES ('46', '1', '101', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'MACHACA', 'BISTEK. CARNES', 'SANDWICH, ATUN O CEREAL', 'FRUTA Y VERDURA', 'FRECUENTE (TODOS LOS DIAS)', 'SI', '0', '0', '1', '0', '0', '0', 'BICICLETA', 'CORRER', 'NINGUNO ', '1 HORA', '5', 'SALUD');
-INSERT INTO `sg_formulario` VALUES ('47', '1', '102', '0', '0', '0', '0', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1', '0', 'HUEVOS, SALCHICHA, JAMON, CHORIZO', 'CALDOS, POLLO, CARNES ROJAS', 'SANDWICH, CEREAL', 'FRUTAS, FRUTOS SECOS', 'TODOS LOS DIAS ', 'SI', '0', '3', '0', '0', '0', '0', 'DE TODO ', 'NINGUNO', 'CAMINAR, CORRER', '1 HORA', '5', 'LLEGAR A PESO IDEAL');
-INSERT INTO `sg_formulario` VALUES ('48', '1', '104', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1', '0', '0', '0', '1', 'CAFE, HUEVO CON MACHACA OMELETE, QUESADILLAS, CLARAS', 'PESCADO, ENSALADAS. POLLO EN C ALDOS', 'AVENA , CEREAL, PAN CON CREMA DE CACAHUATE, TOSTADAS, REQUESON, QUESADILLAS', 'YOGURT, O FRUTA, ALMENDRAS', 'TODOS LOS DIAS', 'NO', '0', '0', '0', '3', '0', '1', 'CAMINAR', 'SPINNING, PROBLEMAS EN RODILLAS', 'NINGUNO', '1 HORA', '5', 'BAJAR DE PESO , QUEMAR GRASA');
-INSERT INTO `sg_formulario` VALUES ('49', '1', '105', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'ALMENDRAS, HUEVO, ENSALADA DE ATUN', 'CARNES ORIGEN ANIMAL', 'ENSALADA , QUESADILLAS , YOGUERT CON FRUTA', 'FRUTA Y VERDURAS', 'DE VEZ CUANDO', 'SI, BAJAR DE PESO', '0', '0', '0', '0', '3', '1', 'CAMINAR', 'NINGUNA', 'NO', '1 HORA', '5', 'BAJAR DE PESO');
-INSERT INTO `sg_formulario` VALUES ('50', '1', '106', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'HUEVO, SALCHICHA Y JUEGO VERDE', 'EJOTES, CHULETA, ENSALDA', 'ATUN , PESCAOD O POLLO , HUEVOS', 'PEPINO , JICAMA, NARANJA, JAMON', 'TODOS LOS DIAS', 'SI', '0', '0', '0', '2', '0', '0', 'TODO', 'CAMINADORA, BICICLETA', 'NO', '1 HORA', '5', 'SALUD Y BELLEZA');
-INSERT INTO `sg_formulario` VALUES ('51', '1', '107', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'AVENA, FRUTA', 'POLLO Y CARNES ROJAS', 'AVENA Y FRUTA , POLLO', 'PEPINO, JICAMA, NARANJA', 'TODOS LOS DIAS', 'SI', '0', '2', '0', '0', '0', '0', 'BICICLETA', 'CAMINADORA', 'NO', '1 HORA', '5', 'SALUD Y BELLEZA');
-INSERT INTO `sg_formulario` VALUES ('52', '1', '108', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1', '0', '0', '0', 'HUEVO , LECHE', 'ENSALADA CON PROTEINA', 'CEREALCON LECHE', 'FRUTAS', 'TODOS LOS DIAS , LUNES A VIERNES', 'SI', '0', '3', '0', '0', '0', '0', 'FUTBOL', 'NADAR', 'FUTBOL', '1 HORA', '5', 'BAJAR DE PESO Y CONDICION');
-INSERT INTO `sg_formulario` VALUES ('53', '1', '109', '0', '0', '0', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'JUGO VERDE', 'ENSALADA CON PROTEINA', 'JUGO VERDE', 'FRUTA O VERDURA ', 'TODOS LOS DIAS', 'SI', '0', '2', '0', '0', '0', '0', 'BAILAR', 'CORRER', 'NO', '1 HORA ', '5', 'OBTENER CONDICION FISICA ');
-INSERT INTO `sg_formulario` VALUES ('54', '1', '110', '0', '0', '0', '0', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1', '1', 'HUEVO, PAN , LICUADO DE AVENA ', 'ENSALADA CON PROTEIN (POLLO)', 'ORIGEN ANIMAL O ARROZ', 'FRUTA Y VERDURA', 'TODOS LOS DIAS', 'SI', '0', '0', '1', '0', '0', '0', 'ARTES MARCIALES Y PESAS', 'TAE BOO', 'NO', '1 HORA ', '5 ', 'BAJAR DE PESO (QUEMAR GRASA), REDUCIR TALLAS');
-INSERT INTO `sg_formulario` VALUES ('55', '1', '111', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'SANDWICH, HUEVO , JAMON ', 'ENSALADA CO PROTEINA', 'ENSALADA O CEREAL', 'FRUTAS Y FRUTOS SECOS', 'TODOS LOS DIAS', 'SI', '0', '2', '0', '0', '0', '0', 'CAMINAR ', 'NADAR', 'SOFTBOL', '1 HORA', '5', 'CONDICION Y MEJOR SALUD');
 
 -- ----------------------------
 -- Table structure for sg_generosrutina

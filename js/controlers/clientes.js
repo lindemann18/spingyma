@@ -105,6 +105,42 @@ $scope.Eliminar = function()
 	else{$methodsService.alerta(2,"Favor de seleccionar un Cliente");}
 }//Eliminar
 
+$scope.Filtrar = function()
+{
+	params = $methodsService.Json("FiltrarClientes",$scope.cliente.opcion);
+	//Filtrando los clientes.
+	var url = 'modulos/Clientes/Funciones.php';
+				 $http({method: "post",url: url,data: $.param({Params:params}), 
+				  headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+				})
+				 .success(function(data, status, headers, config) 
+				 {          	
+				   		exito = data.exito;
+				   		if(exito==1)
+				   		{
+				   			$scope.clientes = data.clientes;
+				   			$methodsService.alerta(1,"Clientes Filtrados!");
+				   		}//if
+				   		else{$methodsService.alerta(2,"algo falló, disculpe las molestias");}
+				  })  
+				 .error(function(data, status, headers, config){
+				 	$methodsService.alerta(2,"algo falló, disculpe las molestias");
+				 });
+}//Filtrar
+
+$scope.form = function(cliente)
+{
+	bootbox.confirm("Desea realizar el formulario a este cliente?", function(result) {
+		console.log(result);
+	  	if(result==true)
+	  	{
+	  		$scope.$apply(function(){
+	  			$location.path('/Formulario').search({cliente:cliente});
+	  		});
+	  	}//if
+	});
+}
+
 //Buscando los clientes
 //Buscando las pruebas por la número 1, condición física
 params = $methodsService.Json("Clientes",1);
@@ -123,7 +159,8 @@ var url = 'modulos/Clientes/Funciones.php';
        				$scope.clientes        = data.clientes;
        				$scope.entrenadores    = data.entrenadores;
 	       			$scope.mostrarbuscando = false;	
-					$scope.mostrarcontent  = true;	
+					$scope.mostrarcontent  = true;
+					console.log($scope.entrenadores);
        			break;
 
        			case exito!=1 && exitoent!=1:
@@ -157,6 +194,8 @@ var url = 'modulos/Clientes/Funciones.php';
 	//años
 	$scope.years = $methodsService.years();
 	
+	//Variable para desactivar el botón de agregar
+	$scope.btnen = true;
 
 	//funciones
 	$scope.Agregar = function()	
@@ -172,6 +211,7 @@ var url = 'modulos/Clientes/Funciones.php';
 			console.log(result);
 		  	if(result==true)
 		  	{
+		  		$scope.btnen = false;
 				//Mandando la petición AJAX al controller.
 				$scope.cliente.Accion = "AgregarCliente";
 				params  = JSON.stringify($scope.cliente);
@@ -186,6 +226,7 @@ var url = 'modulos/Clientes/Funciones.php';
 		         	{
 		         		$methodsService.alerta(1,"Cliente Agregado!");
 		         		$scope.cliente = {};
+		         		$scope.btnen = true;
 		         	}else{$methodsService.alerta(2,"algo falló, disculpe las molestias");}
 		          })  
 		         .error(function(data, status, headers, config){
@@ -216,7 +257,8 @@ $scope.dias = $methodsService.dias();
 $scope.meses =$methodsService.meses();
 //años
 $scope.years = $methodsService.years();
-
+//Variable para desactivar el botón de agregar
+$scope.btnen = true;
 //Funciones
 $scope.modal = function()
 {
@@ -229,6 +271,7 @@ $scope.Editar = function()
 		console.log(result);
 	  	if(result==true)
 	  	{
+	  		$scope.btnen 		  = false;
 	  		$scope.cliente.Accion = "Editarcliente";
 	  		params   			  = JSON.stringify($scope.cliente);
 	  		var url = 'modulos/Clientes/Funciones.php';
@@ -241,6 +284,7 @@ $scope.Editar = function()
 			         	if(exito==1)
 			         	{
 			         		$methodsService.alerta(1,"Cliente Editado");
+			         		$scope.btnen = true;
 			         	}else{$methodsService.alerta(2,"algo falló, disculpe las molestias");}
 		          })  
 		         .error(function(data, status, headers, config){
@@ -276,3 +320,26 @@ params    = $methodsService.Json("InfoCliente",$scope.id);
 	     	$methodsService.alerta(2,"algo falló, disculpe las molestias");
 	     });
 })//ClientesEditar
+
+.controller('formcontroller',function($scope,$http,$location,$methodsService,$routeParams){
+	$cliente = $routeParams.cliente;
+	params    = $methodsService.Json("InfoFormulario",$scope.cliente);
+//Mandando por ajax el ejercicio a eliminar
+  		var url = 'modulos/Clientes/Funciones.php';
+	     $http({method: "post",url: url,data: $.param({Params:params}), 
+	      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+	    })
+	     .success(function(data, status, headers, config) 
+	     {          	
+	       		exito = data.exito;
+	       		if(exito==1)
+	       		{
+	       			$scope.cliente = data.cliente;
+	       			console.log($scope.cliente);
+	       		}//if
+	       		else{$methodsService.alerta(2,"algo falló, disculpe las molestias");}
+	      })  
+	     .error(function(data, status, headers, config){
+	     	$methodsService.alerta(2,"algo falló, disculpe las molestias");
+	     });
+})//formcontroller

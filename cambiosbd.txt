@@ -67,4 +67,87 @@ por problemas con mayúsculas.
 38) la tabla sg_clientes se cambió por sgclientes, problema: Noguion.
 39) el campo id_cliente de la tabla sgclientes se cambió por id.
 40) el campo num_codigoPostal de la tbla sgclientes se cambió por num_codigopostal
-41) se cambió el nombre de la tabla sg_tipocuerpo por sgtipocuerpo, problema:  Noguion
+41) se cambió el nombre de la tabla sg_tipocuerpo por sgtipocuerpo, problema:  		Noguion.
+42) se cambió el nombre de la tabla sg_formulario por sgformulario, problema:
+	Noguion.
+43) el campo Condicion_Cardiaca de la tabla sgformulario se cambió por 	  
+	condicion_cardiaca
+44) el campo Condicion_Pecho de la tabla sgformulario se cambió por 
+	condicion_pecho
+45) el campo Condicion_Pecho_reciente de la tabla sgformulario se cambió por ç
+	condicion_pechoreciente.
+46) el campo Condicion_Balance de la tabla sgformulario se cambió por
+	condicion_balance
+47) el campo Lesion_Fisica de la tabla sgformulario se cambió por 
+	lesion_fisica.
+48) el campo Medicamentos_Corazon de la tabla sgformulario se cambió por
+	medicamentos_corazon.		
+49) el campo Impedimento_Entrenamiento de la tabla sgformulario se cambió
+	por impedimento_entrenamiento.
+50) el campo Lecturas_Anormales de la tabla sgformulario se cambió por
+	por lecturas_anormales.
+51) el campo Cirujia_Bypass de la tabla sgformulario se cambió por
+	por cirujia_bypass
+52) el campo Dificultad_Respirar de la tabla sgformulario se cambió por
+	por dificultad_respirar
+53) el campo Enfermedades_Renales de la tabla sgformulario se cambió por
+	por enfermedades_renales
+54) el campo Arritmia de la tabla sgformulario se cambió por
+	por arritmia				
+55) el campo Colesterol de la tabla sgformulario se cambió por
+	por colesterol				
+56) el campo Presion_Alta de la tabla sgformulario se cambió por
+	por presion_alta	
+57) el campo cantidad_Cigarros de la tabla sgformulario se cambió por
+	por cantidad_cigarros	
+58) el campo Molestias_Articulaciones de la tabla sgformulario se cambió por
+	por molestias_articulaciones	
+59) el campo Molestias_Espalda de la tabla sgformulario se cambió por
+	por molestias_espalda	
+60) el campo Desayuno_Diario de la tabla sgformulario se cambió por
+	por desayuno_diario
+61) el campo Comida_Diaria de la tabla sgformulario se cambió por
+	por comida_diaria
+62) el campo Cena_Diaria de la tabla sgformulario se cambió por
+	por cena_diaria
+63) el campo EntreComida_Diaria de la tabla sgformulario se cambió por
+	por entrecomida_diaria
+64) el campo Frecuencia_EntreComida de la tabla sgformulario se cambió por
+	por frecuencia_entrecomida
+65) el campo Plan_Alimenticio de la tabla sgformulario se cambió por
+	por plan_alimenticio
+66) el campo Intensidad_Ejercicio de la tabla sgformulario se cambió por
+	por intensidad_ejercicio
+67) el campo Intensidad_Ejercicio de la tabla sgformulario se cambió por
+	por intensidad_ejercicio2
+68) el campo Intensidad_Ejercicio de la tabla sgformulario se cambió por
+	por intensidad_ejercicio3
+69) el campo Intensidad_Ejercicio de la tabla sgformulario se cambió por
+	por intensidad_ejercicio4
+70) el campo Programa_Ejercicio de la tabla sgformulario se cambió por
+	por programa_ejercicio	
+71) el campo Actividades_deseables de la tabla sgformulario se cambió por
+	por actividades_deseables	
+72) el campo Actividades_indeseables de la tabla sgformulario se cambió por
+	por actividades_indeseables	
+73) el campo deporte_Frecuente de la tabla sgformulario se cambió por
+	por deporte_frecuente	
+74) el campo Minutos_Dia de la tabla sgformulario se cambió por
+	por minutos_dia				
+75) el campo Dias_Semana de la tabla sgformulario se cambió por
+	por dias_semana	
+76) el campo Resultado_Ejercicio de la tabla sgformulario se cambió por
+	por resultado_ejercicio	
+
+
+
+
+
+
+
+
+
+
+
+
+									

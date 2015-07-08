@@ -23,7 +23,21 @@
 		{
 			R::begin();
 			    try{
-			       $Usuarios = R::getAll('SELECT * FROM sgusuarios  where sn_activo =1 ORDER BY id ASC');
+			       $Usuarios = R::getAll("SELECT * FROM sgusuarios  where sn_activo =1 ORDER BY id ASC");
+			        R::commit();
+			    }
+			    catch(Exception $e) {
+			       $user =  R::rollback();
+			    }
+			R::close();
+			return $Usuarios;
+		}//_ConsultarUsuarios
+
+		function _ConsultarUsuariosFiltros()
+		{
+			R::begin();
+			    try{
+			       $Usuarios = R::getAll("SELECT id,CONCAT(nb_nombre, ' ', nb_apellidos) as nombre FROM sgusuarios  where sn_activo =1 ORDER BY id ASC");
 			        R::commit();
 			    }
 			    catch(Exception $e) {
@@ -677,6 +691,159 @@
 			return $respuesta;
 		}//_ConsultarclientePorId
 
+		function _ConsultarClientesPorEntrenador($id)
+		{
+			$condicion = ($id!="Todos")?"AND clientes.id_usuario_registro = ?":"";
+
+			$query = '
+				SELECT
+				clientes.id,
+				clientes.nb_cliente,
+				clientes.nb_apellidos,
+				clientes.de_email,
+				clientes.num_celular,
+				usuarios.nb_nombre as "Ins_nombre", 
+				usuarios.nb_apellidos as "Ins_apellido" 
+				FROM sgclientes clientes
+				left join sgusuarios  usuarios on clientes.id_usuario_registro=usuarios.id
+				where clientes.sn_activo=1 '.$condicion.'
+				ORDER BY clientes.id ASC
+			';
+			R::begin();
+			    try{
+			       $respuesta = R::getAll($query,[$id]);
+			        R::commit();
+			    }
+			    catch(Exception $e) {
+			       $respuesta =  R::rollback();
+			       $respuesta = "Error";
+			    }
+			R::close();
+			$respuesta = $this->EjecutarTransaccionAll($query,$id);
+			return $respuesta;
+		}///_ConsultarClientesPorEntrenador
+
+		function _ConsultarInformacionClienteReporteFormulario($id_cliente)
+	{
+		$query=' 
+				select 	DISTINCT
+			Clie.id,
+			Clie.nb_cliente,
+			Clie.nb_apellidos,
+			/* información de sg_formulario*/
+			cantidad_cigarros,
+			desayuno_diario,
+			comida_diaria,
+			cena_diaria,
+			entrecomida_diaria,
+			frecuencia_entrecomida,
+			plan_alimenticio,
+			intensidad_ejercicio,
+			intensidad_ejercicio2,
+			intensidad_ejercicio3,
+			intensidad_ejercicio4,
+			intensidad_ejercicio5,
+			actividades_deseables,
+			actividades_indeseables,
+			deporte_frecuente,
+			minutos_dia,
+			dias_semana,
+			resultado_Ejercicio,
+			CASE condicion_cardiaca
+			WHEN 1 then "Si"
+			WHEN 0 then "No"
+			end as cond_card,
+			
+			CASE condicion_pecho
+			WHEN 1 then "Si"
+			WHEN 0 then "No"
+			end as cond_pecho,
+			
+			CASE condicion_pechoreciente
+			WHEN 1 then "Si"
+			WHEN 0 then "No"
+			end as cond_pecho_re,
+			
+			CASE condicion_balance
+			WHEN 1 then "Si"
+			WHEN 0 then "No"
+			end as Cond_Ba,
+			
+			CASE lesion_fisica
+			WHEN 1 then "Si"
+			WHEN 0 then "No"
+			end as Les_fisica,
+			
+			CASE medicamentos_corazon
+			WHEN 1 then "Si"
+			WHEN 0 then "No"
+			end as meds_corazon,
+			
+			CASE impedimento_entrenamiento
+			WHEN 1 then "Si"
+			WHEN 0 then "No"
+			end as imp_entrenamiento,
+			
+			CASE lecturas_anormales
+			WHEN 1 then "Si"
+			WHEN 0 then "No"
+			end as lect_anormales,
+			
+			CASE cirujia_bypass
+			WHEN 1 then "Si"
+			WHEN 0 then "No"
+			end as bypass,
+			
+			CASE dificultad_respirar
+			WHEN 1 then "Si"
+			WHEN 0 then "No"
+			end as dif_respirar,
+			
+			CASE enfermedades_renales
+			WHEN 1 then "Si"
+			WHEN 0 then "No"
+			end as enf_renales,
+			
+			CASE arritmia
+			WHEN 1 then "Si"
+			WHEN 0 then "No"
+			end as arrit,
+			
+			CASE colesterol
+			WHEN 1 then "Si"
+			WHEN 0 then "No"
+			end as colest,
+			
+			CASE presion_alta
+			WHEN 1 then "Si"
+			WHEN 0 then "No"
+			end as pres_alta,
+			
+			CASE molestias_articulaciones
+			WHEN 1 then "Si"
+			WHEN 0 then "No"
+			end as molestias_art,
+			
+			CASE molestias_espalda
+			WHEN 1 then "Si"
+			WHEN 0 then "No"
+			end as molestias_espalda,
+			
+			CASE programa_ejercicio
+			WHEN 1 then "Si"
+			WHEN 0 then "No"
+			end as programa_ejercicio
+			
+			FROM sgformulario Form
+			INNER JOIN sgclientes Clie
+			ON Clie.id=Form.id_cliente where Form.id_cliente = "'.$id_cliente.'" 	
+		';	
+		$conectar=new Conectar();
+		$con=Conectar::_con();
+		$result=$con->query($query)or die("Error en $query ".mysqli_error($query));
+		return $result;
+	}//_ConsultarInformacionClienteReporteFormulario
+
 		//queries viejos
 
 		function _ConsultarInformacionUsuarioPorId($id)
@@ -897,128 +1064,7 @@
 		return $result;
 	}
 		
-	function _ConsultarInformacionClienteReporteFormulario($id_cliente)
-	{
-		$query=' SELECT DISTINCT
-			/*Información de sg_clientes */
-			Clie.id_cliente,
-			Clie.nb_cliente,
-			Clie.nb_apellidos,
-			/* información de sg_formulario*/
-			cantidad_Cigarros,
-			Desayuno_Diario,
-			Comida_Diaria,
-			Cena_Diaria,
-			EntreComida_Diaria,
-			Frecuencia_EntreComida,
-			Plan_Alimenticio,
-			Intensidad_Ejercicio,
-			Intensidad_Ejercicio2,
-			Intensidad_Ejercicio3,
-			Intensidad_Ejercicio4,
-			Intensidad_Ejercicio5,
-			Actividades_deseables,
-			Actividades_indeseables,
-			deporte_Frecuente,
-			Minutos_Dia,
-			Dias_Semana,
-			Resultado_Ejercicio,
-			CASE Condicion_Cardiaca
-			WHEN 1 then "Si"
-			WHEN 0 then "No"
-			end as cond_card,
-			
-			CASE Condicion_Pecho
-			WHEN 1 then "Si"
-			WHEN 0 then "No"
-			end as cond_pecho,
-			
-			CASE Condicion_Pecho_reciente
-			WHEN 1 then "Si"
-			WHEN 0 then "No"
-			end as cond_pecho_re,
-			
-			CASE Condicion_Balance
-			WHEN 1 then "Si"
-			WHEN 0 then "No"
-			end as Cond_Ba,
-			
-			CASE Lesion_Fisica
-			WHEN 1 then "Si"
-			WHEN 0 then "No"
-			end as Les_fisica,
-			
-			CASE Medicamentos_Corazon
-			WHEN 1 then "Si"
-			WHEN 0 then "No"
-			end as meds_corazon,
-			
-			CASE Impedimento_Entrenamiento
-			WHEN 1 then "Si"
-			WHEN 0 then "No"
-			end as imp_entrenamiento,
-			
-			CASE Lecturas_Anormales
-			WHEN 1 then "Si"
-			WHEN 0 then "No"
-			end as Lect_Anormales,
-			
-			CASE Cirujia_Bypass
-			WHEN 1 then "Si"
-			WHEN 0 then "No"
-			end as ByPass,
-			
-			CASE Dificultad_Respirar
-			WHEN 1 then "Si"
-			WHEN 0 then "No"
-			end as Dif_Respirar,
-			
-			CASE Enfermedades_Renales
-			WHEN 1 then "Si"
-			WHEN 0 then "No"
-			end as Enf_Renales,
-			
-			CASE Arritmia
-			WHEN 1 then "Si"
-			WHEN 0 then "No"
-			end as Arrit,
-			
-			CASE Colesterol
-			WHEN 1 then "Si"
-			WHEN 0 then "No"
-			end as Colest,
-			
-			CASE Presion_Alta
-			WHEN 1 then "Si"
-			WHEN 0 then "No"
-			end as Pres_Alta,
-			
-			CASE Molestias_Articulaciones
-			WHEN 1 then "Si"
-			WHEN 0 then "No"
-			end as Molestias_Art,
-			
-			CASE Molestias_Espalda
-			WHEN 1 then "Si"
-			WHEN 0 then "No"
-			end as Molestias_Espalda,
-			
-			CASE Programa_Ejercicio
-			WHEN 1 then "Si"
-			WHEN 0 then "No"
-			end as Programa_Ejercicio
-			
-			
-			
-			FROM sg_formulario Form
-			INNER JOIN sg_clientes Clie
-			ON Clie.id_cliente=Form.id_cliente where Form.id_cliente = "'.$id_cliente.'" 	
-		';	
-		$conectar=new Conectar();
-		$con=Conectar::_con();
-		$result=$con->query($query)or die("Error en $query ".mysqli_error($query));
-		return $result;
-	}//_ConsultarInformacionClienteReporteFormulario
+	
 	
 	//Queries relacionados con el BIOTEST
 	

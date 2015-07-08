@@ -87,7 +87,7 @@
                                         		<td>{{cli.num_celular}}</td>
                                         		<td>{{cli.Ins_nombre+" "+cli.Ins_apellido}}</td>
                                         		<td><button class="btn btn-success">Biotest</button></td>
-                                        		<td><button class="btn btn-warning">Formulario</button></td>
+                                        		<td><button class="btn btn-warning" ng-click="form(cli.id)">Formulario</button></td>
                                         		<td><button class="btn btn-info">Rutina</button></td>
                                         	</tr>
                                         </tbody>
@@ -122,7 +122,7 @@
                                             <form ng-submit="Filtrar()" class="col-md-12">
                                                 <div class="col-md-6">
                                                 <select ng-model="cliente.opcion"
-                                            ng-options="ent.id as ent.nb_usuario for ent in entrenadores" class="form-control" required>
+                                            ng-options="ent.id as ent.nombre for ent in entrenadores" class="form-control" required>
                                                 <option value="">Seleccionar...</option>
                                                 </select>
                                                 </div>

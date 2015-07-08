@@ -158,6 +158,11 @@
 	    	controller: 'ClientesEditar',
 	      	templateUrl:'modulos/Clientes/clientes_editar.html'
 	    })
+
+	    .when('/Formulario',{
+	    	controller: 'formcontroller',
+	      	templateUrl:'modulos/Clientes/Formulario.html'
+	    })
 	    
 
 

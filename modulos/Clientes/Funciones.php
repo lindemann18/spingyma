@@ -35,6 +35,15 @@
 			echo json_encode($salidaJson);
 		break;
 
+		case 'FiltrarClientes':
+			$salidaJson = FiltrarClientes($Parametros);
+			echo json_encode($salidaJson);
+		break;
+		case 'InfoFormulario':
+			$salidaJson = InfoFormulario($Parametros);
+			echo json_encode($salidaJson);
+		break;
+		//casos viejos
 		case 'Agregar'://Agregando a la BD
 			AgregarCliente($Parametros);
 				
@@ -281,7 +290,10 @@
 		$exito     = ($cantidad>0)?1:0;
 
 		//Consultando los entrenadores
-		$entrenadores = $consultar->_ConsultarUsuarios();
+		$entrenadores = $consultar->_ConsultarUsuariosFiltros();
+		//INcluir la opción de todos.
+		$todos = array("id"=>"Todos","nombre"=>"Todos");
+		array_push($entrenadores,$todos);
 		$cantidaden   = count($entrenadores);
 		$exitoent     = ($cantidaden>0)?1:0;
 		$datos     = array("exito"=>$exito,"clientes"=>$clientes,
@@ -383,6 +395,24 @@
 		$datos 	   = array("exito"=>$exito,"exitocli"=>$exitocli,"clientes"=>$clientes);
 		return $datos;
 	}//EliminarCliente
+
+	function FiltrarClientes($Parametros)
+	{
+		$id        = $Parametros['id'];
+		$consultar = new Consultar();
+		$clientes  = $consultar->_ConsultarClientesPorEntrenador($id);
+		$cantidad  = count($clientes);
+		$exito     = ($cantidad>0)?1:0;
+		$datos     = array("exito"=>$exito,"clientes"=>$clientes);
+		return $datos;
+	}//FiltrarClientes
+
+	function InfoFormulario($Parametros)
+	{
+		$id 	    = $Parametros['id'];
+		$consultar  = new Consultar();
+		$respuestas = $consultar->
+	}//InfoFormulario
 
 	function EjecutarTransaccion($objeto)
 	{
