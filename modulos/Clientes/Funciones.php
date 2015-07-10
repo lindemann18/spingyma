@@ -43,6 +43,12 @@
 			$salidaJson = InfoFormulario($Parametros);
 			echo json_encode($salidaJson);
 		break;
+
+		case 'RegistrarForm':
+			$salidaJson = RegistrarForm($Parametros);
+			echo json_encode($salidaJson);
+		break;
+
 		//casos viejos
 		case 'Agregar'://Agregando a la BD
 			AgregarCliente($Parametros);
@@ -411,8 +417,20 @@
 	{
 		$id 	    = $Parametros['id'];
 		$consultar  = new Consultar();
-		$respuestas = $consultar->
+		$respuestas = $consultar->_ConsultarInformacionClienteReporteFormulario($id);
+		$cantidad   = count($respuestas);
+		$exito      = ($cantidad>0)?1:0;
+		if($exito==0){$respuestas = array("id"=>$id);}
+		$datos      = array("exito"=>$exito,"respuestas"=>$respuestas);
+		return $datos;
 	}//InfoFormulario
+
+	function RegistrarForm($Parametros)
+	{
+		$id = $Parametros['id'];
+		$respuestas = R::load("sgformulario",$id);
+		print_r($respuestas);
+	}//RegistrarForm
 
 	function EjecutarTransaccion($objeto)
 	{

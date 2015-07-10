@@ -1,4 +1,4 @@
-angular.module('AppClientes',['ngRoute','angularUtils.directives.dirPagination','Methods'])
+angular.module('AppClientes',['ngRoute','angularUtils.directives.dirPagination','Methods','ngCookies'])
 
 .controller('Clientes',function($scope,$http,$location,$methodsService){
 //Variables 
@@ -321,9 +321,13 @@ params    = $methodsService.Json("InfoCliente",$scope.id);
 	     });
 })//ClientesEditar
 
-.controller('formcontroller',function($scope,$http,$location,$methodsService,$routeParams){
-	$cliente = $routeParams.cliente;
-	params    = $methodsService.Json("InfoFormulario",$scope.cliente);
+.controller('formcontroller',function($scope,$http,$location,$methodsService,$routeParams,respservice,$cookies){
+//Variables
+$scope.cliente = $routeParams.cliente;
+params    = $methodsService.Json("InfoFormulario",$scope.cliente);
+$scope.mostrarbuscando = true;
+$scope.mostrarcontent  = false;
+
 //Mandando por ajax el ejercicio a eliminar
   		var url = 'modulos/Clientes/Funciones.php';
 	     $http({method: "post",url: url,data: $.param({Params:params}), 
@@ -331,15 +335,83 @@ params    = $methodsService.Json("InfoCliente",$scope.id);
 	    })
 	     .success(function(data, status, headers, config) 
 	     {          	
-	       		exito = data.exito;
-	       		if(exito==1)
+	       		exito = data.respuestas;
+	       		if(exito!="Error")
 	       		{
-	       			$scope.cliente = data.cliente;
-	       			console.log($scope.cliente);
+	       			$scope.resp = data.respuestas;
+	       			console.log($scope.resp);
+	       			$scope.mostrarbuscando = false;
+					$scope.mostrarcontent  = true;
 	       		}//if
 	       		else{$methodsService.alerta(2,"algo falló, disculpe las molestias");}
 	      })  
 	     .error(function(data, status, headers, config){
 	     	$methodsService.alerta(2,"algo falló, disculpe las molestias");
 	     });
+
+$scope.SiguienteForm = function()	     
+{
+	bootbox.confirm("Desea pasar al siguiente formulario?", function(result) {
+		console.log(result);
+	  	if(result==true)
+	  	{	$scope.$apply(function(){
+	  			var resps = JSON.stringify($scope.resp);
+	  			$cookies.put('resp', resps)
+	  			$location.path('/Formulario2').search({});
+	  		});//apply
+	  	}
+	  });
+}//SiguienteForm
+
 })//formcontroller
+
+.controller('formcontroller2',function($scope,$http,$location,$methodsService,$routeParams,respservice,$cookies){
+	$scope.resp = JSON.parse($cookies.get('resp'));
+	console.log($scope.resp);
+
+//funciones
+$scope.RegistrarForm = function()	
+{
+	bootbox.confirm("Desea pasar al siguiente formulario?", function(result) {
+		console.log(result);
+	  	if(result==true)
+	  	{	$scope.$apply(function(){
+	  			$scope.resp.Accion = "RegistrarForm";
+	  			//Enviadno los datos por ajax.
+	  			params   			  = JSON.stringify($scope.resp);
+		  		var url = 'modulos/Clientes/Funciones.php';
+			         $http({method: "post",url: url,data: $.param({Params:params}), 
+			          headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+			        })
+			         .success(function(data, status, headers, config) 
+			         {          	
+				         
+			          })  
+			         .error(function(data, status, headers, config){
+			         	$methodsService.alerta(2,"algo falló, disculpe las molestias");
+			         });
+	  		});//apply
+	  	}//if
+	  });//botbox
+
+}//RegistrarForm
+
+})
+
+.service('respservice', function() {
+  var respuestas = [];
+
+  var addresp = function(newObj) {
+      respuestas = newObj;
+  };
+
+  var getresp = function(){
+      return respuestas;
+  };
+
+  return {
+    addresp: addresp,
+    getresp: getresp
+  };
+
+});

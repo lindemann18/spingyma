@@ -9,6 +9,7 @@
 <script src="js/angular-locale_es-mx.js"></script>
 <script src="js/dirPagination.js"></script>
 <script src="js/jquery-1.11.1.min.js"></script>
+<script src="js/angular-cookies.min.js"></script>
 <script src="js/bootbox.min.js" type="text/javascript"></script>
 <!-- Controlers-->
 <script src="js/users.js"></script>
@@ -43,7 +44,7 @@
 </html>
 
 <script type="text/javascript">
-	angular.module('app',['ngRoute','AppUsuarios','Methods','AppUtilidades','AppRutinasComp','AppClientes'])
+	angular.module('app',['ngRoute','AppUsuarios','Methods','AppUtilidades','AppRutinasComp','AppClientes','ngCookies'])
 	.config(function($routeProvider)
 	{
 	    $routeProvider
@@ -162,6 +163,11 @@
 	    .when('/Formulario',{
 	    	controller: 'formcontroller',
 	      	templateUrl:'modulos/Clientes/Formulario.html'
+	    })
+
+	    .when('/Formulario2',{
+	    	controller: 'formcontroller2',
+	      	templateUrl:'modulos/Clientes/Formulario2.html'
 	    })
 	    
 

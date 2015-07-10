@@ -723,7 +723,7 @@
 			return $respuesta;
 		}///_ConsultarClientesPorEntrenador
 
-		function _ConsultarInformacionClienteReporteFormulario($id_cliente)
+		function _ConsultarInformacionClienteReporteFormulario($id)
 	{
 		$query=' 
 				select 	DISTINCT
@@ -748,100 +748,31 @@
 			deporte_frecuente,
 			minutos_dia,
 			dias_semana,
-			resultado_Ejercicio,
-			CASE condicion_cardiaca
-			WHEN 1 then "Si"
-			WHEN 0 then "No"
-			end as cond_card,
-			
-			CASE condicion_pecho
-			WHEN 1 then "Si"
-			WHEN 0 then "No"
-			end as cond_pecho,
-			
-			CASE condicion_pechoreciente
-			WHEN 1 then "Si"
-			WHEN 0 then "No"
-			end as cond_pecho_re,
-			
-			CASE condicion_balance
-			WHEN 1 then "Si"
-			WHEN 0 then "No"
-			end as Cond_Ba,
-			
-			CASE lesion_fisica
-			WHEN 1 then "Si"
-			WHEN 0 then "No"
-			end as Les_fisica,
-			
-			CASE medicamentos_corazon
-			WHEN 1 then "Si"
-			WHEN 0 then "No"
-			end as meds_corazon,
-			
-			CASE impedimento_entrenamiento
-			WHEN 1 then "Si"
-			WHEN 0 then "No"
-			end as imp_entrenamiento,
-			
-			CASE lecturas_anormales
-			WHEN 1 then "Si"
-			WHEN 0 then "No"
-			end as lect_anormales,
-			
-			CASE cirujia_bypass
-			WHEN 1 then "Si"
-			WHEN 0 then "No"
-			end as bypass,
-			
-			CASE dificultad_respirar
-			WHEN 1 then "Si"
-			WHEN 0 then "No"
-			end as dif_respirar,
-			
-			CASE enfermedades_renales
-			WHEN 1 then "Si"
-			WHEN 0 then "No"
-			end as enf_renales,
-			
-			CASE arritmia
-			WHEN 1 then "Si"
-			WHEN 0 then "No"
-			end as arrit,
-			
-			CASE colesterol
-			WHEN 1 then "Si"
-			WHEN 0 then "No"
-			end as colest,
-			
-			CASE presion_alta
-			WHEN 1 then "Si"
-			WHEN 0 then "No"
-			end as pres_alta,
-			
-			CASE molestias_articulaciones
-			WHEN 1 then "Si"
-			WHEN 0 then "No"
-			end as molestias_art,
-			
-			CASE molestias_espalda
-			WHEN 1 then "Si"
-			WHEN 0 then "No"
-			end as molestias_espalda,
-			
-			CASE programa_ejercicio
-			WHEN 1 then "Si"
-			WHEN 0 then "No"
-			end as programa_ejercicio
+			resultado_ejercicio,
+			condicion_cardiaca,
+			condicion_pecho,
+			condicion_pechoreciente,
+			condicion_balance,
+			lesion_fisica,
+			medicamentos_corazon,
+			impedimento_entrenamiento,
+			lecturas_anormales,
+			cirujia_bypass,
+			dificultad_respirar,
+			enfermedades_renales,
+			arritmia,
+			colesterol,
+			presion_alta,
+			molestias_articulaciones,
+			molestias_espalda,
+			programa_ejercicio
 			
 			FROM sgformulario Form
 			INNER JOIN sgclientes Clie
-			ON Clie.id=Form.id_cliente where Form.id_cliente = "'.$id_cliente.'" 	
+			ON Clie.id=Form.id_cliente where Form.id_cliente = ? 	
 		';	
-		$conectar=new Conectar();
-		$con=Conectar::_con();
-		$result=$con->query($query)or die("Error en $query ".mysqli_error($query));
-		return $result;
+		$respuesta = $this->EjecutarTransaccionSinglerow($query,$id);
+		return $respuesta;
 	}//_ConsultarInformacionClienteReporteFormulario
 
 		//queries viejos
