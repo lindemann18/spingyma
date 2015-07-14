@@ -955,7 +955,24 @@
 		$cuerpos = $this->EjecutarTransaccionAllNoParams($query);
 		return $cuerpos;
 	}//_ConsultarTiposCuerpo
-
+	
+	function _ConsultarTiposDeRutina()
+	{
+		$query="
+			SELECT
+TR.id,
+TR.nb_tiporutina,
+TR.desc_tiporutina,
+US.nb_nombre,
+US.nb_apellidos
+from sgtiposrutina TR
+LEFT JOIN sgusuarios US
+ON US.id=TR.id_UsuarioRegistro
+WHERE TR.sn_activo=1 and TR.nb_tiporutina !='Varios'
+		";	
+		$tipos_rut = $this->EjecutarTransaccionAllNoParams($query);
+		return $tipos_rut;
+	}//_ConsultarTiposDeRutina
 		//queries viejos
 
 		function _ConsultarInformacionUsuarioPorId($id)
@@ -1599,24 +1616,7 @@
 		return $result;
 	}//_ConsultarCategoriasDeRutinas	
 		
-	function _ConsultarTiposDeRutina()
-	{
-		$query='
-			SELECT
-			TR.id,
-			TR.nb_TipoRutina,
-			TR.desc_TipoRutina,
-			US.nb_nombre,
-			US.nb_apellidos
-			from sg_tiposrutina TR
-			INNER JOIN sg_usuarios US
-			ON US.id_usuario=TR.id_UsuarioRegistro
-			WHERE TR.sn_activo=1
-		';	
-		$con=Conectar::_con();
-		$result=$con->query($query) or die("Error en: $query ".mysqli_error($query));
-		return $result;
-	}//_ConsultarTiposDeRutina
+	
 	
 	function _ConsultarTipoRutinaPorId1($id)
 	{

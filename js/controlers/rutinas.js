@@ -187,6 +187,7 @@ $scope.AgregarRutina = function()
             //si llegó quí es que se va a registrar la rutina
             //debes mandar por parámetro get el id de la sesión, 
             // en el proyecto viejo se guarda en sesión
+            $location.path('/RutinaComp').search({Day:DiaActual});
           }//if
           else
           {
@@ -272,3 +273,40 @@ $scope.veriricarRutina = function()
      });
 
 })//RutinaAgregar
+
+.controller('RutinaCompleja',function($scope,$http,$location,$methodsService,$q,$cookies,$routeParams){
+  //Variables
+  $scope.id_dia    = $routeParams.Day;
+  $scope.DiaActual = $methodsService.DefinirDia($scope.id_dia);
+
+  //inicializando el bootlist
+  var demo2 = $('.demo2').bootstrapDualListbox({
+          nonSelectedListLabel: 'Non-selected',
+          selectedListLabel: 'Selected',
+          preserveSelectionOnMove: 'moved',
+          moveOnSelect: false
+        });
+
+  //Buscar la información
+  params = $methodsService.Json("InfoRutinaCompleja",1);
+  var url = 'modulos/Rutinas/Funciones.php';
+     $http({method: "post",url: url,data: $.param({Params:params}), 
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
+     .success(function(data, status, headers, config) 
+     {            
+          exitor = data.exitor;
+          if(exitor==1)
+          {
+            $scope.tiposRut = data.tiposRut;
+            console.log($scope.tiposRut);
+          }//if
+          else
+          {
+            $methodsService.alerta(2,"algo falló, disculpe las molestias");      
+          }
+      })  
+     .error(function(data, status, headers, config){
+      $methodsService.alerta(2,"algo falló, disculpe las molestias");
+     });
+})//RutinaCompleja

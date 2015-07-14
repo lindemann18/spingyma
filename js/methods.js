@@ -236,5 +236,36 @@ var miModulo = angular.module("Methods", []);
 			}//switch
 			
 			return DiaRutinaActual;
+		}//CambiarDiaActualRutina
+
+		this.DefinirDia = function(Dia)
+		{
+			switch(Dia)
+		{
+			case '1':
+				DiaRutina="LUNES";
+			break;
+			case '2':
+				DiaRutina="MARTES";
+			break;
+			case '3':
+				DiaRutina="MIERCOLES";
+			break;
+			case '4':
+				DiaRutina="JUEVES";
+			break;
+			case '5':
+				DiaRutina="VIERNES";
+			break;
+			case '6':
+				DiaRutina="SABADO";
+			break;
+			case '7':
+				DiaRutina="DOMINGO";
+			break;
+			
+		}//switch
+		return DiaRutina;
 		}
+
     })	

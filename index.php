@@ -150,6 +150,11 @@
 	      	templateUrl:'modulos/Rutinas/Rutinas_Registrar.html'
 	    })
 
+	    .when('/RutinaComp',{
+	    	controller: 'RutinaCompleja',
+	      	templateUrl:'modulos/Rutinas/Rutina_Comp.html'
+	    })
+
 	    .when('/Error',{
 	    	controller: 'Errors',
 	      	templateUrl:'modulos/Rutinas/Error.html'

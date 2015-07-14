@@ -139,6 +139,12 @@
 			echo json_encode($salidaJson);
 		break;
 
+		case 'InfoRutinaCompleja':
+			$salidaJson = InfoRutinaCompleja($Parametros);
+			echo json_encode($salidaJson);
+		break;
+
+
 		//Secciones Viejas
 		case 'AgregaMusculo':
 			$nb_musculo	   = $Parametros['nb_musculo'];
@@ -1042,7 +1048,6 @@
 	function AgregarRutina($Parametros)
 	{
 		//Creando la rutina
-		print_r($Parametros);
 		session_start();
 		date_default_timezone_set("America/Chihuahua");
 		$fh_creacion = date("Y-m-d"); //fecha del día de hoy
@@ -1060,8 +1065,22 @@
 		$respuesta 					= EjecutarTransaccion($rutina);
 		$exito  					= (is_numeric($respuesta))?1:0;
 		$datos 						= array("exito"=>$exito);
+
+		//Guardando en variable de sesión el id de la rutina
+		if(is_numeric($respuesta)){$_SESSION['id_rutina'] = $respuesta;}
 		return $datos;
 	}//AgregarRutina
+
+	function InfoRutinaCompleja($Parametros)
+	{
+		//Consultando las categorias de las rutinas
+		$consultar = new Consultar();
+		$tiposRut  = $consultar->_ConsultarTiposDeRutina();
+		$cantidadr = count($tiposRut);
+		$exitor    = ($cantidadr>0)?1:0;
+		$datos     = array("exitor"=>$exitor,"tiposRut"=>$tiposRut);
+		return $datos;
+	}//InfoRutinaCompleja
 
 	// funciones Viejas
 
