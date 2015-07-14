@@ -278,6 +278,21 @@ $scope.veriricarRutina = function()
   //Variables
   $scope.id_dia    = $routeParams.Day;
   $scope.DiaActual = $methodsService.DefinirDia($scope.id_dia);
+  
+  //funciones
+  $scope.ComenzarSeleccion = function()
+  {
+    bootbox.confirm("Desea agregar estos tipos de rutina?", function(result) {
+    if(result==true)
+      {
+        $scope.$apply(function(){
+            //Tomando las tipos de rutina
+            CantidadTiposRutina=document.getElementById("-duallistbox-selected-list_duallistbox_demo2").length;
+            
+        });
+      }//if
+  });
+  }//ComenzarSeleccion
 
   //inicializando el bootlist
   var demo2 = $('.demo2').bootstrapDualListbox({
@@ -313,8 +328,7 @@ $scope.veriricarRutina = function()
             {
               var object = $scope.tiposRut[i];
               var row ='<option value="'+object.id+'">'+object.nb_tiporutina+'</option>';
-              console.log(row);
-               demo2.append(row);
+              demo2.append(row);
               demo2.bootstrapDualListbox('refresh');
              // $("#bootstrap-duallistbox-nonselected-list_duallistbox_demo2").append(row);
             }//for
