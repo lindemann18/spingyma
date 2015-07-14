@@ -299,7 +299,25 @@ $scope.veriricarRutina = function()
           if(exitor==1)
           {
             $scope.tiposRut = data.tiposRut;
-            console.log($scope.tiposRut);
+            //console.log($scope.tiposRut);
+            //Pegando los tipos rut en la tabla de selección
+            var size = $scope.tiposRut.length;
+            var demo2 = $('.demo2').bootstrapDualListbox({
+              nonSelectedListLabel: 'Non-selected',
+              selectedListLabel: 'Selected',
+              preserveSelectionOnMove: 'moved',
+              moveOnSelect: false,
+              nonSelectedFilter: 'ion ([7-9]|[1][0-2])'
+            });
+            for(i=0; i<size; i++)
+            {
+              var object = $scope.tiposRut[i];
+              var row ='<option value="'+object.id+'">'+object.nb_tiporutina+'</option>';
+              console.log(row);
+               demo2.append(row);
+              demo2.bootstrapDualListbox('refresh');
+             // $("#bootstrap-duallistbox-nonselected-list_duallistbox_demo2").append(row);
+            }//for
           }//if
           else
           {

@@ -1051,7 +1051,7 @@
 		session_start();
 		date_default_timezone_set("America/Chihuahua");
 		$fh_creacion = date("Y-m-d"); //fecha del día de hoy
-		$id_usuario 			    = $_SESSION['Sesion']['id_usuario'];
+		$id_usuario 			    = $_SESSION['usuario']['id'];
 		$rutina 				    = R::dispense("sgrutinas");
 		$rutina->id_usuariocreacion = $id_usuario;
 		$rutina->nb_rutina          = $Parametros['categoria'];
