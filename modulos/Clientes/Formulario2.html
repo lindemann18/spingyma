@@ -20,9 +20,10 @@
                 <!-- Main content -->
                 <section class="content">
                 	<!-- HEADER DEL CONTENIDO-->
-                    <div class="alert alert-success alert-dismissible" role="alert" style="display:none;" id="UsuarioAgregadoNotificacion">
-  <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-  <strong>Bien Hecho!</strong> Usuario Registrado.</div>
+                    <div class="alert alert-danger alert-dismissible col-md-12" role="alert" id="alerta" style="display:none;">
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                  <strong>Atención!</strong> <p id="ErrorTexto"></p>
+                    </div>
                     <h4 class="page-header">
                         Formulario de Salud
                         <small>
@@ -208,7 +209,7 @@
                     
                     <div class="row">
                     	<div class="col-md-6" align="right"><button type="submit" class="btn btn-primary">REGISTRAR</button></div>
-                        <div class="col-md-6" align="left"><button type="reset" class="btn btn-danger" onclick="window.location='index.php?nav=Clientes';">CANCELAR</button></div>
+                        <div class="col-md-6" align="left"><button type="button" class="btn btn-danger" ng-click="Redirigir('Clientes')">CANCELAR</button></div>
                     </div>
                     </form>
                     <!-- FORMULARIO -->

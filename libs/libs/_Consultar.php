@@ -726,11 +726,12 @@
 		function _ConsultarInformacionClienteReporteFormulario($id)
 	{
 		$query=' 
-				select 	DISTINCT
+			select 	DISTINCT
 			Clie.id,
 			Clie.nb_cliente,
 			Clie.nb_apellidos,
 			/* información de sg_formulario*/
+			Form.id as id_form,
 			cantidad_cigarros,
 			desayuno_diario,
 			comida_diaria,
@@ -774,6 +775,186 @@
 		$respuesta = $this->EjecutarTransaccionSinglerow($query,$id);
 		return $respuesta;
 	}//_ConsultarInformacionClienteReporteFormulario
+
+		function _ConsultarSiClienteHizoElFormulario($id)
+		{
+			$query='
+				select * from sg_formulario where id_cliente = ?
+			';	
+			$respuesta = $this->EjecutarTransaccionSinglerow($query,$id);
+			return $respuesta;
+		}//_ConsultarSiClienteHizoElFormulario
+
+		//Queries de rutinas
+		function _ConsultarRutinasTotales()
+	{
+		
+		//Este querie devuelve TODAS las rutinas ordenadas de principiante hasta avanzado.
+		$query = '
+		SELECT
+		Rut.id as id_rutina,
+		Rut.nb_rutina,
+		Rut.desc_rutina,
+		Rut.fh_creacion,
+		Usu.nb_nombre,
+		Usu.nb_apellidos,
+		Cat.nb_categoriarutina,
+		Gen.id as id_genero,
+		Gen.nb_tiporutina,
+		cuerpo.id as id_cuerpo,
+		cuerpo.nb_cuerpo
+		FROM sgrutinas Rut
+		left JOIN sgusuarios Usu
+		ON Usu.id=Rut.id_usuariocreacion
+		left JOIN sgcategoriasrutina Cat
+		ON Cat.id=Rut.id_categoriarutina
+		LEFT JOIN sggenerosrutina Gen
+		ON Gen.id= Rut.id_generorutina
+		LEFT JOIN sgtipocuerpo cuerpo
+		ON cuerpo.id = Rut.id_tipocuerpo
+		where  Rut.sn_activo=1   order by id_rutina asc
+		';	
+		$rutinas = $this->EjecutarTransaccionAllNoParams($query);
+		return $rutinas;
+	}//_ConsultarRutinasTotales
+
+	function _ConsultarCategoriaRutinas()
+	{
+		$query='
+			SELECT DISTINCT
+			id,
+			nb_categoriarutina
+			from sgcategoriasrutina
+			ORDER BY id
+		';	
+		$rutinas = $this->EjecutarTransaccionAllNoParams($query);
+		return $rutinas;
+	}//_ConsultarCategoriaRutinas
+
+	function _ConsultarGenerosRutina()
+	{
+		//En esta función se buscan los geéneros de las rutinas.
+		$query='
+			select id,nb_tiporutina from sggenerosrutina
+		';
+		$generos = $this->EjecutarTransaccionAllNoParams($query);
+		return $generos;
+	}//_ConsultarGenerosRutina
+
+	function _ConsultarEntrenadoresConRutinas()
+	{
+		$query="
+			SELECT distinct
+			Usu.id as id,
+			CONCAT(Usu.nb_nombre, ' ',Usu.nb_apellidos) as nombre
+			FROM sgrutinas Rut
+
+			LEFT  JOIN sgusuarios Usu
+			ON Rut.id_usuariocreacion=Usu.id
+			WHERE Rut.sn_activo = 1
+			ORDER BY Usu.id
+		";	
+		$entrenadores = $this->EjecutarTransaccionAllNoParams($query);
+		return $entrenadores;
+	}//_ConsultarEntrenadoresConRutinas
+
+	function _ConsultarCategoriaRutinaPorEntrenador($id)
+	{
+		$query= '
+		select DISTINCT
+		cat.id,
+		nb_categoriarutina
+		from sgcategoriasrutina cat
+
+		LEFT JOIN sgrutinas rut ON
+		rut.id_categoriarutina = cat.id
+
+		LEFT JOIN sgusuarios usu ON
+		rut.id_usuariocreacion = usu.id
+
+		where usu.id=? AND rut.sn_activo = 1
+		';
+		$categorias = $this->EjecutarTransaccionAll($query,$id);
+		return $categorias;
+	}//_ConsultarCategoriaRutinaPorEntrenador
+
+	function _ConsultarGenerosRutinaPorEntrenador($id)
+	{
+		$query = '
+				SELECT DISTINCT
+				Gen.nb_tiporutina,
+				Gen.id
+
+				FROM sggenerosrutina Gen
+
+				left JOIN sgrutinas Rut
+				on Rut.id_generorutina = Gen.id
+
+				WHERE Rut.id_usuariocreacion=1
+
+				ORDER BY Gen.id
+		';	
+		//echo $query;
+		$generos = $this->EjecutarTransaccionAll($query,$id);
+		return $generos;
+	}//_ConsultarGenerosRutinaPorEntrenador
+
+	function _ConsultarRutinasFiltradas($entrenador,$tipo_rutina,$genero)
+	{
+		//definiendo las condiciones			
+		$condicionent = ($entrenador!="Todos")?"AND Rut.id_usuariocreacion =".$entrenador." ":"";
+		$condiciontip = ($tipo_rutina!="Todos")?"AND Rut.id_categoriarutina =".$tipo_rutina." ":"";
+		$condiciongen = ($genero!="Todos")?"AND Rut.id_generorutina =".$genero." ":"";
+		//Este querie devuelve TODAS las rutinas ordenadas de principiante hasta avanzado.
+		$query = '
+		SELECT
+		Rut.id as id_rutina,
+		Rut.nb_rutina,
+		Rut.desc_rutina,
+		Rut.fh_creacion,
+		Usu.nb_nombre,
+		Usu.nb_apellidos,
+		Cat.nb_categoriarutina,
+		Gen.id as id_genero,
+		Gen.nb_tiporutina,
+		cuerpo.id as id_cuerpo,
+		cuerpo.nb_cuerpo
+		FROM sgrutinas Rut
+		left JOIN sgusuarios Usu
+		ON Usu.id=Rut.id_usuariocreacion
+		left JOIN sgcategoriasrutina Cat
+		ON Cat.id=Rut.id_categoriarutina
+		LEFT JOIN sggenerosrutina Gen
+		ON Gen.id= Rut.id_generorutina
+		LEFT JOIN sgtipocuerpo cuerpo
+		ON cuerpo.id = Rut.id_tipocuerpo
+		where  Rut.sn_activo=1   
+		'.$condicionent.'
+		'.$condiciontip.'
+		'.$condiciongen.'
+		order by id_rutina asc
+		';
+
+		R::freeze(1);	
+		R::begin();
+	    try{
+	       $rutinas = R::getAll($query);
+	        R::commit();
+	    }
+	    catch(Exception $e) {
+	       $rutinas =  R::rollback();
+	       $rutinas = "Error";
+	    }
+	R::close();
+	return $rutinas;
+	}//_ConsultarRutinasFiltradas
+
+	function _ConsultarTiposCuerpo()
+	{
+		$query='SELECT id,nb_cuerpo from sgtipocuerpo';
+		$cuerpos = $this->EjecutarTransaccionAllNoParams($query);
+		return $cuerpos;
+	}//_ConsultarTiposCuerpo
 
 		//queries viejos
 
@@ -940,16 +1121,7 @@
 			return $result;	
 		}
 		
-		function _ConsultarSiClienteHizoElFormulario($id_cliente)
-		{
-			$query='
-				select * from sg_formulario where id_cliente="'.$id_cliente.'"
-			';	
-				$conectar=new Conectar();
-			$con=Conectar::_con();
-			$result=$con->query($query)or die("Error en $query ".mysqli_error($query));
-			return $result;
-		}//_ConsultarSiClienteHizoElFormulario
+		
 		
 		function _ConsultarInstructores($id_instructor)
 		{
@@ -1491,16 +1663,7 @@
 		return $result;	
 	}//_ConsultarRutinasClientesPorIdCliente
 	
-	function _ConsultarGenerosRutina()
-	{
-		//En esta función se buscan los geéneros de las rutinas.
-		$query='
-			select * from sg_generosrutina
-		';
-		$con	= Conectar::_con();
-		$result = $con->query($query) or die("Error en: $query ".mysqli_error($query));
-		return $result;	
-	}//_ConsultarGenerosRutina
+	
 	
 	function _ConsultarEjercicios1()
 	{
@@ -1760,39 +1923,7 @@
 		return $result;
 	}//_ConsultarRutinasPorCategoria
 	
-	function _ConsultarRutinasTotales($id_Genero)
-	{
-		//Asignando las condiciones de género
-		$condicionGenero = ($id_Genero!="Todos")?'AND Gen.id="'.$id_Genero.'"':"";
-		//Este querie devuelve TODAS las rutinas ordenadas de principiante hasta avanzado.
-		$query = '
-			SELECT
-			Rut.id_rutina,
-			Rut.nb_rutina,
-			Rut.desc_rutina,
-			Rut.fh_Creacion,
-			Usu.nb_nombre,
-			Usu.nb_apellidos,
-			Cat.nb_CategoriaRutina,
-			Gen.id,
-			Gen.nb_TipoRutina,
-			cuerpo.id as id_cuerpo,
-			cuerpo.nb_cuerpo
-			FROM sg_rutinas Rut
-			INNER JOIN sg_usuarios Usu
-			ON Usu.id_usuario=Rut.id_UsuarioCreacion
-			INNER JOIN sg_categoriasrutina Cat
-			ON Cat.id=Rut.id_CategoriaRutina
-			LEFT JOIN sg_generosrutina Gen
-			ON Gen.id= Rut.id_GeneroRutina
-			LEFT JOIN sg_tipocuerpo cuerpo
-			ON cuerpo.id = Rut.id_tipocuerpo
-			where  Rut.sn_activo=1  '.$condicionGenero.'   order by nb_CategoriaRutina desc
-		';	
-		$con=Conectar::_con();
-		$result=$con->query($query) or die("Error en: $query ".mysqli_error($query));
-		return $result;
-	}//_ConsultarRutinasTotales
+	
 	
 	function _ConsultarRutinaPorNombreYCategoria($nb_rutina, $id_CategoriaRutina)
 	{
@@ -1859,23 +1990,7 @@
 		return $result;
 	}//_ConsultarCategoriasRutinas
 	
-	function _ConsultarEntrenadoresConRutinas()
-	{
-		$query='
-			SELECT
-			Rut.id_rutina,
-			Usu.id_usuario
-			FROM sg_rutinas Rut
-			
-			INNER JOIN sg_usuarios Usu
-			ON Rut.id_UsuarioCreacion=Usu.id_usuario
-			WHERE Usu.sn_activo=1
-			ORDER BY Usu.id_usuario
-		';	
-		$con=Conectar::_con();
-		$result=$con->query($query) or die("Error en: $query ".mysqli_error($query));
-		return $result;
-	}//_ConsultarEntrenadoresConRutinas
+	
 	
 	function _ConsultarListaEntrenadoresConRutinasSoloNombres()
 	{
@@ -1896,27 +2011,7 @@
 		return $result;
 	}//_ConsultarListaEntrenadoresConRutinasSoloNombres
 	
-	function _ConsultarCategoriaRutinasDelEntrenador($id_usuario)
-	{
-		$query='
-			SELECT DISTINCT
-			Usu.id_usuario,
-			Cat.id as "id_categoria",
-			Cat.nb_CategoriaRutina
-			FROM sg_rutinas Rut
-			
-			INNER JOIN sg_usuarios Usu
-			ON Rut.id_UsuarioCreacion=Usu.id_usuario
-			INNER JOIN sg_categoriasrutina Cat
-			ON Rut.id_CategoriaRutina=Cat.id
-			WHERE Rut.id_UsuarioCreacion="'.$id_usuario.'"
-			
-			ORDER BY Usu.id_usuario
-		';	
-		$con=Conectar::_con();
-		$result=$con->query($query) or die("Error en: $query ".mysqli_error($query));
-		return $result;
-	}//_ConsultarCategoriaRutinasDelEntrenador
+	
 	
 	function _VerificaExistenciaRutina($nb_rutina, $id_CategoriaRutina)
 	{
@@ -1933,29 +2028,7 @@
 		return $result;
 	}//VerificaExistenciaRutina	
 	
-	function _ConsultarGenerosRutinaPorEntrenador($id_entrenador)
-	{
-		$condicion = ($id_entrenador!="Todos")?'WHERE Rut.id_UsuarioCreacion="'.$id_entrenador.'"':"";
-		$query = '
-				SELECT DISTINCT
-				Gen.nb_TipoRutina,
-				Gen.id
-				
-				FROM sg_rutinas Rut
-				
-				INNER JOIN sg_usuarios Usu
-				ON Rut.id_UsuarioCreacion=Usu.id_usuario
-				INNER JOIN sg_generosrutina Gen
-				on Rut.id_GeneroRutina = Gen.id
-				'.$condicion.'
-				
-				ORDER BY Gen.id
-		';	
-		//echo $query;
-		$con	= Conectar::_con();
- 		$result = $con->query($query) or die("Error en: $query ".mysqli_error($query));
-		return $result;
-	}//_ConsultarGenerosRutinaPorEntrenador
+	
 	
 	function _ConsultarGenerosRutinaPorEntrenadorYTipoRutina($id_entrenador,$id_categoria)
 	{
@@ -2576,13 +2649,7 @@ left JOIN (
 		return $result;
 	}//_ReporteCantidadBiotestClientes
 	
-	function _ConsultarTiposCuerpo()
-	{
-		$query='SELECT * from sg_tipocuerpo';
-		$con=Conectar::_con();
-		$result=$con->query($query) or die("Error en: $query ".mysqli_error($query));
-		return $result;
-	}//_ConsultarTiposCuerpo
+	
 
 	function _ConsultarCuerpoPorTexto($texto)
 	{

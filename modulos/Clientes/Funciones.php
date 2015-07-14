@@ -427,9 +427,70 @@
 
 	function RegistrarForm($Parametros)
 	{
-		$id = $Parametros['id'];
-		$respuestas = R::load("sgformulario",$id);
-		print_r($respuestas);
+		$id         = $Parametros['id'];
+
+		// verificando si el cliente ya tiene un registro previo del formulario
+		// o es el primer registro del mismo.
+		$consultar = new Consultar();
+		$resultado = $consultar->_ConsultarSiClienteHizoElFormulario($id);
+		$cantidad  = count($resultado);
+		if($cantidad>0)
+		{
+			// si entra aquí es que no existe ningún registro y es la primavera vez
+			// que hace el formulario, se procede a registrar.
+			$respuestas = R::dispense("sgformulario");
+		}//if
+		else
+		{
+			//si entra aquí es por que ya hizo el formulario y va a editar valores.
+			$campos     = R::find('sgformulario','id_cliente=?',[$id]);
+			//tomando el id del cliente para cargar el campo correcto del
+			// formulario
+
+			$id_form    = $Parametros['id_form'];
+			$respuestas = R::load("sgformulario",$id_form);
+		}//eñse
+		//Cargando los valores
+		$respuestas->condicion_cardiaca 	   = $Parametros['condicion_cardiaca'];
+		$respuestas->condicion_pecho    	   = $Parametros['condicion_pecho'];
+		$respuestas->condicion_pechoreciente   = $Parametros['condicion_pechoreciente'];
+		$respuestas->condicion_balance    	   = $Parametros['condicion_balance'];
+		$respuestas->lesion_fisica    	       = $Parametros['lesion_fisica'];
+		$respuestas->medicamentos_corazon      = $Parametros['medicamentos_corazon'];
+		$respuestas->impedimento_entrenamiento = $Parametros['impedimento_entrenamiento'];
+		$respuestas->lecturas_anormales 	   = $Parametros['lecturas_anormales'];
+		$respuestas->cirujia_bypass 	       = $Parametros['cirujia_bypass'];
+		$respuestas->dificultad_respirar 	   = $Parametros['dificultad_respirar'];
+		$respuestas->enfermedades_renales 	   = $Parametros['enfermedades_renales'];
+		$respuestas->arritmia 	               = $Parametros['cirujia_bypass'];
+		$respuestas->colesterol 	           = $Parametros['colesterol'];
+		$respuestas->presion_alta 	           = $Parametros['presion_alta'];
+		$respuestas->cantidad_cigarros 	       = $Parametros['cantidad_cigarros'];
+		$respuestas->molestias_articulaciones  = $Parametros['molestias_articulaciones'];
+		$respuestas->molestias_espalda 	       = $Parametros['molestias_espalda'];
+		$respuestas->desayuno_diario 	       = $Parametros['desayuno_diario'];
+		$respuestas->comida_diaria 	           = $Parametros['comida_diaria'];
+		$respuestas->cena_diaria 	           = $Parametros['cena_diaria'];
+		$respuestas->entrecomida_diaria 	   = $Parametros['entrecomida_diaria'];
+		$respuestas->frecuencia_entrecomida    = $Parametros['frecuencia_entrecomida'];
+		$respuestas->plan_alimenticio 	       = $Parametros['plan_alimenticio'];
+		$respuestas->intensidad_ejercicio 	   = $Parametros['intensidad_ejercicio'];
+		$respuestas->intensidad_ejercicio2 	   = $Parametros['intensidad_ejercicio2'];
+		$respuestas->intensidad_ejercicio3 	   = $Parametros['intensidad_ejercicio3'];
+		$respuestas->intensidad_ejercicio4 	   = $Parametros['intensidad_ejercicio4'];
+		$respuestas->intensidad_ejercicio5 	   = $Parametros['intensidad_ejercicio5'];
+		$respuestas->programa_ejercicio 	   = $Parametros['programa_ejercicio'];
+		$respuestas->actividades_deseables 	   = $Parametros['actividades_deseables'];
+		$respuestas->actividades_indeseables   = $Parametros['actividades_indeseables'];
+		$respuestas->deporte_frecuente 	       = $Parametros['deporte_frecuente'];
+		$respuestas->minutos_dia 	           = $Parametros['minutos_dia'];
+		$respuestas->dias_semana 	           = $Parametros['dias_semana'];
+		$respuestas->resultado_ejercicio 	   = $Parametros['resultado_ejercicio'];
+		R::freeze(1);
+		$respuesta = R::store($respuestas);
+		$exito     = (is_numeric($respuesta))?1:0;
+		$datos     = array("exito"=>$exito);
+		return $datos;
 	}//RegistrarForm
 
 	function EjecutarTransaccion($objeto)

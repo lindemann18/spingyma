@@ -138,7 +138,19 @@ por problemas con mayúsculas.
 	por dias_semana	
 76) el campo Resultado_Ejercicio de la tabla sgformulario se cambió por
 	por resultado_ejercicio	
-
+77) la tabla sg_categoriasrutina se cambió por sgcategoriasrutina, problema
+	Noguion.
+78) el campo nb_CategoriaRutina de la tabla	sgcategoriasrutina se cambíó por
+	nb_categoriarutina
+78) el campo desc_CategoriaRutina de la tabla	sgcategoriasrutina se cambíó por
+	desc_categoriarutina
+79) la tabla sg_generosrutina se cambió por sggenerosrutina, problema
+	Noguion.			
+80) el campo nb_TipoRutina de la tabla sggenerosrutina se cambíó por
+	nb_tiporutina	
+81) el campo desc_TipoRutina de la tabla sggenerosrutina se cambíó por
+	desc_tiporutina
+82) el campo fh_Creacion de la tabla sgrutina se cambió por fh_creacion			
 
 
 

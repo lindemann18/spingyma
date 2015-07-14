@@ -109,6 +109,36 @@
 			echo json_encode($salidaJson);
 		break;
 
+		case 'Rutinas':
+			$salidaJson = Rutinas($Parametros);
+			echo json_encode($salidaJson);
+		break;
+
+		case 'BuscarCategoriasPorEntrenador':
+			$salidaJson = BuscarCategoriasPorEntrenador($Parametros);
+			echo json_encode($salidaJson);
+		break;
+
+		case 'FiltrarRutinas':
+			$salidaJson = FiltrarRutinas($Parametros);
+			echo json_encode($salidaJson);
+		break;
+
+		case 'RutinasAgregarCategorias':
+			$salidaJson = RutinasAgregarCategorias($Parametros);
+			echo json_encode($salidaJson);
+		break;
+
+		case 'VerificarRutina':
+			$salidaJson = VerificarRutina($Parametros);
+			echo json_encode($salidaJson);
+		break;
+
+		case 'AgregarRutina':
+			$salidaJson = AgregarRutina($Parametros);
+			echo json_encode($salidaJson);
+		break;
+
 		//Secciones Viejas
 		case 'AgregaMusculo':
 			$nb_musculo	   = $Parametros['nb_musculo'];
@@ -262,7 +292,7 @@
 			echo json_encode($salidaJson);
 		break;
 		
-		case 'AgregarRutina':
+		case 'AgregarRutina1':
 			
 			//Llamando a la función de edición
 			
@@ -854,6 +884,185 @@
 		return $datos;
 	}//FiltrarEjerciciosTipoRutina
 
+	function Rutinas($Parametros)
+	{
+		$consultar = new Consultar();
+		//consultar rutinas
+		$rutinas   = $consultar->_ConsultarRutinasTotales();
+		$cantidad  = count($rutinas);
+		$exito     = ($cantidad>0)?1:0;
+		
+		//consultar tipos de rutinas
+		$tipos_rut = $consultar->_ConsultarCategoriaRutinas();
+		$cantidadt = count($tipos_rut);
+		$exitot    = ($cantidadt>0)?1:0;
+
+		//Consultar géneros de las rutinas
+		$generos   = $consultar->_ConsultarGenerosRutina();
+		$cantidadg = count($generos);
+		$exitog    = ($cantidadg>0)?1:0;
+		if($exitog==1)
+		{
+			//inyectando  la opción todos a la lista de géneros
+			$todos = array("id"=>"Todos","nb_tiporutina"=>"Todos");
+			array_push($generos,$todos);
+		}
+
+		//consultar entrenadores
+		$entrenadores = $consultar->_ConsultarEntrenadoresConRutinas();
+		$cantidade    = count($entrenadores);
+		$exitoe       = ($cantidade>0)?1:0;
+		if($exitoe==1)
+		{
+			//inyectando  la opción todos a la lista de géneros
+			$todose = array("id"=>"Todos","nombre"=>"Todos");
+			array_push($entrenadores,$todose);
+		}
+
+		$datos     = array("exito"=>$exito,"rutinas"=>$rutinas,"exitot"=>$exitot,
+						   "tipos_rut"=>$tipos_rut,"exitog"=>$exitog,"generos"=>$generos,
+						   "exitoe"=>$exitoe,"entrenadores"=>$entrenadores);
+		return $datos;
+	}//Rutinas
+
+	function BuscarCategoriasPorEntrenador($Parametros)
+	{
+		$id = $Parametros['id'];
+		$consultar = new Consultar();
+		//Definiendo el tipo de busqueda
+		if($id!="Todos")
+		{
+			$tipos_rut  = $consultar->_ConsultarCategoriaRutinaPorEntrenador($id);
+			$generos    = $consultar->_ConsultarGenerosRutinaPorEntrenador($id);
+		}//if
+		else
+		{
+			$tipos_rut = $consultar->_ConsultarCategoriaRutinas();
+			$generos   = $consultar->_ConsultarGenerosRutina();
+		}
+
+		$cantidad = count($tipos_rut);
+		$exito    = ($cantidad>0)?1:0;
+		if($exito==1)
+		{
+			//inyectando  la opción todos a la lista de tipos rutina
+			$todos = array("id"=>"Todos","nb_categoriarutina"=>"Todos");
+			array_push($tipos_rut,$todos);
+		}//if
+
+		$cantidadg = count($generos);
+		$exitog    = ($cantidadg>0)?1:0;
+		if($exitog==1)
+		{
+			//inyectando  la opción todos a la lista de géneros
+			$todos = array("id"=>"Todos","nb_tiporutina"=>"Todos");
+			array_push($generos,$todos);
+		}
+
+		$datos    = array("exito"=>$exito,"tipos_rut"=>$tipos_rut,"exitog"=>$exitog,
+						   "generos"=>$generos);
+		return $datos;
+	}//BuscarCategoriasPorEntrenador
+
+	function FiltrarRutinas($Parametros)
+	{
+		//Tomando los criterios de búsqueda
+		$entrenador  = $Parametros['entrenador'];
+		$tipo_rutina = $Parametros['tipo_rutina'];
+		$genero 	 = $Parametros['genero'];
+		$consultar   = new Consultar();
+		//Obteniendo las rutinas filtradas.
+		$rutinas     = $consultar->_ConsultarRutinasFiltradas($entrenador,$tipo_rutina,$genero);
+		$cantidad    = count($rutinas);
+	 	$exito       = ($rutinas!="Error")?1:0;
+	 	$datos       = array("exito"=>$exito,"cantidad"=>$cantidad,"rutinas"=>$rutinas);
+	 	return $datos;
+	}//FiltrarRutinas
+
+	function RutinasAgregarCategorias($Parametros)
+	{
+		$consultar = new Consultar();
+		
+		//consultar tipos de rutinas
+		$cat_rut = $consultar->_ConsultarCategoriaRutinas();
+		$cantidadt = count($cat_rut);
+		$exitot    = ($cantidadt>0)?1:0;
+		$tiposrutina = array();
+		//eliminando la opción todos
+		if($exitot==1)
+		{	foreach($cat_rut as $key)
+			{
+				//$key       = array_search('Todos',$tipos_rut);
+			 	if($key['nb_categoriarutina']!="Todos")
+			 	{
+			 		array_push($tiposrutina,$key);
+			 	}
+			}
+			//unset($tipos_rut[$key]);
+		}//if
+		
+
+		//Consultar géneros de las rutinas
+		$generos   = $consultar->_ConsultarGenerosRutina();
+		$cantidadg = count($generos);
+		$exitog    = ($cantidadg>0)?1:0;
+		
+
+		//Consultando los tipos de cuerpos
+		$cuerpos   = $consultar->_ConsultarTiposCuerpo();
+		$cantidadc = count($cuerpos);
+		$exitoc    = ($cantidadc>0)?1:0;
+
+		//Consultando las categorias de las rutinas
+		$tiposRut  = $consultar->_ConsultarTiposRutina();
+		$cantidadr = count($tiposRut);
+		$exitor    = ($cantidadr>0)?1:0;
+
+		$datos     = array("exitot"=>$exitot,"cat_rut"=>$tiposrutina,"exitog"=>$exitog,
+						   "generos"=>$generos,"exitoc"=>$exitoc,"cuerpos"=>$cuerpos,
+						   "exitor"=>$exitor,"tiposRut"=>$tiposRut);
+		return $datos;
+	}//RutinasAgregarCategorias
+
+	function VerificarRutina($Parametros)
+	{
+		//Tomando  los criterios de búsqueda
+		$nb_rutina = $Parametros['nb_rutina'];
+		$categoria = $Parametros['categoria'];
+		$cuerpo    = $Parametros['cuerpo'];
+		$genero    = $Parametros['genero'];
+		//Buscando una rutina con estos criterios
+		$rutina    = R::find( 'sgrutinas', 'nb_rutina = ? and id_categoriarutina = ? and id_generorutina=? and id_tipocuerpo= ?', [$nb_rutina,$categoria,$genero,$cuerpo]);
+		$cantidad  = count($rutina);
+		$exito     = ($cantidad==0)?1:0;
+		$datos     = array("exito"=>$exito);
+		return $datos;
+	}//VerificarRutina
+
+	function AgregarRutina($Parametros)
+	{
+		//Creando la rutina
+		print_r($Parametros);
+		session_start();
+		date_default_timezone_set("America/Chihuahua");
+		$fh_creacion = date("Y-m-d"); //fecha del día de hoy
+		$id_usuario 			    = $_SESSION['Sesion']['id_usuario'];
+		$rutina 				    = R::dispense("sgrutinas");
+		$rutina->id_usuariocreacion = $id_usuario;
+		$rutina->nb_rutina          = $Parametros['categoria'];
+		$rutina->id_generorutina    = $Parametros['genero'];
+		$rutina->id_tipocuerpo      = $Parametros['cuerpo'];
+		$rutina->nb_rutina          = $Parametros['nb_rutina'];
+		$rutina->nb_rutina          = $Parametros['nb_rutina'];
+		$rutina->desc_rutina        = $Parametros['desc_rutina'];
+		$rutina->sn_activo          = 1;
+		$rutina->fh_creacion        = $fh_creacion;
+		$respuesta 					= EjecutarTransaccion($rutina);
+		$exito  					= (is_numeric($respuesta))?1:0;
+		$datos 						= array("exito"=>$exito);
+		return $datos;
+	}//AgregarRutina
+
 	// funciones Viejas
 
 	//Apartado de músculos	
@@ -1134,7 +1343,7 @@
 		return $salidaJson;
 	}//VerificaExistenciaRutina
 	
-	function AgregarRutina($Parametros)
+	function AgregarRutina1($Parametros)
 	{
 		session_start();
 		$agregar 			= new Agregar();

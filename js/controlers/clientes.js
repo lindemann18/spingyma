@@ -363,6 +363,11 @@ $scope.SiguienteForm = function()
 	  });
 }//SiguienteForm
 
+$scope.Redirigir = function(direccion)
+{
+	$methodsService.Redirigir(direccion);
+}//Redirigir
+
 })//formcontroller
 
 .controller('formcontroller2',function($scope,$http,$location,$methodsService,$routeParams,respservice,$cookies){
@@ -370,6 +375,11 @@ $scope.SiguienteForm = function()
 	console.log($scope.resp);
 
 //funciones
+$scope.Redirigir = function(direccion)
+{
+	$methodsService.Redirigir(direccion);
+}//Redirigir
+
 $scope.RegistrarForm = function()	
 {
 	bootbox.confirm("Desea pasar al siguiente formulario?", function(result) {
@@ -385,7 +395,16 @@ $scope.RegistrarForm = function()
 			        })
 			         .success(function(data, status, headers, config) 
 			         {          	
-				         
+				         exito = data.exito;
+				         if(exito==1)
+				         {
+				         	$methodsService.alerta(1,"Datos Guardados!");
+				         	$cookies.remove("resp");
+				         }//if
+				         else
+				         {
+				         	$methodsService.alerta(2,"algo falló, disculpe las molestias");
+				         }
 			          })  
 			         .error(function(data, status, headers, config){
 			         	$methodsService.alerta(2,"algo falló, disculpe las molestias");

@@ -1,7 +1,7 @@
 
-var miModulo = angular.module("Methods", []);
+var miModulo = angular.module("Factorymethods", []);
 
- 	miModulo.service('$methodsService', function($location){
+ 	miModulo.service('$factoryService', function($location){
     	
 		this.alerta = function(tipo_cambio,texto)
 		{
@@ -171,70 +171,4 @@ var miModulo = angular.module("Methods", []);
 			}
 			return years;
 		};
-
-		this.VerificarDiaPorCodigo = function(Dia)
-		{
-			switch(Dia)
-			{
-				case 'Ejercicio_Lunes':
-					DiaActual="1";
-				break;
-				case 'Ejercicio_Martes':
-					DiaActual="2";
-				break;
-				case 'Ejercicio_Miercoles':
-					DiaActual="3";
-				break;
-				case 'Ejercicio_Jueves':
-					DiaActual="4";
-				break;
-				case 'Ejercicio_Viernes':
-					DiaActual="5";
-				break;
-				case 'Ejercicio_Sabado':
-					DiaActual="6";
-				break;
-				case 'Ejercicio_Domingo':
-					DiaActual="7";
-				break;
-			}//switch
-			return DiaActual;
-		}//VerificarDiaPorCodigo
-
-		this.CambiarDiaActualRutina = function(DiaRutina)
-		{
-			switch(DiaRutina)
-			{
-				case 'Ejercicio_Lunes':
-					DiaRutinaActual='Ejercicio_Martes';
-				break;
-				
-				case 'Ejercicio_Martes':
-					DiaRutinaActual='Ejercicio_Miercoles';
-				break;
-				
-				case 'Ejercicio_Miercoles':
-					DiaRutinaActual='Ejercicio_Jueves';
-				break;
-				
-				case 'Ejercicio_Jueves':
-					DiaRutinaActual='Ejercicio_Viernes';
-				break;
-				
-				case 'Ejercicio_Viernes':
-					DiaRutinaActual='Ejercicio_Sabado';
-				break;
-				
-				case 'Ejercicio_Sabado':
-					DiaRutinaActual='Ejercicio_Domingo';
-				break;
-				
-				case 'Ejercicio_Domingo':
-					DiaRutinaActual='Ejercicio_Terminado';
-				break;
-				
-			}//switch
-			
-			return DiaRutinaActual;
-		}
     })	

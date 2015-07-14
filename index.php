@@ -16,6 +16,7 @@
 <script src="js/methods.js"></script>
 <script src="js/controlers/utilidades.js"></script>
 <script src="js/controlers/componentesrutinas.js"></script>
+<script src="js/controlers/rutinas.js"></script>
 <script src="js/controlers/clientes.js"></script>
 <!-- css -->
 <link rel="stylesheet" href="css/loading.css" />
@@ -44,7 +45,7 @@
 </html>
 
 <script type="text/javascript">
-	angular.module('app',['ngRoute','AppUsuarios','Methods','AppUtilidades','AppRutinasComp','AppClientes','ngCookies'])
+	angular.module('app',['ngRoute','AppUsuarios','Methods','AppUtilidades','AppRutinasComp','AppClientes','ngCookies','Rutinas'])
 	.config(function($routeProvider)
 	{
 	    $routeProvider
@@ -137,6 +138,16 @@
 	    .when('/EditarEjercicio',{
 	    	controller: 'EjercicioEditar',
 	      	templateUrl:'modulos/Rutinas/Ejercicio_Editar.html'
+	    })
+
+	    .when('/Rutinas',{
+	    	controller: 'infoRutinas',
+	      	templateUrl:'modulos/Rutinas/Rutinas.html'
+	    })
+
+	    .when('/AgregarRutina',{
+	    	controller: 'RutinaAgregar',
+	      	templateUrl:'modulos/Rutinas/Rutinas_Registrar.html'
 	    })
 
 	    .when('/Error',{

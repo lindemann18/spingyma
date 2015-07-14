@@ -182,7 +182,7 @@ $scope.Registro = function()
 
 	$scope.editar = function()
 	{
-		bootbox.confirm("Desea Agregar un tipo de rutina?", function(result) {
+		bootbox.confirm("Desea Editar un tipo de rutina?", function(result) {
 		console.log(result);
 	  	if(result==true)
 	  	{
