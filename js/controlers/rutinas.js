@@ -287,31 +287,8 @@ $scope.veriricarRutina = function()
       {
         $scope.$apply(function(){
             //Tomando las tipos de rutina
-            CantidadTiposRutina=document.getElementById("bootstrap-duallistbox-nonselected-list_duallistbox_demo2").length;
-            if($scope.tiposRut.length == CantidadTiposRutina)
-            {
-              $methodsService.alerta(2,"Seleccione Tipos de Rutinas");
-            }//if
-            else
-            {
-              DiaRutina=new Array();
-              $(".box2 .Actividad").each(function(){
-                    TipoRutina=$(this).val(); //Valor de la rutina tomada de las que están seleccionadas.
-                    DiaRutina.push(TipoRutina); //Insertando las Rutinas en el array.
-                });
-              console.log(DiaRutina);
-              $scope.id_dia
-              Contador         = 0;
-              TotalActividades = DiaRutina.length;
-              //Estableciendo las cookies de lo valores
-              $cookies.put("Contador",Contador);//Se guarda en una cookie para ir acarreando el dato.
-              $.cookie("TotalActividades",TotalActividades); //Número total de actividades con el que se comara el contador.
-              $cookies.put("Contador",Contador);
-              $cookies.put("DiaRutina",DiaRutina);
-              Rut = DiaRutina[Contador];
-            }//else
-             
-
+            CantidadTiposRutina=document.getElementById("-duallistbox-selected-list_duallistbox_demo2").length;
+            
         });
       }//if
   });
@@ -340,11 +317,17 @@ $scope.veriricarRutina = function()
             //console.log($scope.tiposRut);
             //Pegando los tipos rut en la tabla de selección
             var size = $scope.tiposRut.length;
-            
+            var demo2 = $('.demo2').bootstrapDualListbox({
+              nonSelectedListLabel: 'Non-selected',
+              selectedListLabel: 'Selected',
+              preserveSelectionOnMove: 'moved',
+              moveOnSelect: false,
+              nonSelectedFilter: 'ion ([7-9]|[1][0-2])'
+            });
             for(i=0; i<size; i++)
             {
               var object = $scope.tiposRut[i];
-              var row ='<option value="'+object.id+'" class="Actividad">'+object.nb_tiporutina+'</option>';
+              var row ='<option value="'+object.id+'">'+object.nb_tiporutina+'</option>';
               demo2.append(row);
               demo2.bootstrapDualListbox('refresh');
              // $("#bootstrap-duallistbox-nonselected-list_duallistbox_demo2").append(row);
@@ -359,7 +342,3 @@ $scope.veriricarRutina = function()
       $methodsService.alerta(2,"algo falló, disculpe las molestias");
      });
 })//RutinaCompleja
-
-.controller('RutinaAgregar2',function($scope,$http,$location,$methodsService,$q,$cookies){
-  alert("hola dude");
-})//RutinaAgregar2
