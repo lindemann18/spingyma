@@ -37,7 +37,7 @@
                     <!-- HEADER DEL CONTENIDO-->
 
                     <!-- FORMULARIO -->
-                    <form ng-submit="ComenzarSeleccion()">
+                    <form >
                     <!-- RENGLON CON EL FORMULARIO Y DOS COLUMNAS-->
                     <div class="row">
                     	<!-- COLUMNA IZQUIERDA -->
@@ -86,7 +86,7 @@
                     <!-- RENGLON CON EL FORMULARIO Y DOS COLUMNAS-->
                     
                     <div class="row Botones">
-                    	<div class="col-md-6" align="right"><button type="submit" class="btn btn-primary">REGISTRAR</button></div>
+                    	<div class="col-md-6" align="right"><button type="submit" class="btn btn-primary"ng-click="ComenzarSeleccion()">REGISTRAR</button></div>
                         <div class="col-md-6" align="left"><button type="reset" class="btn btn-danger" onclick="window.location='index.php?nav=Ejercicios';">CANCELAR</button></div>
                     </div>
                     </form>

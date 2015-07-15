@@ -144,6 +144,11 @@
 			echo json_encode($salidaJson);
 		break;
 
+		case 'BuscarEjerciciosPorRutina':
+			$salidaJson = BuscarEjerciciosPorRutina($Parametros);
+			echo json_encode($salidaJson);
+		break;
+
 
 		//Secciones Viejas
 		case 'AgregaMusculo':

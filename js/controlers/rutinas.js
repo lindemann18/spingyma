@@ -286,9 +286,31 @@ $scope.veriricarRutina = function()
     if(result==true)
       {
         $scope.$apply(function(){
-            //Tomando las tipos de rutina
-            CantidadTiposRutina=document.getElementById("-duallistbox-selected-list_duallistbox_demo2").length;
-            
+             //Tomando las tipos de rutina
+            CantidadTiposRutina=document.getElementById("bootstrap-duallistbox-nonselected-list_duallistbox_demo2");
+
+            if(CantidadTiposRutina.length==$scope.tiposRut.length)
+            {
+                $methodsService.alerta(2,"Favor de seleccionar tipos de rutinas");
+            }//if
+            else
+            {
+                // Definiendo variables y cookies para la selecciónd e ejercicios de las rutinas
+                DiaRutina=new Array(); //Array donde se guardarán los tipos de rutina para este día.
+                $(".box2 .Actividad").each(function(){
+                  TipoRutina=$(this).val(); //Valor de la rutina tomada de las que están seleccionadas.
+                  DiaRutina.push(TipoRutina); //Insertando las Rutinas en el array.
+                });//each
+                console.log(DiaRutina);
+                Contador=0;//Contador de actividades
+                TotalActividades=DiaRutina.length;
+                $cookies.put("Contador",Contador); //Se guarda en una cookie para ir acarreando el dato.
+                $cookies.put("TotalActividades",TotalActividades); //Número total de actividades con el que se comara el contador.
+                $cookies.put("DiaRutina",DiaRutina); //Vector con las rutinas que deben hacerse.
+                Rut=DiaRutina[Contador];
+                //Redirigiendo a la selección de ejercicios.
+                $location.path('/AgregarRutina2').search({Day:$scope.id_dia,Rut:Rut});
+            } //ELSE              
         });
       }//if
   });
@@ -317,21 +339,14 @@ $scope.veriricarRutina = function()
             //console.log($scope.tiposRut);
             //Pegando los tipos rut en la tabla de selección
             var size = $scope.tiposRut.length;
-            var demo2 = $('.demo2').bootstrapDualListbox({
-              nonSelectedListLabel: 'Non-selected',
-              selectedListLabel: 'Selected',
-              preserveSelectionOnMove: 'moved',
-              moveOnSelect: false,
-              nonSelectedFilter: 'ion ([7-9]|[1][0-2])'
-            });
+            
             for(i=0; i<size; i++)
             {
               var object = $scope.tiposRut[i];
-              var row ='<option value="'+object.id+'">'+object.nb_tiporutina+'</option>';
+              var row ='<option value="'+object.id+'" class="Actividad">'+object.nb_tiporutina+'</option>';
               demo2.append(row);
-              demo2.bootstrapDualListbox('refresh');
-             // $("#bootstrap-duallistbox-nonselected-list_duallistbox_demo2").append(row);
             }//for
+             demo2.bootstrapDualListbox('refresh');
           }//if
           else
           {
@@ -342,3 +357,25 @@ $scope.veriricarRutina = function()
       $methodsService.alerta(2,"algo falló, disculpe las molestias");
      });
 })//RutinaCompleja
+
+.controller('RutinaAgregar2',function($scope,$http,$location,$methodsService,$q,$cookies,$routeParams){
+ //Variables
+ $scope.Day = $routeParams.Day;
+ $scope.Rut = $routeParams.Rut;
+ $scope.dia = $methodsService.DefinirDia($scope.Day);
+
+ //Buscando los ejercicios por tipos de rutina.
+ params = $methodsService.Json("BuscarEjerciciosPorRutina",$scope.Rut);
+  var url = 'modulos/Rutinas/Funciones.php';
+     $http({method: "post",url: url,data: $.param({Params:params}), 
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
+     .success(function(data, status, headers, config) 
+     {            
+          
+      })  
+     .error(function(data, status, headers, config){
+      $methodsService.alerta(2,"algo falló, disculpe las molestias");
+     });
+
+})
