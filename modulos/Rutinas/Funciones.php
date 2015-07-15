@@ -1087,6 +1087,17 @@
 		return $datos;
 	}//InfoRutinaCompleja
 
+	function BuscarEjerciciosPorRutina($Parametros)
+	{
+		$tipoRutina = $Parametros['id'];
+		$consultar  = new Consultar();
+		$ejercicios = $consultar->_ConsultarEjerciciosPorTipoRutina($tipoRutina);
+		$cantidad   = count($ejercicios);
+		$exito      = ($cantidad>0)?1:0;
+		$datos      = array("exito"=>$exito,"ejercicios"=>$ejercicios);
+		return $datos;
+	}//BuscarEjerciciosPorRutina
+
 	// funciones Viejas
 
 	//Apartado de músculos	

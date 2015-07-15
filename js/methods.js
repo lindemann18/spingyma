@@ -243,25 +243,25 @@ var miModulo = angular.module("Methods", []);
 			switch(Dia)
 		{
 			case '1':
-				DiaRutina="LUNES";
+				DiaRutina="Lunes";
 			break;
 			case '2':
-				DiaRutina="MARTES";
+				DiaRutina="Martes";
 			break;
 			case '3':
-				DiaRutina="MIERCOLES";
+				DiaRutina="Miercoles";
 			break;
 			case '4':
-				DiaRutina="JUEVES";
+				DiaRutina="Jueves";
 			break;
 			case '5':
-				DiaRutina="VIERNES";
+				DiaRutina="Viernes";
 			break;
 			case '6':
-				DiaRutina="SABADO";
+				DiaRutina="Sabado";
 			break;
 			case '7':
-				DiaRutina="DOMINGO";
+				DiaRutina="Domingo";
 			break;
 			
 		}//switch

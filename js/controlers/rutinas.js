@@ -126,9 +126,12 @@ var url = 'modulos/Rutinas/Funciones.php';
      });
 })
 
-.controller('RutinaAgregar',function($scope,$http,$location,$methodsService,$q,$cookies){
+.controller('RutinaAgregar',function($scope,$http,$location,$methodsService,$q,$cookies,$rootScope){
 //Variables
-
+/*var cookies = $cookies.getAll();
+angular.forEach(cookies, function (v, k) {
+    $cookies.remove(k);
+});*/
 
 //Funciones
 $scope.AgregarRutina = function()
@@ -139,7 +142,7 @@ $scope.AgregarRutina = function()
   $scope.estructuraRutina();
   var lunes = $scope.rutina.lunes;
 
-  $scope.estructuraRutina();
+  $scope.estructuraRutina(); //Inicializando el objeto TipoRutinaDias
   $scope.TipoRutinaDias.lunes     = $("#lunes option:selected").text();
   $scope.TipoRutinaDias.martes    = $("#martes option:selected").text();
   $scope.TipoRutinaDias.miercoles = $("#miercoles option:selected").text();
@@ -147,9 +150,10 @@ $scope.AgregarRutina = function()
   $scope.TipoRutinaDias.viernes   = $("#viernes option:selected").text();
   $scope.TipoRutinaDias.sabado    = $("#sabado option:selected").text();
   $scope.TipoRutinaDias.domingo   = $("#domingo option:selected").text();
-  
+  var resps = JSON.stringify($scope.TipoRutinaDias);
+  $cookies.put('TiposRutinasSemana', resps)
   // Definiendo las cookies de los días.
-  $cookies.put("TiposRutinasSemana",$scope.TipoRutinaDias);
+  //$cookies.put("TiposRutinasSemana",$scope.TipoRutinaDias);
   $cookies.put('id_CategoriaRutina', $scope.rutina.categoria);
   $cookies.put('Ejercicio_Lunes', $scope.TipoRutinaDias.lunes);
   $cookies.put('Ejercicio_Martes', $scope.TipoRutinaDias.martes);
@@ -274,10 +278,11 @@ $scope.veriricarRutina = function()
 
 })//RutinaAgregar
 
-.controller('RutinaCompleja',function($scope,$http,$location,$methodsService,$q,$cookies,$routeParams){
+.controller('RutinaCompleja',function($scope,$http,$location,$methodsService,$q,$cookies,$routeParams,$rootScope){
   //Variables
   $scope.id_dia    = $routeParams.Day;
   $scope.DiaActual = $methodsService.DefinirDia($scope.id_dia);
+  $scope.btnactiv  = false;
   
   //funciones
   $scope.ComenzarSeleccion = function()
@@ -358,11 +363,114 @@ $scope.veriricarRutina = function()
      });
 })//RutinaCompleja
 
-.controller('RutinaAgregar2',function($scope,$http,$location,$methodsService,$q,$cookies,$routeParams){
+.controller('RutinaAgregar2',function($scope,$http,$location,$methodsService,$q,$cookies,$routeParams,$rootScope){
  //Variables
  $scope.Day = $routeParams.Day;
  $scope.Rut = $routeParams.Rut;
  $scope.dia = $methodsService.DefinirDia($scope.Day);
+
+ //Funciones
+ $scope.FuncionDia = function(dia)
+ {
+    rutina = "";
+    switch(dia)
+    {
+      case '1':
+        rutina = $scope.TiposRutinasVector.lunes;
+      break;
+
+      case '2':
+        rutina = $scope.TiposRutinasVector.martes;
+      break;
+
+      case '3':
+        rutina = $scope.TiposRutinasVector.miercoles;
+      break;
+
+      case '4':
+        rutina = $scope.TiposRutinasVector.jueves;
+      break;
+
+      case '5':
+        rutina = $scope.TiposRutinasVector.viernes;
+      break;
+
+      case '6':
+        rutina = $scope.TiposRutinasVector.sabado;
+      break;
+
+      case '7':
+        rutina = $scope.TiposRutinasVector.domingo;
+      break;
+    }//switch
+    return rutina;
+ }//FuncionDIa
+
+ $scope.GuardarEjercicios = function()
+ {
+    //Verificando si se eligieron ejercicios
+     $scope.btnactiv = true;
+     bootbox.confirm("Desea agregar estos ejercicios?", function(result) {
+    if(result==true)
+      {
+        $scope.$apply(function(){
+             //Tomando las tipos de rutina
+            CantidadTiposRutina=document.getElementById("bootstrap-duallistbox-nonselected-list_duallistbox_demo2");
+
+            if(CantidadTiposRutina.length==$scope.ejercicios.length)
+            {
+                //Si entra aquí es por que no había ejercicios seleccionados.
+                $methodsService.alerta(2,"Favor de seleccionar tipos de rutinas");
+                $scope.btnactiv = false;
+            }//if
+            else
+            {
+                $scope.btnactiv = false;
+                // Definiendo variables y cookies para la selecciónd e ejercicios de las rutinas
+                DiaRutina = new Array(); //Array donde se guardarán los tipos de rutina para este día.
+                $(".box2 .Actividad").each(function(){
+                  TipoRutina=$(this).val(); //Valor de la rutina tomada de las que están seleccionadas.
+                  DiaRutina.push(TipoRutina); //Insertando las Rutinas en el array.
+                });//each
+                
+                //Aquí se procede a obtener los datos para guardar los ejercicios.
+                CantidadEjercicios = DiaRutina.length;
+                id_tiporutina      = $scope.ejercicios[0].id_tiporutina;
+                Arr=new Object();
+                Arr['id_dia']             = $scope.dia;
+                Arr['id_CategoriaRutina'] = id_CategoriaRutina;     
+                Arr['EjerciciosRutina']   = EjerciciosRutina;
+                Arr['CantidadEjercicios'] = CantidadEjercicios;
+                Arr['id_TipoRutina']    = id_TipoRutina;
+                Arr['Accion']       = "RegistrarEjerciciosRutinas";
+            } //ELSE              
+        });
+      }//if
+  });
+ }//GuardarEjercicios
+
+ //Situaciones
+
+
+ //inicializando el bootlist
+  var demo2 = $('.demo2').bootstrapDualListbox({
+          nonSelectedListLabel: 'Non-selected',
+          selectedListLabel: 'Selected',
+          preserveSelectionOnMove: 'moved',
+          moveOnSelect: false
+  });
+
+  //Obteniendo los datos de las cookies.
+  //Añadiendo la cabeza del tipo de rutina que tendrá
+  ContadorRutinasDiasTitulo = $cookies.get("ContadorRutinasDias"); //Contador.
+  TiposRutinasSemana = $cookies.get('TiposRutinasSemana');
+  $scope.TiposRutinasVector = JSON.parse(TiposRutinasSemana); // Tomando los valores para los dias de rutina
+  var tiporutinaPordia = $scope.FuncionDia($scope.Day); //Tomando el tipo de rutina por dia
+  $scope.TipoRutinaTitulo = "Tipo de Rutina: "+tiporutinaPordia; // Asignando el scope el texto
+  
+  //Variables para manejo de rutina
+  $scope.DiaActual       = 0;
+  $scope.RutinaSiguiente = 0;
 
  //Buscando los ejercicios por tipos de rutina.
  params = $methodsService.Json("BuscarEjerciciosPorRutina",$scope.Rut);
@@ -372,7 +480,25 @@ $scope.veriricarRutina = function()
     })
      .success(function(data, status, headers, config) 
      {            
-          
+          exito =  data.exito;
+          if(exito==1)
+          {
+            $scope.ejercicios = data.ejercicios;
+            //Pegando los datos al select
+            var size = $scope.ejercicios.length;
+            
+            for(i=0; i<size; i++)
+            {
+              var object = $scope.ejercicios[i];
+              var row ='<option value="'+object.id+'" class="Actividad">'+object.nb_ejercicio+'</option>';
+              demo2.append(row);
+            }//for
+             demo2.bootstrapDualListbox('refresh');
+          }//if
+          else
+          {
+            $methodsService.alerta(2,"algo falló, disculpe las molestias");      
+          }//else
       })  
      .error(function(data, status, headers, config){
       $methodsService.alerta(2,"algo falló, disculpe las molestias");

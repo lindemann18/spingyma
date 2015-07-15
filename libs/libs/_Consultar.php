@@ -547,7 +547,7 @@
 			Ej.id,
 			Ej.desc_ejercicio,
 			Ej.nb_ejercicio,
-			Ej.id_TipoRutina,
+			Ej.id_tiporutina,
 			Us.nb_nombre,
 			Us.nb_apellidos,
 			Mus.nb_musculo,
