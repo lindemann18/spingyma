@@ -1105,7 +1105,50 @@
 
 	function RegistrarEjerciciosRutinas($Parametros)
 	{
-		print_r($Parametros);
+		//Tomando los datos
+		session_start();
+		$id_dia             = $Parametros['id_dia'];
+		$id_CategoriaRutina = $Parametros['id_CategoriaRutina'];
+		$id_TipoRutina      = $Parametros['id_TipoRutina'];
+		$ejerciciosAgregar  = $Parametros['EjerciciosRutina'];
+		$cantidad           = count($ejerciciosAgregar);
+		$id_rutina          = $_SESSION['id_rutina'];
+		$id_usuario         = $_SESSION['Sesion']['id_usuario'];
+		$errores            = array(); //Reporte de errrores
+		$guardados          = array(); // reporte de guardados
+		//Se procede a agregar los ejercicios.
+
+		for($i=0; $i<$cantidad; $i++)
+		{
+			$ejercicio = $ejerciciosAgregar[$i];
+			//creando la variable he ingresando los datos.
+			$ejercicioAg = R::dispense("sgejerciciosrutina");
+			$ejercicioAg->id_ejercicio  		 = $ejercicio;
+			$ejercicioAg->id_dia       		     = $id_dia;
+			$ejercicioAg->id_categoriarutina     = $id_CategoriaRutina;
+			$ejercicioAg->id_tiporutinaejercicio = $id_TipoRutina;
+			$ejercicioAg->id_rutina              = $id_rutina;
+			$ejercicioAg->id_usuariocreacion     = $id_usuario;
+			$ejercicioAg->sn_activo  	         = 1;
+			//Guardando el ejercicio
+			$respuesta = EjecutarTransaccion($ejercicioAg);
+			if(is_numeric($respuesta))
+			{
+				$resp = array("agregado"=>"si","id"=>$respuesta);
+				array_push($guardados,$resp);
+			}
+			else
+			{
+				$resp = array("agregado"=>"no");
+				array_push($errores,$resp);
+			}
+
+		}//For
+			
+		$cantidadagregados = count($guardados);
+		$exito   = ($cantidadagregados==$cantidad)?1:0;
+		$datos   = array("exito"=>$exito);
+		return $datos;
 	}//RegistrarEjerciciosRutinas
 
 	// funciones Viejas

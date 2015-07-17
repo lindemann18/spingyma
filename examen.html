@@ -1,0 +1,42 @@
+<script src="js/jquery-1.11.1.min.js"></script>
+<html>
+	
+	<body>
+		
+	</body>
+</html>
+
+<script>
+$(document).ready(function(){
+
+	var cadena = prompt("ingrese la cadena");
+	separado   = cadena.split(" ");
+	cantidad   = separado.length;//cantidad de palabras
+	contador = 1;
+	cadenafinal = new Array();
+	for(i=1; i<=cantidad; i++)
+	{
+		contador++;
+		cadena = separado[separado.length-i];
+		if(cadena.length>=5)
+		{
+			//separando la cadena
+			cadenavolt = cadena.split('');
+			provisional = new Array();
+			cantidadp  = cadenavolt.length;
+			for(f=0; f<cantidadp; f++)
+			{
+				provisional.push(cadenavolt[f]);
+			}//for
+			cadenafinal.push(provisional.reverse().toString());
+		}
+		else
+		{
+			cadenafinal.push(cadena);
+		}
+		
+	}
+	console.log(cadenafinal.reverse());
+})
+
+</script>
