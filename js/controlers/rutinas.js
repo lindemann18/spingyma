@@ -139,7 +139,7 @@ $scope.AgregarRutina = function()
 	//Si se llegó aquí es por que la rutina se puede registrar
 	$scope.rutina.Accion = "AgregarRutina";
 	//Tomando los textos de los días de rutina
-  $scope.estructuraRutina();
+  
   var lunes = $scope.rutina.lunes;
 
   $scope.estructuraRutina(); //Inicializando el objeto TipoRutinaDias
@@ -154,7 +154,7 @@ $scope.AgregarRutina = function()
   $cookies.put('TiposRutinasSemana', resps)
   // Definiendo las cookies de los días.
   //$cookies.put("TiposRutinasSemana",$scope.TipoRutinaDias);
-  $cookies.put('id_CategoriaRutina', $scope.rutina.categoria);
+  $cookies.put('id_categoriarutina', $scope.rutina.categoria);
   $cookies.put('Ejercicio_Lunes', $scope.TipoRutinaDias.lunes);
   $cookies.put('Ejercicio_Martes', $scope.TipoRutinaDias.martes);
   $cookies.put('Ejercicio_Miercoles', $scope.TipoRutinaDias.miercoles);
@@ -283,7 +283,8 @@ $scope.veriricarRutina = function()
   $scope.id_dia    = $routeParams.Day;
   $scope.DiaActual = $methodsService.DefinirDia($scope.id_dia);
   $scope.btnactiv  = false;
-  
+  console.log($cookies.get('id_categoriarutina'));
+
   //funciones
   $scope.ComenzarSeleccion = function()
   {
@@ -307,8 +308,8 @@ $scope.veriricarRutina = function()
                   DiaRutina.push(TipoRutina); //Insertando las Rutinas en el array.
                 });//each
                 console.log(DiaRutina);
-                Contador=0;//Contador de actividades
-                TotalActividades=DiaRutina.length;
+                Contador         = 0;//Contador de actividades
+                TotalActividades = DiaRutina.length;
                 $cookies.put("Contador",Contador); //Se guarda en una cookie para ir acarreando el dato.
                 $cookies.put("TotalActividades",TotalActividades); //Número total de actividades con el que se comara el contador.
                 $cookies.put("DiaRutina",DiaRutina); //Vector con las rutinas que deben hacerse.
@@ -427,22 +428,29 @@ $scope.veriricarRutina = function()
             {
                 $scope.btnactiv = false;
                 // Definiendo variables y cookies para la selecciónd e ejercicios de las rutinas
-                DiaRutina = new Array(); //Array donde se guardarán los tipos de rutina para este día.
+                EjerciciosRutina = new Array(); //Array donde se guardarán los tipos de rutina para este día.
                 $(".box2 .Actividad").each(function(){
                   TipoRutina=$(this).val(); //Valor de la rutina tomada de las que están seleccionadas.
-                  DiaRutina.push(TipoRutina); //Insertando las Rutinas en el array.
+                  EjerciciosRutina.push(TipoRutina); //Insertando las Rutinas en el array.
                 });//each
                 
                 //Aquí se procede a obtener los datos para guardar los ejercicios.
-                CantidadEjercicios = DiaRutina.length;
-                id_tiporutina      = $scope.ejercicios[0].id_tiporutina;
+                CantidadEjercicios  = DiaRutina.length;
+                id_tiporutina       = $scope.ejercicios[0].id_tiporutina;
+                id_CategoriaRutina  = $cookies.get("id_categoriarutina");
                 Arr=new Object();
-                Arr['id_dia']             = $scope.dia;
-                Arr['id_CategoriaRutina'] = id_CategoriaRutina;     
+                Arr['id_dia']             = $scope.Day;
+                Arr['id_CategoriaRutina'] = $cookies.get("id_categoriarutina");     
                 Arr['EjerciciosRutina']   = EjerciciosRutina;
                 Arr['CantidadEjercicios'] = CantidadEjercicios;
-                Arr['id_TipoRutina']    = id_TipoRutina;
+                Arr['id_TipoRutina']      = $scope.Rut;
                 Arr['Accion']       = "RegistrarEjerciciosRutinas";
+                var Params= JSON.stringify(Arr);
+                //Mandando por ajax a guardar 
+               
+                // Verificando el tipo de rutina actual, si es compleja o simple
+                RutinasDias = $cookies.get("RutinasDias");
+                
             } //ELSE              
         });
       }//if

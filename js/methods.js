@@ -174,6 +174,7 @@ var miModulo = angular.module("Methods", []);
 
 		this.VerificarDiaPorCodigo = function(Dia)
 		{
+			DiaActual = "";
 			switch(Dia)
 			{
 				case 'Ejercicio_Lunes':
@@ -240,6 +241,7 @@ var miModulo = angular.module("Methods", []);
 
 		this.DefinirDia = function(Dia)
 		{
+			DiaRutina = "";
 			switch(Dia)
 		{
 			case '1':

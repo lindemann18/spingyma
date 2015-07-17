@@ -269,7 +269,7 @@ function RegistraMaquina()
 		id_TipoRutina	  			= $("#id_TipoRutina").val();
 		
 		//Creando un objeto para mandarlo al archivo Funciones.php
-		Arr=new Object();
+		Arr 					    = new Object();
 		Arr['id_rutina']			= id_rutina;
 		Arr['id_usuario']			= id_usuario;
 		Arr['id_dia']				= id_dia;

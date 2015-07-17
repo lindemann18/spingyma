@@ -149,6 +149,11 @@
 			echo json_encode($salidaJson);
 		break;
 
+		case 'RegistrarEjerciciosRutinas':
+			$salidaJson = RegistrarEjerciciosRutinas($Parametros);
+			echo json_encode($salidaJson);
+		break;
+
 
 		//Secciones Viejas
 		case 'AgregaMusculo':
@@ -312,7 +317,7 @@
 			echo json_encode($salidaJson);
 		break;
 		
-		case 'RegistrarEjerciciosRutinas':
+		case 'RegistrarEjerciciosRutinas1':
 			$id_rutina			= $Parametros['id_rutina'];
 			$id_usuario			= $Parametros['id_usuario'];
 			$id_dia				= $Parametros['id_dia'];
@@ -1098,6 +1103,11 @@
 		return $datos;
 	}//BuscarEjerciciosPorRutina
 
+	function RegistrarEjerciciosRutinas($Parametros)
+	{
+		print_r($Parametros);
+	}//RegistrarEjerciciosRutinas
+
 	// funciones Viejas
 
 	//Apartado de músculos	
@@ -1400,7 +1410,7 @@
 			return $salidaJson;
 	}//AgregarRutina
 	
-	function RegistrarEjerciciosRutinas($id_rutina, $id_usuario,$id_dia,$id_CategoriaRutina, $EjerciciosRutina, $CantidadEjercicios, $id_TipoRutina)
+	function RegistrarEjerciciosRutinas1($id_rutina, $id_usuario,$id_dia,$id_CategoriaRutina, $EjerciciosRutina, $CantidadEjercicios, $id_TipoRutina)
 	{
 		$agregar=new Agregar();
 		$result=$agregar->_RegistrarEjerciciosRutinas($id_rutina, $id_usuario,$id_dia,$id_CategoriaRutina, $EjerciciosRutina, $CantidadEjercicios, $id_TipoRutina);
