@@ -128,10 +128,10 @@ var url = 'modulos/Rutinas/Funciones.php';
 
 .controller('RutinaAgregar',function($scope,$http,$location,$methodsService,$q,$cookies,$rootScope){
 //Variables
-/*var cookies = $cookies.getAll();
+var cookies = $cookies.getAll();
 angular.forEach(cookies, function (v, k) {
     $cookies.remove(k);
-});*/
+});
 
 //Funciones
 $scope.AgregarRutina = function()
@@ -143,13 +143,13 @@ $scope.AgregarRutina = function()
   var lunes = $scope.rutina.lunes;
 
   $scope.estructuraRutina(); //Inicializando el objeto TipoRutinaDias
-  $scope.TipoRutinaDias.lunes     = $("#lunes option:selected").text();
-  $scope.TipoRutinaDias.martes    = $("#martes option:selected").text();
-  $scope.TipoRutinaDias.miercoles = $("#miercoles option:selected").text();
-  $scope.TipoRutinaDias.jueves    = $("#jueves option:selected").text();
-  $scope.TipoRutinaDias.viernes   = $("#viernes option:selected").text();
-  $scope.TipoRutinaDias.sabado    = $("#sabado option:selected").text();
-  $scope.TipoRutinaDias.domingo   = $("#domingo option:selected").text();
+  $scope.TipoRutinaDias.Lunes     = $("#lunes option:selected").text();
+  $scope.TipoRutinaDias.Martes    = $("#martes option:selected").text();
+  $scope.TipoRutinaDias.Miercoles = $("#miercoles option:selected").text();
+  $scope.TipoRutinaDias.Jueves    = $("#jueves option:selected").text();
+  $scope.TipoRutinaDias.Viernes   = $("#viernes option:selected").text();
+  $scope.TipoRutinaDias.Sabado    = $("#sabado option:selected").text();
+  $scope.TipoRutinaDias.Domingo   = $("#domingo option:selected").text();
   var resps = JSON.stringify($scope.TipoRutinaDias);
   $cookies.put('TiposRutinasSemana', resps)
   // Definiendo las cookies de los días.
@@ -164,16 +164,17 @@ $scope.AgregarRutina = function()
   $cookies.put('Ejercicio_Domingo', $scope.TipoRutinaDias.domingo);
 
   //DEfiniendo el array de rutina días
-  RutinasDias = new Array();
-  RutinasDias.push($scope.TipoRutinaDias.lunes)
-  RutinasDias.push($scope.TipoRutinaDias.martes)
-  RutinasDias.push($scope.TipoRutinaDias.miercoles)
-  RutinasDias.push($scope.TipoRutinaDias.jueves)
-  RutinasDias.push($scope.TipoRutinaDias.viernes)
-  RutinasDias.push($scope.TipoRutinaDias.sabado)
-  RutinasDias.push($scope.TipoRutinaDias.domingo)
-
-  $cookies.put('RutinasDias', RutinasDias);
+  var RutinasDias = new Array();
+  RutinasDias.push($scope.rutina.lunes)
+  RutinasDias.push($scope.rutina.martes)
+  RutinasDias.push($scope.rutina.miercoles)
+  RutinasDias.push($scope.rutina.jueves)
+  RutinasDias.push($scope.rutina.viernes)
+  RutinasDias.push($scope.rutina.sabado)
+  RutinasDias.push($scope.rutina.domingo)
+  var respsrutinas = JSON.stringify(RutinasDias);
+  $cookies.put('RutinasDias', respsrutinas);
+ // console.log($cookies.get('RutinasDias'));
 
   var ContadorRutinasDias=0; //Contador para ir recorriendo ambos vectores, el de que valor tienes las categorías y el texto
   $cookies.put('ContadorRutinasDias', ContadorRutinasDias);
@@ -202,7 +203,12 @@ $scope.AgregarRutina = function()
             //si llegó quí es que se va a registrar la rutina
             //debes mandar por parámetro get el id de la sesión, 
             // en el proyecto viejo se guarda en sesión
-            $location.path('/RutinaComp').search({Day:DiaActual});
+            if(Tipo_RutinaActual!="Compleja")
+            {
+              $location.path('/AgregarRutina2').search({Day:DiaActual,Rut:$scope.rutina.lunes});
+            }
+            else{$location.path('/RutinaComp').search({Day:DiaActual});}
+            
           }//if
           else
           {
@@ -217,13 +223,13 @@ $scope.AgregarRutina = function()
 $scope.estructuraRutina = function()
 {
   $scope.TipoRutinaDias = {
-    lunes:"",
-    martes:"",
-    miercoles:"",
-    jueves:"",
-    viernes:"",
-    sabado:"",
-    domingo:""
+    Lunes:"",
+    Martes:"",
+    Miercoles:"",
+    Jueves:"",
+    Viernes:"",
+    Sabado:"",
+    Domingo:""
   };
 }//estructuraRutina 
 
@@ -488,13 +494,13 @@ $scope.veriricarRutina = function()
                                   // un solo día
                                   Dia_Codigo       = $methodsService.CambiarDiaActualRutina(Dia_ActualRutina); //Se cambia el día de la rutina
                                   $scope.DiaActual = $methodsService.VerificarDiaPorCodigo(Dia_Codigo);
-                                  $cookies.put("Dia_ActualRutina",Dia_Codigo);//Se asigna a la variable de sesión el nuevo día de rutina.
+                                  //$cookies.put("Dia_ActualRutina",Dia_Codigo);//Se asigna a la variable de sesión el nuevo día de rutina.
 
                                   //Obtener que tipo de rutina será la del siguiente día
                                   ContadorRutinasDias = $cookies.get("ContadorRutinasDias"); //Contador. 
                                   ContadorRutinasDias++;
-                                  //$cookies.put("ContadorRutinasDias",ContadorRutinasDias); //Contador.
-
+                                  $cookies.put("ContadorRutinasDias",ContadorRutinasDias); //Contador.
+                                  console.log("el contador de días: "+ContadorRutinasDias);
                                   //Trayendo ambos vectores, valor de tipo rutina y su texto
                                   var RutinasVector       = $cookies.get('RutinasDias');
                                   var TiposRutinasVector  = $cookies.get('TiposRutinasSemana');
@@ -505,14 +511,17 @@ $scope.veriricarRutina = function()
                                   TiposRutinasVector      = TiposRutinasVector.split(",");
 
                                   //Cambiar el tipo de rutina actual, ya sea sencilla o complicada.
-                                  var Rut                        = RutinasDias[ContadorRutinasDias]; //Tipo de rutina que será, es número
+                                  var rut                        = RutinasDias[ContadorRutinasDias]; //Tipo de rutina que será, es número
                                   var Tipo_RutinaActualVerificar = TiposRutinasVector[ContadorRutinasDias]; //Tomando el valor para verificar si es simple o compleja
                                   var Tipo_RutinaActual          = (Tipo_RutinaActualVerificar!="Varios")?"Simple":"Compleja"; //Definiendo que es
+                                  var Rut = rut.split('"',2);
+                                  Rut = Rut[1];
                                   console.log(Rut);
                                   console.log(Tipo_RutinaActualVerificar);
                                   console.log(Tipo_RutinaActual);
                                   console.log("dia codigo: "+Dia_Codigo);
-                                  //$cookies.put("Tipo_RutinaActual",Tipo_RutinaActual); // Actualizando la cookie.
+                                  $scope.Day = $methodsService.VerificarDiaPorCodigo(Dia_Codigo);
+                                  $cookies.put("Tipo_RutinaActual",Tipo_RutinaActual); // Actualizando la cookie.
                                   if(Dia_Codigo=="Ejercicio_Terminado")
                                   {
                                       // Si entra aquí es que la rutina ya se terminó.
@@ -520,7 +529,15 @@ $scope.veriricarRutina = function()
                                   else
                                   {
                                       // SI entra aquí es por que la rutina todavía continua.
-                                      console.log("sigue todavái");
+                                      // Verificando si el siguiente día es rutina sencilla o compleja.
+                                      if(Tipo_RutinaActual=="Compleja")
+                                      {
+                                        //$location.path('/RutinaComp').search({Day:$scope.Day});
+                                      }//if
+                                      else
+                                      {
+                                        $location.path('/AgregarRutina2').search({Day:$scope.Day,Rut:Rut});
+                                      }
                                   }//else
                                 }//if
                                 else
@@ -536,8 +553,51 @@ $scope.veriricarRutina = function()
                           //rutina Sencilla
                           else
                           {
+                              //Si entra aquí es porq ue era una rutina sencilla.
+                              var Dia_ActualRutina = $cookies.get("Dia_ActualRutina"); //Día en el que se encuentra el proceso de rutinas
+                              var Dia_Codigo       = $methodsService.CambiarDiaActualRutina(Dia_ActualRutina); //Se cambia el día de la rutina
+                              var DiaActual        = $methodsService.VerificarDiaPorCodigo(Dia_Codigo);
+                              //$cookies.put("Dia_ActualRutina",Dia_Codigo); // Actuañozamdp eñ nuevo día
 
-                          }
+                              //Obtener que tipo de rutina será la del siguiente día
+                              ContadorRutinasDias  = $cookies.get("ContadorRutinasDias");
+                              ContadorRutinasDias++;
+                              console.log(ContadorRutinasDias);
+                              //$cookies.put("ContadorRutinasDias",ContadorRutinasDias); //Actualizando el contador
+                              //Trayendo ambos vectores, valor de tipo rutina y su texto
+                              var RutinasVector      = JSON.parse($cookies.get("RutinasDias"));
+                              var TiposRutinasVector = JSON.parse($cookies.get("TiposRutinasSemana"));
+                              console.log(RutinasVector);
+                              console.log(TiposRutinasVector);
+                              //Separando ambos con split para poder acceder y evitar contar las "," como parte del vector.
+                             // var RutinasDias        = RutinasVector.split(",");
+                              //var TiposRutinasVector = TiposRutinasVector.split(",");
+                              
+                              //Cambiar el tipo de rutina actual, ya sea sencilla o complicada.
+                              // Se saca el nombre del día en NombreDia para acceder en TiposRutinasVector
+                              // Al valor que contiene para ese día el tipo de rutina.
+                              rut                        = RutinasVector[ContadorRutinasDias]; //Tipo de rutina que será, es número
+                              var NombreDia              = $methodsService.DefinirDia(DiaActual); // para sacar el tipo de rutina del objeto de tipos de rutina
+                              Tipo_RutinaActualVerificar = TiposRutinasVector[NombreDia]; //Tomando el valor para verificar si es simple o compleja
+                              
+                              Tipo_RutinaActual = (Tipo_RutinaActualVerificar!="Varios")?"Simple":"Compleja"; //Definiendo que es
+                              //$cookies.put("Tipo_RutinaActual",Tipo_RutinaActual); // Actualizando la cookie.
+                              //Se verifica si es el último día de la semana, para pasar al final de la rutina
+                              console.log(Tipo_RutinaActual);
+                              if(Dia_Codigo=="Ejercicio_Terminado")
+                              {
+                                  //Aquí se termina y se manda al rutina Orden
+                              }
+                              else
+                              {
+                                //Si el siguiente día tiene rutina compleja se dirige a elegir los ejercicios de la rutina de esedía
+                                if(Tipo_RutinaActual=="Compleja")
+                                {
+                                  $location.path('/RutinaComp').search({Day:DiaActual});
+                                } //if compleja
+                                else{$location.path('/AgregarRutina2').search({Day:DiaActual,Rut:rut});}
+                              }//else
+                          }//else
                       }else{$methodsService.alerta(2,"algo falló, disculpe las molestias");}
                   })  
                  .error(function(data, status, headers, config){ $methodsService.alerta(2,"algo falló, disculpe las molestias");});
@@ -564,7 +624,8 @@ $scope.veriricarRutina = function()
   ContadorRutinasDiasTitulo = $cookies.get("ContadorRutinasDias"); //Contador.
   TiposRutinasSemana = $cookies.get('TiposRutinasSemana');
   $scope.TiposRutinasVector = JSON.parse(TiposRutinasSemana); // Tomando los valores para los dias de rutina
-  var tiporutinaPordia = $scope.FuncionDia($scope.Day); //Tomando el tipo de rutina por dia
+  $scope.nombreDia = $methodsService.DefinirDia($scope.Day); // Definiendo el nombre del día
+  var tiporutinaPordia = $scope.TiposRutinasVector[$scope.nombreDia]; //Tomando el tipo de rutina por dia
   $scope.TipoRutinaTitulo = "Tipo de Rutina: "+tiporutinaPordia; // Asignando el scope el texto
   
   //Variables para manejo de rutina

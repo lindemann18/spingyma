@@ -1060,14 +1060,13 @@
 		//Creando la rutina
 		session_start();
 		date_default_timezone_set("America/Chihuahua");
-		$fh_creacion = date("Y-m-d"); //fecha del día de hoy
+		$fh_creacion                = date("Y-m-d"); //fecha del día de hoy
 		$id_usuario 			    = $_SESSION['usuario']['id'];
 		$rutina 				    = R::dispense("sgrutinas");
 		$rutina->id_usuariocreacion = $id_usuario;
-		$rutina->nb_rutina          = $Parametros['categoria'];
+		$rutina->id_categoriarutina = $Parametros['categoria'];
 		$rutina->id_generorutina    = $Parametros['genero'];
 		$rutina->id_tipocuerpo      = $Parametros['cuerpo'];
-		$rutina->nb_rutina          = $Parametros['nb_rutina'];
 		$rutina->nb_rutina          = $Parametros['nb_rutina'];
 		$rutina->desc_rutina        = $Parametros['desc_rutina'];
 		$rutina->sn_activo          = 1;
@@ -1113,7 +1112,7 @@
 		$ejerciciosAgregar  = $Parametros['EjerciciosRutina'];
 		$cantidad           = count($ejerciciosAgregar);
 		$id_rutina          = $_SESSION['id_rutina'];
-		$id_usuario         = $_SESSION['Sesion']['id_usuario'];
+		$id_usuario         = $_SESSION['usuario']['id'];
 		$errores            = array(); //Reporte de errrores
 		$guardados          = array(); // reporte de guardados
 		//Se procede a agregar los ejercicios.

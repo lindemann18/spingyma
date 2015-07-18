@@ -351,8 +351,8 @@ function RegistraMaquina()
 		//Rutina Sencilla
 		else
 		{
-			Dia_ActualRutina=$.cookie("Dia_ActualRutina"); //Día en el que se encuentra el proceso de rutinas
-			Dia_Codigo=CambiarDiaActualRutina(Dia_ActualRutina); //Se cambia el día de la rutina
+				Dia_ActualRutina=$.cookie("Dia_ActualRutina"); //Día en el que se encuentra el proceso de rutinas
+				Dia_Codigo=CambiarDiaActualRutina(Dia_ActualRutina); //Se cambia el día de la rutina
 				VerificarDiaPorCodigo(Dia_Codigo);
 				console.log($.cookie(Dia_Codigo));
 				$.cookie("Dia_ActualRutina",Dia_Codigo); //Se asigna a la variable de sesión el nuevo día de rutina.
