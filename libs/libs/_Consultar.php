@@ -1180,6 +1180,13 @@
 		return $ejercicios;
 	}//_ConsultarInformacionPorRutinaYDia
 
+	function _ConsultarDiasSemana()
+	{
+		$query='select * from sgdias';
+		$dias = $this->EjecutarTransaccionAllNoParams($query);
+		return $dias;
+	}//_ConsultarDiasSemana
+
 	//queries viejos
 
 
@@ -2277,13 +2284,7 @@
 		return $result;
 	}//_ConsultarDiaPorId
 	
-	function _ConsultarDiasSemana()
-	{
-		$query='select * from sg_dias';
-		$con=Conectar::_con();
-		$result=$con->query($query) or die("Error en: $query ".mysqli_error($query));
-		return $result;
-	}//_ConsultarDiasSemana
+	
 	
 	function _ConsultarDiaPorNombre($nb_dia)
 	{

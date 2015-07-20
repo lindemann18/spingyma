@@ -224,6 +224,11 @@ angular.forEach(cookies, function (v, k) {
 });*/
 
 //Funciones
+$scope.Redirigir = function(direccion)
+  {
+    $methodsService.Redirigir(direccion);
+  }//Redirigir
+
 $scope.AgregarRutina = function()
 {
 	//Si se llegó aquí es por que la rutina se puede registrar
@@ -1214,6 +1219,10 @@ $scope.FinalizarRutina = function()
       if(result==true)
       {
         $scope.$apply(function(){
+          var cookies = $cookies.getAll();
+          angular.forEach(cookies, function (v, k) {
+              $cookies.remove(k);
+          });
           $location.path('/Rutinas').search({});
         });
       }//if
@@ -1383,11 +1392,24 @@ params = $methodsService.Json("EjerciciosRutinaOrden",$scope.Rut);
   $scope.btndisabled = true;
 
   //Funciones
+  $scope.EditarDiasRutina = function()
+  {
+    bootbox.confirm("Desea editar los ejercicios de esta rutina?", function(result) {
+    console.log(result);
+      if(result==true)
+      {
+        $scope.$apply(function(){
+          $location.path('/EditarDiasRutina').search({Rut:$scope.Rut});
+        });
+      }//if
+    });//bootbox
+  }//EditarDiasRutina
+
   $scope.Redirigir = function(direccion)
   {
     $methodsService.Redirigir(direccion);
   }//Redirigir
-  
+
   $scope.EditarRutinaInfo = function()
   {
     bootbox.confirm("Desea editar esta rutina?", function(result) {
@@ -1444,6 +1466,107 @@ params = $methodsService.Json("EjerciciosRutinaOrden",$scope.Rut);
               $methodsService.alerta(2,"algo falló, disculpe las molestias");
             break;
           }//switch
+      })  
+     .error(function(data, status, headers, config){
+      $methodsService.alerta(2,"algo falló, disculpe las molestias");
+     });
+})//RutinaEditar
+
+.controller('DiasRutinaEditar',function($scope,$http,$location,$methodsService,$routeParams,$cookies){
+  $scope.Rut = $routeParams.Rut;
+  var demo2 = $('.demo2').bootstrapDualListbox({
+          nonSelectedListLabel: 'Non-selected',
+          selectedListLabel: 'Selected',
+          preserveSelectionOnMove: 'moved',
+          moveOnSelect: false
+            } );
+/*var cookies = $cookies.getAll();
+angular.forEach(cookies, function (v, k) {
+    $cookies.remove(k);
+});*/
+  //Funciones
+  $scope.checkRequeridos = function()  
+  {
+    bootbox.confirm("Desea agregar estos tipos de rutina?", function(result) {
+    if(result==true)
+      {
+        $scope.$apply(function(){
+             //Tomando las tipos de rutina
+            CantidadDias=document.getElementById("bootstrap-duallistbox-nonselected-list_duallistbox_demo2").length;
+
+            if(CantidadDias==$scope.dias.length)
+            {
+                $methodsService.alerta(2,"Favor de seleccionar días");
+            }//if
+            else
+            {
+                // Definiendo variables y cookies para la selecciónd e ejercicios de las rutinas
+                DiasEdicion=new Array(); //Array donde se guardarán los tipos de rutina para este día.
+                $(".box2 .Actividad").each(function(){
+                  dia=$(this).val(); //Valor de la rutina tomada de las que están seleccionadas.
+                  DiasEdicion.push(dia); //Insertando las Rutinas en el array.
+                });//each
+                
+                
+                // definiendo todas las variables
+                var Contador = 0; // Días editados
+                $cookies.put("Contador",Contador);
+                $cookies.put("DiasEdicion",DiasEdicion); //Vector con los días a editar
+                $cookies.put("CantidadDias",CantidadDias); //Cantidad de días que se editarán, se compararán el contador y este para ver si ya se terminó.
+                
+                //Eliminando los ejercicios de los días seleccionados
+                Arr                 = new Object();
+                Arr['id_rutina']    =   $scope.Rut;
+                Arr['DiasEdicion']  = DiasEdicion;
+                Arr['CantidadDias'] = CantidadDias;
+                Arr['Accion']       = "DesactivarEjerciciosPorRutina";
+                params              = JSON.stringify(Arr);
+                
+                //Enviando al controller para desactivar.
+                var url = 'modulos/Rutinas/Funciones.php';
+                 $http({method: "post",url: url,data: $.param({Params:params}), 
+                  headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                })
+                 .success(function(data, status, headers, config) 
+                 {            
+                      
+                  })  
+                 .error(function(data, status, headers, config){
+                  $methodsService.alerta(2,"algo falló, disculpe las molestias");
+                 });
+
+            } //ELSE              
+        });
+      }//if
+  });
+  }//checkRequeridos
+
+  var params = $methodsService.Json("DatosEditarRutinaDias",$scope.Rut);
+  var url = 'modulos/Rutinas/Funciones.php';
+     $http({method: "post",url: url,data: $.param({Params:params}), 
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
+     .success(function(data, status, headers, config) 
+     {            
+          exito = data.exito;
+          if(exito==1)
+          {
+              $scope.dias = data.dias;
+              //Pegando los tipos rut en la tabla de selección
+            var size = $scope.dias.length;
+            
+            for(i=0; i<size; i++)
+            {
+              var object = $scope.dias[i];
+              var row ='<option value="'+object.id+'" class="Actividad">'+object.nb_dia+'</option>';
+              demo2.append(row);
+            }//for
+             demo2.bootstrapDualListbox('refresh');   
+          }
+            
+            
+          
+          else{$methodsService.alerta(2,"algo falló, disculpe las molestias");}
       })  
      .error(function(data, status, headers, config){
       $methodsService.alerta(2,"algo falló, disculpe las molestias");

@@ -220,6 +220,16 @@
 			echo json_encode($salidaJson);
 		break;
 
+		case 'DatosEditarRutinaDias':
+			$salidaJson = DatosEditarRutinaDias($Parametros);
+			echo json_encode($salidaJson);
+		break;
+		case 'DesactivarEjerciciosPorRutina':
+			//Mandando los valores a BD ya sea para agregar y o actualizar
+			$salidaJson = DesactivarEjerciciosPorRutina($Parametros);
+			echo json_encode($salidaJson);
+		break;
+
 		//Secciones Viejas
 		case 'AgregaMusculo':
 			$nb_musculo	   = $Parametros['nb_musculo'];
@@ -413,16 +423,7 @@
 		
 		
 		
-		case 'DesactivarEjerciciosPorRutina':
-			
-			//Tomando los valores
-			$id_rutina    = $Parametros['id_rutina'];
-			$DiasEdicion  = $Parametros['DiasEdicion'];
-			$CantidadDias = $Parametros['CantidadDias'];
-			
-			//Mandando los valores a BD ya sea para agregar y o actualizar
-			DesactivarEjerciciosPorRutina($id_rutina, $DiasEdicion, $CantidadDias);
-		break;
+		
 		
 		
 		case 'BuscarMaquinasPorCategoria':
@@ -1600,6 +1601,33 @@
 		return $datos;
 	}//EditarInfoRutina	
 
+	function DatosEditarRutinaDias($Parametros)
+	{
+		//Obteniendo los días de la semana para editar.
+		$consultar = new Consultar();
+		$dias      = $consultar->_ConsultarDiasSemana();
+		$cantidad  = count($dias);
+		$exito     = ($cantidad>0)?1:0;
+		$datos     = array("exito"=>$exito,"dias"=>$dias);
+		return $datos;
+	}//DatosEditarRutinaDias
+
+	function DesactivarEjerciciosPorRutina($Parametros)
+	{
+		$id_rutina    = $Parametros['id_rutina'];
+		$DiasEdicion  = $Parametros['DiasEdicion'];
+		$CantidadDias = $Parametros['CantidadDias'];
+		
+		$actualizar=new Actualizar();
+		//Desactivando los ejercicios de la rutina pertinente	
+		for($i=0; $i<$CantidadDias; $i++)
+		{
+			$id_dia = $DiasEdicion[$i]; //Dia del ejercicio para deshabilitar
+			$result = $actualizar->_EliminarEjercicioPorRutinaYDia($id_dia, $idRutina);
+		}//for
+		
+	}//DesactivarEjerciciosPorRutina
+
 	// funciones Viejas
 
 	//Apartado de músculos	
@@ -1965,27 +1993,6 @@
 			}//For
 	}//RegistrarEjerciciosRutinas
 	
-	
-
-	
-	function DesactivarEjerciciosPorRutina($idRutina, $DiasEdicion, $CantidadDias)
-	{
-		//Guardando en variables de sesión la cantidad de días y los días a guardar
-		session_start(); //Sesión iniciada
-		
-		$_SESSION['DiasEdicion']  = $DiasEdicion;   //Vectór con los días a editar
-		$_SESSION['CantidadDias'] = $CantidadDias; //Cantidad de días  aeditar
-		$_SESSION['Contador']	  = 0;
-		
-		$actualizar=new Actualizar();
-		//Desactivando los ejercicios de la rutina pertinente	
-		for($i=0; $i<$CantidadDias; $i++)
-		{
-			$id_dia = $DiasEdicion[$i]; //Dia del ejercicio para deshabilitar
-			$result = $actualizar->_EliminarEjercicioPorRutinaYDia($id_dia, $idRutina);
-		}//for
-		
-	}//DesactivarEjerciciosPorRutina
 	
 	
 	function BuscarMaquinasPorCategoria($id_CategoriaMaquina)

@@ -175,6 +175,11 @@
 	      	templateUrl:'modulos/Rutinas/Rutinas_EditarDatos.html'
 	    })
 
+	    .when('/EditarDiasRutina',{
+	    	controller: 'DiasRutinaEditar',
+	      	templateUrl:'modulos/Rutinas/Rutinas_Editar.html'
+	    })
+
 	    .when('/Error',{
 	    	controller: 'Errors',
 	      	templateUrl:'modulos/Rutinas/Error.html'
