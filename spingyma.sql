@@ -2,21 +2,21 @@
 Navicat MySQL Data Transfer
 
 Source Server         : localhost
-Source Server Version : 50616
+Source Server Version : 50620
 Source Host           : localhost:3306
 Source Database       : spingyma
 
 Target Server Type    : MYSQL
-Target Server Version : 50616
+Target Server Version : 50620
 File Encoding         : 65001
 
-Date: 2015-07-10 17:51:27
+Date: 2015-07-19 23:35:49
 */
 
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
--- Table structure for sgcategoriamaquina
+-- Table structure for `sgcategoriamaquina`
 -- ----------------------------
 DROP TABLE IF EXISTS `sgcategoriamaquina`;
 CREATE TABLE `sgcategoriamaquina` (
@@ -42,7 +42,27 @@ INSERT INTO `sgcategoriamaquina` VALUES ('13', 'Cochapacha', 'chocobanana', '1',
 INSERT INTO `sgcategoriamaquina` VALUES ('14', 'Ninguna', 'Ninguna máquina', '1', '1');
 
 -- ----------------------------
--- Table structure for sgclientes
+-- Table structure for `sgcategoriasrutina`
+-- ----------------------------
+DROP TABLE IF EXISTS `sgcategoriasrutina`;
+CREATE TABLE `sgcategoriasrutina` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nb_categoriarutina` varchar(250) NOT NULL,
+  `desc_categoriarutina` varchar(250) NOT NULL,
+  `sn_activo` int(11) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of sgcategoriasrutina
+-- ----------------------------
+INSERT INTO `sgcategoriasrutina` VALUES ('1', 'Principiante', 'Rutinas para clientes principiantes', '1');
+INSERT INTO `sgcategoriasrutina` VALUES ('2', 'Intermedio', 'Rutinas para los clientes de resistencia física intermedia', '1');
+INSERT INTO `sgcategoriasrutina` VALUES ('3', 'Avanzado', 'Rutinas para clientes de resistencia física Avanzada', '1');
+INSERT INTO `sgcategoriasrutina` VALUES ('4', 'Todos', 'Rutinas en general para todos los niveles', '1');
+
+-- ----------------------------
+-- Table structure for `sgclientes`
 -- ----------------------------
 DROP TABLE IF EXISTS `sgclientes`;
 CREATE TABLE `sgclientes` (
@@ -176,7 +196,7 @@ INSERT INTO `sgclientes` VALUES ('119', 'Chumel', '1', '3', 'Torres', 'MASCULINO
 INSERT INTO `sgclientes` VALUES ('120', 'Misael', '1', '2', 'Ecom', 'MASCULINO', '1980-3-1', 'a@a.com', '1232312', '123213123', '0', '0', '0', 'asdada', 'blvd virreyes', '80227', '1');
 
 -- ----------------------------
--- Table structure for sgconsejos
+-- Table structure for `sgconsejos`
 -- ----------------------------
 DROP TABLE IF EXISTS `sgconsejos`;
 CREATE TABLE `sgconsejos` (
@@ -231,7 +251,29 @@ INSERT INTO `sgconsejos` VALUES ('37', '8', 'Promedio', 'Es recomendable estirar
 INSERT INTO `sgconsejos` VALUES ('38', '8', 'Pobre', 'Es recomendable estirar durante y después de cada entrenamiento para aumentar la flexibilidad de la persona.', '2015-03-27 12:42:02');
 
 -- ----------------------------
--- Table structure for sgejercicios
+-- Table structure for `sgdias`
+-- ----------------------------
+DROP TABLE IF EXISTS `sgdias`;
+CREATE TABLE `sgdias` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nb_dia` varchar(250) NOT NULL,
+  `desc_dia` varchar(250) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of sgdias
+-- ----------------------------
+INSERT INTO `sgdias` VALUES ('1', 'Lunes', 'Lunes');
+INSERT INTO `sgdias` VALUES ('2', 'Martes', 'Martes');
+INSERT INTO `sgdias` VALUES ('3', 'Miércoles', 'Miercoles');
+INSERT INTO `sgdias` VALUES ('4', 'Jueves', 'Jueves');
+INSERT INTO `sgdias` VALUES ('5', 'Viernes', 'Viernes');
+INSERT INTO `sgdias` VALUES ('6', 'Sábado', 'Sabado');
+INSERT INTO `sgdias` VALUES ('7', 'Domingo', 'Domingo');
+
+-- ----------------------------
+-- Table structure for `sgejercicios`
 -- ----------------------------
 DROP TABLE IF EXISTS `sgejercicios`;
 CREATE TABLE `sgejercicios` (
@@ -569,26 +611,26 @@ INSERT INTO `sgejercicios` VALUES ('325', '1', '1', '64', 'Chocochocho', 'cochap
 INSERT INTO `sgejercicios` VALUES ('326', '1', '9', '0', 'asdasda', 'adad', '1', '0');
 
 -- ----------------------------
--- Table structure for sgejerciciosrutina
+-- Table structure for `sgejerciciosrutina`
 -- ----------------------------
 DROP TABLE IF EXISTS `sgejerciciosrutina`;
 CREATE TABLE `sgejerciciosrutina` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_ejercicio` int(11) NOT NULL,
   `id_usuariocreacion` int(11) NOT NULL,
-  `id_dia` int(11) NOT NULL,
-  `id_rutina` int(11) NOT NULL,
-  `id_categoriarutina` int(11) NOT NULL,
-  `id_tiporutinaejercicio` int(11) NOT NULL,
-  `id_posicionejercicio` int(11) NOT NULL,
+  `id_dia` int(11) DEFAULT NULL,
+  `id_rutina` int(11) DEFAULT NULL,
+  `id_categoriarutina` int(11) DEFAULT NULL,
+  `id_tiporutinaejercicio` int(11) DEFAULT NULL,
+  `id_posicionejercicio` int(11) DEFAULT NULL,
   `nb_ejerciciorutina` varchar(250) DEFAULT NULL,
   `desc_ejerciciorutina` varchar(500) DEFAULT NULL,
   `num_circuitos` varchar(100) DEFAULT NULL,
   `num_repeticiones` varchar(100) DEFAULT NULL,
-  `ejercicio_relacion` varchar(10) CHARACTER SET utf8mb4 NOT NULL,
+  `ejercicio_relacion` varchar(10) CHARACTER SET utf8mb4 DEFAULT NULL,
   `sn_activo` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2160 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3330 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sgejerciciosrutina
@@ -2518,9 +2560,92 @@ INSERT INTO `sgejerciciosrutina` VALUES ('2156', '196', '1', '5', '130', '1', '1
 INSERT INTO `sgejerciciosrutina` VALUES ('2157', '43', '1', '5', '130', '1', '12', '38', null, null, null, null, '', '1');
 INSERT INTO `sgejerciciosrutina` VALUES ('2158', '2', '1', '6', '130', '1', '1', '39', null, null, null, '12', '', '1');
 INSERT INTO `sgejerciciosrutina` VALUES ('2159', '2', '1', '7', '130', '1', '1', '40', null, null, null, null, '', '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3247', '47', '1', '1', '158', '2', '4', '3', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3248', '48', '1', '1', '158', '2', '4', '4', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3249', '49', '1', '1', '158', '2', '4', '2', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3250', '50', '1', '1', '158', '2', '4', '5', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3251', '51', '1', '1', '158', '2', '4', '1', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3252', '52', '1', '1', '158', '2', '4', '6', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3253', '54', '1', '1', '158', '2', '4', '7', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3254', '55', '1', '1', '158', '2', '4', '8', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3255', '68', '1', '1', '158', '2', '4', '9', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3256', '146', '1', '1', '158', '2', '5', '10', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3257', '148', '1', '1', '158', '2', '5', '11', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3258', '149', '1', '1', '158', '2', '5', '12', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3259', '150', '1', '1', '158', '2', '5', '13', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3260', '151', '1', '1', '158', '2', '5', '14', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3261', '152', '1', '1', '158', '2', '5', '15', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3262', '111', '1', '1', '158', '2', '6', '16', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3263', '112', '1', '1', '158', '2', '6', '17', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3264', '113', '1', '1', '158', '2', '6', '22', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3265', '114', '1', '1', '158', '2', '6', '18', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3266', '115', '1', '1', '158', '2', '6', '25', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3267', '116', '1', '1', '158', '2', '6', '23', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3268', '117', '1', '1', '158', '2', '6', '20', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3269', '118', '1', '1', '158', '2', '6', '19', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3270', '119', '1', '1', '158', '2', '6', '24', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3271', '120', '1', '1', '158', '2', '6', '21', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3272', '293', '1', '2', '158', '2', '2', '28', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3273', '169', '1', '2', '158', '2', '3', '29', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3274', '170', '1', '2', '158', '2', '3', '30', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3275', '171', '1', '2', '158', '2', '3', '27', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3276', '172', '1', '2', '158', '2', '3', '26', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3277', '173', '1', '2', '158', '2', '3', '31', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3278', '174', '1', '2', '158', '2', '3', '32', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3279', '175', '1', '2', '158', '2', '3', '33', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3280', '176', '1', '2', '158', '2', '3', '34', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3281', '47', '1', '2', '158', '2', '4', '35', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3282', '48', '1', '2', '158', '2', '4', '36', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3283', '49', '1', '2', '158', '2', '4', '37', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3284', '50', '1', '2', '158', '2', '4', '38', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3285', '51', '1', '2', '158', '2', '4', '39', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3286', '52', '1', '2', '158', '2', '4', '40', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3287', '245', '1', '3', '158', '2', '9', '41', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3288', '246', '1', '3', '158', '2', '9', '42', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3289', '247', '1', '3', '158', '2', '9', '43', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3290', '248', '1', '3', '158', '2', '9', '44', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3291', '249', '1', '3', '158', '2', '9', '45', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3292', '250', '1', '3', '158', '2', '9', '46', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3293', '251', '1', '3', '158', '2', '9', '47', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3294', '189', '1', '3', '158', '2', '10', '48', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3295', '190', '1', '3', '158', '2', '10', '49', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3296', '191', '1', '3', '158', '2', '10', '50', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3297', '192', '1', '3', '158', '2', '10', '51', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3298', '193', '1', '3', '158', '2', '10', '52', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3299', '194', '1', '3', '158', '2', '10', '53', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3300', '195', '1', '3', '158', '2', '10', '54', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3301', '196', '1', '3', '158', '2', '10', '55', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3302', '286', '1', '3', '158', '2', '11', '56', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3303', '296', '1', '4', '158', '2', '2', '57', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3304', '47', '1', '5', '158', '2', '4', '58', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3305', '48', '1', '5', '158', '2', '4', '59', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3306', '49', '1', '5', '158', '2', '4', '60', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3307', '50', '1', '5', '158', '2', '4', '61', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3308', '51', '1', '5', '158', '2', '4', '62', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3309', '52', '1', '5', '158', '2', '4', '63', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3310', '54', '1', '5', '158', '2', '4', '64', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3311', '55', '1', '5', '158', '2', '4', '65', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3312', '68', '1', '5', '158', '2', '4', '66', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3313', '69', '1', '5', '158', '2', '4', '67', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3314', '169', '1', '6', '158', '2', '3', '68', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3315', '170', '1', '6', '158', '2', '3', '69', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3316', '171', '1', '6', '158', '2', '3', '70', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3317', '172', '1', '6', '158', '2', '3', '71', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3318', '173', '1', '6', '158', '2', '3', '72', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3319', '174', '1', '6', '158', '2', '3', '73', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3320', '175', '1', '6', '158', '2', '3', '74', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3321', '176', '1', '6', '158', '2', '3', '75', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3322', '177', '1', '6', '158', '2', '3', '76', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3323', '189', '1', '6', '158', '2', '10', '77', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3324', '190', '1', '6', '158', '2', '10', '78', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3325', '191', '1', '6', '158', '2', '10', '79', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3326', '192', '1', '6', '158', '2', '10', '80', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3327', '193', '1', '6', '158', '2', '10', '81', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3328', '288', '1', '6', '158', '2', '11', '82', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3329', '2', '1', '7', '158', '2', '1', '83', null, null, null, null, null, '1');
 
 -- ----------------------------
--- Table structure for sgformulario
+-- Table structure for `sgformulario`
 -- ----------------------------
 DROP TABLE IF EXISTS `sgformulario`;
 CREATE TABLE `sgformulario` (
@@ -2563,12 +2688,12 @@ CREATE TABLE `sgformulario` (
   `dias_semana` varchar(500) NOT NULL,
   `resultado_ejercicio` varchar(500) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sgformulario
 -- ----------------------------
-INSERT INTO `sgformulario` VALUES ('4', '1', '2', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '10', '0', '0', 'Desayuno  muy rico', 'comida rica', 'cena rica', 'fruta', '2', 'Si, dieta de la manzana.', '2', '2', '3', '0', '0', '1', 'Todas', 'Ninguna', 'Ninguna', '200', '6', 'Ponerme muy guapo.');
+INSERT INTO `sgformulario` VALUES ('4', '1', '2', '1', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'Desayuno  muy rico', 'comida rica', 'cena rica', 'fruta', '2', 'Si, dieta de la manzana.', '2', '2', '3', '0', '0', '1', 'Todas', 'Ninguna', 'Ninguna', '200', '6', 'Ponerme muy guapo.');
 INSERT INTO `sgformulario` VALUES ('5', '1', '11', '0', '0', '1', '0', '0', '1', '0', '0', '0', '0', '0', '0', '0', '0', '3', '0', '0', 'desayuno', 'comida', 'cena', 'fruta', '2', 'no', '1', '1', '1', '0', '0', '0', 'Todas', 'Ninguna', 'no', '100', '5', 'estar guapo');
 INSERT INTO `sgformulario` VALUES ('6', '1', '17', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1', '0', '0', '0', '0', '0', '0', '0', 'desyunoreg', 'comida', 'cena', 'fruta', '2', 'ásdasdas', '3', '3', '0', '0', '0', '0', 'todas', 'ninguna', 'soccer', '120', '6', 'Estar saludable');
 INSERT INTO `sgformulario` VALUES ('7', '9', '14', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'desayuno rico', 'comida rica', 'cena rica', 'fruta', '2 veces', 'no', '3', '3', '0', '0', '0', '0', 'todas', 'ninguna', 'gym', '120', '7', 'estar marcado.');
@@ -2595,7 +2720,7 @@ INSERT INTO `sgformulario` VALUES ('27', '1', '43', '0', '0', '0', '0', '0', '0'
 INSERT INTO `sgformulario` VALUES ('28', '1', '42', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'JUGO, SANDWICH, FRUTA', 'CALDOS DE VERDURA', '-', '-', 'FRECUENTE', 'NO', '0', '0', '2', '0', '0', '0', '-', '-', '-', '-', '-', '-');
 INSERT INTO `sgformulario` VALUES ('29', '1', '41', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'CAFE, PAN', 'CALDOS, VERDURAS', 'NO CENA', 'FRUTAS, PAPAS FRITAS', 'NADA FRECUENTE', 'NO', '0', '0', '3', '0', '0', '0', '-', '-', '-', '-', '-', 'QUEMAR GRASA');
 INSERT INTO `sgformulario` VALUES ('30', '1', '16', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'ret 3t', 'regqreg', 'rgw', 'th', 'thrw', 'hth', '0', '0', '0', '0', '1', '0', 'fg', 'ubv', 'jhb', 'jhb', 'jhb', 'jhb');
-INSERT INTO `sgformulario` VALUES ('31', '1', '13', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'EF', 'RF', 'FREF', 'RGF', 'RF', 'RF', '0', '3', '0', '0', '0', '0', 'N', 'N', 'N', 'N', 'N', 'N');
+INSERT INTO `sgformulario` VALUES ('31', '1', '13', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '15', '0', '0', 'Fruta', 'Verdura', 'FREF', 'RGF', 'RF', 'RF', '0', '3', '0', '0', '0', '0', 'N', 'Todas', 'Ninguna', '150', '5', 'musculatura.');
 INSERT INTO `sgformulario` VALUES ('32', '1', '87', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'LICUADO DE PROTEINA', 'SANDWICH DE ATUN O POLLO', 'HUEVOS ENTEROS Y QUESO COTTAGE', 'COMIDAS NORMALES ', 'SIEMPRE', 'SI', '0', '4', '0', '0', '0', '0', 'todo', 'nada', '-', 'TODO EL TIEMPO POSIBLE', '6', 'MASA MUSCULAR Y DEFINICION');
 INSERT INTO `sgformulario` VALUES ('33', '1', '88', '0', '0', '0', '0', '1', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'FRUTA', 'CARNE', 'CANRE', 'CHUCHERIAS', 'SIEMPRE', 'NO', '0', '0', '1', '0', '0', '0', 'CAMINAR, TROTAR', 'no', 'no', ' 1 hora', '5', 'bajar de peso');
 INSERT INTO `sgformulario` VALUES ('34', '1', '89', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'FRUTA, AVENA, HUEVO', 'POLLO, CARNES', 'CERELA, AVENA', 'FRUTA, JICAMA, PEPINO', 'TODOS LOS DIAS', 'SI, BAJAR DE PESO', '0', '0', '4', '0', '0', '0', 'CAMINAR, CORREO , CARDIO', 'PESAS', 'NATACION', '1 HORA', '5', 'BAJAR D EPESO  (TONIFICAR)');
@@ -2620,9 +2745,28 @@ INSERT INTO `sgformulario` VALUES ('52', '1', '108', '0', '0', '0', '0', '0', '0
 INSERT INTO `sgformulario` VALUES ('53', '1', '109', '0', '0', '0', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'JUGO VERDE', 'ENSALADA CON PROTEINA', 'JUGO VERDE', 'FRUTA O VERDURA ', 'TODOS LOS DIAS', 'SI', '0', '2', '0', '0', '0', '0', 'BAILAR', 'CORRER', 'NO', '1 HORA ', '5', 'OBTENER CONDICION FISICA ');
 INSERT INTO `sgformulario` VALUES ('54', '1', '110', '0', '0', '0', '0', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1', '1', 'HUEVO, PAN , LICUADO DE AVENA ', 'ENSALADA CON PROTEIN (POLLO)', 'ORIGEN ANIMAL O ARROZ', 'FRUTA Y VERDURA', 'TODOS LOS DIAS', 'SI', '0', '0', '1', '0', '0', '0', 'ARTES MARCIALES Y PESAS', 'TAE BOO', 'NO', '1 HORA ', '5 ', 'BAJAR DE PESO (QUEMAR GRASA), REDUCIR TALLAS');
 INSERT INTO `sgformulario` VALUES ('55', '1', '111', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'SANDWICH, HUEVO , JAMON ', 'ENSALADA CO PROTEINA', 'ENSALADA O CEREAL', 'FRUTAS Y FRUTOS SECOS', 'TODOS LOS DIAS', 'SI', '0', '2', '0', '0', '0', '0', 'CAMINAR ', 'NADAR', 'SOFTBOL', '1 HORA', '5', 'CONDICION Y MEJOR SALUD');
+INSERT INTO `sgformulario` VALUES ('62', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '5', '0', '0', 'EF', 'RF', 'FREF', 'RGF', 'RF', 'RF', '0', '3', '0', '0', '0', '0', 'N', 'N', 'N', '12\'', '5', 'Musculatura.');
 
 -- ----------------------------
--- Table structure for sgmaquinas
+-- Table structure for `sggenerosrutina`
+-- ----------------------------
+DROP TABLE IF EXISTS `sggenerosrutina`;
+CREATE TABLE `sggenerosrutina` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nb_tiporutina` varchar(40) NOT NULL,
+  `desc_tiporutina` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of sggenerosrutina
+-- ----------------------------
+INSERT INTO `sggenerosrutina` VALUES ('1', 'Hombre', 'Tipos de rutina exclusivamente para hombres');
+INSERT INTO `sggenerosrutina` VALUES ('2', 'Mujer', 'Tipos de rutina exclusivamente para mujer');
+INSERT INTO `sggenerosrutina` VALUES ('3', 'Mixta', 'Tipos de rutina mixta');
+
+-- ----------------------------
+-- Table structure for `sgmaquinas`
 -- ----------------------------
 DROP TABLE IF EXISTS `sgmaquinas`;
 CREATE TABLE `sgmaquinas` (
@@ -2710,7 +2854,7 @@ INSERT INTO `sgmaquinas` VALUES ('70', 'maquinosa', 'adsa', '2', '0', '1');
 INSERT INTO `sgmaquinas` VALUES ('71', 'Maquinosa mundial', 'alkdsjalkdla', '213', '0', '1');
 
 -- ----------------------------
--- Table structure for sgmusculos
+-- Table structure for `sgmusculos`
 -- ----------------------------
 DROP TABLE IF EXISTS `sgmusculos`;
 CREATE TABLE `sgmusculos` (
@@ -2759,7 +2903,7 @@ INSERT INTO `sgmusculos` VALUES ('34', '1', '3', 'Chocobanana', 'salkjdakldjla',
 INSERT INTO `sgmusculos` VALUES ('35', '1', '4', 'Chocofresa', 'cocha pacha', '0');
 
 -- ----------------------------
--- Table structure for sgrutinas
+-- Table structure for `sgrutinas`
 -- ----------------------------
 DROP TABLE IF EXISTS `sgrutinas`;
 CREATE TABLE `sgrutinas` (
@@ -2771,17 +2915,17 @@ CREATE TABLE `sgrutinas` (
   `nb_rutina` varchar(250) CHARACTER SET latin1 NOT NULL,
   `desc_rutina` varchar(500) NOT NULL,
   `sn_activo` int(11) NOT NULL DEFAULT '1',
-  `fh_Creacion` varchar(50) NOT NULL,
+  `fh_creacion` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=131 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=159 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sgrutinas
 -- ----------------------------
 INSERT INTO `sgrutinas` VALUES ('1', '1', '1', null, null, 'Acondicionamiento', 'Rutina de acondicinamiento principiantes, adapta a las personas a condiciones físicas pesadas.', '0', '');
 INSERT INTO `sgrutinas` VALUES ('2', '1', '2', '1', null, 'Acondicionamiento', 'Rutina de acondicinamiento principiantes, adapta a las personas a condiciones físicas pesadas.', '0', '');
-INSERT INTO `sgrutinas` VALUES ('3', '2', '1', null, null, 'Acondicionamiento chingón', 'Rutina de acondicinamiento principiantes, adapta a las personas a condiciones físicas pesadas.', '0', '');
-INSERT INTO `sgrutinas` VALUES ('4', '2', '3', null, null, 'Acondicionamiento', 'Rutina de acondicinamiento principiantes, adapta a las personas a condiciones físicas pesadas.', '0', '');
+INSERT INTO `sgrutinas` VALUES ('3', '2', '1', '2', '1', 'Acondicionamiento chingón', 'Rutina de acondicinamiento principiantes, adapta a las personas a condiciones físicas pesadas.', '1', '');
+INSERT INTO `sgrutinas` VALUES ('4', '2', '3', '3', '2', 'Acondicionamiento', 'Rutina de acondicinamiento principiantes, adapta a las personas a condiciones físicas pesadas.', '1', '');
 INSERT INTO `sgrutinas` VALUES ('5', '1', '1', null, null, 'Otr aprueba', 'laksdjklajl', '0', '2015-01-17');
 INSERT INTO `sgrutinas` VALUES ('50', '1', '1', null, null, 'TronchaToros', 'asdada', '0', '2014-09-16');
 INSERT INTO `sgrutinas` VALUES ('51', '1', '1', null, null, 'Choncha', 'asad', '0', '2014-09-16');
@@ -2789,7 +2933,7 @@ INSERT INTO `sgrutinas` VALUES ('52', '1', '3', null, null, 'El destructor', 'ru
 INSERT INTO `sgrutinas` VALUES ('54', '1', '1', null, null, 'Prueba', 'aasdad', '0', '2014-09-19');
 INSERT INTO `sgrutinas` VALUES ('55', '1', '1', null, null, 'Mejora fisica', 'rutina de mejora fisica', '0', '2014-09-19');
 INSERT INTO `sgrutinas` VALUES ('56', '1', '2', null, null, 'TronchaToros', 'Troncha toros intermedia', '0', '2014-09-19');
-INSERT INTO `sgrutinas` VALUES ('57', '9', '1', null, null, 'Abominable', 'Rutina Abominable', '0', '2014-10-19');
+INSERT INTO `sgrutinas` VALUES ('57', '9', '1', null, null, 'Abominable', 'Rutina Abominable', '1', '2014-10-19');
 INSERT INTO `sgrutinas` VALUES ('60', '1', '2', null, null, 'Rutina nueva', 'akdjkldjlajdkadjkal', '0', '2014-11-17');
 INSERT INTO `sgrutinas` VALUES ('61', '1', '3', null, null, 'prueba2', 'adfasd', '0', '2015-01-15');
 INSERT INTO `sgrutinas` VALUES ('62', '1', '1', null, null, 'Chuvacosa', 'Chuvacosa', '0', '2015-01-17');
@@ -2860,9 +3004,11 @@ INSERT INTO `sgrutinas` VALUES ('127', '1', '1', '3', null, 'HMTJENN1V1', 'HOMBR
 INSERT INTO `sgrutinas` VALUES ('128', '1', '1', '3', null, 'HMTJENN1V2', 'HOMBRO O MUJER TEEN JOVEN ENDOMORFO NIVEL 1 VERSION 2', '1', '2015-03-04');
 INSERT INTO `sgrutinas` VALUES ('129', '1', '1', '3', null, 'HMTJENN1V3', 'HOMBRE O MUJER TEEN JOVEN ENDOMORFO NIVEL 1 VERSION 3', '1', '2015-03-04');
 INSERT INTO `sgrutinas` VALUES ('130', '1', '1', '3', null, 'HMTJAMEN1V1', 'HOMBRE O MUJER TEEN JOVEN ADULTO MESOMORFO NIVEL 1 VERSION 1', '1', '2015-03-04');
+INSERT INTO `sgrutinas` VALUES ('156', '1', '3', '2', '1', 'Rutina Pruebosa', 'lkajdslajdas', '1', '2015-07-19');
+INSERT INTO `sgrutinas` VALUES ('158', '1', '2', '3', '2', 'Rutina De prueba', 'adsdjakdalk', '1', '2015-07-19');
 
 -- ----------------------------
--- Table structure for sgtipocuerpo
+-- Table structure for `sgtipocuerpo`
 -- ----------------------------
 DROP TABLE IF EXISTS `sgtipocuerpo`;
 CREATE TABLE `sgtipocuerpo` (
@@ -2881,7 +3027,7 @@ INSERT INTO `sgtipocuerpo` VALUES ('2', 'MESOMORFO', 'MESOMORFO', 'css/mesomorfo
 INSERT INTO `sgtipocuerpo` VALUES ('3', 'ENDOMORFO', 'ENDOMORFO', 'css/endomorfo.jpg');
 
 -- ----------------------------
--- Table structure for sgtipospruebas
+-- Table structure for `sgtipospruebas`
 -- ----------------------------
 DROP TABLE IF EXISTS `sgtipospruebas`;
 CREATE TABLE `sgtipospruebas` (
@@ -2903,7 +3049,7 @@ INSERT INTO `sgtipospruebas` VALUES ('7', 'Resistencia');
 INSERT INTO `sgtipospruebas` VALUES ('8', 'Flexibilidad');
 
 -- ----------------------------
--- Table structure for sgtiposrutina
+-- Table structure for `sgtiposrutina`
 -- ----------------------------
 DROP TABLE IF EXISTS `sgtiposrutina`;
 CREATE TABLE `sgtiposrutina` (
@@ -2936,7 +3082,7 @@ INSERT INTO `sgtiposrutina` VALUES ('18', '0', 'Chicunguaya', 'laksjdklajslda', 
 INSERT INTO `sgtiposrutina` VALUES ('19', '0', 'COchapacha', 'alsdjkak', '0');
 
 -- ----------------------------
--- Table structure for sgusuarios
+-- Table structure for `sgusuarios`
 -- ----------------------------
 DROP TABLE IF EXISTS `sgusuarios`;
 CREATE TABLE `sgusuarios` (
@@ -2966,7 +3112,7 @@ CREATE TABLE `sgusuarios` (
 -- ----------------------------
 -- Records of sgusuarios
 -- ----------------------------
-INSERT INTO `sgusuarios` VALUES ('1', 'Chuvaca', 'chuvaca', 'Jesus', 'Ibañez', 'MASCULINO', '26', 'ashernetz@hotmail.com', '(667) 214-7897', '(667) 214-7897', '1', '1', '1', '1', ' 1', '1', '1', '1', null, null);
+INSERT INTO `sgusuarios` VALUES ('1', 'Chuvaca', 'chuvaca', 'Spin', 'Gym', 'MASCULINO', '26', 'ashernetz@hotmail.com', '(667) 214-7897', '(667) 214-7897', '1', '1', '1', '1', ' 1', '1', '1', '1', null, null);
 INSERT INTO `sgusuarios` VALUES ('2', 'Pedro', 'pedro', 'Pedro', 'Flores Cabanillas', 'Masculino', '28', 'pedro@icariasoft.com', '67564564', '65456465', '1', '1', '1', '1', '1', '1', '1', '1', null, null);
 INSERT INTO `sgusuarios` VALUES ('9', 'jesus_ibanez', 'Michi Machapita', 'jesus', 'perez', 'MASCULINO', '26', 'ashernetz@hotmail.com', '(667) 214-7830', '(667) 214-7897', '0', '0', '0', 'Montebello', 'cañadas cañadas', '80227', '0', '1', null, null);
 INSERT INTO `sgusuarios` VALUES ('14', 'Michi', 'machapita', 'michelle', 'soots medina', 'FEMENINO', '23', 'ashernetz@hotmail.com', '(123) 123-1312', '(123) 123-1231', '0', '0', '0', 'Montebello', 'cañadas\ncañadas', '80227', '0', '0', null, null);
@@ -2978,7 +3124,7 @@ INSERT INTO `sgusuarios` VALUES ('19', 'spingym', 'spingym', 'Spin Gym', 'Spin G
 INSERT INTO `sgusuarios` VALUES ('27', 'jesus perez', 'adadasda', 'jesus', 'perez', 'MASCULINO', '0', 'ashernetz@hotmail.com', '01 667 214 7897', '01 667 214 7897', '0', '0', '0', 'asdada', 'cañadas\ncañadas', null, '0', '1', '80227', '0');
 
 -- ----------------------------
--- Table structure for sg_actividades
+-- Table structure for `sg_actividades`
 -- ----------------------------
 DROP TABLE IF EXISTS `sg_actividades`;
 CREATE TABLE `sg_actividades` (
@@ -2996,7 +3142,7 @@ CREATE TABLE `sg_actividades` (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for sg_biotestbitacora
+-- Table structure for `sg_biotestbitacora`
 -- ----------------------------
 DROP TABLE IF EXISTS `sg_biotestbitacora`;
 CREATE TABLE `sg_biotestbitacora` (
@@ -3107,49 +3253,7 @@ INSERT INTO `sg_biotestbitacora` VALUES ('95', '1', '49', '0', '2015-05-20');
 INSERT INTO `sg_biotestbitacora` VALUES ('96', '1', '110', '0', '2015-05-20');
 
 -- ----------------------------
--- Table structure for sg_categoriasrutina
--- ----------------------------
-DROP TABLE IF EXISTS `sg_categoriasrutina`;
-CREATE TABLE `sg_categoriasrutina` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nb_CategoriaRutina` varchar(250) NOT NULL,
-  `desc_CategoriaRutina` varchar(250) NOT NULL,
-  `sn_activo` int(11) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of sg_categoriasrutina
--- ----------------------------
-INSERT INTO `sg_categoriasrutina` VALUES ('1', 'Principiante', 'Rutinas para clientes principiantes', '1');
-INSERT INTO `sg_categoriasrutina` VALUES ('2', 'Intermedio', 'Rutinas para los clientes de resistencia física intermedia', '1');
-INSERT INTO `sg_categoriasrutina` VALUES ('3', 'Avanzado', 'Rutinas para clientes de resistencia física Avanzada', '1');
-INSERT INTO `sg_categoriasrutina` VALUES ('4', 'Todos', 'Rutinas en general para todos los niveles', '1');
-
--- ----------------------------
--- Table structure for sg_dias
--- ----------------------------
-DROP TABLE IF EXISTS `sg_dias`;
-CREATE TABLE `sg_dias` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nb_dia` varchar(250) NOT NULL,
-  `desc_dia` varchar(250) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of sg_dias
--- ----------------------------
-INSERT INTO `sg_dias` VALUES ('1', 'Lunes', 'Lunes');
-INSERT INTO `sg_dias` VALUES ('2', 'Martes', 'Martes');
-INSERT INTO `sg_dias` VALUES ('3', 'Miércoles', 'Miercoles');
-INSERT INTO `sg_dias` VALUES ('4', 'Jueves', 'Jueves');
-INSERT INTO `sg_dias` VALUES ('5', 'Viernes', 'Viernes');
-INSERT INTO `sg_dias` VALUES ('6', 'Sábado', 'Sabado');
-INSERT INTO `sg_dias` VALUES ('7', 'Domingo', 'Domingo');
-
--- ----------------------------
--- Table structure for sg_ejerciciosrutinacliente
+-- Table structure for `sg_ejerciciosrutinacliente`
 -- ----------------------------
 DROP TABLE IF EXISTS `sg_ejerciciosrutinacliente`;
 CREATE TABLE `sg_ejerciciosrutinacliente` (
@@ -4720,25 +4824,7 @@ INSERT INTO `sg_ejerciciosrutinacliente` VALUES ('1786', '2', '0', '1', '28', '2
 INSERT INTO `sg_ejerciciosrutinacliente` VALUES ('1787', '12', '0', '1', '28', '12', '2', '5', '', '', '0', '0', '', '1');
 
 -- ----------------------------
--- Table structure for sg_generosrutina
--- ----------------------------
-DROP TABLE IF EXISTS `sg_generosrutina`;
-CREATE TABLE `sg_generosrutina` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nb_TipoRutina` varchar(40) NOT NULL,
-  `desc_TipoRutina` varchar(50) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of sg_generosrutina
--- ----------------------------
-INSERT INTO `sg_generosrutina` VALUES ('1', 'Hombre', 'Tipos de rutina exclusivamente para hombres');
-INSERT INTO `sg_generosrutina` VALUES ('2', 'Mujer', 'Tipos de rutina exclusivamente para mujer');
-INSERT INTO `sg_generosrutina` VALUES ('3', 'Mixta', 'Tipos de rutina mixta');
-
--- ----------------------------
--- Table structure for sg_pruebas
+-- Table structure for `sg_pruebas`
 -- ----------------------------
 DROP TABLE IF EXISTS `sg_pruebas`;
 CREATE TABLE `sg_pruebas` (
@@ -5326,7 +5412,7 @@ INSERT INTO `sg_pruebas` VALUES ('1296', '1', '49', '1', 'Condicion Física', '6
 INSERT INTO `sg_pruebas` VALUES ('1297', '1', '110', '1', 'Condicion Física', '70', 'Bueno', '60', '2015-05-20 22:00:00');
 
 -- ----------------------------
--- Table structure for sg_rutinasclientes
+-- Table structure for `sg_rutinasclientes`
 -- ----------------------------
 DROP TABLE IF EXISTS `sg_rutinasclientes`;
 CREATE TABLE `sg_rutinasclientes` (
@@ -5354,7 +5440,7 @@ INSERT INTO `sg_rutinasclientes` VALUES ('27', '0', '0', '0', '0', '', '', '2015
 INSERT INTO `sg_rutinasclientes` VALUES ('28', '0', '0', '0', '0', '', '', '2015-06-08', '1');
 
 -- ----------------------------
--- Function structure for SPLIT_STR
+-- Function structure for `SPLIT_STR`
 -- ----------------------------
 DROP FUNCTION IF EXISTS `SPLIT_STR`;
 DELIMITER ;;

@@ -706,6 +706,48 @@ params = $methodsService.Json("EjerciciosRutinaOrden",$scope.id_rutina);
              $scope.AgregarEjerciciosTabla($scope.lunes,"#lunesbody");
              $scope.InicializarTablas();
           break;
+
+          case '2':
+            $scope.martes = ejercicios;
+             $("#martesbody").empty();
+             $scope.AgregarEjerciciosTabla($scope.martes,"#martesbody");
+             $scope.InicializarTablas();
+          break;
+
+          case '3':
+            $scope.miercoles = ejercicios;
+             $("#miercolesbody").empty();
+             $scope.AgregarEjerciciosTabla($scope.miercoles,"#miercolesbody");
+             $scope.InicializarTablas();
+          break;
+
+          case '4':
+            $scope.jueves = ejercicios;
+             $("#juevesbody").empty();
+             $scope.AgregarEjerciciosTabla($scope.jueves,"#juevesbody");
+             $scope.InicializarTablas();
+          break;
+
+          case '5':
+            $scope.viernes = ejercicios;
+             $("#viernesbody").empty();
+             $scope.AgregarEjerciciosTabla($scope.viernes,"#viernesbody");
+             $scope.InicializarTablas();
+          break;
+
+           case '6':
+            $scope.sabado = ejercicios;
+             $("#sabadobody").empty();
+             $scope.AgregarEjerciciosTabla($scope.sabado,"#sabadobody");
+             $scope.InicializarTablas();
+          break;
+
+          case '7':
+            $scope.domingo = ejercicios;
+             $("#domingobody").empty();
+             $scope.AgregarEjerciciosTabla($scope.domingo,"#domingobody");
+             $scope.InicializarTablas();
+          break;
         }//switch
     }//AsignarEjercicios
 
@@ -792,23 +834,40 @@ params = $methodsService.Json("EjerciciosRutinaOrden",$scope.id_rutina);
         console.log($scope.valores);
         var Params= JSON.stringify($scope.valores);
 
+        //Validación, si el hijo es mayor por solo 1 o el padre menor por 1
+        Cantidad_DiferenciaHijo  = id_Hijo - id; //Diferencia entre id_hijo y el id que fue movido
+        Cantidad_DiferenciaPadre = id - id_Padre;
+        Actividad_Sola       = 0;
+        MismoLugar_Hijo      = 0;
+        MismoLugar_Padre     = 0;
+        
+        console.log(Cantidad_DiferenciaHijo+" diferencia");
+        //Verificando, si no tiene ni padre o hijio, es que es una sola actividad
+        if(id_Hijo==0 && id_Padre==0 )
+        {
+          Actividad_Sola = 1;
+        }//if
+
+        if(Cantidad_DiferenciaHijo!=1 && Cantidad_DiferenciaPadre!=1 && Actividad_Sola!=1 )
+      {
         var url = 'modulos/Rutinas/Funciones.php';
-     $http({method: "post",url: url,data: $.param({Params:Params}), 
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-    })
-     .success(function(data, status, headers, config) 
-     {            
-          exito = data.exito;
-          if(exito==1)
-          {
-            var id_diaCambio = data.dia;
-            var ejercicios   = data.ejercicios;
-            $scope.AsignarEjercicios(id_diaCambio,ejercicios);
-          }//if
-      })  
-     .error(function(data, status, headers, config){
-      $methodsService.alerta(2,"algo falló, disculpe las molestias");
-     });
+         $http({method: "post",url: url,data: $.param({Params:Params}), 
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        })
+         .success(function(data, status, headers, config) 
+         {            
+              exito = data.exito;
+              if(exito==1)
+              {
+                var id_diaCambio = data.dia;
+                var ejercicios   = data.ejercicios;
+                $scope.AsignarEjercicios(id_diaCambio,ejercicios);
+              }//if
+          }) //success 
+         .error(function(data, status, headers, config){
+          $methodsService.alerta(2,"algo falló, disculpe las molestias");
+         });
+        }//if 
 
     }//CambiarDia
 
@@ -874,10 +933,10 @@ params = $methodsService.Json("EjerciciosRutinaOrden",$scope.id_rutina);
        $('#table-2').tableDnD({
           onDrop: function(table, row) 
           {
-          //Tomando los datos del row que se movió
-          id = row.id;
-          dia_semana = "Actualiza_Martes";
-          CambiarDia(id,dia_semana) 
+            //Tomando los datos del row que se movió
+            id = row.id;
+            dia_semana = "Actualiza_Martes";
+            $scope.CambiarDia(id,dia_semana) 
           } 
       });
       
@@ -885,11 +944,10 @@ params = $methodsService.Json("EjerciciosRutinaOrden",$scope.id_rutina);
        $('#table-3').tableDnD({
           onDrop: function(table, row) 
         {
-          console.log(row);
-          //Tomando los datos del row que se movió
-          id = row.id;
-          dia_semana = "Actualiza_Miercoles";
-          CambiarDia(id,dia_semana) 
+            //Tomando los datos del row que se movió
+            id = row.id;
+            dia_semana = "Actualiza_Miercoles";
+            $scope.CambiarDia(id,dia_semana); 
           } 
       });
       
@@ -897,11 +955,10 @@ params = $methodsService.Json("EjerciciosRutinaOrden",$scope.id_rutina);
        $('#table-4').tableDnD({
           onDrop: function(table, row) 
         {
-          console.log(row);
-          //Tomando los datos del row que se movió
-          id = row.id;
-          dia_semana = "Actualiza_Jueves";
-          CambiarDia(id,dia_semana) 
+           //Tomando los datos del row que se movió
+            id = row.id;
+            dia_semana = "Actualiza_Jueves";
+            $scope.CambiarDia(id,dia_semana); 
           } 
       });
       
@@ -913,7 +970,7 @@ params = $methodsService.Json("EjerciciosRutinaOrden",$scope.id_rutina);
           //Tomando los datos del row que se movió
           id = row.id;
           dia_semana = "Actualiza_Viernes";
-          CambiarDia(id,dia_semana) 
+          $scope.CambiarDia(id,dia_semana); 
           } 
       });
       
@@ -921,11 +978,11 @@ params = $methodsService.Json("EjerciciosRutinaOrden",$scope.id_rutina);
        $('#table-6').tableDnD({
           onDrop: function(table, row) 
         {
-          console.log(row);
+          
           //Tomando los datos del row que se movió
           id = row.id;
           dia_semana = "Actualiza_Sabado";
-          CambiarDia(id,dia_semana) 
+          $scope.CambiarDia(id,dia_semana) 
           } 
       });
       
@@ -933,11 +990,11 @@ params = $methodsService.Json("EjerciciosRutinaOrden",$scope.id_rutina);
        $('#table-7').tableDnD({
           onDrop: function(table, row) 
         {
-          console.log(row);
+          
           //Tomando los datos del row que se movió
           id = row.id;
           dia_semana = "Actualiza_Domingo";
-          CambiarDia(id,dia_semana) 
+          $scope.CambiarDia(id,dia_semana) 
           } 
       });
     }//InicializarTablas
@@ -971,6 +1028,51 @@ params = $methodsService.Json("EjerciciosRutinaOrden",$scope.id_rutina);
               $("#lunesbody").append(tr);
 
           }//for
+
+          for(i=0; i<$scope.martes.length;i++)
+          {
+              var eje = $scope.martes[i];
+              var tr = '<tr class="text-center" id="'+eje.id_posicionejercicio+'"><td>'+eje.id_posicionejercicio+'</td><td>'+eje.nb_ejercicio+'</td><td>'+eje.nb_musculo+'</td></tr>'
+              $("#martesbody").append(tr);
+
+          }//for
+
+          for(i=0; i<$scope.miercoles.length;i++)
+          {
+              var eje = $scope.miercoles[i];
+              var tr = '<tr class="text-center" id="'+eje.id_posicionejercicio+'"><td>'+eje.id_posicionejercicio+'</td><td>'+eje.nb_ejercicio+'</td><td>'+eje.nb_musculo+'</td></tr>'
+              $("#miercolesbody").append(tr);
+
+          }//for
+
+          for(i=0; i<$scope.jueves.length;i++)
+          {
+              var eje = $scope.jueves[i];
+              var tr = '<tr class="text-center" id="'+eje.id_posicionejercicio+'"><td>'+eje.id_posicionejercicio+'</td><td>'+eje.nb_ejercicio+'</td><td>'+eje.nb_musculo+'</td></tr>'
+              $("#juevesbody").append(tr);
+          }//for
+
+          for(i=0; i<$scope.viernes.length;i++)
+          {
+              var eje = $scope.viernes[i];
+              var tr = '<tr class="text-center" id="'+eje.id_posicionejercicio+'"><td>'+eje.id_posicionejercicio+'</td><td>'+eje.nb_ejercicio+'</td><td>'+eje.nb_musculo+'</td></tr>'
+              $("#viernesbody").append(tr);
+          }//for
+
+          for(i=0; i<$scope.sabado.length;i++)
+          {
+              var eje = $scope.sabado[i];
+              var tr = '<tr class="text-center" id="'+eje.id_posicionejercicio+'"><td>'+eje.id_posicionejercicio+'</td><td>'+eje.nb_ejercicio+'</td><td>'+eje.nb_musculo+'</td></tr>'
+              $("#sabadobody").append(tr);
+          }//for
+
+          for(i=0; i<$scope.domingo.length;i++)
+          {
+              var eje = $scope.domingo[i];
+              var tr = '<tr class="text-center" id="'+eje.id_posicionejercicio+'"><td>'+eje.id_posicionejercicio+'</td><td>'+eje.nb_ejercicio+'</td><td>'+eje.nb_musculo+'</td></tr>'
+              $("#domingobody").append(tr);
+          }//for
+
           $scope.InicializarTablas();
         }//if
          
