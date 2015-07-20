@@ -165,6 +165,16 @@
 	      	templateUrl:'modulos/Rutinas/RutinaOrden.html'
 	    })
 
+	    .when('/RutinaPrefinal',{
+	    	controller: 'Rutinaprefinal',
+	      	templateUrl:'modulos/Rutinas/Rutinas_Prefinal.html'
+	    })
+
+	    .when('/EditarRutina',{
+	    	controller: 'RutinaEditar',
+	      	templateUrl:'modulos/Rutinas/Rutinas_EditarDatos.html'
+	    })
+
 	    .when('/Error',{
 	    	controller: 'Errors',
 	      	templateUrl:'modulos/Rutinas/Error.html'

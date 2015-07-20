@@ -144,9 +144,9 @@
 
 <script>
 	 //$('#listados').editableTableWidget().numericInputExample();
-  $('#listados').editableTableWidget();
-  $('#textAreaEditor').editableTableWidget({editor: $('<textarea>')});
-  window.prettyPrint && prettyPrint();		
+  
+  //$('#textAreaEditor').editableTableWidget({editor: $('<textarea>')});
+  //window.prettyPrint && prettyPrint();		
 </script>
 
 <script>
@@ -164,7 +164,7 @@ $(document).ready(function(){
 	//LoadTable(); //Cargando estilos de la tabla
 	
 	//función para tomar los datos y mandar las repeticinoes y circuitos a la bd
-		$('table td').on('change', function(evt, newValue) {
+	$('table td').on('change', function(evt, newValue) {
 	// do something with the new cell value 
 	console.log(evt.currentTarget);
 	console.log(newValue);

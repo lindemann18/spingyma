@@ -188,6 +188,38 @@
 			}//switch
 		break;
 
+		case 'AgregarRepeticionesEjercicio':
+			$salidaJson = AgregarRepeticionesEjercicio($Parametros);
+			echo json_encode($salidaJson);
+		break;
+
+		case 'AgregarCircuitosEjercicio':
+			$salidaJson = AgregarCircuitosEjercicio($Parametros);
+			echo json_encode($salidaJson);
+		break;
+
+		case 'AgregarRelacionEjercicio':
+			//Mandando los valores a BD ya sea para agregar y o actualizar
+			$salidaJson = AgregarRelacionEjercicio($Parametros);
+			echo json_encode($salidaJson);
+		break;
+
+		case 'EliminarRutina':
+			//Mandando los valores a BD ya sea para agregar y o actualizar
+			$salidaJson = EliminarRutina($Parametros);
+			echo json_encode($salidaJson);
+		break;
+
+		case 'DatosEditarRutina':
+			$salidaJson = DatosEditarRutina($Parametros);
+			echo json_encode($salidaJson);
+		break;
+
+		case 'EditarInfoRutina':
+			$salidaJson = EditarInfoRutina($Parametros);
+			echo json_encode($salidaJson);
+		break;
+
 		//Secciones Viejas
 		case 'AgregaMusculo':
 			$nb_musculo	   = $Parametros['nb_musculo'];
@@ -379,45 +411,7 @@
 			//echo json_encode($salidaJson);
 		break;
 		
-		case 'AgregarRepeticionesEjercicio':
-			
-			//Tomando los valores
-			$id_ejercicio		= $Parametros['id_ejercicio'];
-			$num_repeticiones	= $Parametros['num_repeticiones'];
-			
-			//Mandando los valores a BD ya sea para agregar y o actualizar
-			AgregarRepeticionesEjercicio($id_ejercicio, $num_repeticiones);
-		break;
 		
-		
-		case 'AgregarCircuitosEjercicio':
-			
-			//Tomando los valores
-			$id_ejercicio	= $Parametros['id_ejercicio'];
-			$num_circuitos	= $Parametros['num_circuitos'];
-			
-			//Mandando los valores a BD ya sea para agregar y o actualizar
-			AgregarCircuitosEjercicio($id_ejercicio, $num_circuitos);
-		break;
-		
-		case 'AgregarRelacionEjercicio':
-			
-			//Tomando los valores
-			$id_ejercicio	= $Parametros['id_ejercicio'];
-			$relacion		= $Parametros['relacion'];
-			
-			//Mandando los valores a BD ya sea para agregar y o actualizar
-			AgregarRelacionEjercicio($id_ejercicio, $relacion);
-		break;
-		
-		case 'EliminarRutinaPorId':
-			
-			//Tomando los valores
-			$idRutina	= $Parametros['idRutina'];
-			
-			//Mandando los valores a BD ya sea para agregar y o actualizar
-			EliminarRutinaPorId($idRutina);
-		break;
 		
 		case 'DesactivarEjerciciosPorRutina':
 			
@@ -1472,6 +1466,140 @@
 		return $datos;
 	}//ConAmbosBajoPosicion
 
+	function AgregarRepeticionesEjercicio($Parametros)
+	{
+		$id_ejercicio     = $Parametros['id_ejercicio'];
+		$num_repeticiones = $Parametros['num_repeticiones'];
+		$id_rutina 	      = $Parametros['id_rutina'];
+
+		$ejercicio = R::load("sgejerciciosrutina",$id_ejercicio);
+		$ejercicio->num_repeticiones = $num_repeticiones;
+		$respuesta = EjecutarTransaccion($ejercicio);
+		$exito     = is_numeric($respuesta);
+		$datos     = array("exito"=>$exito);
+		return $datos;
+	}//AgregarRepeticionesEjercicio
+
+	function AgregarCircuitosEjercicio($Parametros)
+	{
+		$id_ejercicio  = $Parametros['id_ejercicio'] ;
+		$num_circuitos = $Parametros['num_circuitos'] ;
+
+		$ejercicio = R::load("sgejerciciosrutina",$id_ejercicio);
+		$ejercicio->num_circuitos = $num_circuitos;
+		$respuesta = EjecutarTransaccion($ejercicio);
+		$exito     = is_numeric($respuesta);
+		$datos     = array("exito"=>$exito);
+		return $datos;
+
+	}///AgregarCircuitosEjercicio
+
+	function AgregarRelacionEjercicio($Parametros)
+	{
+		$id_ejercicio = $Parametros['id_ejercicio'];
+		$relacion     = $Parametros['relacion'];
+
+		$ejercicio = R::load("sgejerciciosrutina",$id_ejercicio);
+		$ejercicio->ejercicio_relacion = $relacion;
+		$respuesta = EjecutarTransaccion($ejercicio);
+		$exito     = is_numeric($respuesta);
+		$datos     = array("exito"=>$exito);
+		return $datos;
+	}//AgregarRelacionEjercicio
+
+	function EliminarRutina($Parametros)
+	{
+		$id     = $Parametros['id'];
+		$rutina = R::load("sgrutinas",$id);
+		$rutina->sn_activo = 0;
+		$respuesta = EjecutarTransaccion($rutina);
+		$exito     = is_numeric($respuesta)?1:0;
+
+		//Obteniendo todas las rutinas.
+		$consultar = new Consultar();
+		//consultar rutinas
+		$rutinas   = $consultar->_ConsultarRutinasTotales();
+		$cantidad  = count($rutinas);
+		$exitor    = ($cantidad>0)?1:0;
+		$datos     = array("exito"=>$exito,"exitor"=>$exitor,
+						   "rutinas"=>$rutinas);
+		return $datos;
+	}//EliminarRutinaPorId
+
+	function DatosEditarRutina($Parametros)
+	{
+		$id        =    $Parametros['id'];
+		$consultar = new Consultar();
+		R::freeze(1);
+		R::begin();
+		    try{
+		      	$rutina = R::getRow( 'select * from sgrutinas where id= ?', [$id] );
+		        R::commit();
+		    }
+		    catch(Exception $e) {
+		       $rutina =  R::rollback();
+		       $rutina = "Error";
+		    }
+		R::close();
+		$exito = ($rutina!="Error")?1:0;
+
+		//consultar tipos de rutinas
+		$cat_rut = $consultar->_ConsultarCategoriaRutinas();
+		$cantidadt = count($cat_rut);
+		$exitot    = ($cantidadt>0)?1:0;
+		$tiposrutina = array();
+		//eliminando la opción todos
+		if($exitot==1)
+		{	foreach($cat_rut as $key)
+			{
+				//$key       = array_search('Todos',$tipos_rut);
+			 	if($key['nb_categoriarutina']!="Todos")
+			 	{
+			 		array_push($tiposrutina,$key);
+			 	}
+			}
+			//unset($tipos_rut[$key]);
+		}//if
+		
+
+		//Consultar géneros de las rutinas
+		$generos   = $consultar->_ConsultarGenerosRutina();
+		$cantidadg = count($generos);
+		$exitog    = ($cantidadg>0)?1:0;
+		
+
+		//Consultando los tipos de cuerpos
+		$cuerpos   = $consultar->_ConsultarTiposCuerpo();
+		$cantidadc = count($cuerpos);
+		$exitoc    = ($cantidadc>0)?1:0;
+
+		//Consultando las categorias de las rutinas
+		$tiposRut  = $consultar->_ConsultarTiposRutina();
+		$cantidadr = count($tiposRut);
+		$exitor    = ($cantidadr>0)?1:0;
+
+		$datos     = array("exitot"=>$exitot,"cat_rut"=>$tiposrutina,"exitog"=>$exitog,
+						   "generos"=>$generos,"exitoc"=>$exitoc,"cuerpos"=>$cuerpos,
+						   "exitor"=>$exitor,"tiposRut"=>$tiposRut,"exito"=>$exito,
+						   "rutina"=>$rutina);
+		return $datos;
+	}//DatosEditarRutina
+
+	function EditarInfoRutina($Parametros)
+	{
+		$id 	= $Parametros['id'];
+		$rutina = R::load("sgrutinas",$id);
+		$rutina->nb_rutina          = $Parametros['nb_rutina'];
+		$rutina->desc_rutina        = $Parametros['desc_rutina'];
+		$rutina->id_categoriarutina = $Parametros['id_categoriarutina'];
+		$rutina->id_generorutina    = $Parametros['id_generorutina'];
+		$rutina->id_tipocuerpo      = $Parametros['id_tipocuerpo'];
+		$respuesta = EjecutarTransaccion($rutina);
+		$exito = ($id==$respuesta)?1:0;
+		$datos = array("exito"=>$exito);
+		return $datos;
+	}//EditarInfoRutina	
+
 	// funciones Viejas
 
 	//Apartado de músculos	
@@ -1837,55 +1965,8 @@
 			}//For
 	}//RegistrarEjerciciosRutinas
 	
-	function AgregarRepeticionesEjercicio($id_ejercicio, $num_repeticiones)
-	{
-		//Buscar si ya existe algún valor, de ser así entonces se actualiza
-		$consultar  = new Consultar();
-		$agregar    = new Agregar();
-		$actualizar = new Actualizar();
-		
-		$ResultRepeticiones=$consultar->_ConsultarNumeroDeRepeticionesEjercicioPorId($id_ejercicio);
-		$filaRepeticiones=$ResultRepeticiones->fetch_assoc();
-		$Num_RepeticionesActual=$filaRepeticiones['num_Repeticiones'];
-		
-		//Si es diferente de vacío es por que tiene repeticiones, entonces se actualiza, si no se agrega
-		if($num_repeticiones!="")
-		{
-			$result=$actualizar->_ActualizarNumeroRepeticionesEjercicioPorId($id_ejercicio, $num_repeticiones);	
-		}
-		
-		
-		
-	}//AgregarRepeticionesEjercicio
 	
-	function AgregarCircuitosEjercicio($id_ejercicio, $num_circuitos)
-	{
-		//Buscar si ya existe algún valor, de ser así entonces se actualiza
-		$consultar			 = new Consultar();
-		$actualizar			 = new Actualizar();		
-		$ResultRepeticiones  = $consultar->_ConsultarNumeroDeCircuitosEjercicioPorId($id_ejercicio);
-		$filaRepeticiones	 = $ResultRepeticiones->fetch_assoc();
-		$num_CircuitosActual = $filaRepeticiones['num_Circuitos'];
-		
-		//Si es diferente de vacío es por que tiene repeticiones, entonces se actualiza, si no se agrega
-		if($num_circuitos!="")
-		{
-		 	$result=$actualizar->_ActualizarNumeroCircuitosEjercicioPorId($id_ejercicio, $num_circuitos);
-		}
-		
-	}///AgregarCircuitosEjercicio
-	
-	function AgregarRelacionEjercicio($id_ejercicio, $relacion)
-	{
-		$actualizar = new Actualizar();
-		$result     = $actualizar->_ActualizarRelacionEjercicios($id_ejercicio, $relacion);
-	}//AgregarRelacionEjercicio
-	
-	function EliminarRutinaPorId($id)
-	{
-		$actualizar = new Actualizar();
-		$result		= $actualizar->_EliminarRutinaPorId($id);
-	}//EliminarRutinaPorId
+
 	
 	function DesactivarEjerciciosPorRutina($idRutina, $DiasEdicion, $CantidadDias)
 	{

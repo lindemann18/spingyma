@@ -7,10 +7,62 @@ $scope.pageSize 	   = 5;   // Tamaño de la página, para paginación.
 $scope.mostrarbuscando = true;	
 $scope.mostrarcontent  = false;	
 $scope.showfilter      = false;
-$scope.clitr           = 0;
 $scope.disablebtn      = false;
+$scope.ruttr           = 0;
 
-//funciones
+//Funciones
+$scope.Selecciontr = function(tr)
+{
+  //Verificando que no se le hizo click al mismo tr
+  if(tr.rut.id_rutina == $scope.ruttr)
+  {
+    //Si es el mismo tr se le asigna un 0.
+    $scope.ruttr = 0;
+    idtr = "#table"+tr.rut.id_rutina;
+    $(idtr).removeClass("bg-blue");
+    console.log($scope.ruttr);
+  }//if
+  else
+  {
+    $("tr").removeClass("bg-blue");
+    $scope.ruttr = tr.rut.id_rutina;
+    idtr          = "#table"+tr.rut.id_rutina;
+    $(idtr).addClass("bg-blue");
+    console.log($scope.ruttr);
+  }
+
+}//Selecciontr
+
+$scope.MostrarRutina = function(id)
+{
+  bootbox.confirm("Desea ver esta rutina?", function(result) {
+    console.log(result);
+      if(result==true)
+      {
+        $scope.$apply(function(){
+          $location.path('/RutinaOrdenEnt').search({Rut:id});
+        });
+      }//if
+  });
+}//MostrarRutina
+
+$scope.Editar = function()
+{
+  bootbox.confirm("Desea Editar esta Rutina?", function(result) {
+    console.log(result);
+      if(result==true)
+      {
+          if($scope.ruttr!=0)
+          {
+            $scope.$apply(function(){
+              $location.path('/EditarRutina').search({Rut:$scope.ruttr});
+            });
+          }
+          else{$methodsService.alerta(2,"Favor de seleccionar una Rutina");} 
+      }//if
+
+  });
+}//Editar
 
 $scope.Agregar = function()
 {
@@ -23,6 +75,44 @@ $scope.Agregar = function()
 	  		});
 	  	}//if
 	});
+}//Agregar
+
+$scope.Eliminar = function()
+{
+  bootbox.confirm("Desea Eliminar esta rutina?", function(result) {
+    console.log(result);
+      if(result==true)
+      {
+        if($scope.ruttr!=0)
+        {
+           params = $methodsService.Json("EliminarRutina",$scope.ruttr);
+          //Enviando por ajax la peetición
+          var url = 'modulos/Rutinas/Funciones.php';
+         $http({method: "post",url: url,data: $.param({Params:params}), 
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        })
+         .success(function(data, status, headers, config) 
+         {            
+              exito  = data.exito;
+              exitor = data.exitor;
+              switch(true)
+              {
+                  case exito==1 && exitor==1:
+                    $scope.rutinas = data.rutinas;
+                  break;
+
+                  case exito!=1 && exitor!=1:
+                    $methodsService.alerta(2,"algo falló, disculpe las molestias");
+                  break;
+              }//switch
+          })  
+         .error(function(data, status, headers, config){
+          $methodsService.alerta(2,"algo falló, disculpe las molestias");
+         });
+        }//if
+        else{$methodsService.alerta(2,"Favor de seleccionar una Rutina");}
+      }//if
+  });
 }//Agregar
 
 $scope.FiltrarRutinas = function()
@@ -430,7 +520,7 @@ $scope.veriricarRutina = function()
  $scope.GuardarEjercicios = function()
  {
     //Verificando si se eligieron ejercicios
-     $scope.btnactiv = true;
+    
      bootbox.confirm("Desea agregar estos ejercicios?", function(result) {
     if(result==true)
       {
@@ -446,7 +536,8 @@ $scope.veriricarRutina = function()
             }//if
             else
             {
-                $scope.btnactiv = false;
+                 $scope.btnactiv = true;
+                
                 // Definiendo variables y cookies para la selecciónd e ejercicios de las rutinas
                 EjerciciosRutina = new Array(); //Array donde se guardarán los tipos de rutina para este día.
                 $(".box2 .Actividad").each(function(){
@@ -477,6 +568,7 @@ $scope.veriricarRutina = function()
                       exito = data.exito;
                       if(exito==1)
                       {
+                        $scope.btnactiv = false;
                         var Tipo_RutinaActual = $cookies.get("Tipo_RutinaActual"); //tipo de rutina
                           //si tuvo exito se procede a continuar con la siguiente etapa
                           if(Tipo_RutinaActual=="Compleja")
@@ -696,6 +788,19 @@ params = $methodsService.Json("EjerciciosRutinaOrden",$scope.id_rutina);
     $scope.domingo   = [];
 
     //funciones
+
+    $scope.RutinaPrefinal = function()
+    {
+      bootbox.confirm("Desea ir a la parte final de la rutina?", function(result) {
+        if(result==true)
+        {
+          $scope.$apply(function(){
+            $location.path('/RutinaPrefinal').search({Rut:$scope.id_rutina});
+          });//aply
+        }//if
+      });//bootbox
+    }//RutinaPrefinal
+
     $scope.AsignarEjercicios =  function(dia,ejercicios)
     {
         switch(dia)
@@ -703,50 +808,64 @@ params = $methodsService.Json("EjerciciosRutinaOrden",$scope.id_rutina);
           case '1':
             $scope.lunes = ejercicios;
              $("#lunesbody").empty();
+             $("#lunesbody").css("display","none");
              $scope.AgregarEjerciciosTabla($scope.lunes,"#lunesbody");
+             $("#lunesbody").fadeIn(3000);
              $scope.InicializarTablas();
           break;
 
           case '2':
             $scope.martes = ejercicios;
              $("#martesbody").empty();
+             $("#martesbody").css("display","none");
              $scope.AgregarEjerciciosTabla($scope.martes,"#martesbody");
+             $("#martesbody").fadeIn(3000);
              $scope.InicializarTablas();
           break;
 
           case '3':
             $scope.miercoles = ejercicios;
-             $("#miercolesbody").empty();
-             $scope.AgregarEjerciciosTabla($scope.miercoles,"#miercolesbody");
-             $scope.InicializarTablas();
+            $("#miercolesbody").css("display","none");
+            $("#miercolesbody").empty();
+            $scope.AgregarEjerciciosTabla($scope.miercoles,"#miercolesbody");
+            $("#miercolesbody").fadeIn(3000);
+            $scope.InicializarTablas();
           break;
 
           case '4':
             $scope.jueves = ejercicios;
+             $("#juevesbody").css("display","none");
              $("#juevesbody").empty();
              $scope.AgregarEjerciciosTabla($scope.jueves,"#juevesbody");
+             $("#juevesbody").fadeIn(3000);
              $scope.InicializarTablas();
           break;
 
           case '5':
             $scope.viernes = ejercicios;
-             $("#viernesbody").empty();
-             $scope.AgregarEjerciciosTabla($scope.viernes,"#viernesbody");
-             $scope.InicializarTablas();
+            $("#viernesbody").css("display","none");
+            $("#viernesbody").empty();
+            $scope.AgregarEjerciciosTabla($scope.viernes,"#viernesbody");
+            $("#viernesbody").fadeIn(3000);
+            $scope.InicializarTablas();
           break;
 
            case '6':
-            $scope.sabado = ejercicios;
-             $("#sabadobody").empty();
-             $scope.AgregarEjerciciosTabla($scope.sabado,"#sabadobody");
-             $scope.InicializarTablas();
+              $scope.sabado = ejercicios;
+              $("#sabadobody").css("display","none");
+              $("#sabadobody").empty();
+              $scope.AgregarEjerciciosTabla($scope.sabado,"#sabadobody");
+              $("#sabadobody").fadeIn(3000);
+              $scope.InicializarTablas();
           break;
 
           case '7':
             $scope.domingo = ejercicios;
-             $("#domingobody").empty();
-             $scope.AgregarEjerciciosTabla($scope.domingo,"#domingobody");
-             $scope.InicializarTablas();
+            $("#domingobody").css("display","none");
+            $("#domingobody").empty();
+            $scope.AgregarEjerciciosTabla($scope.domingo,"#domingobody");
+            $("#domingobody").fadeIn(3000);
+            $scope.InicializarTablas();
           break;
         }//switch
     }//AsignarEjercicios
@@ -1081,5 +1200,252 @@ params = $methodsService.Json("EjerciciosRutinaOrden",$scope.id_rutina);
       $methodsService.alerta(2,"algo falló, disculpe las molestias");
      });
 
-})
+})//RutinaOrden
 
+.controller('Rutinaprefinal',function($scope,$http,$location,$methodsService,$q,$cookies,$rootScope,$routeParams){
+//Variables
+$scope.Rut = $routeParams.Rut;
+
+//Funciones
+$scope.FinalizarRutina = function()
+{
+  bootbox.confirm("Desea finalizar la rutina?", function(result) {
+    console.log(result);
+      if(result==true)
+      {
+        $scope.$apply(function(){
+          $location.path('/Rutinas').search({});
+        });
+      }//if
+  });
+}//FinalizarRutina
+
+$scope.CambioTabla = function(id,newValue)
+{
+  if($(id2).hasClass("Repeticiones"))
+  {
+    if($.isNumeric(newValue))
+    {
+      id_rutina   = $("#id_rutina").val();
+      idEjercicio = id.split("Val");
+      console.log("el id es: "+idEjercicio[1]+" Las repeticiones son : "+newValue);
+      $scope.InsertarRepeticionesBD(idEjercicio[1], newValue,id_rutina);
+    }//if
+    else
+    {
+      bootbox.confirm("Favor de ingresar un número válido.", function(result) {});
+    }//else
+    
+  }//If class
+
+  if($(id2).hasClass("Circuitos"))
+  {
+    if($.isNumeric(newValue))
+    {
+      id_rutina   = $("#id_rutina").val();
+      idEjercicio = id.split("ValRu");
+      console.log("el id es: "+idEjercicio[1]+" Los Circuitos son : "+newValue);
+      $scope.InsertarCircuitosBD(idEjercicio[1], newValue)
+    }
+    else
+    {
+      alert("Favor de ingresar un número válido.");
+    }//else
+  }//if
+
+  if($(id2).hasClass("Relacion"))
+  {
+    id_rutina   = $("#id_rutina").val();
+    idEjercicio = id.split("ValRe");
+    console.log("el id es: "+idEjercicio[1]+" La relación es : "+newValue);
+    $scope.InsertarRelacionEjerciciosBD(idEjercicio[1],newValue);
+  }//if
+}//CambioTabla
+
+$scope.InsertarRelacionEjerciciosBD = function (id,relacion)
+{
+  //Objeto con la información a guardar en la BD
+    var Arr=new Object(); 
+    Arr['id_ejercicio']   = id;
+    Arr['relacion']       = relacion;
+    Arr['Accion']         = "AgregarRelacionEjercicio";
+    params                  = JSON.stringify(Arr);
+    var url = 'modulos/Rutinas/Funciones.php';
+     $http({method: "post",url: url,data: $.param({Params:params}), 
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
+     .success(function(data, status, headers, config) 
+     {})  
+     .error(function(data, status, headers, config){
+      $methodsService.alerta(2,"algo falló, disculpe las molestias");
+     });
+}//InsertarRelacionEjerciciosBD
+
+$scope.InsertarRepeticionesBD = function (id, repeticiones,id_rutina)
+{
+  
+    //Objeto con la información a guardar en la BD
+    var Arr                 = new Object(); 
+    Arr['id_rutina']        = $scope.Rut;
+    Arr['id_ejercicio']     = id;
+    Arr['num_repeticiones'] = repeticiones;
+    Arr['Accion']           = "AgregarRepeticionesEjercicio";
+    params                  = JSON.stringify(Arr);
+    var url = 'modulos/Rutinas/Funciones.php';
+     $http({method: "post",url: url,data: $.param({Params:params}), 
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
+     .success(function(data, status, headers, config) 
+     {})  
+     .error(function(data, status, headers, config){
+      $methodsService.alerta(2,"algo falló, disculpe las molestias");
+     });
+}//InsertarRepeticionesBD
+
+$scope.InsertarCircuitosBD = function (id, circuitos,id_rutina)
+{
+  //Objeto con la información a guardar en la BD
+    var Arr=new Object(); 
+    Arr['id_rutina']      = id_rutina;
+    Arr['id_ejercicio']     = id;
+    Arr['num_circuitos']    = circuitos;
+    Arr['Accion']       = "AgregarCircuitosEjercicio";
+    params                  = JSON.stringify(Arr);
+    console.log(params);
+  var url = 'modulos/Rutinas/Funciones.php';
+     $http({method: "post",url: url,data: $.param({Params:params}), 
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
+     .success(function(data, status, headers, config) 
+     {            
+       
+         
+      })  
+     .error(function(data, status, headers, config){
+      $methodsService.alerta(2,"algo falló, disculpe las molestias");
+     });
+}
+
+//Cambios en la tabla
+
+
+//Buscando la información pertinente a la rutina.
+//Buscando los ejercicios para las rutinas.
+params = $methodsService.Json("EjerciciosRutinaOrden",$scope.Rut);
+    var url = 'modulos/Rutinas/Funciones.php';
+     $http({method: "post",url: url,data: $.param({Params:params}), 
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
+     .success(function(data, status, headers, config) 
+     {            
+        exito = data.exito;
+        if(exito==1)
+        {
+           $scope.ejercicios = data.ejercicios;
+           var cantidad      = $scope.ejercicios.length;
+
+          //definiendo los ejercicios por dia.
+          for(i=0; i<cantidad; i++)
+          {
+
+            var eje = $scope.ejercicios[i];
+            circuitos = (eje.num_circuitos!=null)?eje.num_circuitos:0;
+            repet     = (eje.num_repeticiones!=null)?eje.num_repeticiones:0;
+            rel       = (eje.ejercicio_relacion!=null)?eje.ejercicio_relacion:"";
+            var tr = '<tr class="text-center" id="'+eje.id_rutina+'">';
+            tr+='<td>'+eje.id_posicionejercicio+'</td><td>'+eje.nb_rutina+'</td>';
+            tr+='<td>'+eje.desc_rutina+'</td><td>'+eje.nb_categoriarutina+'</td>';
+            tr+='<td>'+eje.nb_ejercicio+'</td><td id="Val'+eje.id_ejercicio+'" class="Repeticiones">'+repet+'</td>';
+            tr+='<td id="ValRu'+eje.id_ejercicio+'" class="Circuitos">'+circuitos+'</td>';
+            tr+='<td>'+eje.nb_dia+'</td><td>'+eje.nb_tiporutina+'</td>';
+            tr+='<td>'+eje.nb_musculo+'</td><td>'+eje.nb_nombre+eje.nb_apellidos+'</td>';
+            tr+='<td>'+eje.fh_creacion+'</td>';
+            tr+='<td id="ValRe'+eje.id_ejercicio+'" class="Relacion">'+rel+'</td></tr>';
+            $("#tablecontent").append(tr);
+          }//for
+          $('#listados').editableTableWidget();
+          $('table td').on('change', function(evt, newValue) {
+                id=evt.currentTarget.id;
+                id2="#"+id;
+                $scope.CambioTabla(id2,newValue);
+            });
+        }//if
+         
+      })  
+     .error(function(data, status, headers, config){
+      $methodsService.alerta(2,"algo falló, disculpe las molestias");
+     });
+
+})
+.controller('RutinaEditar',function($scope,$http,$location,$methodsService,$routeParams){
+  //Variables
+  $scope.Rut         = $routeParams.Rut;
+  $scope.btndisabled = true;
+
+  //Funciones
+  $scope.Redirigir = function(direccion)
+  {
+    $methodsService.Redirigir(direccion);
+  }//Redirigir
+  
+  $scope.EditarRutinaInfo = function()
+  {
+    bootbox.confirm("Desea editar esta rutina?", function(result) {
+    console.log(result);
+      if(result==true)
+      {
+        $scope.$apply(function(){
+            $scope.btndisabled = false;
+            $scope.rutina.Accion = "EditarInfoRutina";
+            var params = JSON.stringify($scope.rutina);
+            var url = 'modulos/Rutinas/Funciones.php';
+           $http({method: "post",url: url,data: $.param({Params:params}), 
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+          })
+           .success(function(data, status, headers, config) 
+           {            
+              $scope.btndisabled = true;
+              exito = data.exito;
+              if(exito==1) 
+              {
+                $methodsService.alerta(1,"Información Editada");
+              }else{$methodsService.alerta(2,"algo falló, disculpe las molestias");}
+            })  
+           .error(function(data, status, headers, config){
+            $methodsService.alerta(2,"algo falló, disculpe las molestias");
+           });
+        });
+      }//if
+  });
+  }//EditarRutinaInfo
+
+  //Buscando los datos pertinentes
+  var params = $methodsService.Json("DatosEditarRutina",$scope.Rut);
+  var url = 'modulos/Rutinas/Funciones.php';
+     $http({method: "post",url: url,data: $.param({Params:params}), 
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
+     .success(function(data, status, headers, config) 
+     {            
+          exito  = data.exito;  exitot = data.exitot; 
+          exitog = data.exitog; exitoc = data.exitoc;
+          exitor = data.exitor;
+          switch(true)
+          {
+            case exito==1 && exitot==1 && exitog==1 && exitoc==1 && exitor==1:
+              //Tomando los datos
+              $scope.rutina  = data.rutina;
+              $scope.cat_rut = data.cat_rut;
+              $scope.generos = data.generos;
+              $scope.cuerpos = data.cuerpos;
+            break;
+
+            case exito!=1 || exitot!=1 || exitog!=1 || exitoc!=1 || exitor!=1:
+              $methodsService.alerta(2,"algo falló, disculpe las molestias");
+            break;
+          }//switch
+      })  
+     .error(function(data, status, headers, config){
+      $methodsService.alerta(2,"algo falló, disculpe las molestias");
+     });
+})

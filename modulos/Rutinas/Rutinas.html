@@ -6,7 +6,7 @@
 </style>
 
 <!-- Right side column. Contains the navbar and content of the page -->
-<aside class="right-side">
+<aside class="right-side" >
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
@@ -80,7 +80,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                            	<tr dir-paginate="rut in rutinas | filter:q | itemsPerPage: pageSize" current-page="currentPage"  class="text-center" id="{{'table'+eje.id}}" ng-click="Selecciontr(this)" class="text-center">
+                            	<tr dir-paginate="rut in rutinas | filter:q | itemsPerPage: pageSize" current-page="currentPage"  class="text-center" id="{{'table'+rut.id_rutina}}" ng-click="Selecciontr(this)" class="text-center">
                             		<td>{{rut.id_rutina}}</td>
                             		<td>{{rut.nb_rutina}}</td>
                             		<td>{{rut.desc_rutina | limitTo: 50}}</td>
@@ -88,7 +88,7 @@
                             		<td>{{rut.nb_tiporutina}}</td>
                             		<td>{{rut.nb_cuerpo}}</td>
                             		<td>{{rut.nb_nombre+" "+rut.nb_apellidos}}</td>
-                            		<td><button class="btn btn-info">Mostrar</button></td>
+                            		<td><button class="btn btn-info" ng-click="MostrarRutina(rut.id_rutina)">Mostrar</button></td>
                             	</tr>
                             </tbody>
                             <tfoot>
@@ -115,11 +115,11 @@
                            		</div>
 
                         		<div class="col-sm-1">
-                        			<button class="btn btn-warning btn-sm" ><i class="fa fa-edit"></i> EDITAR</button>
+                        			<button class="btn btn-warning btn-sm" ng-click="Editar()"><i class="fa fa-edit"></i> EDITAR</button>
                         		</div>
 
                             	<div class="col-sm-1">
-                            		<button class="btn btn-danger btn-sm" ><i class="fa fa-times"></i> ELIMINAR</button>
+                            		<button class="btn btn-danger btn-sm" ng-click="Eliminar()"><i class="fa fa-times"></i> ELIMINAR</button>
                             	</div>
 
                             <div class="col-md-1 "><button class="btn btn-info btn-sm " type="button" ng-click="showfilter=true"><i class="fa fa-male"></i> Filtros</button></div>

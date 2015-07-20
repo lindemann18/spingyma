@@ -1,0 +1,103 @@
+<style type="text/css">
+	.ListaInstructores {margin-left: 4%; margin-top: 0%; visibility:hidden}
+	.size {font-size: 12.5px;}
+</style>
+
+
+<!-- Right side column. Contains the navbar and content of the page -->
+<aside class="right-side">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            Rutinas
+            <small>Finalizar Rutina</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
+            <li class="">Rutinas</li>
+        </ol>
+    </section>
+                
+                
+<!-- Main content -->
+<section class="content">
+	<!-- HEADER DEL CONTENIDO-->
+    <h4 class="page-header">
+        Listado de Clientes
+        <small>
+        	En este apartado encontrará toda la informaci&oacute;n de la rutina registrada para  los Clientes de <span class="text-red">spin gym</span>,
+            podrá dar de alta los n&uacute;meros de repeticiones y de circuitos para cada ejercicio de toda la rutina.
+        </small>
+    </h4>
+<!-- HEADER DEL CONTENIDO-->
+<div class="alert alert-success alert-dismissible" role="alert" style="display:none;" id="UsuarioEliminadoNotificacion">
+<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+<strong>Bien Hecho!</strong> Cliente Eliminado.</div>
+<div class="row">
+	<div class="col-xs-12">
+		<div class="box">
+            <div class="box-header">
+                <div class="col-sm-12">
+                	<h4>Para relizar alg&uacute;n cambio de click sobre los campos vac&iacute;os (o con n&uacute;meros si ya contiene) de <strong>Repeticiones</strong>
+                    	y <strong>Circuitos</strong>, anote los números y presionte <strong>Enter</strong>.
+                    </h4>
+                </div>
+            </div><!-- /.box-header -->
+              <div class="box-body table-responsive" id="TablaDatos">
+                <table id="listados" class="table table-bordered table-striped col-xs-11 col-sm-11 size" >
+                    <thead>
+                        <tr>
+	                       	<th class="text-center"> CODIGO </th>
+	                        <th class="text-center">RUTINA</th>
+	                        <th class="text-center">DESCRIPCION</th>
+	                        <th class="text-center">CATEGORIA</th>
+	                        <th class="text-center">EJERCICIO</th>
+	                        <th class="text-center">REPETICIONES</th>
+	                        <th class="text-center">SERIES</th>
+	                        <th class="text-center">DIA</th>
+	                        <th class="text-center">TIPO RUTINA</th>
+	                        <th class="text-center">MUSCULO</th>
+	                        <th class="text-center">USUARIO</th>
+	                        <th class="text-center">FECHA</td>
+	                        <th class="text-center">RELACION</td>
+                        </tr>
+                    </thead>
+                    <tbody id="tablecontent">
+                	</tbody>
+                <tfoot>
+                    <tr>
+                        <th class="text-center"> CODIGO </th>
+                        <th class="text-center">RUTINA</th>
+                        <th class="text-center">DESCRIPCION</th>
+                        <th class="text-center">CATEGORIA</th>
+                        <th class="text-center">EJERCICIO</th>
+                        <th class="text-center">REPETICIONES</th>
+                        <th class="text-center">SERIES</th>
+                        <th class="text-center">DIA</th>
+                        <th class="text-center">TIPO RUTINA</th>
+                        <th class="text-center">MUSCULO</th>
+                        <th class="text-center">USUARIO</th>
+                        <th class="text-center">FECHA</td>
+                        <th class="text-center">RELACION</td>
+                    </tr>
+                </tfoot>
+            </table>
+            <div class="row">
+            	
+            	<div class="col-sm-12">
+                	<h3 class="box-title">Acciones</h3>
+                </div>
+            	<div class="col-sm-1">
+            		<button class="btn btn-success btn-sm" id="agregar" ng-click="FinalizarRutina()"><i class="fa fa-plus"></i> Finalizar Rutina</button>
+            	</div>
+
+            </div>
+    </div>
+</div>
+</div>
+</section>
+</aside>
+
+</div>
+
+
