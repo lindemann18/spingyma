@@ -150,7 +150,8 @@ por problemas con mayúsculas.
 	nb_tiporutina	
 81) el campo desc_TipoRutina de la tabla sggenerosrutina se cambíó por
 	desc_tiporutina
-82) el campo fh_Creacion de la tabla sgrutina se cambió por fh_creacion			
+82) el campo fh_Creacion de la tabla sgrutina se cambió por fh_creacion	
+83) La tabla sg_dias se cambió por sgdias, problema: Noguion.
 
 
 

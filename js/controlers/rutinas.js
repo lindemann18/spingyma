@@ -128,10 +128,10 @@ var url = 'modulos/Rutinas/Funciones.php';
 
 .controller('RutinaAgregar',function($scope,$http,$location,$methodsService,$q,$cookies,$rootScope){
 //Variables
-var cookies = $cookies.getAll();
+/*var cookies = $cookies.getAll();
 angular.forEach(cookies, function (v, k) {
     $cookies.remove(k);
-});
+});*/
 
 //Funciones
 $scope.AgregarRutina = function()
@@ -181,7 +181,7 @@ $scope.AgregarRutina = function()
 
 	//Definir el día actual para editar
   $cookies.put('Dia_ActualRutina', "Ejercicio_Lunes");  
-  TipoRutina = $scope.TipoRutinaDias.lunes; //Tomando el tipo de rutina
+  TipoRutina = $scope.TipoRutinaDias.Lunes; //Tomando el tipo de rutina
   Tipo_RutinaActual=(TipoRutina!="Varios")?"Simple":"Compleja"; //Se toma el tipo de rutina que se ha seleccionado para ver a donde se 
   //Dirige al usuario, si a elegir varios tipos de rutina o ejercicios de forma directa.
   
@@ -200,9 +200,12 @@ $scope.AgregarRutina = function()
           exito = data.exito;
           if(exito==1)
           {
-            //si llegó quí es que se va a registrar la rutina
-            //debes mandar por parámetro get el id de la sesión, 
-            // en el proyecto viejo se guarda en sesión
+            //si llegó quí es que se va a registrar la rutina debes mandar por 
+            //parámetro get el id de la sesión,en el proyecto viejo se guarda en sesión.
+            // Se debe retornar el id de la rutina agregada y guardar en cookie.
+            id_rutina = data.id_rutina;
+             $cookies.put("id_rutina",id_rutina);
+            console.log(Tipo_RutinaActual);
             if(Tipo_RutinaActual!="Compleja")
             {
               $location.path('/AgregarRutina2').search({Day:DiaActual,Rut:$scope.rutina.lunes});
@@ -494,7 +497,7 @@ $scope.veriricarRutina = function()
                                   // un solo día
                                   Dia_Codigo       = $methodsService.CambiarDiaActualRutina(Dia_ActualRutina); //Se cambia el día de la rutina
                                   $scope.DiaActual = $methodsService.VerificarDiaPorCodigo(Dia_Codigo);
-                                  //$cookies.put("Dia_ActualRutina",Dia_Codigo);//Se asigna a la variable de sesión el nuevo día de rutina.
+                                  $cookies.put("Dia_ActualRutina",Dia_Codigo);//Se asigna a la variable de sesión el nuevo día de rutina.
 
                                   //Obtener que tipo de rutina será la del siguiente día
                                   ContadorRutinasDias = $cookies.get("ContadorRutinasDias"); //Contador. 
@@ -502,20 +505,22 @@ $scope.veriricarRutina = function()
                                   $cookies.put("ContadorRutinasDias",ContadorRutinasDias); //Contador.
                                   console.log("el contador de días: "+ContadorRutinasDias);
                                   //Trayendo ambos vectores, valor de tipo rutina y su texto
-                                  var RutinasVector       = $cookies.get('RutinasDias');
-                                  var TiposRutinasVector  = $cookies.get('TiposRutinasSemana');
+                                  var RutinasVector       = JSON.parse($cookies.get('RutinasDias'));
+                                  var TiposRutinasVector  = JSON.parse($cookies.get('TiposRutinasSemana'));
                                   
 
                                   //Separando ambos con split para poder acceder y evitar contar las "," como parte del vector.
-                                  RutinasDias             = RutinasVector.split(",");
-                                  TiposRutinasVector      = TiposRutinasVector.split(",");
+                                  //RutinasDias             = RutinasVector.split(",");
+                                  //TiposRutinasVector      = TiposRutinasVector.split(",");
 
                                   //Cambiar el tipo de rutina actual, ya sea sencilla o complicada.
-                                  var rut                        = RutinasDias[ContadorRutinasDias]; //Tipo de rutina que será, es número
-                                  var Tipo_RutinaActualVerificar = TiposRutinasVector[ContadorRutinasDias]; //Tomando el valor para verificar si es simple o compleja
+                                  var Rut                        = RutinasVector[ContadorRutinasDias]; //Tipo de rutina que será, es número
+                                  var diaPornumero               = $methodsService.DefinirDia($scope.DiaActual);
+                                  var Tipo_RutinaActualVerificar = TiposRutinasVector[diaPornumero]; //Tomando el valor para verificar si es simple o compleja
                                   var Tipo_RutinaActual          = (Tipo_RutinaActualVerificar!="Varios")?"Simple":"Compleja"; //Definiendo que es
-                                  var Rut = rut.split('"',2);
-                                  Rut = Rut[1];
+                                  //var Rut = rut.parseInt();
+                                  //var Rut = rut.split('"',2);
+                                  //Rut = Rut[1];
                                   console.log(Rut);
                                   console.log(Tipo_RutinaActualVerificar);
                                   console.log(Tipo_RutinaActual);
@@ -525,14 +530,17 @@ $scope.veriricarRutina = function()
                                   if(Dia_Codigo=="Ejercicio_Terminado")
                                   {
                                       // Si entra aquí es que la rutina ya se terminó.
+                                      var id_rutina = $cookies.get("id_rutina");
+                                      $location.path('/RutinaOrdenEnt').search({Rut:id_rutina});
                                   }//if
                                   else
                                   {
                                       // SI entra aquí es por que la rutina todavía continua.
                                       // Verificando si el siguiente día es rutina sencilla o compleja.
+                                      console.log(Tipo_RutinaActual);
                                       if(Tipo_RutinaActual=="Compleja")
                                       {
-                                        //$location.path('/RutinaComp').search({Day:$scope.Day});
+                                        $location.path('/RutinaComp').search({Day:$scope.Day});
                                       }//if
                                       else
                                       {
@@ -545,7 +553,6 @@ $scope.veriricarRutina = function()
                                   //Aquí es cuando debes seguir con más actividades
                                   $cookies.put("Contador",Contador); // Actualizando la cookie de contador.
                                   $scope.day = $methodsService.VerificarDiaPorCodigo(Dia_ActualRutina);
-                                  console.log($scope.day+" "+rut);
                                   $location.path('/AgregarRutina2').search({Day:$scope.day,Rut:rut});
                                 }//else
                           }//if
@@ -557,13 +564,13 @@ $scope.veriricarRutina = function()
                               var Dia_ActualRutina = $cookies.get("Dia_ActualRutina"); //Día en el que se encuentra el proceso de rutinas
                               var Dia_Codigo       = $methodsService.CambiarDiaActualRutina(Dia_ActualRutina); //Se cambia el día de la rutina
                               var DiaActual        = $methodsService.VerificarDiaPorCodigo(Dia_Codigo);
-                              //$cookies.put("Dia_ActualRutina",Dia_Codigo); // Actuañozamdp eñ nuevo día
+                              $cookies.put("Dia_ActualRutina",Dia_Codigo); // Actuañozamdp eñ nuevo día
 
                               //Obtener que tipo de rutina será la del siguiente día
                               ContadorRutinasDias  = $cookies.get("ContadorRutinasDias");
                               ContadorRutinasDias++;
                               console.log(ContadorRutinasDias);
-                              //$cookies.put("ContadorRutinasDias",ContadorRutinasDias); //Actualizando el contador
+                              $cookies.put("ContadorRutinasDias",ContadorRutinasDias); //Actualizando el contador
                               //Trayendo ambos vectores, valor de tipo rutina y su texto
                               var RutinasVector      = JSON.parse($cookies.get("RutinasDias"));
                               var TiposRutinasVector = JSON.parse($cookies.get("TiposRutinasSemana"));
@@ -581,12 +588,14 @@ $scope.veriricarRutina = function()
                               Tipo_RutinaActualVerificar = TiposRutinasVector[NombreDia]; //Tomando el valor para verificar si es simple o compleja
                               
                               Tipo_RutinaActual = (Tipo_RutinaActualVerificar!="Varios")?"Simple":"Compleja"; //Definiendo que es
-                              //$cookies.put("Tipo_RutinaActual",Tipo_RutinaActual); // Actualizando la cookie.
+                              $cookies.put("Tipo_RutinaActual",Tipo_RutinaActual); // Actualizando la cookie.
                               //Se verifica si es el último día de la semana, para pasar al final de la rutina
                               console.log(Tipo_RutinaActual);
                               if(Dia_Codigo=="Ejercicio_Terminado")
                               {
                                   //Aquí se termina y se manda al rutina Orden
+                                  var id_rutina = $cookies.get("id_rutina");
+                                  $location.path('/RutinaOrdenEnt').search({Rut:id_rutina});
                               }
                               else
                               {
@@ -665,3 +674,310 @@ $scope.veriricarRutina = function()
      });
 
 })
+
+.controller('RutinaOrden',function($scope,$http,$location,$methodsService,$q,$cookies,$rootScope,$routeParams){
+//variables
+$scope.id_rutina = $routeParams.Rut;
+params = $methodsService.Json("EjerciciosRutinaOrden",$scope.id_rutina);
+
+
+    //inicializando todo lo necesario para las tablas 
+    $('#listados').editableTableWidget().numericInputExample();
+    $('#textAreaEditor').editableTableWidget({editor: $('<textarea>')});
+    window.prettyPrint && prettyPrint();
+
+    //Contenedores de los ejercicios de cada dia.
+    $scope.lunes     = [];
+    $scope.martes    = [];
+    $scope.miercoles = [];
+    $scope.jueves    = [];
+    $scope.viernes   = [];
+    $scope.sabado    = [];
+    $scope.domingo   = [];
+
+    //funciones
+    $scope.AsignarEjercicios =  function(dia,ejercicios)
+    {
+        switch(dia)
+        {
+          case '1':
+            $scope.lunes = ejercicios;
+             $("#lunesbody").empty();
+             $scope.AgregarEjerciciosTabla($scope.lunes,"#lunesbody");
+             $scope.InicializarTablas();
+          break;
+        }//switch
+    }//AsignarEjercicios
+
+    $scope.AgregarEjerciciosTabla = function(ejercicios,tabla)
+    {
+      for(i=0; i<ejercicios.length; i++)
+      {
+        var eje = ejercicios[i];
+        var tr = '<tr class="text-center" id="'+eje.id_posicionejercicio+'"><td>'+eje.id_posicionejercicio+'</td><td>'+eje.nb_ejercicio+'</td><td>'+eje.nb_musculo+'</td></tr>'
+        $(tabla).append(tr);
+      }//for
+      
+    }//AgregarEjerciciosTabla
+
+    $scope.CambiarDia = function(id_par,dia_semana)
+    {
+        //Obtener el tr que está encima
+        var idJquery = "#"+id;
+        var Padre = $(idJquery).prev()[0];
+        var son = $(idJquery).next()[0];
+        
+        id = parseInt(id_par);
+
+        //Situación en la que el ejercicio que se ha movido no tiene un nodo padre.
+        if(Padre == undefined) 
+        {
+          var id_Padre       = 0;
+          var AccionCambio   = "SinPadre";
+        }else {id_Padre = Padre.id;}
+        
+        //Situación en la que el ejercicio que se ha movido no tiene un nodo hijo.
+        if(son == undefined) 
+        {
+          var id_Hijo        = 0;
+          var AccionCambio   = "SinHijo";
+        }else {id_Hijo = son.id;}
+
+        if(Padre != undefined && son !=undefined)
+    {
+      var id_Padre   = Padre.id;
+      var id_Hijo    = son.id;
+      
+      //verificando si se bajó o subió posiciones
+      // 1) si el padre es mayor, es por que se bajó la posición
+      if(id_Padre>id)
+      {
+        var AccionCambio   = "ConAmbosBajoPosicion";
+        var Cantidad_Puestos = id_Padre - id; 
+      }//if
+      
+      if(id_Padre<id)
+      {
+        AccionCambio   = "ConAmbosSubioPosicion";
+        var Cantidad_Puestos = id - id_Hijo;
+      }//if
+    }//if
+
+        // Escenarios posibles del cambio de lugar
+    
+        // 1) Cuando no se tiene padre -> Esto significa que se movió al primer puesto de la lista
+
+        if (id_Padre == 0)
+        {
+          //Tomar la cantidad de puestos que se movió
+          var Cantidad_Puestos = id-id_Hijo;
+        } // id_Padre == 0
+
+        if (id_Hijo == 0)
+        {
+          Cantidad_Puestos = id_Padre-id;
+        }
+
+        //Tomando los valores para mandarlos al controller
+        $scope.valores = 
+        {
+          id_rutina: $scope.id_rutina,
+          id_cambio: id,
+          id_Hijo:   id_Hijo,
+          id_Padre: id_Padre,
+          Cantidad_Puestos: Cantidad_Puestos,
+          AccionCambio: AccionCambio,
+          Accion: "CambioLugarEjercicio"           
+        };
+        console.log($scope.valores);
+        var Params= JSON.stringify($scope.valores);
+
+        var url = 'modulos/Rutinas/Funciones.php';
+     $http({method: "post",url: url,data: $.param({Params:Params}), 
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
+     .success(function(data, status, headers, config) 
+     {            
+          exito = data.exito;
+          if(exito==1)
+          {
+            var id_diaCambio = data.dia;
+            var ejercicios   = data.ejercicios;
+            $scope.AsignarEjercicios(id_diaCambio,ejercicios);
+          }//if
+      })  
+     .error(function(data, status, headers, config){
+      $methodsService.alerta(2,"algo falló, disculpe las molestias");
+     });
+
+    }//CambiarDia
+
+    $scope.definirEjercicioDia = function(dia,ejercicio)
+    {
+      switch(dia)
+      {
+        case '1':
+          $scope.lunes.push(ejercicio);
+        break;
+
+        case '2':
+          $scope.martes.push(ejercicio);
+        break;
+
+        case '3':
+          $scope.miercoles.push(ejercicio);
+        break;
+
+        case '4':
+          $scope.jueves.push(ejercicio);
+        break;
+
+        case '5':
+          $scope.viernes.push(ejercicio);
+        break;
+
+        case '6':
+          $scope.sabado.push(ejercicio);
+        break;
+
+        case '7':
+          $scope.domingo.push(ejercicio);
+        break;
+      }//switch
+    }//definirEjercicioDia
+
+    $scope.InicializarTablas = function ()
+    {
+     
+      //Drag and drop table
+      $("#table-1").tableDnD();
+      $("#table-2").tableDnD();
+      $("#table-3").tableDnD();
+      $("#table-4").tableDnD();
+      $("#table-5").tableDnD();
+      $("#table-6").tableDnD();
+      $("#table-7").tableDnD();
+       //Acciones
+       
+       // día lunes //
+       $('#table-1').tableDnD({
+          onDrop: function(table, row) 
+         {
+            //Tomando los datos del row que se movió
+            id       = row.id;
+            dia_semana = "Actualiza_Lunes";
+            $scope.CambiarDia(id,dia_semana) 
+          } //onDrop
+      });
+      
+      // día Martes //
+       $('#table-2').tableDnD({
+          onDrop: function(table, row) 
+          {
+          //Tomando los datos del row que se movió
+          id = row.id;
+          dia_semana = "Actualiza_Martes";
+          CambiarDia(id,dia_semana) 
+          } 
+      });
+      
+      // día miércoles//
+       $('#table-3').tableDnD({
+          onDrop: function(table, row) 
+        {
+          console.log(row);
+          //Tomando los datos del row que se movió
+          id = row.id;
+          dia_semana = "Actualiza_Miercoles";
+          CambiarDia(id,dia_semana) 
+          } 
+      });
+      
+      // día Jueves//
+       $('#table-4').tableDnD({
+          onDrop: function(table, row) 
+        {
+          console.log(row);
+          //Tomando los datos del row que se movió
+          id = row.id;
+          dia_semana = "Actualiza_Jueves";
+          CambiarDia(id,dia_semana) 
+          } 
+      });
+      
+      // día Viernes//
+       $('#table-5').tableDnD({
+          onDrop: function(table, row) 
+        {
+          console.log(row);
+          //Tomando los datos del row que se movió
+          id = row.id;
+          dia_semana = "Actualiza_Viernes";
+          CambiarDia(id,dia_semana) 
+          } 
+      });
+      
+      // día Sábado//
+       $('#table-6').tableDnD({
+          onDrop: function(table, row) 
+        {
+          console.log(row);
+          //Tomando los datos del row que se movió
+          id = row.id;
+          dia_semana = "Actualiza_Sabado";
+          CambiarDia(id,dia_semana) 
+          } 
+      });
+      
+      // día Domingo//
+       $('#table-7').tableDnD({
+          onDrop: function(table, row) 
+        {
+          console.log(row);
+          //Tomando los datos del row que se movió
+          id = row.id;
+          dia_semana = "Actualiza_Domingo";
+          CambiarDia(id,dia_semana) 
+          } 
+      });
+    }//InicializarTablas
+
+
+    //Buscando los ejercicios para las rutinas.
+    var url = 'modulos/Rutinas/Funciones.php';
+     $http({method: "post",url: url,data: $.param({Params:params}), 
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
+     .success(function(data, status, headers, config) 
+     {            
+        exito = data.exito;
+        if(exito==1)
+        {
+          $scope.ejercicios = data.ejercicios;
+          var cantidad      = $scope.ejercicios.length;
+
+          //definiendo los ejercicios por dia.
+          for(i=0; i<cantidad; i++)
+          {
+            var id_dia = $scope.ejercicios[i].id_dia;
+            $scope.definirEjercicioDia(id_dia,$scope.ejercicios[i]);
+          }//for
+
+          //Pegando los ejercicios para cada lista con jquery.
+          for(i=0; i<$scope.lunes.length;i++)
+          {
+              var eje = $scope.lunes[i];
+              var tr = '<tr class="text-center" id="'+eje.id_posicionejercicio+'"><td>'+eje.id_posicionejercicio+'</td><td>'+eje.nb_ejercicio+'</td><td>'+eje.nb_musculo+'</td></tr>'
+              $("#lunesbody").append(tr);
+
+          }//for
+          $scope.InicializarTablas();
+        }//if
+         
+      })  
+     .error(function(data, status, headers, config){
+      $methodsService.alerta(2,"algo falló, disculpe las molestias");
+     });
+
+})
+

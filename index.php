@@ -160,6 +160,11 @@
 	      	templateUrl:'modulos/Rutinas/Rutina_Comp.html'
 	    })
 
+	    .when('/RutinaOrdenEnt',{
+	    	controller: 'RutinaOrden',
+	      	templateUrl:'modulos/Rutinas/RutinaOrden.html'
+	    })
+
 	    .when('/Error',{
 	    	controller: 'Errors',
 	      	templateUrl:'modulos/Rutinas/Error.html'

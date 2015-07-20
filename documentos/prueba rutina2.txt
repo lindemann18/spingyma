@@ -1,0 +1,37 @@
+Casos de prueba
+varios
+varios
+varios
+clase
+pierna
+varios
+descanso
+
+Lunes
+Pierna-> 9 Ejercicios Guardados
+hombro-> 6 ejercicios Guardados
+pecho -> 10 Ejercicios Guardados
+
+Martes
+Clase->  1 Ejercicio  guardados
+Biceps-> 8 Ejercicios guardados
+pierna-> 6 Ejercicios guardados
+
+Miercoles
+Espalda-> 7 Ejercicios Guardados
+Tripep->  8 Ejercicios Guardados
+Cardio->  1 Ejercicio Guardado
+
+Jueves
+Clase-> 1 Guardado
+
+Viernes
+Pierna-> 10 Ejercicios 
+
+Sabado
+Bicep->  9 Ejercicios Guardados
+Tripep-> 5 Ejercicios Guardados
+Cardio-> 1 Ejercicios Guardados
+
+Domingo
+Descanso-> 1 ejercicio Guardado

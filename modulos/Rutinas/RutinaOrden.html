@@ -5,50 +5,11 @@
 	.BotonActualizar {float: left; margin-left: 45%;}
 	.Derecha {margin-right: 6%;}
 </style>
-<?php
-	
-	if(isset($_SESSION['Sesion']) && $_SESSION['Sesion']['id_usuario']!="")
-	{
-		$consultar=new Consultar();
-		//La diferencia entre id_Rutina y Rutina, es que id_Rutina es para ver la información de la rutina
-		//creada por el instructor que está en sg_rutinas y Rutina es para ver la rutina ya asginada
-		//a la tabla sg_rutinasClientes.
-		
-		if(isset($_GET['id_Rutina']))
-		{
-			$id_Rutina 		= $_GET['id_Rutina'];	
-			$result	   		= $consultar->_ConsultarInformacionRutinaPreFinalPorId($id_Rutina);
-			$num_ejercicios = $result->num_rows;
-			$Rutina			= array();
-			
-			//Obtener los datos de la rutina
-			for($i=0; $i<$num_ejercicios; $i++)
-			{
-				$fila = $result->fetch_assoc();
-				
-				//Obtener los datos y meterlos a un array.
-				$Ejercicio = array("id_rutina"=>$fila["id_rutina"], "nb_ejercicio"=>$fila['nb_ejercicio'], 
-				"id_ejercicio"=>$fila['id_ejercicio'], "nb_TipoRutina"=>$fila['nb_TipoRutina'], "nb_dia"=>$fila['nb_dia'],
-				"id_dia"=>$fila['id_dia'],"nb_musculo"=>$fila['nb_musculo'],"id_PosicionEjercicio"=>$fila['id_PosicionEjercicio']);
-				
-				//Meter los datos en el array de la rutina
-				array_push($Rutina, $Ejercicio);
-				
-			}//for
-			$rutinaSize = sizeof($Rutina);
-		}
-		else
-		{
-			$idRutina=$_GET['Rutina'];
-			$result=$consultar->_ConsultarInformacionRutinaPreFinalPorId($idRutina);
-			$num_ejercicios=$result->num_rows;
-		}
-		
-?>
+
 
 			
 			<!--DAtos escondidos -->
-            <input type="hidden" value="<?php echo $id_Rutina?>" id="id_Rutina">
+            
             
             <!-- Right side column. Contains the navbar and content of the page -->
             <aside class="right-side">
@@ -56,11 +17,12 @@
                 <section class="content-header">
                     <h1>
                         Rutinas
-                        <small>Finalizar Rutina</small>
+                        <small>Orden Rutina</small>
                     </h1>
                     <ol class="breadcrumb">
                         <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
                         <li class="">Rutinas</li>
+                         <li class="active">Orden Rutina</li>
                     </ol>
                 </section>
                 <!--Modal de enviando -->
@@ -114,7 +76,7 @@
                                 <div class="col-xs-12">
                                 	<div class="row">
                                        <div class="col-xs-3 Lunes ">
-                                        <table id="table-1"  class="table table-striped">
+                                        <table id="table-1"  class="table table-striped" ng-disabled="enabletbl!=true">
                                             <thead>
                                                 <h3 class="text-center">Lunes</h3>
                                                 <tr>
@@ -124,20 +86,8 @@
                                                     <th></th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
-                                            <?php
-                                            //Tomando los valores acorde al día para poder hacer el cambio
-                                            for($i=0; $i<$rutinaSize; $i++) {
-                                            if($Rutina[$i]['id_dia']==1)
-                                            {
-                                        ?>
+                                            <tbody id="lunesbody">
                                                 
-                                                <tr id="<?php echo $Rutina[$i]['id_PosicionEjercicio']?>">
-                                                <td class="text-center"><?php echo $Rutina[$i]['id_PosicionEjercicio']?></td>
-                                                <td><?php echo $Rutina[$i]['nb_ejercicio']?></td>
-                                                <td><?php echo $Rutina[$i]['nb_musculo']?></td>
-                                                <?php }} ?>
-                                                 </tr>
                                             </tbody>
                                         </table>
                                         
@@ -155,19 +105,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                            <?php
-                                            //Tomando los valores acorde al día para poder hacer el cambio
-                                            for($i=0; $i<$rutinaSize; $i++) {
-                                            if($Rutina[$i]['id_dia']==2)
-                                            {
-                                        ?>
                                                 
-                                                <tr id="<?php echo $Rutina[$i]['id_PosicionEjercicio']?>">
-                                                <td class="text-center"><?php echo $Rutina[$i]['id_PosicionEjercicio']?></td>
-                                                <td><?php echo $Rutina[$i]['nb_ejercicio']?></td>
-                                                <td><?php echo $Rutina[$i]['nb_musculo']?></td>
-                                                <?php }} ?>
-                                                 </tr>
                                             </tbody>
                                         </table>
                                         
@@ -176,27 +114,10 @@
                                         	<table id="table-3"  class="table table-striped">
                                             <thead>
                                                 <h3 class="text-center">Miercoles</h3>
-                                                <tr>
-                                                    <th class="sorting_asc">CODIGO</th>
-                                                    <th>EJERCICIO</th>
-                                                    <th>MUSCULO</th>
-                                                    <th></th>
-                                                </tr>
+                                             
                                             </thead>
                                             <tbody>
-                                            <?php
-                                            //Tomando los valores acorde al día para poder hacer el cambio
-                                            for($i=0; $i<$rutinaSize; $i++) {
-                                            if($Rutina[$i]['id_dia']==3)
-                                            {
-                                        ?>
                                                 
-                                                <tr id="<?php echo $Rutina[$i]['id_PosicionEjercicio']?>">
-                                                <td class="text-center"><?php echo $Rutina[$i]['id_PosicionEjercicio']?></td>
-                                                <td><?php echo $Rutina[$i]['nb_ejercicio']?></td>
-                                                <td><?php echo $Rutina[$i]['nb_musculo']?></td>
-                                                <?php }} ?>
-                                                 </tr>
                                             </tbody>
                                         </table>
                                         
@@ -213,19 +134,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                            <?php
-                                            //Tomando los valores acorde al día para poder hacer el cambio
-                                            for($i=0; $i<$rutinaSize; $i++) {
-                                            if($Rutina[$i]['id_dia']==4)
-                                            {
-                                        ?>
                                                 
-                                                <tr id="<?php echo $Rutina[$i]['id_PosicionEjercicio']?>">
-                                                <td class="text-center"><?php echo $Rutina[$i]['id_PosicionEjercicio']?></td>
-                                                <td><?php echo $Rutina[$i]['nb_ejercicio']?></td>
-                                                <td><?php echo $Rutina[$i]['nb_musculo']?></td>
-                                                <?php }} ?>
-                                                 </tr>
                                             </tbody>
                                         </table>
                                         
@@ -247,19 +156,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                            <?php
-                                            //Tomando los valores acorde al día para poder hacer el cambio
-                                            for($i=0; $i<$rutinaSize; $i++) {
-                                            if($Rutina[$i]['id_dia']==5)
-                                            {
-                                        ?>
-                                                
-                                                <tr id="<?php echo $Rutina[$i]['id_PosicionEjercicio']?>">
-                                                <td class="text-center"><?php echo $Rutina[$i]['id_PosicionEjercicio']?></td>
-                                                <td><?php echo $Rutina[$i]['nb_ejercicio']?></td>
-                                                <td><?php echo $Rutina[$i]['nb_musculo']?></td>
-                                                <?php }} ?>
-                                                 </tr>
+                                            
                                             </tbody>
                                         </table>
                                         </div><!-- Viernes-->
@@ -275,19 +172,8 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                            <?php
-                                            //Tomando los valores acorde al día para poder hacer el cambio
-                                            for($i=0; $i<$rutinaSize; $i++) {
-                                            if($Rutina[$i]['id_dia']==6)
-                                            {
-                                        ?>
-                                                
-                                                <tr id="<?php echo $Rutina[$i]['id_PosicionEjercicio']?>">
-                                                <td class="text-center"><?php echo $Rutina[$i]['id_PosicionEjercicio']?></td>
-                                                <td><?php echo $Rutina[$i]['nb_ejercicio']?></td>
-                                                <td><?php echo $Rutina[$i]['nb_musculo']?></td>
-                                                <?php }} ?>
-                                                 </tr>
+                                            
+
                                             </tbody>
                                         </table>
                                         </div><!-- Sabado -->
@@ -303,19 +189,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                            <?php
-                                            //Tomando los valores acorde al día para poder hacer el cambio
-                                            for($i=0; $i<$rutinaSize; $i++) {
-                                            if($Rutina[$i]['id_dia']==7)
-                                            {
-                                        ?>
-                                                
-                                                <tr id="<?php echo $Rutina[$i]['id_PosicionEjercicio']?>">
-                                                <td class="text-center"><?php echo $Rutina[$i]['id_PosicionEjercicio']?></td>
-                                                <td><?php echo $Rutina[$i]['nb_ejercicio']?></td>
-                                                <td><?php echo $Rutina[$i]['nb_musculo']?></td>
-                                                <?php }} ?>
-                                                 </tr>
+                                           
                                             </tbody>
                                         </table>
                                         </div><!-- Domingo-->
@@ -349,8 +223,8 @@
 
 <script>
 	 $('#listados').editableTableWidget().numericInputExample();
-    $('#textAreaEditor').editableTableWidget({editor: $('<textarea>')});
-    window.prettyPrint && prettyPrint();		
+  $('#textAreaEditor').editableTableWidget({editor: $('<textarea>')});
+  window.prettyPrint && prettyPrint();		
 </script>
 
 <script>

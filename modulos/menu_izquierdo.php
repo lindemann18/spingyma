@@ -41,7 +41,7 @@
                         <li class="treeview" id="m-biotest">
                             <a href="#">
                                 <i class="fa fa-bar-chart-o"></i>
-                                <span>BioTest</span>
+                                <span>BioTest Ultra</span>
                                 <i class="fa fa-angle-left pull-right"></i>
                             </a>
                             <ul class="treeview-menu">

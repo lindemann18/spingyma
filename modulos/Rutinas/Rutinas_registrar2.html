@@ -1,22 +1,3 @@
-<?php
-
-		
-		//Tomando el tipo de rutina de los ejercicios
-		$resultTipoEjercicio=$consultar->_ConsultarEjerciciosPorTipoRutina($TipoRutina);
-		$filaTipoEjercicio=$resultTipoEjercicio->fetch_assoc();
-		$id_TipoRutina=$filaTipoEjercicio['id_TipoRutina'];
-		$nb_TipoRutina=$filaTipoEjercicio['nb_TipoRutina'];
-		
-		//Buscando el id del dia actual
-		$resultDia=$consultar->_ConsultarDiaPorDesc($DiaRutina);
-		$filaDia=$resultDia->fetch_assoc();
-		$idDiaRegistroEjercicio=$filaDia['id'];
-		
-	
-		
-		
-?>
-
 <link rel="stylesheet" href="css/bootstrap-duallistbox.css">
 <style>
 .Cuestionario{margin-right: 20%;}
