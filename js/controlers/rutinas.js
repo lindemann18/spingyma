@@ -1579,5 +1579,116 @@ angular.forEach(cookies, function (v, k) {
 })//DiasRutinaEditar
 
 .controller('DiasRutinaSeleccion',function($scope,$http,$location,$methodsService,$routeParams,$cookies){
-  alert("hola");
+//variables
+$scope.mostrarbuscando = true;
+$scope.mostrarcontent  = false;
+
+//funciones
+$scope.RegistrarEjercicios = function()
+{
+
+  bootbox.confirm("Desea continuar?", function(result) {
+    console.log(result);
+      if(result==true)
+      {
+        $scope.$apply(function(){
+              IdDiasRutinas = new Array(); //Vector con los ids de los inputs
+              DiasRutinas   = new Array(); //Vector con los id de los tipos de rutinas, números 1,2,3,etc.
+              TextoRutinas  = new Array(); //Vector con los textos de tipos de rutina
+
+              //haciendo un ciclo para tomar los valores y demás del dom
+              console.log($scope.IdDiasRutinas);
+
+
+              $(".SelectDia").each(function(){
+                
+                //tomando el id de los inputs
+                id_select=this.id; //tomando el id de los inputs
+                IdDiasRutinas.push(id_select); //Ingresándolos al vectór
+                
+                //Tomando los valores de los inputs
+                id2="#"+id_select; //id para jquery
+                ValInput=$(id2).val(); //tomando el valor del input
+                DiasRutinas.push(ValInput); //insertándolo al vector
+                
+                //Tomando texto de las rutinas
+                id3=id2+" option:selected"; //id para tomar los textos
+                TextoInput=$(id3).text();
+                TextoRutinas.push(TextoInput);
+              });
+
+              
+        });
+      }//if
+  });
+    
+}//RegistrarEjercicios
+
+// Tomando los datos necesarios.
+$scope.Rut         = $routeParams.Rut;
+var diasa           = $cookies.get("DiasEdicion");
+$scope.DiasEdicion = diasa.split(",");
+$scope.Contador    = $cookies.get("Contador");
+var cantidad       = $scope.DiasEdicion.length;
+$scope.dias        = [];
+$scope.IdDiasRutinas = [];
+console.log($scope.DiasEdicion);
+
+//Definiendo los objetos de días para cambiar los valores
+for(i=0; i<cantidad; i++)
+{
+  var diaEdicion = $scope.DiasEdicion[i];
+  var NombreDia  = $methodsService.DefinirDia(diaEdicion);
+  var id_input   = $methodsService.RetornarIdPorNombre(NombreDia);
+  var dia = new Object();
+  dia['diaEdicion']  = diaEdicion
+  dia['NombreDia']  = NombreDia
+  dia['id_input']  = id_input;
+  $scope.dias.push(dia);
+}//for
+
+//BUscando los tipos de rutinas que existen
+var params = $methodsService.Json("TiposRutina",1);
+var url = 'modulos/Rutinas/Funciones.php';
+ $http({method: "post",url: url,data: $.param({Params:params}), 
+  headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+})
+ .success(function(data, status, headers, config) 
+ {            console.log(data);
+     existe = data.existe;
+     if(existe==1)
+     {
+        $scope.mostrarbuscando = false;
+        $scope.mostrarcontent  = true;
+        $scope.tiposRut = data.tiposRut;
+
+        //Pegando las opciones al contenedor
+        for(i=0; i<cantidad; i++)
+        {
+            var div = '<div class="form-group">';
+                div+= '<h2 class="text-center">'+$scope.dias[i].NombreDia+'</h2>';
+                div+= '<select class="form-control"  class="form-control SelectDia"  id="'+$scope.dias[i].id_input+'" required>';
+                div+= '<option value="">Seleccionar...</option>';
+                div+= '</select>';
+                div+= '</div>';
+                $(".container").append(div);
+
+                //tomando todos los ids
+                $scope.IdDiasRutinas.push($scope.dias[i].id_input);
+                idjquery = "#"+$scope.dias[i].id_input;
+            //Pegando las opciones a los div
+            for(f=0; f<$scope.tiposRut.length; f++)
+            {
+              rut = $scope.tiposRut[f];
+              var option = '<option value="'+rut.id+'">'+rut.nb_tiporutina+'</option>';
+
+              $(idjquery).append(option);
+            }//for
+        }//for
+
+     }else{ $methodsService.alerta(2,"algo falló, disculpe las molestias");}
+  })  
+ .error(function(data, status, headers, config){
+  $methodsService.alerta(2,"algo falló, disculpe las molestias");
+ });
 })

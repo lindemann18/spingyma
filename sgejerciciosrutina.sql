@@ -2,21 +2,21 @@
 Navicat MySQL Data Transfer
 
 Source Server         : localhost
-Source Server Version : 50616
+Source Server Version : 50620
 Source Host           : localhost:3306
 Source Database       : spingyma
 
 Target Server Type    : MYSQL
-Target Server Version : 50616
+Target Server Version : 50620
 File Encoding         : 65001
 
-Date: 2015-07-20 17:26:16
+Date: 2015-07-20 20:25:42
 */
 
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
--- Table structure for sgejerciciosrutina
+-- Table structure for `sgejerciciosrutina`
 -- ----------------------------
 DROP TABLE IF EXISTS `sgejerciciosrutina`;
 CREATE TABLE `sgejerciciosrutina` (
@@ -35,7 +35,7 @@ CREATE TABLE `sgejerciciosrutina` (
   `ejercicio_relacion` varchar(10) CHARACTER SET utf8mb4 DEFAULT NULL,
   `sn_activo` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3395 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3330 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sgejerciciosrutina
@@ -254,9 +254,9 @@ INSERT INTO `sgejerciciosrutina` VALUES ('445', '95', '1', '1', '73', '1', '4', 
 INSERT INTO `sgejerciciosrutina` VALUES ('446', '226', '1', '1', '73', '1', '4', '13', null, null, '3', '15', '', '1');
 INSERT INTO `sgejerciciosrutina` VALUES ('447', '159', '1', '1', '73', '1', '5', '6', null, null, '3', '15', '', '1');
 INSERT INTO `sgejerciciosrutina` VALUES ('448', '163', '1', '1', '73', '1', '5', '5', null, null, '3', '15', '', '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('449', '120', '1', '1', '73', '1', '6', '4', null, null, '3', '15', '', '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('450', '122', '1', '1', '73', '1', '6', '1', null, null, '3', '15', '', '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('451', '245', '1', '1', '73', '1', '9', '3', null, null, '3', '15', '', '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('449', '120', '1', '1', '73', '1', '6', '3', null, null, '3', '15', '', '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('450', '122', '1', '1', '73', '1', '6', '4', null, null, '3', '15', '', '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('451', '245', '1', '1', '73', '1', '9', '1', null, null, '3', '15', '', '1');
 INSERT INTO `sgejerciciosrutina` VALUES ('452', '246', '1', '1', '73', '1', '9', '2', null, null, '3', '15', '', '1');
 INSERT INTO `sgejerciciosrutina` VALUES ('453', '196', '1', '1', '73', '1', '10', '10', null, null, '3', '15', '', '1');
 INSERT INTO `sgejerciciosrutina` VALUES ('454', '199', '1', '1', '73', '1', '10', '12', null, null, '3', '15', '', '1');
@@ -269,10 +269,10 @@ INSERT INTO `sgejerciciosrutina` VALUES ('460', '95', '1', '2', '73', '1', '4', 
 INSERT INTO `sgejerciciosrutina` VALUES ('461', '226', '1', '2', '73', '1', '4', '28', null, null, '3', '15', 'g1', '1');
 INSERT INTO `sgejerciciosrutina` VALUES ('462', '159', '1', '2', '73', '1', '5', '20', null, null, '3', '15', 'c1', '1');
 INSERT INTO `sgejerciciosrutina` VALUES ('463', '163', '1', '2', '73', '1', '5', '21', null, null, '3', '15', 'c2', '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('464', '120', '1', '2', '73', '1', '6', '16', null, null, '3', '15', 'b1', '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('464', '120', '1', '2', '73', '1', '6', '18', null, null, '3', '15', 'b1', '1');
 INSERT INTO `sgejerciciosrutina` VALUES ('465', '122', '1', '2', '73', '1', '6', '19', null, null, '3', '15', 'b2', '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('466', '245', '1', '2', '73', '1', '9', '17', null, null, '3', '15', 'a1', '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('467', '246', '1', '2', '73', '1', '9', '18', null, null, '3', '15', 'a2', '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('466', '245', '1', '2', '73', '1', '9', '16', null, null, '3', '15', 'a1', '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('467', '246', '1', '2', '73', '1', '9', '17', null, null, '3', '15', 'a2', '1');
 INSERT INTO `sgejerciciosrutina` VALUES ('468', '196', '1', '2', '73', '1', '10', '24', null, null, '3', '15', 'e1', '1');
 INSERT INTO `sgejerciciosrutina` VALUES ('469', '199', '1', '2', '73', '1', '10', '25', null, null, '3', '15', 'e2', '1');
 INSERT INTO `sgejerciciosrutina` VALUES ('470', '4', '1', '2', '73', '1', '12', '29', null, null, '3', '15', 'h1', '1');
@@ -1965,11 +1965,11 @@ INSERT INTO `sgejerciciosrutina` VALUES ('2156', '196', '1', '5', '130', '1', '1
 INSERT INTO `sgejerciciosrutina` VALUES ('2157', '43', '1', '5', '130', '1', '12', '38', null, null, null, null, '', '1');
 INSERT INTO `sgejerciciosrutina` VALUES ('2158', '2', '1', '6', '130', '1', '1', '39', null, null, null, '12', '', '1');
 INSERT INTO `sgejerciciosrutina` VALUES ('2159', '2', '1', '7', '130', '1', '1', '40', null, null, null, null, '', '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3247', '47', '1', '1', '158', '2', '4', '3', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3248', '48', '1', '1', '158', '2', '4', '4', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3249', '49', '1', '1', '158', '2', '4', '2', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3250', '50', '1', '1', '158', '2', '4', '5', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3251', '51', '1', '1', '158', '2', '4', '1', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3247', '47', '1', '1', '158', '2', '4', '4', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3248', '48', '1', '1', '158', '2', '4', '1', null, null, null, '15', null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3249', '49', '1', '1', '158', '2', '4', '5', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3250', '50', '1', '1', '158', '2', '4', '2', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3251', '51', '1', '1', '158', '2', '4', '3', null, null, null, null, null, '1');
 INSERT INTO `sgejerciciosrutina` VALUES ('3252', '52', '1', '1', '158', '2', '4', '6', null, null, null, null, null, '1');
 INSERT INTO `sgejerciciosrutina` VALUES ('3253', '54', '1', '1', '158', '2', '4', '7', null, null, null, null, null, '1');
 INSERT INTO `sgejerciciosrutina` VALUES ('3254', '55', '1', '1', '158', '2', '4', '8', null, null, null, null, null, '1');
@@ -1990,11 +1990,11 @@ INSERT INTO `sgejerciciosrutina` VALUES ('3268', '117', '1', '1', '158', '2', '6
 INSERT INTO `sgejerciciosrutina` VALUES ('3269', '118', '1', '1', '158', '2', '6', '19', null, null, null, null, null, '1');
 INSERT INTO `sgejerciciosrutina` VALUES ('3270', '119', '1', '1', '158', '2', '6', '24', null, null, null, null, null, '1');
 INSERT INTO `sgejerciciosrutina` VALUES ('3271', '120', '1', '1', '158', '2', '6', '21', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3272', '293', '1', '2', '158', '2', '2', '28', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3273', '169', '1', '2', '158', '2', '3', '29', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3274', '170', '1', '2', '158', '2', '3', '30', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3275', '171', '1', '2', '158', '2', '3', '27', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3276', '172', '1', '2', '158', '2', '3', '26', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3272', '293', '1', '2', '158', '2', '2', '27', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3273', '169', '1', '2', '158', '2', '3', '26', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3274', '170', '1', '2', '158', '2', '3', '29', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3275', '171', '1', '2', '158', '2', '3', '30', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3276', '172', '1', '2', '158', '2', '3', '28', null, null, null, null, null, '1');
 INSERT INTO `sgejerciciosrutina` VALUES ('3277', '173', '1', '2', '158', '2', '3', '31', null, null, null, null, null, '1');
 INSERT INTO `sgejerciciosrutina` VALUES ('3278', '174', '1', '2', '158', '2', '3', '32', null, null, null, null, null, '1');
 INSERT INTO `sgejerciciosrutina` VALUES ('3279', '175', '1', '2', '158', '2', '3', '33', null, null, null, null, null, '1');
@@ -2005,13 +2005,13 @@ INSERT INTO `sgejerciciosrutina` VALUES ('3283', '49', '1', '2', '158', '2', '4'
 INSERT INTO `sgejerciciosrutina` VALUES ('3284', '50', '1', '2', '158', '2', '4', '38', null, null, null, null, null, '1');
 INSERT INTO `sgejerciciosrutina` VALUES ('3285', '51', '1', '2', '158', '2', '4', '39', null, null, null, null, null, '1');
 INSERT INTO `sgejerciciosrutina` VALUES ('3286', '52', '1', '2', '158', '2', '4', '40', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3287', '245', '1', '3', '158', '2', '9', '41', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3288', '246', '1', '3', '158', '2', '9', '42', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3289', '247', '1', '3', '158', '2', '9', '43', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3290', '248', '1', '3', '158', '2', '9', '44', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3291', '249', '1', '3', '158', '2', '9', '45', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3292', '250', '1', '3', '158', '2', '9', '46', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3293', '251', '1', '3', '158', '2', '9', '47', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3287', '245', '1', '3', '158', '2', '9', '42', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3288', '246', '1', '3', '158', '2', '9', '41', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3289', '247', '1', '3', '158', '2', '9', '44', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3290', '248', '1', '3', '158', '2', '9', '47', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3291', '249', '1', '3', '158', '2', '9', '46', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3292', '250', '1', '3', '158', '2', '9', '45', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3293', '251', '1', '3', '158', '2', '9', '43', null, null, null, null, null, '1');
 INSERT INTO `sgejerciciosrutina` VALUES ('3294', '189', '1', '3', '158', '2', '10', '48', null, null, null, null, null, '1');
 INSERT INTO `sgejerciciosrutina` VALUES ('3295', '190', '1', '3', '158', '2', '10', '49', null, null, null, null, null, '1');
 INSERT INTO `sgejerciciosrutina` VALUES ('3296', '191', '1', '3', '158', '2', '10', '50', null, null, null, null, null, '1');
@@ -2022,24 +2022,24 @@ INSERT INTO `sgejerciciosrutina` VALUES ('3300', '195', '1', '3', '158', '2', '1
 INSERT INTO `sgejerciciosrutina` VALUES ('3301', '196', '1', '3', '158', '2', '10', '55', null, null, null, null, null, '1');
 INSERT INTO `sgejerciciosrutina` VALUES ('3302', '286', '1', '3', '158', '2', '11', '56', null, null, null, null, null, '1');
 INSERT INTO `sgejerciciosrutina` VALUES ('3303', '296', '1', '4', '158', '2', '2', '57', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3304', '47', '1', '5', '158', '2', '4', '58', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3305', '48', '1', '5', '158', '2', '4', '59', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3304', '47', '1', '5', '158', '2', '4', '61', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3305', '48', '1', '5', '158', '2', '4', '62', null, null, null, null, null, '1');
 INSERT INTO `sgejerciciosrutina` VALUES ('3306', '49', '1', '5', '158', '2', '4', '60', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3307', '50', '1', '5', '158', '2', '4', '61', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3308', '51', '1', '5', '158', '2', '4', '62', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3309', '52', '1', '5', '158', '2', '4', '63', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3307', '50', '1', '5', '158', '2', '4', '63', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3308', '51', '1', '5', '158', '2', '4', '59', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3309', '52', '1', '5', '158', '2', '4', '58', null, null, null, null, null, '1');
 INSERT INTO `sgejerciciosrutina` VALUES ('3310', '54', '1', '5', '158', '2', '4', '64', null, null, null, null, null, '1');
 INSERT INTO `sgejerciciosrutina` VALUES ('3311', '55', '1', '5', '158', '2', '4', '65', null, null, null, null, null, '1');
 INSERT INTO `sgejerciciosrutina` VALUES ('3312', '68', '1', '5', '158', '2', '4', '66', null, null, null, null, null, '1');
 INSERT INTO `sgejerciciosrutina` VALUES ('3313', '69', '1', '5', '158', '2', '4', '67', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3314', '169', '1', '6', '158', '2', '3', '68', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3315', '170', '1', '6', '158', '2', '3', '69', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3316', '171', '1', '6', '158', '2', '3', '70', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3314', '169', '1', '6', '158', '2', '3', '69', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3315', '170', '1', '6', '158', '2', '3', '70', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3316', '171', '1', '6', '158', '2', '3', '74', null, null, null, null, null, '1');
 INSERT INTO `sgejerciciosrutina` VALUES ('3317', '172', '1', '6', '158', '2', '3', '71', null, null, null, null, null, '1');
 INSERT INTO `sgejerciciosrutina` VALUES ('3318', '173', '1', '6', '158', '2', '3', '72', null, null, null, null, null, '1');
 INSERT INTO `sgejerciciosrutina` VALUES ('3319', '174', '1', '6', '158', '2', '3', '73', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3320', '175', '1', '6', '158', '2', '3', '74', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3321', '176', '1', '6', '158', '2', '3', '75', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3320', '175', '1', '6', '158', '2', '3', '75', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3321', '176', '1', '6', '158', '2', '3', '68', null, null, null, null, null, '1');
 INSERT INTO `sgejerciciosrutina` VALUES ('3322', '177', '1', '6', '158', '2', '3', '76', null, null, null, null, null, '1');
 INSERT INTO `sgejerciciosrutina` VALUES ('3323', '189', '1', '6', '158', '2', '10', '77', null, null, null, null, null, '1');
 INSERT INTO `sgejerciciosrutina` VALUES ('3324', '190', '1', '6', '158', '2', '10', '78', null, null, null, null, null, '1');
@@ -2048,68 +2048,3 @@ INSERT INTO `sgejerciciosrutina` VALUES ('3326', '192', '1', '6', '158', '2', '1
 INSERT INTO `sgejerciciosrutina` VALUES ('3327', '193', '1', '6', '158', '2', '10', '81', null, null, null, null, null, '1');
 INSERT INTO `sgejerciciosrutina` VALUES ('3328', '288', '1', '6', '158', '2', '11', '82', null, null, null, null, null, '1');
 INSERT INTO `sgejerciciosrutina` VALUES ('3329', '2', '1', '7', '158', '2', '1', '83', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3330', '47', '1', '1', '159', '2', '4', '2', null, null, null, null, 'a1', '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3331', '48', '1', '1', '159', '2', '4', '5', null, null, null, null, 'b3', '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3332', '49', '1', '1', '159', '2', '4', '1', null, null, '3', '15', 'a2', '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3333', '50', '1', '1', '159', '2', '4', '6', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3334', '51', '1', '1', '159', '2', '4', '4', null, null, null, null, 'b2', '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3335', '52', '1', '1', '159', '2', '4', '3', null, null, null, null, 'b1', '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3336', '54', '1', '1', '159', '2', '4', '7', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3337', '142', '1', '1', '159', '2', '5', '8', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3338', '143', '1', '1', '159', '2', '5', '9', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3339', '144', '1', '1', '159', '2', '5', '10', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3340', '145', '1', '1', '159', '2', '5', '11', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3341', '146', '1', '1', '159', '2', '5', '12', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3342', '148', '1', '1', '159', '2', '5', '13', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3343', '149', '1', '1', '159', '2', '5', '14', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3344', '111', '1', '1', '159', '2', '6', '15', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3345', '112', '1', '1', '159', '2', '6', '16', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3346', '113', '1', '1', '159', '2', '6', '17', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3347', '114', '1', '1', '159', '2', '6', '18', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3348', '115', '1', '1', '159', '2', '6', '19', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3349', '116', '1', '1', '159', '2', '6', '20', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3350', '117', '1', '1', '159', '2', '6', '21', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3351', '293', '1', '2', '159', '2', '2', '22', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3352', '169', '1', '2', '159', '2', '3', '23', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3353', '170', '1', '2', '159', '2', '3', '24', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3354', '171', '1', '2', '159', '2', '3', '25', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3355', '172', '1', '2', '159', '2', '3', '26', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3356', '173', '1', '2', '159', '2', '3', '27', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3357', '174', '1', '2', '159', '2', '3', '28', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3358', '175', '1', '2', '159', '2', '3', '29', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3359', '176', '1', '2', '159', '2', '3', '30', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3360', '177', '1', '2', '159', '2', '3', '31', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3361', '47', '1', '2', '159', '2', '4', '32', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3362', '48', '1', '2', '159', '2', '4', '33', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3363', '49', '1', '2', '159', '2', '4', '34', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3364', '50', '1', '2', '159', '2', '4', '35', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3365', '245', '1', '3', '159', '2', '9', '36', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3366', '246', '1', '3', '159', '2', '9', '39', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3367', '247', '1', '3', '159', '2', '9', '37', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3368', '248', '1', '3', '159', '2', '9', '40', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3369', '249', '1', '3', '159', '2', '9', '41', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3370', '189', '1', '3', '159', '2', '10', '42', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3371', '190', '1', '3', '159', '2', '10', '43', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3372', '191', '1', '3', '159', '2', '10', '44', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3373', '192', '1', '3', '159', '2', '10', '45', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3374', '193', '1', '3', '159', '2', '10', '46', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3375', '194', '1', '3', '159', '2', '10', '47', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3376', '285', '1', '3', '159', '2', '11', '38', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3377', '295', '1', '4', '159', '2', '2', '48', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3378', '47', '1', '5', '159', '2', '4', '50', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3379', '48', '1', '5', '159', '2', '4', '51', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3380', '49', '1', '5', '159', '2', '4', '52', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3381', '50', '1', '5', '159', '2', '4', '53', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3382', '111', '1', '5', '159', '2', '6', '54', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3383', '112', '1', '5', '159', '2', '6', '49', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3384', '113', '1', '5', '159', '2', '6', '55', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3385', '114', '1', '5', '159', '2', '6', '56', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3386', '115', '1', '5', '159', '2', '6', '57', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3387', '4', '1', '5', '159', '2', '12', '58', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3388', '10', '1', '5', '159', '2', '12', '60', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3389', '11', '1', '5', '159', '2', '12', '61', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3390', '12', '1', '5', '159', '2', '12', '62', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3391', '13', '1', '5', '159', '2', '12', '63', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3392', '15', '1', '5', '159', '2', '12', '59', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3393', '2', '1', '6', '159', '2', '1', '64', null, null, null, null, null, '1');
-INSERT INTO `sgejerciciosrutina` VALUES ('3394', '2', '1', '7', '159', '2', '1', '65', null, null, null, null, null, '1');

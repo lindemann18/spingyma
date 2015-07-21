@@ -270,4 +270,40 @@ var miModulo = angular.module("Methods", []);
 		return DiaRutina;
 		}
 
+		this.RetornarIdPorNombre = function(dia)
+		{
+			var id_inputreturn ="";
+			switch(dia)
+			{
+				case 'Lunes':
+					id_inputreturn='Ejercicio_Lunes';
+				break;
+				
+				case 'Martes':
+					id_inputreturn='Ejercicio_Martes';
+				break;
+				
+				case 'Miercoles':
+					id_inputreturn='Ejercicio_Miercoles';
+				break;
+				
+				case 'Jueves':
+					id_inputreturn='Ejercicio_Jueves';
+				break;
+				
+				case 'Viernes':
+					id_inputreturn='Ejercicio_Viernes';
+				break;
+				
+				case 'Sabado':
+					id_inputreturn='Ejercicio_Sabado';
+				break;
+				
+				case 'Domingo':
+					id_inputreturn='Ejercicio_Domingo';
+				break;
+			}//switch
+			return id_inputreturn;
+		}//RetornarIdPorNombre
+
     })	

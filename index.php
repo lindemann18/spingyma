@@ -4,12 +4,13 @@
 	{
 ?>
 <!-- js -->
+<script src="js/jquery-1.11.1.min.js"></script>
 <script src="js/angular.min.js"></script>
 <script src="js/angular-route.min.js"></script>
 <script src="js/angular-locale_es-mx.js"></script>
 <script src="js/dirPagination.js"></script>
-<script src="js/jquery-1.11.1.min.js"></script>
 <script src="js/angular-cookies.min.js"></script>
+
 <script src="js/bootbox.min.js" type="text/javascript"></script>
 <!-- Controlers-->
 <script src="js/users.js"></script>
