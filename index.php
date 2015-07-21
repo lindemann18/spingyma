@@ -186,6 +186,16 @@
 	      	templateUrl:'modulos/Rutinas/Rutinas_EditarDias.html'
 	    })
 
+	    .when('/Rutina_CompEdit',{
+	    	controller: 'RutinaCompEdit',
+	      	templateUrl:'modulos/Rutinas/Rutina_CompEdit.html'
+	    })
+
+	    .when('/Rutina_EditarSencillo',{
+	    	controller: 'RutinaEditarSencillo',
+	      	templateUrl:'modulos/Rutinas/Rutina_EditarSencillo.html'
+	    })
+
 	    .when('/Error',{
 	    	controller: 'Errors',
 	      	templateUrl:'modulos/Rutinas/Error.html'

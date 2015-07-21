@@ -1386,6 +1386,9 @@ params = $methodsService.Json("EjerciciosRutinaOrden",$scope.Rut);
      });
 
 })
+
+//Aquí comienza la edición de las rutinas en cuestión de ejercicios.
+
 .controller('RutinaEditar',function($scope,$http,$location,$methodsService,$routeParams){
   //Variables
   $scope.Rut         = $routeParams.Rut;
@@ -1472,6 +1475,8 @@ params = $methodsService.Json("EjerciciosRutinaOrden",$scope.Rut);
      });
 })//RutinaEditar
 
+
+//Aquí comienza la edición de ejercicios.
 .controller('DiasRutinaEditar',function($scope,$http,$location,$methodsService,$routeParams,$cookies){
   $scope.Rut = $routeParams.Rut;
   var demo2 = $('.demo2').bootstrapDualListbox({
@@ -1507,7 +1512,7 @@ angular.forEach(cookies, function (v, k) {
                   DiasEdicion.push(dia); //Insertando las Rutinas en el array.
                 });//each
                 
-                
+                CantidadDias = DiasEdicion.length;
                 // definiendo todas las variables
                 var Contador = 0; // Días editados
                 $cookies.put("Contador",Contador);
@@ -1516,7 +1521,7 @@ angular.forEach(cookies, function (v, k) {
                 
                 //Eliminando los ejercicios de los días seleccionados
                 Arr                 = new Object();
-                Arr['id_rutina']    =   $scope.Rut;
+                Arr['id_rutina']    = $scope.Rut;
                 Arr['DiasEdicion']  = DiasEdicion;
                 Arr['CantidadDias'] = DiasEdicion.length;
                 Arr['Accion']       = "DesactivarEjerciciosPorRutina";
@@ -1578,6 +1583,8 @@ angular.forEach(cookies, function (v, k) {
      });
 })//DiasRutinaEditar
 
+
+//Aquí eliges los tipos de rutina en los días a editar.
 .controller('DiasRutinaSeleccion',function($scope,$http,$location,$methodsService,$routeParams,$cookies){
 //variables
 $scope.mostrarbuscando = true;
@@ -1597,27 +1604,55 @@ $scope.RegistrarEjercicios = function()
               TextoRutinas  = new Array(); //Vector con los textos de tipos de rutina
 
               //haciendo un ciclo para tomar los valores y demás del dom
-              console.log($scope.IdDiasRutinas);
+             IdDiasRutinas = $scope.IdDiasRutinas;
 
+              for(i=0; i<$scope.IdDiasRutinas.length; i++)
+              {
+                var id       ="#"+$scope.IdDiasRutinas[i];
+                var valInput = $(id).val();
+                DiasRutinas.push(valInput);
 
-              $(".SelectDia").each(function(){
-                
-                //tomando el id de los inputs
-                id_select=this.id; //tomando el id de los inputs
-                IdDiasRutinas.push(id_select); //Ingresándolos al vectór
-                
-                //Tomando los valores de los inputs
-                id2="#"+id_select; //id para jquery
-                ValInput=$(id2).val(); //tomando el valor del input
-                DiasRutinas.push(ValInput); //insertándolo al vector
-                
-                //Tomando texto de las rutinas
-                id3=id2+" option:selected"; //id para tomar los textos
-                TextoInput=$(id3).text();
+                var id2 = id+" option:selected";
+                TextoInput=$(id2).text();
                 TextoRutinas.push(TextoInput);
-              });
-
+              }//for
               
+              // Definiendo lo necesario para pasar a la selección
+              // de ejercicios.
+              Cantidad   = DiasRutinas.length; //Para comparar con el contador
+              Contador   = 0;          //Contador de cuantos días se llevan hechos
+              TipoRutina = TextoRutinas[Contador]; //Texto de la rutina del primer elemento del vectór para determinar si es simple o complicada
+              CodigoDia  = $methodsService.VerificarDiaPorCodigo(IdDiasRutinas[Contador]); //número de día para mandar a la siguiente pantalla el día que será editado
+
+              //Definiendo que tipo de rutina será la primera a editar
+              Tipo_RutinaActual = (TipoRutina!="Varios")?"Simple":"Compleja"; //Se toma el tipo de rutina que se ha seleccionado para ver a donde se 
+
+              //Definiendo el día actual de la rutina
+              Dia_ActualRutina=IdDiasRutinas[Contador];
+
+              //Definiendo las cookies necesarias.
+              $cookies.put("DiasRutinas",DiasRutinas);
+              $cookies.put("IdDiasRutinas",IdDiasRutinas);
+              $cookies.put("TextoRutinas",TextoRutinas);
+              $cookies.put("ContadorDiasEditar",Contador); 
+              $cookies.put("Tipo_RutinaActual",Tipo_RutinaActual); //Cookie para saber en que tipo de rutina se encuentra la edición actual 
+              $cookies.put("Dia_ActualRutina",Dia_ActualRutina);//Día actual de la rutina donde nos encontramos
+
+              //Definiendo a donde se dirige por el tipo de rutina.
+              if(Tipo_RutinaActual=="Compleja")
+              {
+                console.log("hola dude complejo.");
+                $location.path('/Rutina_CompEdit').search({Rut:$scope.Rut,Day:CodigoDia});
+                //window.location='index.php?nav=Rutina_CompEdit&Rut='+id_rutina+'&Day='+CodigoDia; //Elegir rutinas porm día
+              }//if Tipo_RutinaActual=="Compleja
+              else
+              {
+                //Tomando la rutina actual  a seguir 
+                RutinaActualEditar = DiasRutinas[Contador];
+                $location.path('/Rutina_EditarSencillo').search({Rut:$scope.Rut,Day:CodigoDia,TipoRut:RutinaActualEditar});
+                //window.location='index.php?nav=Rutina_EditarSencillo&Day='+CodigoDia+"&Rut="+id_rutina+"&TipoRut="+RutinaActualEditar;  
+              } //else  
+
         });
       }//if
   });
@@ -1691,4 +1726,195 @@ var url = 'modulos/Rutinas/Funciones.php';
  .error(function(data, status, headers, config){
   $methodsService.alerta(2,"algo falló, disculpe las molestias");
  });
+})//DiasRutinaSeleccion
+
+//Aquí es la rutina compleja donde seleccions tipos de rutina por día.
+.controller('RutinaCompEdit',function($scope,$http,$location,$methodsService,$routeParams,$cookies){
+// Tomando las variables
+$scope.Rut = $routeParams.Rut;
+$scope.Day = $routeParams.Day;
+
+//Funciones
+$scope.Guardar = function()
+{
+  bootbox.confirm("Desea ver esta rutina?", function(result) {
+    console.log(result);
+      if(result==true)
+      {
+        $scope.$apply(function(){
+            //Verificando si eligieron clases de rutina
+            CantidadTiposRutina=document.getElementById("bootstrap-duallistbox-nonselected-list_duallistbox_demo2").length;
+          
+            if(CantidadTiposRutina==$scope.TiposRut.length)
+            {
+                $methodsService.alerta(2,"Favor de seleccionar tipos de rutinas");
+            }//if
+            else
+            {
+                // Definiendo variables y cookies para la selecciónd e ejercicios de las rutinas
+                RutinasDiaEdicion = new Array(); //Array donde se guardarán los tipos de rutina para este día.
+                $(".box2 .Actividad").each(function(){
+                  TipoRutina=$(this).val(); //Valor de la rutina tomada de las que están seleccionadas.
+                  RutinasDiaEdicion.push(TipoRutina); //Insertando las Rutinas en el array.
+                });//each
+                console.log(RutinasDiaEdicion);
+                
+                //Tomando los valores para agregar a la BD
+                TotalActividadesDiaActual    = RutinasDiaEdicion.length;  //Cantidad de actividades a realizar, se comparará con contador para saber si se completaron todas.
+                ContadorActividadesDiaActual = 0; //Contador de cuantas actividades se harán por este día
+                RutinaActual                 = RutinasDiaEdicion[ContadorActividadesDiaActual]; //Tipo de actividad que toca para el día actual
+                
+                //definiendo las cookies
+                $cookies.put("RutinasDiaEdicion",RutinasDiaEdicion); //Array donde se guardan las cantidades de rutinas a realizar.
+                $cookies.put("TotalActividadesDiaActual",TotalActividadesDiaActual); //Cantidad total de actividades.
+                $cookies.put("ContadorActividadesDiaActual",ContadorActividadesDiaActual); //Contador para saber cuantas llevan hechas.
+                $cookies.put("RutinaActual",RutinaActual); //Rutina Actual que será
+
+                //Mandando a definir la los ejercicios por rutina.
+                $location.path('/Rutina_EditarSencillo').search({Rut:$scope.Rut,TipoRut:RutinaActual});
+
+            } //ELSE 
+        });
+      }//if
+  });
+}//Guardar
+
+//Pintando los datos pertinentes-
+$scope.nombreDia = $methodsService.DefinirDia($scope.Day);
+
+//Variable del dualbox
+var demo2 = $('.demo2').bootstrapDualListbox({
+        nonSelectedListLabel: 'Non-selected',
+        selectedListLabel: 'Selected',
+        preserveSelectionOnMove: 'moved',
+        moveOnSelect: false
+      });
+
+//Obteniendo los tipos de rutina para colocarlos.
+var params = $methodsService.Json("BuscarTiposRutinaEdit",1);
+console.log(params);
+var url = 'modulos/Rutinas/Funciones.php';
+$http({method: "post",url: url,data: $.param({Params:params}), 
+headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
 })
+.success(function(data, status, headers, config) 
+{            
+  exito = data.exito;
+   if(exito==1)
+   {
+      
+      $scope.TiposRut =  data.TiposRut;
+
+      //Pegando las opciones en el dual box.
+      var size = $methodsService.sizeObject($scope.TiposRut);
+      console.log($scope.TiposRut);
+      for(i=0; i<size; i++)
+      {
+        var object = $scope.TiposRut[i];
+        var row ='<option value="'+object.id+'" class="Actividad">'+object.nb_tiporutina+'</option>';
+        demo2.append(row);
+      }//for
+       demo2.bootstrapDualListbox('refresh');
+
+   }//if
+   else
+   {
+      $methodsService.alerta(2,"algo falló, disculpe las molestias");
+   }
+})  
+.error(function(data, status, headers, config){
+  $methodsService.alerta(2,"algo falló, disculpe las molestias");
+});  
+
+})
+
+.controller('RutinaEditarSencillo',function($scope,$http,$location,$methodsService,$routeParams,$cookies){
+
+//Tomando los valores
+$scope.Rut         = $routeParams.Rut;
+$scope.Day         = $routeParams.Day;
+
+//Definiendo los elementos en la pantalla.
+$scope.DiasEdicion = $cookies.get("DiasEdicion"); //ids de los dias
+$scope.Contador    = $cookies.get("Contador"); //Contador de los días
+var numdia         = $scope.DiasEdicion[$scope.Contador];
+$scope.nombreDia   = $methodsService.DefinirDia(numdia);
+var params         = "";
+//Funciones
+$scope.RegistrarEjercicios = function()
+{
+  bootbox.confirm("Desea Registrar estos ejercicios para el día "+$scope.nombreDia+"?", function(result) {
+    console.log(result);
+      if(result==true)
+      {
+        $scope.$apply(function(){
+            //Verificando si realmente se eligieron ejecicios.
+
+        });
+      }//if
+  });
+}//RegistrarEjercicios
+
+
+//Variable para pegar opciones
+var demo2 = $('.demo2').bootstrapDualListbox({
+        nonSelectedListLabel: 'Non-selected',
+        selectedListLabel: 'Selected',
+        preserveSelectionOnMove: 'moved',
+        moveOnSelect: false
+      });
+
+//Definiendo el tipo de rutina actual
+$scope.Tipo_RutinaActual = $cookies.get("Tipo_RutinaActual");
+
+if($scope.Tipo_RutinaActual=="Compleja")
+{
+  //Si se entra aquí es que se eligió el tipo de rutina compleja
+  //Tipo de rutina
+  $scope.RutinasDiaEdicion = $cookies.get("RutinasDiaEdicion"); //Tipos de rutina elegidas para este día.
+  var ContadorActividadesDiaActual = $cookies.get("ContadorActividadesDiaActual");
+  var rutinaEjercicios = $scope.RutinasDiaEdicion[ContadorActividadesDiaActual];
+  params = $methodsService.Json("BuscarEjerciciosPorRutina",rutinaEjercicios);
+ 
+}//if
+else
+{
+    $scope.TipoRut = $routeParams.TipoRut;
+    params = $methodsService.Json("BuscarEjerciciosPorRutina",$scope.TipoRut);
+  
+}//else
+
+var url = 'modulos/Rutinas/Funciones.php';
+
+$http({method: "post",url: url,data: $.param({Params:params}), 
+headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+})
+ .success(function(data, status, headers, config) 
+ {   
+      exito =  data.exito;
+      if(exito==1)
+      {
+          $scope.ejercicios = data.ejercicios;
+          //Pegando las opciones en el dual box.
+          var size = $methodsService.sizeObject($scope.ejercicios);
+          console.log($scope.ejercicios);
+          for(i=0; i<size; i++)
+          {
+            var object = $scope.ejercicios[i];
+            var row ='<option value="'+object.id+'" class="Actividad">'+object.nb_ejercicio+'</option>';
+            demo2.append(row);
+          }//for
+           demo2.bootstrapDualListbox('refresh');
+      }//if
+
+      
+  })  
+ .error(function(data, status, headers, config){
+  $methodsService.alerta(2,"algo falló, disculpe las molestias");
+ });
+
+
+
+
+
+})//RutinaEditarSencillo

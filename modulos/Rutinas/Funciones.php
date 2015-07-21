@@ -230,6 +230,11 @@
 			echo json_encode($salidaJson);
 		break;
 
+		case 'BuscarTiposRutinaEdit':
+			$salidaJson = BuscarTiposRutinaEdit($Parametros);
+			echo json_encode($salidaJson);
+		break;
+
 		//Secciones Viejas
 		case 'AgregaMusculo':
 			$nb_musculo	   = $Parametros['nb_musculo'];
@@ -1631,6 +1636,43 @@
 		$datos = array("exito"=>$exito);
 		return $datos;
 	}//DesactivarEjerciciosPorRutina
+
+	function BuscarTiposRutinaEdit($Parametros)
+	{
+		//Buscar los tipos de rutina, evitar poner lade Varios.
+		$consultar = new Consultar();
+		$TiposRut  = $consultar->_ConsultarTiposRutina();
+		$cantidad  = count($TiposRut);
+		$exito     = ($cantidad>0)?1:0;
+		$offsetdel = ""; //el offset a remover
+		if($exito==1)
+		{
+			for($i=0; $i<$cantidad; $i++)
+			{
+				$rutina = $TiposRut[$i];
+				if($rutina['nb_tiporutina']=="Varios")
+				{
+					$offsetdel = $i;
+					unset($TiposRut[$i]);
+				}//if
+			}//for
+		}//if
+		
+		$tiposRutFilt = array();
+		$cantidadfinal = count($TiposRut);
+		for($i=0; $i<$cantidadfinal; $i++)
+		{
+			if($i!=$offsetdel)
+			{
+				$tipru = $TiposRut[$i];
+				array_push($tiposRutFilt,$tipru);	
+			}
+			
+		}//for
+
+		$datos = array("exito"=>$exito,"TiposRut"=>$tiposRutFilt);
+		return $datos;
+	}//BuscarTiposRutinaEdit
 
 	// funciones Viejas
 

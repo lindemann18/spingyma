@@ -203,7 +203,7 @@ function RegistraMaquina()
 		id_usuario=$("#id_usuario").val(); //id del usuario que edita
 		
 		//Guardando en Cookies los datos para pasar a la edición de ejercicios por día
-		Contador=0; //Contador para saber cuantos días se lleva editados.
+		Contador = 0; //Contador para saber cuantos días se lleva editados.
 		$.cookie("Contador", Contador); //Cookie del contador
 		$.cookie("DiasEdicion",DiasEdicion); //Vector con los días a editar
 		$.cookie("CantidadDias",CantidadDias); //Cantidad de días que se editarán, se compararán el contador y este para ver si ya se terminó.

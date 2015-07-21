@@ -319,8 +319,8 @@ function RegistraMaquina()
 		});
 	
 	
-	Cantidad=DiasRutinas.length; //Para comparar con el contador
-	Contador=0;					//Contador de cuantos días se llevan hechos
+	Cantidad = DiasRutinas.length; //Para comparar con el contador
+	Contador =0;					//Contador de cuantos días se llevan hechos
 	TipoRutina = TextoRutinas[Contador]; //Texto de la rutina del primer elemento del vectór para determinar si es simple o complicada
 	CodigoDia=VerificarDiaPorCodigo(IdDiasRutinas[Contador]); //número de día para mandar a la siguiente pantalla el día que será editado
 	
