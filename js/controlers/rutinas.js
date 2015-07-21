@@ -1487,7 +1487,7 @@ angular.forEach(cookies, function (v, k) {
   //Funciones
   $scope.checkRequeridos = function()  
   {
-    bootbox.confirm("Desea agregar estos tipos de rutina?", function(result) {
+    bootbox.confirm("Desea eliminar los ejercicios de esto días?", function(result) {
     if(result==true)
       {
         $scope.$apply(function(){
@@ -1518,7 +1518,7 @@ angular.forEach(cookies, function (v, k) {
                 Arr                 = new Object();
                 Arr['id_rutina']    =   $scope.Rut;
                 Arr['DiasEdicion']  = DiasEdicion;
-                Arr['CantidadDias'] = CantidadDias;
+                Arr['CantidadDias'] = DiasEdicion.length;
                 Arr['Accion']       = "DesactivarEjerciciosPorRutina";
                 params              = JSON.stringify(Arr);
                 
@@ -1529,7 +1529,12 @@ angular.forEach(cookies, function (v, k) {
                 })
                  .success(function(data, status, headers, config) 
                  {            
-                      
+                      exito = data.exito;
+                      if(exito==1)
+                      {
+                        $location.path('/Rutinas_EditarDias').search({Rut:$scope.Rut});
+                      }//if
+                      else{$methodsService.alerta(2,"algo falló, disculpe las molestias");}
                   })  
                  .error(function(data, status, headers, config){
                   $methodsService.alerta(2,"algo falló, disculpe las molestias");
@@ -1571,4 +1576,8 @@ angular.forEach(cookies, function (v, k) {
      .error(function(data, status, headers, config){
       $methodsService.alerta(2,"algo falló, disculpe las molestias");
      });
+})//DiasRutinaEditar
+
+.controller('DiasRutinaSeleccion',function($scope,$http,$location,$methodsService,$routeParams,$cookies){
+  alert("hola");
 })

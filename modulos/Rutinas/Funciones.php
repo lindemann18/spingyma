@@ -1617,15 +1617,19 @@
 		$id_rutina    = $Parametros['id_rutina'];
 		$DiasEdicion  = $Parametros['DiasEdicion'];
 		$CantidadDias = $Parametros['CantidadDias'];
-		
-		$actualizar=new Actualizar();
+		$actualizar   = new Actualizar();
+		$eliminados   = 0;
 		//Desactivando los ejercicios de la rutina pertinente	
 		for($i=0; $i<$CantidadDias; $i++)
 		{
 			$id_dia = $DiasEdicion[$i]; //Dia del ejercicio para deshabilitar
-			$result = $actualizar->_EliminarEjercicioPorRutinaYDia($id_dia, $idRutina);
+			$result = $actualizar->_EliminarEjercicioPorRutinaYDia($id_dia, $id_rutina);
+			if($result!="Error"){$eliminados++;}
 		}//for
 		
+		$exito = ($eliminados==$CantidadDias)?1:0;
+		$datos = array("exito"=>$exito);
+		return $datos;
 	}//DesactivarEjerciciosPorRutina
 
 	// funciones Viejas

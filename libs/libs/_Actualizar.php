@@ -84,6 +84,31 @@
 			R::close();
 			return $info;
 		}//_ActualizarIdPosicionEjercicioPorIdRutinaYidPosicionEjercicioRestaTemp
+
+		function _EliminarEjercicioPorRutinaYDia($id_dia, $id_rutina)
+		{
+			/*$query='
+				UPDATE sg_ejerciciosrutina SET
+				sn_activo=0
+				WHERE id_Rutina="'.$id_rutina.'" AND id_dia="'.$id_dia.'"
+			';*/
+			$query=' DELETE FROM sgejerciciosrutina WHERE id_rutina=? AND id_dia= ?';
+						
+			R::freeze(1);
+			R::begin();
+		    try{
+		       $info = R::getRow($query,[$id_rutina,$id_dia]);
+		        R::commit();
+		    }
+		    catch(Exception $e) {
+		       $info =  R::rollback();
+		       $info = "Error";
+		    }
+
+			R::close();
+			return $info;
+		}//_EliminarEjercicioPorRutinaYDia
+
 		//funciones Viejas
 
 		function EliminarUsuario($id)	
@@ -555,20 +580,7 @@
 			return $result;
 		}//EliminarRutinaPorId
 		
-		function _EliminarEjercicioPorRutinaYDia($id_dia, $id_rutina)
-		{
-			/*$query='
-				UPDATE sg_ejerciciosrutina SET
-				sn_activo=0
-				WHERE id_Rutina="'.$id_rutina.'" AND id_dia="'.$id_dia.'"
-			';*/
-			$query=' DELETE FROM sg_ejerciciosrutina WHERE id_Rutina="'.$id_rutina.'" AND id_dia="'.$id_dia.'" ';
-						
-			$conectar=new Conectar();
-			$con=Conectar::_con();
-			$result=$con->query($query)or die("Error en $query ".mysqli_error($query));
-			return $result;
-		}//_EliminarEjercicioPorRutinaYDia
+		
 		
 		function _EliminarRutinaClienteActualPorId($id_rutinaCliente)
 		{

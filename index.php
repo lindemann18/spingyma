@@ -180,6 +180,11 @@
 	      	templateUrl:'modulos/Rutinas/Rutinas_Editar.html'
 	    })
 
+	    .when('/Rutinas_EditarDias',{
+	    	controller: 'DiasRutinaSeleccion',
+	      	templateUrl:'modulos/Rutinas/Rutinas_EditarDias.html'
+	    })
+
 	    .when('/Error',{
 	    	controller: 'Errors',
 	      	templateUrl:'modulos/Rutinas/Error.html'
