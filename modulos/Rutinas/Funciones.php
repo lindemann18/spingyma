@@ -1139,13 +1139,18 @@
 	{
 		//Tomando los datos
 		session_start();
+		if(isset($Parametros['id_rutina']))
+		{
+			$id_rutina = $Parametros['id_rutina'];
+		}
+		else{$id_rutina = $_SESSION['id_rutina'];}
 		$consultar          = new Consultar();
 		$id_dia             = $Parametros['id_dia'];
 		$id_CategoriaRutina = $Parametros['id_CategoriaRutina'];
 		$id_TipoRutina      = $Parametros['id_TipoRutina'];
 		$ejerciciosAgregar  = $Parametros['EjerciciosRutina'];
 		$cantidad           = count($ejerciciosAgregar);
-		$id_rutina          = $_SESSION['id_rutina'];
+		
 		$id_usuario         = $_SESSION['usuario']['id'];
 		$errores            = array(); //Reporte de errrores
 		$guardados          = array(); // reporte de guardados

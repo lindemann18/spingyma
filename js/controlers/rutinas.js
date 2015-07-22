@@ -1881,6 +1881,31 @@ $scope.RegistrarEjercicios = function()
                 //Mandando por ajax a guardar 
                 params = JSON.stringify(Arr);
                 
+                // Mandando por AJax a la bd los ejercicios.
+                var url = 'modulos/Rutinas/Funciones.php';
+                 $http({method: "post",url: url,data: $.param({Params:params}), 
+                  headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                })
+                 .success(function(data, status, headers, config) 
+                 {            
+                      exito = data.exito;
+                      if(exito==1)
+                      {
+                        //Verificando que tipo de rutina es
+                        Tipo_RutinaActual=$cookies.get("Tipo_RutinaActual");
+                        //Se trae los datos de los días actuales
+                        DiasRutinas   = $cookies.get("DiasRutinas");//Vector con los id de los tipos de rutinas (1-8) (Declarado en Rutina_CompEdit)
+                        IdDiasRutinas = $cookies.get("IdDiasRutinas"); //Vector con los ids de los inputs ej. lunes_Ejercicio(Declarado en Rutina_CompEdit)
+                        TextoRutinas  = $cookies.get("TextoRutinas");//Vector con los textos de tipos de rutina (Declarado en Rutina_CompEdit)
+                        DiasEdicion   = $cookies.get("DiasEdicion") //Vector con el id de los días que serán editados, ej: Lunes, martes, etc. (Rutinas_editar.php)
+                        ContadorDias  = $cookies.get("ContadorDiasEditar"); //Contador de los días (Declarado en rutinas_EditarDias)
+                        CantidadDias  = $cookies.get("CantidadDias"); //cantidad total de los días a editar(Declarado en rutinas_EditarDias)
+                      }
+                  })  
+                 .error(function(data, status, headers, config){
+                  $methodsService.alerta(2,"algo falló, disculpe las molestias");
+                 });
+
             } //ELSE
         });
       }//if
