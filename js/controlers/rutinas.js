@@ -1840,6 +1840,7 @@ $scope.Contador    = $cookies.get("Contador"); //Contador de los días
 var numdia         = $scope.DiasEdicion[$scope.Contador];
 $scope.nombreDia   = $methodsService.DefinirDia(numdia);
 var params         = "";
+
 //Funciones
 $scope.RegistrarEjercicios = function()
 {
@@ -1849,7 +1850,38 @@ $scope.RegistrarEjercicios = function()
       {
         $scope.$apply(function(){
             //Verificando si realmente se eligieron ejecicios.
-
+            CantidadTiposRutina=document.getElementById("bootstrap-duallistbox-nonselected-list_duallistbox_demo2").length;
+          
+            if(CantidadTiposRutina==$scope.ejercicios.length)
+            {
+                $methodsService.alerta(2,"Favor de seleccionar tipos de rutinas");
+            }//if
+            else
+            {
+              // Definiendo variables y cookies para la selecciónd e ejercicios de las rutinas
+                EjerciciosRutina = new Array(); //Array donde se guardarán los tipos de rutina para este día.
+                $(".box2 .Actividad").each(function(){
+                  TipoRutina=$(this).val(); //Valor de la rutina tomada de las que están seleccionadas.
+                  EjerciciosRutina.push(TipoRutina); //Insertando las Rutinas en el array.
+                });//each
+                
+                //Aquí se procede a obtener los datos para guardar los ejercicios.
+                CantidadEjercicios  = DiaRutina.length;
+                id_tiporutina       = $scope.ejercicios[0].id_tiporutina;
+                id_CategoriaRutina  = $cookies.get("id_categoriarutina");
+                CantidadEjercicios  = EjerciciosRutina.length;
+                Arr=new Object();
+                Arr['id_rutina']          = $scope.Rut;
+                Arr['id_dia']             = $scope.Day;
+                Arr['id_CategoriaRutina'] = $scope.rutina.id_categoriarutina;     
+                Arr['EjerciciosRutina']   = EjerciciosRutina;
+                Arr['CantidadEjercicios'] = CantidadEjercicios;
+                Arr['id_TipoRutina']      = $scope.ejercicios[0].id_tiporutina;
+                Arr['Accion']             = "RegistrarEjerciciosRutinas";
+                //Mandando por ajax a guardar 
+                params = JSON.stringify(Arr);
+                
+            } //ELSE
         });
       }//if
   });
@@ -1880,7 +1912,7 @@ if($scope.Tipo_RutinaActual=="Compleja")
 else
 {
     $scope.TipoRut = $routeParams.TipoRut;
-    params = $methodsService.Json("BuscarEjerciciosPorRutina",$scope.TipoRut);
+    params         = $methodsService.Json("BuscarEjerciciosPorRutina",$scope.TipoRut);
   
 }//else
 
@@ -1897,7 +1929,7 @@ headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
           $scope.ejercicios = data.ejercicios;
           //Pegando las opciones en el dual box.
           var size = $methodsService.sizeObject($scope.ejercicios);
-          console.log($scope.ejercicios);
+          
           for(i=0; i<size; i++)
           {
             var object = $scope.ejercicios[i];
@@ -1913,8 +1945,21 @@ headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
   $methodsService.alerta(2,"algo falló, disculpe las molestias");
  });
 
-
-
+//Buscando el id de tipo
+var params2 = $methodsService.Json("DatosEditarRutina",$scope.Rut);
+var url = 'modulos/Rutinas/Funciones.php';
+$http({method: "post",url: url,data: $.param({Params:params2}), 
+headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+})
+ .success(function(data, status, headers, config) 
+ {   
+      exito = data.exito;
+      if(exito==1)
+      {
+        $scope.rutina = data.rutina;
+      }
+  })  
+ .error(function(data, status, headers, config){$methodsService.alerta(2,"algo falló, disculpe las molestias");});
 
 
 })//RutinaEditarSencillo
