@@ -993,11 +993,50 @@
 	function _ConsultarPosicionEjercicioRutina($id_rutina)
 	{
 		 $query = '
-			select IFNULL(MAX(id_PosicionEjercicio+1),1) as "id_posicionejercicio" 
+			select IFNULL(MAX(id_posicionejercicio+1),1) as "id_posicionejercicio" 
 			from sgejerciciosrutina where id_Rutina = ?
 		';
 		$posicion = $this->EjecutarTransaccionSinglerow($query,$id_rutina);
 		return $posicion;
+	}//_ConsultarPosicionEjercicioRutina
+
+	function _ConsultarPosicionEjercicioRutinaEdit($id_rutina,$id_dia)
+	{
+		 $query = '
+			select IFNULL(MAX(id_posicionejercicio),0) as "id_posicionejercicio" 
+			from sgejerciciosrutina where id_Rutina = ? AND id_dia= ?
+		';
+
+		R::begin();
+			    try{
+			       $posicion = R::getRow($query,[$id_rutina,$id_dia]);
+			        R::commit();
+			    }
+			    catch(Exception $e) {
+			       $posicion =  R::rollback();
+			       $posicion = "Error";
+			    }
+			R::close();
+			return $posicion;
+	}//_ConsultarPosicionEjercicioRutina
+
+	function _ConsultarPosicionEjercicioRutinaEditDayB($id_rutina,$id_dia)
+	{
+		 $query = '
+			select IFNULL(MAX(id_posicionejercicio),0) as "id_posicionejercicio" 
+			from sgejerciciosrutina where id_Rutina = ? AND id_dia= ?-1
+		';
+		R::begin();
+			    try{
+			       $posicion = R::getRow($query,[$id_rutina,$id_dia]);
+			        R::commit();
+			    }
+			    catch(Exception $e) {
+			       $posicion =  R::rollback();
+			       $posicion = "Error";
+			    }
+			R::close();
+			return $posicion;
 	}//_ConsultarPosicionEjercicioRutina
 
 	function _ConsultarInformacionRutinaPreFinalPorId($id)

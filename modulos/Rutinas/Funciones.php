@@ -154,6 +154,11 @@
 			echo json_encode($salidaJson);
 		break;
 
+		case 'RegistrarEjerciciosRutinasEditar':
+			$salidaJson = RegistrarEjerciciosRutinasEditar($Parametros);
+			echo json_encode($salidaJson);
+		break;
+
 		case 'EjerciciosRutinaOrden':
 			$salidaJson = EjerciciosRutinaOrden($Parametros);
 			echo json_encode($salidaJson);
@@ -232,6 +237,13 @@
 
 		case 'BuscarTiposRutinaEdit':
 			$salidaJson = BuscarTiposRutinaEdit($Parametros);
+			echo json_encode($salidaJson);
+		break;
+
+		case 'EditarEjerciciosRutinas':
+			//Llamando a la función de edición
+			
+			$salidaJson = EditarEjerciciosRutinas($Parametros);
 			echo json_encode($salidaJson);
 		break;
 
@@ -417,14 +429,7 @@
 			//echo json_encode($salidaJson);
 		break;
 		
-		case 'EditarEjerciciosRutinas':
-			$id_rutina			= $Parametros['id_rutina'];
-			//Llamando a la función de edición
-			
-			//DEvolviendo parámetros para la notificación				
-			EditarEjerciciosRutinas($id_rutina);
-			//echo json_encode($salidaJson);
-		break;
+		
 		
 		
 		
@@ -1192,6 +1197,70 @@
 		return $datos;
 	}//RegistrarEjerciciosRutinas
 
+	function RegistrarEjerciciosRutinasEditar($Parametros)
+	{
+		//Tomando los datos
+		session_start();
+		if(isset($Parametros['id_rutina']))
+		{
+			$id_rutina = $Parametros['id_rutina'];
+		}
+		else{$id_rutina = $_SESSION['id_rutina'];}
+		$consultar          = new Consultar();
+		$id_dia             = $Parametros['id_dia'];
+		$id_CategoriaRutina = $Parametros['id_CategoriaRutina'];
+		$id_TipoRutina      = $Parametros['id_TipoRutina'];
+		$ejerciciosAgregar  = $Parametros['EjerciciosRutina'];
+		$cantidad           = count($ejerciciosAgregar);
+		
+		$id_usuario         = $_SESSION['usuario']['id'];
+		$errores            = array(); //Reporte de errrores
+		$guardados          = array(); // reporte de guardados
+		//Se procede a agregar los ejercicios.
+
+		for($i=0; $i<$cantidad; $i++)
+		{
+			$ejercicio = $ejerciciosAgregar[$i];
+			$posicion  = $consultar->_ConsultarPosicionEjercicioRutinaEdit($id_rutina,$id_dia);
+			$id_posicionejercicio = $posicion['id_posicionejercicio'];
+
+			if($id_posicionejercicio==0)
+			{
+				$posicion  = $consultar->_ConsultarPosicionEjercicioRutinaEditDayB($id_rutina,$id_dia);
+				$id_posicionejercicio = $posicion['id_posicionejercicio'];
+				$id_posicionejercicio = $id_posicionejercicio+1;
+			}else{$id_posicionejercicio = $id_posicionejercicio+1;}
+			//creando la variable he ingresando los datos.
+			$ejercicioAg = R::dispense("sgejerciciosrutina");
+			$ejercicioAg->id_ejercicio  		 = $ejercicio;
+			$ejercicioAg->id_dia       		     = $id_dia;
+			$ejercicioAg->id_categoriarutina     = $id_CategoriaRutina;
+			$ejercicioAg->id_tiporutinaejercicio = $id_TipoRutina;
+			$ejercicioAg->id_rutina              = $id_rutina;
+			$ejercicioAg->id_usuariocreacion     = $id_usuario;
+			$ejercicioAg->id_posicionejercicio   = $id_posicionejercicio;
+			$ejercicioAg->sn_activo  	         = 1;
+			//Guardando el ejercicio
+			$respuesta = EjecutarTransaccion($ejercicioAg);
+			if(is_numeric($respuesta))
+			{
+				$resp = array("agregado"=>"si","id"=>$respuesta);
+				array_push($guardados,$resp);
+			}
+			else
+			{
+				$resp = array("agregado"=>"no");
+				array_push($errores,$resp);
+			}
+
+		}//For
+			
+		$cantidadagregados = count($guardados);
+		$exito   = ($cantidadagregados==$cantidad)?1:0;
+		$datos   = array("exito"=>$exito);
+		return $datos;
+	}//RegistrarEjerciciosRutinas
+
 	function EjerciciosRutinaOrden($Parametros)
 	{
 		$id         = $Parametros['id'];
@@ -1679,6 +1748,42 @@
 		return $datos;
 	}//BuscarTiposRutinaEdit
 
+	function EditarEjerciciosRutinas($Parametros)
+	{
+		$id = $Parametros['id'];
+		$consultar  = new Consultar();
+		$agregar    = new Agregar();
+		$actualizar = new Actualizar();
+		
+		
+		//Tomar todos los ejercicios de las rutiinas
+			$ejercicios	   		= $consultar->_ConsultarInformacionRutinaPreFinalPorId($id);
+			$num_ejercicios     = count($ejercicios);
+			$resultados         = array();
+			//Obtener los datos de la rutina
+			for($i=0; $i<$num_ejercicios; $i++)
+			{
+				$fila = $ejercicios[$i];
+				$id_ejercicio    = $fila['id_ejercicio'];
+
+				//Cargando el objeto de la tabla ejercicios
+				$ejercicio = R::load("sgejerciciosrutina",$id_ejercicio);
+				$id_PosicionEjer = $i+1;
+				$ejercicio->id_posicionejercicio = $id_PosicionEjer;
+				$respuesta = R::store($ejercicio);
+				
+				
+				if($respuesta!="Error"){$dato = array("agregao"); array_push($resultados,$dato);}
+				
+			}//for
+			
+			$cantidad_editados =  count($resultados);
+			$exito = ($cantidad_editados==$ejercicios)?1:0;
+			$datos = array("exito"=>$exito);
+			return $datos;
+	}//RegistrarEjerciciosRutinas
+	
+
 	// funciones Viejas
 
 	//Apartado de músculos	
@@ -1999,50 +2104,6 @@
 		$result		= $actualizar->_EditarDatosRutina($id_rutina,$nb_rutina,$desc_rutina,$id_GeneroRutina,$id_cuerpo);
 	}//EditarDatosRutina
 	
-	function EditarEjerciciosRutinas($id_rutina)
-	{
-		$consultar  = new Consultar();
-		$agregar    = new Agregar();
-		$actualizar = new Actualizar();
-		
-		
-		//Tomar todos los ejercicios de las rutiinas
-			$result	   		= $consultar->_ConsultarInformacionRutinaPreFinalPorId($id_rutina);
-			$num_ejercicios = $result->num_rows;
-			$Rutina			= array();
-			
-			//Obtener los datos de la rutina
-			for($i=0; $i<$num_ejercicios; $i++)
-			{
-				$fila = $result->fetch_assoc();
-				
-				//Obtener los datos y meterlos a un array.
-				$Ejercicio = array("id_rutina"=>$fila["id_rutina"], "nb_ejercicio"=>$fila['nb_ejercicio'], 
-				"id_ejercicio"=>$fila['id_ejercicio'], "nb_TipoRutina"=>$fila['nb_TipoRutina'], "nb_dia"=>$fila['nb_dia'],
-				"id_dia"=>$fila['id_dia'],"nb_musculo"=>$fila['nb_musculo'],"id_PosicionEjercicio"=>$fila['id_PosicionEjercicio']);
-				
-				$id_Ejer    = $fila['id_ejercicio'];
-				$id_PosicionEjer = $i+1;
-				$resultActualizar=$actualizar->_ActualizarIdPosicionEjercicioIdEjercicio($id_rutina,$id_Ejer, $id_PosicionEjer);
-				//Meter los datos en el array de la rutina
-				array_push($Rutina, $Ejercicio);
-				
-			}//for
-			
-			$rutinaSize = sizeof($Rutina);
-			
-			//ciclo para editar el id_PosicionEjercicio
-			for($i=0; $i<$rutinaSize; $i++)
-			{
-				//Tomando el id del ejercicio
-				$id_ejercicio 		  = $Rutina[$i]['id_ejercicio'];
-				$id_PosicionEjercicio = $i+1;
-				
-				//ACtualizando el id_PosicionEjercicio usando $i+1;
-				//$resultActualizar = $actualizar->_ActualizarIdPosicionEjercicioIdEjercicio($id_rutina, $id_ejercicio,$id_PosicionEjercicio);
-				
-			}//For
-	}//RegistrarEjerciciosRutinas
 	
 	
 	

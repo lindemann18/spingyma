@@ -28,14 +28,19 @@
                     <h4 class="page-header">
                         Formulario De Rutinas
                         <small>
-                        	En este apartado podrá registrar las Rutinas para los clientes de <span class="text-red">spin gym</span>. Anote el nombre de la rutina, descripci&oacute;n
-                            seleccione el tipo de rutina para cada día de la semana de la persona.
+                        	En este apartado podrá registrar los ejercicios de las Rutinas template de <span class="text-red">spin gym</span>. Seleccione los ejercicios y de click en registrar.
                         </small>
                     </h4>
                     <!-- HEADER DEL CONTENIDO-->
-
+                    <div class="col-md-12 Loading" ng-hide="mostrarbuscando!=true">
+                        <h1 class="text-center">Cargando</h1>
+                        <div class="sk-spinner sk-spinner-wandering-cubes">
+                          <div class="sk-cube1"></div>
+                          <div class="sk-cube2"></div>
+                        </div>
+                    </div><!-- loading-->
                     <!-- FORMULARIO -->
-                    <form name="MusculosRegistrar" id="MusculosRegistrar" method="post" role="form">
+                    <form name="MusculosRegistrar" id="MusculosRegistrar" method="post" role="form" ng-show="mostrarContent!=false">
                     <!-- RENGLON CON EL FORMULARIO Y DOS COLUMNAS-->
                     <div class="row">
                     	<!-- COLUMNA IZQUIERDA -->
@@ -83,7 +88,7 @@
                     <!-- RENGLON CON EL FORMULARIO Y DOS COLUMNAS-->
                     
                     <div class="row Botones">
-                    	<div class="col-md-6" align="right"><button type="button" class="btn btn-primary" ng-click="RegistrarEjercicios()">REGISTRAR</button></div>
+                    	<div class="col-md-6" align="right"><button type="button" class="btn btn-primary" ng-click="RegistrarEjercicios()" ng-disabled="btnenabled!=false">REGISTRAR</button></div>
                         <div class="col-md-6" align="left"><button type="reset" class="btn btn-danger" onclick="window.location='index.php?nav=Ejercicios';">CANCELAR</button></div>
                     </div>
                     </form>

@@ -382,7 +382,7 @@ function RegistraMaquina()
 		//Rutina Sencilla
 		else
 		{
-			ContadorDias++; //se le suma 1 por que significa que ya se cumplió este día
+				ContadorDias++; //se le suma 1 por que significa que ya se cumplió este día
 				//Verificando que no se han cumplido todos los días a editar.
 				if(CantidadDias==ContadorDias)
 				{

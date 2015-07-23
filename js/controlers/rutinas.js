@@ -1771,7 +1771,7 @@ $scope.Guardar = function()
                 $cookies.put("RutinaActual",RutinaActual); //Rutina Actual que será
 
                 //Mandando a definir la los ejercicios por rutina.
-                $location.path('/Rutina_EditarSencillo').search({Rut:$scope.Rut,TipoRut:RutinaActual});
+                $location.path('/Rutina_EditarSencillo').search({Rut:$scope.Rut,TipoRut:RutinaActual,Day:$scope.Day});
 
             } //ELSE 
         });
@@ -1830,15 +1830,18 @@ headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
 
 .controller('RutinaEditarSencillo',function($scope,$http,$location,$methodsService,$routeParams,$cookies){
 
+$scope.btnenabled  = false;
 //Tomando los valores
 $scope.Rut         = $routeParams.Rut;
 $scope.Day         = $routeParams.Day;
+$scope.mostrarbuscando = false;
+$scope.mostrarContent = true;
 
 //Definiendo los elementos en la pantalla.
 $scope.DiasEdicion = $cookies.get("DiasEdicion"); //ids de los dias
 $scope.Contador    = $cookies.get("Contador"); //Contador de los días
 var numdia         = $scope.DiasEdicion[$scope.Contador];
-$scope.nombreDia   = $methodsService.DefinirDia(numdia);
+$scope.nombreDia   = $methodsService.DefinirDia($scope.Day);
 var params         = "";
 
 //Funciones
@@ -1877,7 +1880,7 @@ $scope.RegistrarEjercicios = function()
                 Arr['EjerciciosRutina']   = EjerciciosRutina;
                 Arr['CantidadEjercicios'] = CantidadEjercicios;
                 Arr['id_TipoRutina']      = $scope.ejercicios[0].id_tiporutina;
-                Arr['Accion']             = "RegistrarEjerciciosRutinas";
+                Arr['Accion']             = "RegistrarEjerciciosRutinasEditar";
                 //Mandando por ajax a guardar 
                 params = JSON.stringify(Arr);
                 
@@ -1892,7 +1895,7 @@ $scope.RegistrarEjercicios = function()
                       if(exito==1)
                       {
                         //Verificando que tipo de rutina es
-                        Tipo_RutinaActual=$cookies.get("Tipo_RutinaActual");
+                        Tipo_RutinaActual = $cookies.get("Tipo_RutinaActual");
                         //Se trae los datos de los días actuales
                         DiasRutinas   = $cookies.get("DiasRutinas");//Vector con los id de los tipos de rutinas (1-8) (Declarado en Rutina_CompEdit)
                         IdDiasRutinas = $cookies.get("IdDiasRutinas"); //Vector con los ids de los inputs ej. lunes_Ejercicio(Declarado en Rutina_CompEdit)
@@ -1900,7 +1903,144 @@ $scope.RegistrarEjercicios = function()
                         DiasEdicion   = $cookies.get("DiasEdicion") //Vector con el id de los días que serán editados, ej: Lunes, martes, etc. (Rutinas_editar.php)
                         ContadorDias  = $cookies.get("ContadorDiasEditar"); //Contador de los días (Declarado en rutinas_EditarDias)
                         CantidadDias  = $cookies.get("CantidadDias"); //cantidad total de los días a editar(Declarado en rutinas_EditarDias)
-                      }
+
+                        //Separar los Vectores
+                        DiasRutinasSplit   = DiasRutinas.split(",");
+                        IdDiasRutinasSplit = IdDiasRutinas.split(",");
+                        TextoRutinasSplit  = TextoRutinas.split(",");
+                        DiasEdicionSplit   = DiasEdicion.split(",");
+
+                        //dirigiendo por el tipo de rutina
+                        if(Tipo_RutinaActual=="Compleja")
+                        {
+                            //Tomando los datos pertinentes.
+                          ContadorActividades         = $cookies.get("ContadorActividadesDiaActual"); //Las cantidades actuales que se llevan registradas.
+                          TotalActividades            = $cookies.get("TotalActividadesDiaActual");  //Total de cantidades  de tipos de rutina que se definirán.
+                          ContadorActividades++; //Se aumenta el contador para decir que ya va una más registrada.
+                          $cookies.put("ContadorActividadesDiaActual",ContadorActividades); //actualizando el contador de actividades 
+                          if(ContadorActividades==TotalActividades) //se verifica si ya se cumplieron todos los ejercicios a realizar.
+                          {
+                            ContadorDias++; //se le suma 1 por que significa que ya se cumplió este día
+        
+                            //Verificando que no se han cumplido todos los días a editar.
+                            if(CantidadDias==ContadorDias)
+                            {
+                              //Si cantidad se cumplió es por que ya se cumplieron todas las ediciones.
+                               var Params = $methodsService.Json("EditarEjerciciosRutinas",$scope.Rut);  
+                              //Enviando por ajax la petición de cambiar las posiciones de ejerciicos.
+                              var url = 'modulos/Rutinas/Funciones.php';
+                              $scope.btnenabled = true;
+                              $scope.mostrarbuscando = true;
+                              $scope.mostrarContent = false;
+                              $http({method: "post",url: url,data: $.param({Params:Params}), 
+                              headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                              })
+                               .success(function(data, status, headers, config) 
+                               {   
+                                    
+                                    // redirigir a donde se ven los ejercicios.
+                                    $scope.mostrarbuscando = false;
+                                    $location.path('/RutinaOrdenEnt').search({Rut:$scope.Rut});
+                                    $scope.btnenabled = false;
+                                    
+                                })  
+                               .error(function(data, status, headers, config){
+                                $methodsService.alerta(2,"algo falló, disculpe las molestias");
+                               });
+                            }// if CantidadDias==ContadorDias
+                            else
+                            {
+                                $cookies.put("ContadorDiasEditar",ContadorDias); //ACtualizando el contador de días.
+          
+                                // Se debe proceder a sacar el siguiente día de la rutina, su tipo de rutina, el id del día
+                                // Verificar si es sencilla o compleja y dirigir a donde debe de irse dependiendo de su tipo de rutina
+                                
+                                CodigoDiaSiguiente      = DiasEdicionSplit[ContadorDias]; //Día actual para editar
+                                TextoRutinaDiaActual    = TextoRutinasSplit[ContadorDias]; //Texto de la rutina actual, ya sea brazo, varios, clase, etc.
+                                Tipo_RutinaSiguienteDia = (TextoRutinaDiaActual!="Varios")?"Simple":"Compleja"; //Definiendo que tipo de rutina es.
+                                TipoRutina_idCategoria  = DiasRutinasSplit[ContadorDias]; //es el número de la rutina par aobtener los ejercicios
+                                $cookies.put("Tipo_RutinaActual",Tipo_RutinaSiguienteDia); //ACtualizando el tipo de rutina para este día
+                                
+                                  //Verificar el tipo de rutina para mandarlo a rutina compleja o a rutina simple
+                                   if(Tipo_RutinaSiguienteDia=="Compleja")
+                                    {
+                                      $location.path('/Rutina_CompEdit').search({Rut:$scope.Rut,Day:CodigoDiaSiguiente});
+                                    }// if Tipo_RutinaActual
+                                    else
+                                    {
+                                      TipoRutinaEditar = DiasRutinasSplit[ContadorDias]; //id del tipo de rutina para traer los ejercicios, ya se abrazo, pierna, etc.
+                                      $location.path('/Rutina_EditarSencillo').search({Rut:$scope.Rut,Day:CodigoDiaSiguiente,TipoRut:TipoRutinaEditar});
+                                    }//else
+                            }//else
+                          }//if ContadorActividades==TotalActividades
+                          else
+                          {
+                            RutinasDiaEdicion      = $cookies.get("RutinasDiaEdicion"); //Array donde se guardan las cantidades de rutinas a realizar.
+                            RutinasDiaEdicionSplit = RutinasDiaEdicion.split(","); //Vector de las actividades sanitizado de comas
+                            IdSiguienteActividad   = RutinasDiaEdicionSplit[ContadorActividades]; //Tomando la siguiente actividad
+                            
+                            //Redirigiendo
+                            $location.path('/Rutina_EditarSencillo').search({Rut:$scope.Rut,Day:$scope.Day,TipoRut:IdSiguienteActividad});
+                            
+                          }//else
+                        }//if
+                        else
+                        {
+                          //Aquí era tipo de rutina sencilla.
+                          ContadorDias++; //se le suma 1 por que significa que ya se cumplió este día
+                          //Verificando que no se han cumplido todos los días a editar.
+
+                          if(CantidadDias==ContadorDias)
+                          {
+                              var Params = $methodsService.Json("EditarEjerciciosRutinas",$scope.Rut);  
+                            //Enviando por ajax la petición de cambiar las posiciones de ejerciicos.
+                            var url = 'modulos/Rutinas/Funciones.php';
+                            $scope.btnenabled = true;
+                            $scope.mostrarbuscando = true;
+                            $scope.mostrarContent = false;
+                            $http({method: "post",url: url,data: $.param({Params:Params}), 
+                            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                            })
+                             .success(function(data, status, headers, config) 
+                             {   
+                                  
+                                  // redirigir a donde se ven los ejercicios.
+                                  $scope.mostrarbuscando = false;
+                                  $location.path('/RutinaOrdenEnt').search({Rut:$scope.Rut});
+                                  $scope.btnenabled = false;
+                                  
+                              })  
+                             .error(function(data, status, headers, config){
+                              $methodsService.alerta(2,"algo falló, disculpe las molestias");
+                             });
+                          }//if CantidadDias==ContadorDias
+
+                          else
+                          {
+                            $cookies.put("ContadorDiasEditar",ContadorDias);
+                            // Se debe proceder a sacar el siguiente día de la rutina, su tipo de rutina, el id del día
+                            // Verificar si es sencilla o compleja y dirigir a donde debe de irse dependiendo de su tipo de rutina
+                            CodigoDiaSiguiente      = DiasEdicionSplit[ContadorDias]; //Día actual para editar
+                            TextoRutinaDiaActual    = TextoRutinasSplit[ContadorDias]; //Texto de la rutina actual, ya sea brazo, varios, clase, etc.
+                            Tipo_RutinaSiguienteDia = (TextoRutinaDiaActual!="Varios")?"Simple":"Compleja"; //Definiendo que tipo de rutina es.
+                            TipoRutina_idCategoria  = DiasRutinasSplit[ContadorDias]; //es el número de la rutina par aobtener los ejercicios
+                            $cookies.put("Tipo_RutinaActual",Tipo_RutinaSiguienteDia); //ACtualizando el tipo de rutina para este día
+                            $scope.btnenabled = false;
+                            //Verificar el tipo de rutina para mandarlo a rutina compleja o a rutina simple
+                            if(Tipo_RutinaSiguienteDia=="Compleja")
+                            {
+                              $location.path('/Rutina_CompEdit').search({Rut:$scope.Rut,Day:CodigoDiaSiguiente});
+                            }// if Tipo_RutinaActual
+                            else
+                            {
+                              TipoRutinaEditar = DiasRutinasSplit[ContadorDias]; //id del tipo de rutina para traer los ejercicios, ya se abrazo, pierna, etc.
+                              $location.path('/Rutina_EditarSencillo').search({Rut:$scope.Rut,Day:CodigoDiaSiguiente,TipoRut:TipoRutinaEditar});
+                            }//else
+                          }//else
+                        }//else
+
+
+                      }//if
                   })  
                  .error(function(data, status, headers, config){
                   $methodsService.alerta(2,"algo falló, disculpe las molestias");
@@ -1928,9 +2068,10 @@ if($scope.Tipo_RutinaActual=="Compleja")
 {
   //Si se entra aquí es que se eligió el tipo de rutina compleja
   //Tipo de rutina
-  $scope.RutinasDiaEdicion = $cookies.get("RutinasDiaEdicion"); //Tipos de rutina elegidas para este día.
+  $scope.RutinasDiaEdicion         = $cookies.get("RutinasDiaEdicion"); //Tipos de rutina elegidas para este día.
+  var rutinasSeparadas             = $scope.RutinasDiaEdicion.split(",");
   var ContadorActividadesDiaActual = $cookies.get("ContadorActividadesDiaActual");
-  var rutinaEjercicios = $scope.RutinasDiaEdicion[ContadorActividadesDiaActual];
+  var rutinaEjercicios             = rutinasSeparadas[ContadorActividadesDiaActual];
   params = $methodsService.Json("BuscarEjerciciosPorRutina",rutinaEjercicios);
  
 }//if
