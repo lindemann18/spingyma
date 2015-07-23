@@ -152,8 +152,16 @@ por problemas con mayúsculas.
 	desc_tiporutina
 82) el campo fh_Creacion de la tabla sgrutina se cambió por fh_creacion	
 83) La tabla sg_dias se cambió por sgdias, problema: Noguion.
+84) La tabla sg_rutinasclientes se cambió opr sgrutinasclientes
+85) el campo id_rutinaCliente de la tabla sgrutinasclientes se cambió
+	por id
+86) el campo id_UsuarioCreacion de la tabla sgrutinasclientes se  	
+	cambió por id_usuariocreacion.
+87) el campo id_CategoriaRutina de la tabla sgrutinasclientes se  	
+	cambió por id_categoriarutina. 	
 
-
+88) el campo fh_Creacion de la tabla sgrutinasclientes se  	
+	cambió por fh_creacion. 		
 
 
 

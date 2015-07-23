@@ -10,6 +10,19 @@ $scope.showfilter      = false;
 $scope.clitr           = 0;
 
 //Funciones
+$scope.RutinaCliente = function(id)
+{
+	bootbox.confirm("Desea ir al apartado de rutinas para clientes?", function(result) {
+		console.log(result);
+	  	if(result==true)
+	  	{
+	  		$scope.$apply(function(){
+	  			$location.path('/ClientesRutina').search({id:id});
+	  		});
+	  	}//if
+	});
+}//RutinaCliente
+
 $scope.Selecciontr = function(tr)
 {
 	//Verificando que no se le hizo click al mismo tr
@@ -414,6 +427,74 @@ $scope.RegistrarForm = function()
 	  });//botbox
 
 }//RegistrarForm
+
+})
+
+.controller('RutinaClientes',function($scope,$http,$location,$methodsService,$routeParams){
+$scope.id_cliente = $routeParams.id;
+$params = $methodsService.Json("InfoClienteRutinas",$scope.id_cliente);
+
+//Funciones
+$scope.InfoRutina = function(id)
+{
+	bootbox.confirm("Desea ver la rutina de este cliente?", function(result) {
+		console.log(result);
+	  	if(result==true)
+	  	{	$scope.$apply(function(){
+	  			
+	  		});//apply
+	  	}//if
+	  });//botbox
+}//InfoRutina
+
+$scope.RedirigirRutina = function(id)
+{
+	bootbox.confirm("Desea asignar una rutina a este cliente?", function(result) {
+		console.log(result);
+	  	if(result==true)
+	  	{	$scope.$apply(function(){
+	  			$location.path('/RutinasAsignar').search({id:id});
+	  		});//apply
+	  	}//if
+	  });//botbox
+}//RedirigirRutina
+
+var url = 'modulos/Clientes/Funciones.php';
+ $http({method: "post",url: url,data: $.param({Params:params}), 
+  headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+})
+ .success(function(data, status, headers, config) 
+ {          	
+   		exito = data.exito;
+   		if(exito==1)
+   		{
+   			$scope.datos = data.resultado;
+   		}//if
+  })  
+ .error(function(data, status, headers, config){$methodsService.alerta(2,"algo falló, disculpe las molestias");});
+})//RutinaClientes
+
+.controller('AsignarRutinas',function($scope,$http,$location,$methodsService,$routeParams){
+alert("yo");
+$scope.id = $routeParams.id;
+
+// Verificando que el cliente no tenga rutnia asignada.
+//Buscando las rutinas
+params = $methodsService.Json("ExisteRutinaCliente",$scope.id);
+var url = 'modulos/Rutinas/Funciones.php';
+     $http({method: "post",url: url,data: $.param({Params:params}), 
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
+     .success(function(data, status, headers, config) 
+     {          	
+       		
+       		
+      })  
+     .error(function(data, status, headers, config){
+     	$methodsService.alerta(2,"algo falló, disculpe las molestias");
+     });
+
+
 
 })
 

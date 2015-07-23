@@ -226,6 +226,16 @@
 	    	controller: 'formcontroller2',
 	      	templateUrl:'modulos/Clientes/Formulario2.html'
 	    })
+
+	    .when('/ClientesRutina',{
+	    	controller: 'RutinaClientes',
+	      	templateUrl:'modulos/Clientes/clientes_rutina.html'
+	    })
+
+	    .when('/RutinasAsignar',{
+	    	controller: 'AsignarRutinas',
+	      	templateUrl:'modulos/Clientes/Asignar_Rutinas.html'
+	    })
 	    
 
 

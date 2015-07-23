@@ -49,6 +49,16 @@
 			echo json_encode($salidaJson);
 		break;
 
+		case 'InfoClienteRutinas':
+			$salidaJson = InfoClienteRutinas($Parametros);
+			echo json_encode($salidaJson);
+		break;
+
+		case 'ExisteRutinaCliente':
+			$salidaJson = ExisteRutinaCliente($Parametros);
+			echo json_encode($salidaJson);
+		break;
+
 		//casos viejos
 		case 'Agregar'://Agregando a la BD
 			AgregarCliente($Parametros);
@@ -492,6 +502,24 @@
 		$datos     = array("exito"=>$exito);
 		return $datos;
 	}//RegistrarForm
+
+	function InfoClienteRutinas($Parametros)
+	{
+		$id        = $Parametros['id'];
+		$consultar = new Consultar();
+		$resultado = $consultar->_ConsultarInformacionClientesRutinaPorIdCliente($id);
+		$exito     = ($resultado!="Error")?1:0;
+		$datos = array("exito"=>$exito,"resultado"=>$resultado);
+		return $datos;
+	}//InfoClienteRutinas
+
+	function ExisteRutinaCliente($Parametros)
+	{
+		$consultar = new Consultar();
+		$id 	   = $Parametros['id'];
+		$existe    = $consultar->_ConsultarRutinasClientesPorIdCliente($id);
+		print_r($existe);
+	}//ExisteRutinaCliente
 
 	function EjecutarTransaccion($objeto)
 	{

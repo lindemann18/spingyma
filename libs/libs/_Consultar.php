@@ -801,6 +801,51 @@
 			return $respuesta;
 		}//_ConsultarSiClienteHizoElFormulario
 
+		function _ConsultarInformacionClientesRutinaPorIdCliente($id_cliente)
+	{
+		$query='SELECT
+		Form.dias_semana,
+		Form.minutos_dia,
+		Form.resultado_ejercicio,
+		clie.nb_cliente,
+		clie.nb_apellidos
+		
+		FROM
+		sgformulario Form
+		
+		INNER JOIN sgclientes clie
+		on Form.id_cliente=clie.id
+
+		WHERE clie.id=?';
+		R::begin();
+			    try{
+			       $respuesta = R::getRow($query,[$id_cliente]);
+			        R::commit();
+			    }
+			    catch(Exception $e) {
+			       $respuesta =  R::rollback();
+			       $respuesta = "Error";
+			    }
+		return $respuesta;;
+	}//_ConsultarExistenciaRutinasParaUsuarioPorId
+
+	function _ConsultarRutinasClientesPorIdCliente($id_cliente)
+	{
+		$query='
+			select * from sgrutinasclientes where id_cliente ="'.$id_cliente.'" and sn_activo=1
+		';
+		R::begin();
+			    try{
+			       $respuesta = R::getRow($query,[$id_cliente]);
+			        R::commit();
+			    }
+			    catch(Exception $e) {
+			       $respuesta =  R::rollback();
+			       $respuesta = "Error";
+			    }
+		return $respuesta;;
+	}//_ConsultarRutinasClientesPorIdCliente
+
 		//Queries de rutinas
 		function _ConsultarRutinasTotales()
 	{
@@ -1907,15 +1952,7 @@
 		return $result;	
 	}//BuscarRutinasPorMusculo
 	
-	function _ConsultarRutinasClientesPorIdCliente($id_cliente)
-	{
-		$query='
-			select * from sg_rutinasclientes where id_cliente ="'.$id_cliente.'" and sn_activo=1
-		';
-		$con=Conectar::_con();
-		$result=$con->query($query) or die("Error en: $query ".mysqli_error($query));
-		return $result;	
-	}//_ConsultarRutinasClientesPorIdCliente
+	
 	
 	
 	
@@ -2639,15 +2676,7 @@
 		return $result;
 	}//_ConsultarInfoFormularioPorIdCliente
 	
-	function _ConsultarInformacionClientesRutinaPorIdCliente($id_cliente)
-	{
-		$query='
-			SELECT * FROM sg_rutinasclientes WHERE id_cliente="'.$id_cliente.'"
-		';
-		$con=Conectar::_con();
-		$result=$con->query($query) or die("Error en: $query ".mysqli_error($query));
-		return $result;
-	}//_ConsultarExistenciaRutinasParaUsuarioPorId
+	
 	
 	// Querys de reportes
 	
