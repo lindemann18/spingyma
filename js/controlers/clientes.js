@@ -481,20 +481,42 @@ $scope.id = $routeParams.id;
 // Verificando que el cliente no tenga rutnia asignada.
 //Buscando las rutinas
 params = $methodsService.Json("ExisteRutinaCliente",$scope.id);
-var url = 'modulos/Rutinas/Funciones.php';
+var url = 'modulos/Clientes/Funciones.php';
      $http({method: "post",url: url,data: $.param({Params:params}), 
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
     })
      .success(function(data, status, headers, config) 
      {          	
-       		
-       		
+       		cantidad = data.cantidad;
+       		if(cantidad>0)
+       		{
+       			pagina = 0;
+       		}//if
+       		else{pagina = 1;}
+       		dir = $scope.obtenerdir(pagina);
+			
       })  
      .error(function(data, status, headers, config){
      	$methodsService.alerta(2,"algo falló, disculpe las molestias");
      });
 
 
+$scope.obtenerdir = function(pagina)
+{
+	var direccion="";
+	switch(pagina)
+	{
+		case '0':
+			direccion = 'modulos/Clientes/paginas/rutinas_asignas.html';
+		break;
+
+		case '1':
+			direccion = 'modulos/Clientes/paginas/rutinas_desasignar.html';
+		break;
+	}//switch
+
+	return direccion;
+}//
 
 })
 

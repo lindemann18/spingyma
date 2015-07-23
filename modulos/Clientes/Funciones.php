@@ -518,7 +518,9 @@
 		$consultar = new Consultar();
 		$id 	   = $Parametros['id'];
 		$existe    = $consultar->_ConsultarRutinasClientesPorIdCliente($id);
-		print_r($existe);
+		$cantidad  = count($existe);
+		$datos     = array("cantidad"=>$cantidad);
+		return $datos;
 	}//ExisteRutinaCliente
 
 	function EjecutarTransaccion($objeto)

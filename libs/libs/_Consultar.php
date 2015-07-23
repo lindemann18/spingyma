@@ -832,7 +832,7 @@
 	function _ConsultarRutinasClientesPorIdCliente($id_cliente)
 	{
 		$query='
-			select * from sgrutinasclientes where id_cliente ="'.$id_cliente.'" and sn_activo=1
+			select * from sgrutinasclientes where id_cliente =? and sn_activo=1
 		';
 		R::begin();
 			    try{

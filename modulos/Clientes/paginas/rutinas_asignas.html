@@ -1,0 +1,90 @@
+<div class="box-body table-responsive Tabla" id="TablaDatos">
+
+                    <table id="listados" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                            	<th class="sorting_asc text-center">CODIGO</th>
+                                <th class="text-center">RUTINA</th>
+                                <th class="text-center">DESCRIPCION</th>
+                                <th class="text-center">CATEGORIA</th>
+                                <th class="text-center">GENERO</th>
+                                <th class="text-center">CUERPO</th>
+                                <th class="text-center">ENTRENADOR</th>
+                                <th class="text-center">FECHA</th>
+                                <th class="text-center">INFORMACION</th>
+                                <th class="text-center">ASIGNAR</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <?php
+                        while($filaRutina=$resultRutinas->fetch_assoc()):
+						
+							echo('
+                            <tr onclick="SeleccioinarDato('.$filaRutina['id_rutina'].')" id=fila"'.$filaRutina['id_rutina'].'" class="text-center">
+                                <td id="cliente">'.$filaRutina['id_rutina'].'</td>
+								<td>'.$filaRutina['nb_rutina'].'</td>
+                                <td>'.$filaRutina['desc_rutina'].'</td>
+								<td>'.$filaRutina['nb_CategoriaRutina'].'</td>
+								<td>'.$filaRutina['nb_TipoRutina'].'</td>
+                                <td>'.$filaRutina['nb_cuerpo'].'</td>
+                                <td>'.$filaRutina['nb_nombre']." ".$filaRutina['nb_apellidos'].'</td>
+								<td>'.$filaRutina['fh_Creacion'].'</td>
+								<td><button type="button" class="btn btn-info" onclick="InfoRutina('.$filaRutina['id_rutina'].')">Mostrar</button></td>
+								<td><button type="button" class="btn btn-primary" onclick="AsignarRutina('.$filaRutina['id_rutina'].')">Asignar</button></td>
+                            </tr>
+							');	
+						
+						endwhile;
+						?>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                            	<th class="text-center">CODIGO</th>
+                             	<th class="text-center">RUTINA</th>
+                                <th class="text-center">DESCRIPCION</th>
+                                <th class="text-center">CATEGORIA</th>
+                                <th class="text-center">GENERO</th>
+                                <th class="text-center">CUERPO</th>
+                                <th class="text-center">ENTRENADOR</th>
+                                <th class="text-center">FECHA</th>
+                                <th class="text-center">INFORMACION</th>
+                                <th class="text-center">ASIGNAR</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    <div class="row">
+                    	<input type="hidden" id="id_instructor" value="<?php echo $id_usuario?>" />
+                        <input type="hidden" id="id_CategoriaBuscar" value="<?php echo $id_CategoriaBuscar?>">
+                        <input type="hidden" value="<?php echo $id_cliente?>" id="id_cliente">
+                        
+                        <div class="col-sm-1 Right"><button class="btn btn-info btn-sm " id="Mostrars" title="MOSTRAR PRUEBAS" data-original-title="MOSTRAR INSTRUCTORES"  onclick="MostrarInstructores()"><i class="fa fa-male"></i> INSTRUCTORES</button></div>
+                       <!-- <div class="col-sm-1 Right"><button class="btn btn-info btn-sm" id="Mostrars" title="MOSTRAR PRUEBAS" data-original-title="MOSTRAR INSTRUCTORES"  onclick="MostrarRutinas()"><i class="fa fa-book"></i> TIPOS RUTINA</button></div>-->
+                        <div class="col-sm-1"><button class="btn btn-primary btn-sm" id="Mostrars" title="MOSTRAR PRUEBAS" data-original-title="MOSTRAR INSTRUCTORES"  onclick="FiltrarRutinas()"><i class="fa fa-search"></i> FILTRAR</button></div>
+                        
+                        <div class="col-sm-2 ListaInstructores" id="">
+                            <select name="Impedimento_Entrenamiento" id="Lista_Entrenadores" class="LabelPregunta form-control requerido" onchange="TipoEntrenadorSeleccionado()">
+                                <option value="">Seleccionar...</option>
+                                <?php
+									while($filaIns=$ResultEntrenadoresRutinas->fetch_assoc()) {
+									echo "<option value='".$filaIns['id_usuario']."'>".$filaIns['nb_nombre']." ".$filaIns['nb_apellidos']."</option>";}
+								?>
+                                <option value="Todos">Todos</option>
+                            </select>
+                        </div>
+                        
+                         <div class="col-sm-2 ListaInstructores" id="">
+                            <select name="Impedimento_Entrenamiento" id="Lista_Rutinas" class="LabelPregunta form-control requerido" onchange="AsignarGeneroRutina()">
+                                <option value="">Seleccionar...</option>
+                                
+                            </select>
+                        </div>
+                        <div class="col-sm-2 ListaInstructores" id="">
+                            <select name="Impedimento_Entrenamiento" id="Lista_Genero" class="LabelPregunta form-control requerido" onchange="">
+                                <option value="">Seleccionar...</option>
+                                
+                            </select>
+                        </div>
+                        <div class="col-sm-12"><h3 class="box-title">Acciones</h3></div>
+                    </div>
+                </div><!---TablaDatos --->
