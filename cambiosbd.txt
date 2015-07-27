@@ -162,6 +162,30 @@ por problemas con mayúsculas.
 
 88) el campo fh_Creacion de la tabla sgrutinasclientes se  	
 	cambió por fh_creacion. 		
+89) la tabla sg_ejerciciosrutinacliente se cambió por sgejerciciosrutinacliente.
+90) el campo id_ejercicioRutinaCliente de la tabla sgejerciciosrutinacliente se
+	cambió por id.
+91) el campo id_Ejercicio de la tabla sgejerciciosrutinacliente se
+	cambió por id_ejercicio.
+92) el campo id_UsuarioCreacion de la tabla sgejerciciosrutinacliente se
+	cambió por id_usuariocreacion.
+93) el campo id_Rutina de la tabla sgejerciciosrutinacliente se
+	cambió por id_rutina.	
+94)	el campo id_CategoriaRutina de la tabla sgejerciciosrutinacliente se
+	cambió por id_categoriarutina.	
+95)	el campo id_TipoRutinaEjercicio de la tabla sgejerciciosrutinacliente se
+	cambió por id_tipoRutinaejercicio.
+96)	el campo id_PosicionEjercicio de la tabla sgejerciciosrutinacliente se
+	cambió por id_posicionejercicio.
+97)	el campo nb_EjercicioRutina de la tabla sgejerciciosrutinacliente se
+	cambió por nb_ejerciciorutina.
+98)	el campo desc_EjercicioRutina de la tabla sgejerciciosrutinacliente se
+	cambió por desc_ejerciciorutina.
+99)	el campo num_Circuitos de la tabla sgejerciciosrutinacliente se
+	cambió por num_circuitos.
+100)el campo num_Repeticiones de la tabla sgejerciciosrutinacliente se
+	cambió por num_repeticiones.							
+
 
 
 

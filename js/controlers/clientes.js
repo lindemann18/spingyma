@@ -433,7 +433,8 @@ $scope.RegistrarForm = function()
 .controller('RutinaClientes',function($scope,$http,$location,$methodsService,$routeParams){
 $scope.id_cliente = $routeParams.id;
 $params = $methodsService.Json("InfoClienteRutinas",$scope.id_cliente);
-
+$scope.currentPage     = 1; // Página actual, para paginación
+$scope.pageSize 	   = 5;   // Tamaño de la página, para paginación.
 //Funciones
 $scope.InfoRutina = function(id)
 {
@@ -475,9 +476,14 @@ var url = 'modulos/Clientes/Funciones.php';
 })//RutinaClientes
 
 .controller('AsignarRutinas',function($scope,$http,$location,$methodsService,$routeParams){
-alert("yo");
-$scope.id = $routeParams.id;
-
+$scope.currentPage     = 1; // Página actual, para paginación
+$scope.pageSize 	   = 5;   // Tamaño de la página, para paginación.
+$scope.id 			   = $routeParams.id;
+$scope.showfilter      = false;
+$scope.disablebtn      = false;
+$scope.rutina          = {entrenador:"",tipo_rutina:"",genero:"",Accion:""};
+$scope.mostrarbuscando = false;
+$scope.mostrarcontent  = true;
 // Verificando que el cliente no tenga rutnia asignada.
 //Buscando las rutinas
 params = $methodsService.Json("ExisteRutinaCliente",$scope.id);
@@ -490,34 +496,581 @@ var url = 'modulos/Clientes/Funciones.php';
        		cantidad = data.cantidad;
        		if(cantidad>0)
        		{
-       			pagina = 0;
+       			pagina = 1;
        		}//if
-       		else{pagina = 1;}
-       		dir = $scope.obtenerdir(pagina);
+       		else{pagina = 0;}
+       		
+       		$scope.obtenerdir(pagina);
+       		console.log($scope.url);
 			
       })  
      .error(function(data, status, headers, config){
      	$methodsService.alerta(2,"algo falló, disculpe las molestias");
      });
 
+$scope.FiltrarRutinas = function()
+{
+	$scope.rutina.Accion = "FiltrarRutinas";
+	params   			 = JSON.stringify($scope.rutina);
+	$scope.disablebtn    = true;
+	var url = 'modulos/Rutinas/Funciones.php';
+     $http({method: "post",url: url,data: $.param({Params:params}), 
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
+     .success(function(data, status, headers, config) 
+     {          	
+       		$scope.disablebtn = false;
+       		exito  		      = data.exito;
+       		if(exito==1)
+       		{
+       			cantidad = data.cantidad;
+       			if(cantidad>0)
+       			{
+       				$methodsService.alerta(1,"Rutinas Filtradas");
+       				$scope.rutinas = data.rutinas;
+       			}//if
+       			else{$methodsService.alerta(2,"No existen rutinas con estos criterios");}
+       		}
+       		else
+       		{
+       			$methodsService.alerta(2,"algo falló, disculpe las molestias");
+       		}
+       		
+      })  
+     .error(function(data, status, headers, config){
+     	$methodsService.alerta(2,"algo falló, disculpe las molestias");
+     });
+}//FiltrarRutinas
+
+
+$scope.CategoriasporEnt = function()
+{
+	if($scope.rutina.entrenador!=undefined)
+	{
+		//Buscando las catgegorias
+	params = $methodsService.Json("BuscarCategoriasPorEntrenador",$scope.rutina.entrenador);
+	var url = 'modulos/Rutinas/Funciones.php';
+     $http({method: "post",url: url,data: $.param({Params:params}), 
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
+     .success(function(data, status, headers, config) 
+     {          	
+       		exito  = data.exito;
+       		exitog = data.exitog;
+       		if(exito==1)
+       		{
+       			$scope.tipos_rut = data.tipos_rut;
+       			$scope.generos   = data.generos;
+       		}//if
+       		
+      })  
+     .error(function(data, status, headers, config){
+     	$methodsService.alerta(2,"algo falló, disculpe las molestias");
+     });
+	}//if
+	
+}//CategoriasporEnt
+
+$scope.AsignarRutina = function(id)
+{
+	bootbox.confirm("Desea asignar la rutina a este cliente?", function(result) {
+		console.log(result);
+	  	if(result==true)
+	  	{
+	  		$scope.$apply(function(){
+	  			$scope.rutina.Accion    = "AsignarRutinaCliente";
+	  			$scope.mostrarbuscando  = true;
+	  			$scope.mostrarcontent   = false;
+	  			$scope.rutina.Cliente   = $scope.id;
+	  			$scope.rutina.id_rutina = id;
+	  			console.log($scope.rutina);
+	  			params = JSON.stringify($scope.rutina); var url = 'modulos/Clientes/Funciones.php';
+			     $http({method: "post",url: url,data: $.param({Params:params}), 
+			      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+			    })
+			     .success(function(data, status, headers, config) 
+			     {          	
+			       		exito = data.exito;
+			       		if(exito==1)
+			       		{
+			       			var id_rutina = data.id_rutinacliente;
+			       			$location.path('/RutinaOrdenC').search({Rut:id_rutina,Cliente:$scope.id});
+			       		}//if
+			      }) .error(function(data, status, headers, config){$methodsService.alerta(2,"algo falló, disculpe las molestias");});
+	  		});
+	  	}//if
+	});
+}//AsignarRutina
 
 $scope.obtenerdir = function(pagina)
 {
 	var direccion="";
 	switch(pagina)
 	{
-		case '0':
+		case 0:
 			direccion = 'modulos/Clientes/paginas/rutinas_asignas.html';
+			//Buscando la información
+			//Buscando las rutinas
+			params = $methodsService.Json("Rutinas",1); var url = 'modulos/Rutinas/Funciones.php';
+			     $http({method: "post",url: url,data: $.param({Params:params}), 
+			      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+			    })
+			     .success(function(data, status, headers, config) 
+			     {          	
+			       		exito    = data.exito;
+			       		exitot   = data.exitot;
+			       		exitog   = data.exitog;
+			       		exitoe   = data.exitoe;
+
+			       		switch(true)
+			       		{
+			       			case exito==1 && exitot==1 && exitog==1 && exitoe==1:
+			       			console.log(data);
+			       				$scope.rutinas         = data.rutinas;
+			       				$scope.entrenadores    = data.entrenadores;
+			       				$scope.mostrarbuscando = false;	
+								$scope.mostrarcontent  = true;
+			       				$scope.url = 'modulos/Clientes/paginas/rutinas_asignas.html';
+			       			break;
+
+			       			case exito!=1 || exitot!=1 || exitog!=1 || exitoe!=1:
+			       				$methodsService.alerta(2,"algo falló, disculpe las molestias");
+			       			break;
+			       		}//switch
+			       		if(exito==1)
+			       		{
+			       			
+				
+			       		}//if
+			       		else{$methodsService.alerta(2,"algo falló, disculpe las molestias");}
+			       		
+			      }) .error(function(data, status, headers, config){$methodsService.alerta(2,"algo falló, disculpe las molestias");});
 		break;
 
-		case '1':
+		case 1:
 			direccion = 'modulos/Clientes/paginas/rutinas_desasignar.html';
 		break;
 	}//switch
 
 	return direccion;
-}//
+}//obtenerdir
 
+})//AsignarRutinas
+
+.controller('RutinaOrdenC',function($scope,$http,$location,$methodsService,$routeParams){
+//Contenedores de los ejercicios de cada dia.
+$scope.lunes     = [];
+$scope.martes    = [];
+$scope.miercoles = [];
+$scope.jueves    = [];
+$scope.viernes   = [];
+$scope.sabado    = [];
+$scope.domingo   = [];
+
+//Funciones
+ $scope.CambiarDia = function(id_par,dia_semana)
+    {
+        //Obtener el tr que está encima
+        var idJquery = "#"+id;
+        var Padre = $(idJquery).prev()[0];
+        var son = $(idJquery).next()[0];
+        
+        id = parseInt(id_par);
+
+        //Situación en la que el ejercicio que se ha movido no tiene un nodo padre.
+        if(Padre == undefined) 
+        {
+          var id_Padre       = 0;
+          var AccionCambio   = "SinPadre";
+        }else {id_Padre = Padre.id;}
+        
+        //Situación en la que el ejercicio que se ha movido no tiene un nodo hijo.
+        if(son == undefined) 
+        {
+          var id_Hijo        = 0;
+          var AccionCambio   = "SinHijo";
+        }else {id_Hijo = son.id;}
+
+        if(Padre != undefined && son !=undefined)
+    {
+      var id_Padre   = Padre.id;
+      var id_Hijo    = son.id;
+      
+      //verificando si se bajó o subió posiciones
+      // 1) si el padre es mayor, es por que se bajó la posición
+      if(id_Padre>id)
+      {
+        var AccionCambio   = "ConAmbosBajoPosicion";
+        var Cantidad_Puestos = id_Padre - id; 
+      }//if
+      
+      if(id_Padre<id)
+      {
+        AccionCambio   = "ConAmbosSubioPosicion";
+        var Cantidad_Puestos = id - id_Hijo;
+      }//if
+    }//if
+
+        // Escenarios posibles del cambio de lugar
+    
+        // 1) Cuando no se tiene padre -> Esto significa que se movió al primer puesto de la lista
+
+        if (id_Padre == 0)
+        {
+          //Tomar la cantidad de puestos que se movió
+          var Cantidad_Puestos = id-id_Hijo;
+        } // id_Padre == 0
+
+        if (id_Hijo == 0)
+        {
+          Cantidad_Puestos = id_Padre-id;
+        }
+
+        //Tomando los valores para mandarlos al controller
+        $scope.valores = 
+        {
+          id_rutina: $scope.id_rutina,
+          id_cambio: id,
+          id_Hijo:   id_Hijo,
+          id_Padre: id_Padre,
+          Cantidad_Puestos: Cantidad_Puestos,
+          AccionCambio: AccionCambio,
+          Accion: "CambioLugarEjercicio"           
+        };
+        console.log($scope.valores);
+        var Params= JSON.stringify($scope.valores);
+
+        //Validación, si el hijo es mayor por solo 1 o el padre menor por 1
+        Cantidad_DiferenciaHijo  = id_Hijo - id; //Diferencia entre id_hijo y el id que fue movido
+        Cantidad_DiferenciaPadre = id - id_Padre;
+        Actividad_Sola       = 0;
+        MismoLugar_Hijo      = 0;
+        MismoLugar_Padre     = 0;
+        
+        console.log(Cantidad_DiferenciaHijo+" diferencia");
+        //Verificando, si no tiene ni padre o hijio, es que es una sola actividad
+        if(id_Hijo==0 && id_Padre==0 )
+        {
+          Actividad_Sola = 1;
+        }//if
+
+        if(Cantidad_DiferenciaHijo!=1 && Cantidad_DiferenciaPadre!=1 && Actividad_Sola!=1 )
+      {
+        var url = 'modulos/Clientes/Funciones.php';
+         $http({method: "post",url: url,data: $.param({Params:Params}), 
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        })
+         .success(function(data, status, headers, config) 
+         {            
+              exito = data.exito;
+              if(exito==1)
+              {
+                var id_diaCambio = data.dia;
+                var ejercicios   = data.ejercicios;
+                $scope.AsignarEjercicios(id_diaCambio,ejercicios);
+              }//if
+          }) //success 
+         .error(function(data, status, headers, config){
+          $methodsService.alerta(2,"algo falló, disculpe las molestias");
+         });
+        }//if 
+
+    }//CambiarDia
+
+$scope.AsignarEjercicios =  function(dia,ejercicios)
+{
+    switch(dia)
+    {
+      case '1':
+        $scope.lunes = ejercicios;
+         $("#lunesbody").empty();
+         $("#lunesbody").css("display","none");
+         $scope.AgregarEjerciciosTabla($scope.lunes,"#lunesbody");
+         $("#lunesbody").fadeIn(3000);
+         $scope.InicializarTablas();
+      break;
+
+      case '2':
+        $scope.martes = ejercicios;
+         $("#martesbody").empty();
+         $("#martesbody").css("display","none");
+         $scope.AgregarEjerciciosTabla($scope.martes,"#martesbody");
+         $("#martesbody").fadeIn(3000);
+         $scope.InicializarTablas();
+      break;
+
+      case '3':
+        $scope.miercoles = ejercicios;
+        $("#miercolesbody").css("display","none");
+        $("#miercolesbody").empty();
+        $scope.AgregarEjerciciosTabla($scope.miercoles,"#miercolesbody");
+        $("#miercolesbody").fadeIn(3000);
+        $scope.InicializarTablas();
+      break;
+
+      case '4':
+        $scope.jueves = ejercicios;
+         $("#juevesbody").css("display","none");
+         $("#juevesbody").empty();
+         $scope.AgregarEjerciciosTabla($scope.jueves,"#juevesbody");
+         $("#juevesbody").fadeIn(3000);
+         $scope.InicializarTablas();
+      break;
+
+      case '5':
+        $scope.viernes = ejercicios;
+        $("#viernesbody").css("display","none");
+        $("#viernesbody").empty();
+        $scope.AgregarEjerciciosTabla($scope.viernes,"#viernesbody");
+        $("#viernesbody").fadeIn(3000);
+        $scope.InicializarTablas();
+      break;
+
+       case '6':
+          $scope.sabado = ejercicios;
+          $("#sabadobody").css("display","none");
+          $("#sabadobody").empty();
+          $scope.AgregarEjerciciosTabla($scope.sabado,"#sabadobody");
+          $("#sabadobody").fadeIn(3000);
+          $scope.InicializarTablas();
+      break;
+
+      case '7':
+        $scope.domingo = ejercicios;
+        $("#domingobody").css("display","none");
+        $("#domingobody").empty();
+        $scope.AgregarEjerciciosTabla($scope.domingo,"#domingobody");
+        $("#domingobody").fadeIn(3000);
+        $scope.InicializarTablas();
+      break;
+    }//switch
+}//AsignarEjercicios
+
+$scope.AgregarEjerciciosTabla = function(ejercicios,tabla)
+{
+  for(i=0; i<ejercicios.length; i++)
+  {
+    var eje = ejercicios[i];
+    var tr = '<tr class="text-center" id="'+eje.id_posicionejercicio+'"><td>'+eje.id_posicionejercicio+'</td><td>'+eje.nb_ejercicio+'</td><td>'+eje.nb_musculo+'</td></tr>'
+    $(tabla).append(tr);
+  }//for
+  
+}//AgregarEjerciciosTabla
+$scope.definirEjercicioDia = function(dia,ejercicio)
+    {
+      switch(dia)
+      {
+        case '1':
+          $scope.lunes.push(ejercicio);
+        break;
+
+        case '2':
+          $scope.martes.push(ejercicio);
+        break;
+
+        case '3':
+          $scope.miercoles.push(ejercicio);
+        break;
+
+        case '4':
+          $scope.jueves.push(ejercicio);
+        break;
+
+        case '5':
+          $scope.viernes.push(ejercicio);
+        break;
+
+        case '6':
+          $scope.sabado.push(ejercicio);
+        break;
+
+        case '7':
+          $scope.domingo.push(ejercicio);
+        break;
+      }//switch
+    }//definirEjercicioDia
+
+    $scope.InicializarTablas = function ()
+    {
+     
+      //Drag and drop table
+      $("#table-1").tableDnD();
+      $("#table-2").tableDnD();
+      $("#table-3").tableDnD();
+      $("#table-4").tableDnD();
+      $("#table-5").tableDnD();
+      $("#table-6").tableDnD();
+      $("#table-7").tableDnD();
+       //Acciones
+       
+       // día lunes //
+       $('#table-1').tableDnD({
+          onDrop: function(table, row) 
+         {
+            //Tomando los datos del row que se movió
+            id       = row.id;
+            dia_semana = "Actualiza_Lunes";
+            $scope.CambiarDia(id,dia_semana) 
+          } //onDrop
+      });
+      
+      // día Martes //
+       $('#table-2').tableDnD({
+          onDrop: function(table, row) 
+          {
+            //Tomando los datos del row que se movió
+            id = row.id;
+            dia_semana = "Actualiza_Martes";
+            $scope.CambiarDia(id,dia_semana) 
+          } 
+      });
+      
+      // día miércoles//
+       $('#table-3').tableDnD({
+          onDrop: function(table, row) 
+        {
+            //Tomando los datos del row que se movió
+            id = row.id;
+            dia_semana = "Actualiza_Miercoles";
+            $scope.CambiarDia(id,dia_semana); 
+          } 
+      });
+      
+      // día Jueves//
+       $('#table-4').tableDnD({
+          onDrop: function(table, row) 
+        {
+           //Tomando los datos del row que se movió
+            id = row.id;
+            dia_semana = "Actualiza_Jueves";
+            $scope.CambiarDia(id,dia_semana); 
+          } 
+      });
+      
+      // día Viernes//
+       $('#table-5').tableDnD({
+          onDrop: function(table, row) 
+        {
+          console.log(row);
+          //Tomando los datos del row que se movió
+          id = row.id;
+          dia_semana = "Actualiza_Viernes";
+          $scope.CambiarDia(id,dia_semana); 
+          } 
+      });
+      
+      // día Sábado//
+       $('#table-6').tableDnD({
+          onDrop: function(table, row) 
+        {
+          
+          //Tomando los datos del row que se movió
+          id = row.id;
+          dia_semana = "Actualiza_Sabado";
+          $scope.CambiarDia(id,dia_semana) 
+          } 
+      });
+      
+      // día Domingo//
+       $('#table-7').tableDnD({
+          onDrop: function(table, row) 
+        {
+          
+          //Tomando los datos del row que se movió
+          id = row.id;
+          dia_semana = "Actualiza_Domingo";
+          $scope.CambiarDia(id,dia_semana) 
+          } 
+      });
+    }//InicializarTablas
+
+
+   
+
+//Tomadno los datos
+$scope.id_rutina     = $routeParams.Rut;
+$scope.cliente = $routeParams.cliente;
+var params     = $methodsService.Json("InfoRutinaCliente",$scope.id_rutina);
+
+var url = 'modulos/Clientes/Funciones.php';
+$http({method: "post",url: url,data: $.param({Params:params}), 
+headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+})
+.success(function(data, status, headers, config) 
+{          	
+	//Pegando los datos en las tblas.
+	exito = data.exito;
+        if(exito==1)
+        {
+          $scope.ejercicios = data.ejercicios;
+          var cantidad      = $scope.ejercicios.length;
+
+          //definiendo los ejercicios por dia.
+          for(i=0; i<cantidad; i++)
+          {
+            var id_dia = $scope.ejercicios[i].id_dia;
+            $scope.definirEjercicioDia(id_dia,$scope.ejercicios[i]);
+          }//for
+
+          //Pegando los ejercicios para cada lista con jquery.
+          for(i=0; i<$scope.lunes.length;i++)
+          {
+              var eje = $scope.lunes[i];
+              var tr = '<tr class="text-center" id="'+eje.id_posicionejercicio+'"><td>'+eje.id_posicionejercicio+'</td><td>'+eje.nb_ejercicio+'</td><td>'+eje.nb_musculo+'</td></tr>'
+              $("#lunesbody").append(tr);
+
+          }//for
+
+          for(i=0; i<$scope.martes.length;i++)
+          {
+              var eje = $scope.martes[i];
+              var tr = '<tr class="text-center" id="'+eje.id_posicionejercicio+'"><td>'+eje.id_posicionejercicio+'</td><td>'+eje.nb_ejercicio+'</td><td>'+eje.nb_musculo+'</td></tr>'
+              $("#martesbody").append(tr);
+
+          }//for
+
+          for(i=0; i<$scope.miercoles.length;i++)
+          {
+              var eje = $scope.miercoles[i];
+              var tr = '<tr class="text-center" id="'+eje.id_posicionejercicio+'"><td>'+eje.id_posicionejercicio+'</td><td>'+eje.nb_ejercicio+'</td><td>'+eje.nb_musculo+'</td></tr>'
+              $("#miercolesbody").append(tr);
+
+          }//for
+
+          for(i=0; i<$scope.jueves.length;i++)
+          {
+              var eje = $scope.jueves[i];
+              var tr = '<tr class="text-center" id="'+eje.id_posicionejercicio+'"><td>'+eje.id_posicionejercicio+'</td><td>'+eje.nb_ejercicio+'</td><td>'+eje.nb_musculo+'</td></tr>'
+              $("#juevesbody").append(tr);
+          }//for
+
+          for(i=0; i<$scope.viernes.length;i++)
+          {
+              var eje = $scope.viernes[i];
+              var tr = '<tr class="text-center" id="'+eje.id_posicionejercicio+'"><td>'+eje.id_posicionejercicio+'</td><td>'+eje.nb_ejercicio+'</td><td>'+eje.nb_musculo+'</td></tr>'
+              $("#viernesbody").append(tr);
+          }//for
+
+          for(i=0; i<$scope.sabado.length;i++)
+          {
+              var eje = $scope.sabado[i];
+              var tr = '<tr class="text-center" id="'+eje.id_posicionejercicio+'"><td>'+eje.id_posicionejercicio+'</td><td>'+eje.nb_ejercicio+'</td><td>'+eje.nb_musculo+'</td></tr>'
+              $("#sabadobody").append(tr);
+          }//for
+
+          for(i=0; i<$scope.domingo.length;i++)
+          {
+              var eje = $scope.domingo[i];
+              var tr = '<tr class="text-center" id="'+eje.id_posicionejercicio+'"><td>'+eje.id_posicionejercicio+'</td><td>'+eje.nb_ejercicio+'</td><td>'+eje.nb_musculo+'</td></tr>'
+              $("#domingobody").append(tr);
+          }//for
+
+          $scope.InicializarTablas();
+        }//if
+})  
+.error(function(data, status, headers, config){
+	$methodsService.alerta(2,"algo falló, disculpe las molestias");
+});
 })
 
 .service('respservice', function() {

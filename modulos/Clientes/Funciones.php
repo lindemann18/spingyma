@@ -59,121 +59,49 @@
 			echo json_encode($salidaJson);
 		break;
 
-		//casos viejos
-		case 'Agregar'://Agregando a la BD
-			AgregarCliente($Parametros);
-				
+		case 'InfoRutinaCliente':
 			//DEvolviendo parámetros para la notificación				
-			$salidaJson = array("Agregado"=>"1" );
-			echo json_encode($salidaJson);
-		break;	
-		
-		case 'Editar':
-			//Agregando a la BD
-			EditarCliente1($Parametros);
-			//DEvolviendo parámetros para la notificación				
-			$salidaJson=array("Editado"=>"1" );
-			echo json_encode($salidaJson);
-		break;	
-		
-		case 'Eliminar':
-			$id=$Parametros['id_cliente']; 
-			EliminarCliente($id);
-			//DEvolviendo parámetros para la notificación				
-			$salidaJson=array("Agregado"=>"1" );
-			echo json_encode($salidaJson);
-		break;
-		
-		case 'AgregarFormulario':
-			$id=$Parametros['id_cliente']; 
-			//Tomar los parámetros que serán mandados a BD
-			
-			echo "yo yo";
-			//Primer formulario
-			$Condicion_Cardiaca=		$Parametros['Condicion_Cardiaca'];	
-			$Condicion_Pecho=			$Parametros['Condicion_Pecho'];	
-			$Condicion_Pecho_reciente=	$Parametros['Condicion_Pecho_reciente'];	
-			$Condicion_Balance=			$Parametros['Condicion_Balance'];
-			$Lesion_Fisica=				$Parametros['Lesion_Fisica'];	
-			$Medicamentos_Corazon=		$Parametros['Medicamentos_Corazon'];	
-			$Impedimento_Entrenamiento=	$Parametros['Impedimento_Entrenamiento'];	
-			$Lecturas_Anormales=	   	$Parametros['Lecturas_Anormales'];	
-			$Cirujia_Bypass=			$Parametros['Cirujia_Bypass'];	
-			$Dificultad_Respirar=		$Parametros['Dificultad_Respirar'];	
-			$Enfermedades_Renales=		$Parametros['Enfermedades_Renales'];	
-			$Arritmia=					$Parametros['Arritmia'];
-			$Colesterol=				$Parametros['Colesterol'];	
-			$Presion_Alta=				$Parametros['Presion_Alta'];	
-			$cantidad_Cigarros=			$Parametros['cantidad_Cigarros'];	
-			$Molestias_Articulaciones=	$Parametros['Molestias_Articulaciones'];		
-			$Molestias_Espalda=			$Parametros['Molestias_Espalda'];			
-		
-			//2do formulario
-			$Desayuno_Diario =			$Parametros['Desayuno_Diario'];	
-			$Comida_Diaria =		 	$Parametros['Comida_Diaria'];	
-			$Cena_Diaria =			 	$Parametros['Cena_Diaria'];	
-			$EntreComida_Diaria =	 	$Parametros['EntreComida_Diaria'];
-			$Frecuencia_EntreComida =	$Parametros['Frecuencia_EntreComida'];
-			$Plan_Alimenticio=		 	$Parametros['Plan_Alimenticio'];	
-			$Intensidad_Ejercicio=	 	$Parametros['Intensidad_Ejercicio'];	
-			$Intensidad_Ejercicio2=	 	$Parametros['Intensidad_Ejercicio2'];	
-			$Intensidad_Ejercicio3=	 	$Parametros['Intensidad_Ejercicio3'];	
-			$Intensidad_Ejercicio4=		$Parametros['Intensidad_Ejercicio4'];	
-			$Intensidad_Ejercicio5=	 	$Parametros['Intensidad_Ejercicio5'];
-			$Programa_Ejercicio=	 	$Parametros['Programa_Ejercicio'];	
-			$Actividades_deseables=  	$Parametros['Actividades_deseables'];
-			$Actividades_indeseables=	$Parametros['Actividades_indeseables'];	
-			$deporte_Frecuente=		 	$Parametros['deporte_Frecuente'];	
-			$Minutos_Dia=			 	$Parametros['Minutos_Dia'];	
-			$Dias_Semana=			 	$Parametros['Dias_Semana'];		
-			$Resultado_Ejercicio=	 	$Parametros['Resultado_Ejercicio'];
-			
-			//Datos default
-			$id_cliente=				$Parametros['id_cliente'];
-			$id_instructor=				$Parametros['id_instructor'];			
-			
-			//Verificando si el usuario ya hizo el biotest
-			$consultar=new Consultar();
-			$result=$consultar->_ConsultarBioTestPorIdCliente($id);
-			$num=$result->num_rows;
-			//Si existe más de 0 registros, la persona ya hizo el biotest, lo que significa que ahora se editan los datos del biotest
-			if($num>0)
-			{
-				//Mandando a Editar los datos a BD
-				EditarDatosFormulario($Condicion_Cardiaca,$Condicion_Pecho,$Condicion_Pecho_reciente,$Condicion_Balance, $Lesion_Fisica, 
-				$Medicamentos_Corazon,$Impedimento_Entrenamiento,$Lecturas_Anormales, $Cirujia_Bypass, $Dificultad_Respirar, $Enfermedades_Renales,
-				$Arritmia,$Colesterol, $Presion_Alta,$cantidad_Cigarros,$Molestias_Articulaciones,$Molestias_Espalda, $Desayuno_Diario, $Comida_Diaria,
-				$Cena_Diaria, $EntreComida_Diaria,$Frecuencia_EntreComida,$Plan_Alimenticio, $Intensidad_Ejercicio,$Intensidad_Ejercicio2,
-				$Intensidad_Ejercicio3, $Intensidad_Ejercicio4,$Intensidad_Ejercicio5, $Programa_Ejercicio, $Actividades_deseables, 
-				$Actividades_indeseables,$deporte_Frecuente, $Minutos_Dia, $Dias_Semana,$Resultado_Ejercicio,$id_cliente ,$id_instructor );
-			}
-			else
-			{
-				//Mandando a guardar los datos a BD
-				GuardarDatosFormulario($Condicion_Cardiaca,$Condicion_Pecho,$Condicion_Pecho_reciente,$Condicion_Balance, $Lesion_Fisica, 
-				$Medicamentos_Corazon,$Impedimento_Entrenamiento,$Lecturas_Anormales, $Cirujia_Bypass, $Dificultad_Respirar, $Enfermedades_Renales,
-				$Arritmia,$Colesterol, $Presion_Alta,$cantidad_Cigarros,$Molestias_Articulaciones,$Molestias_Espalda, $Desayuno_Diario, $Comida_Diaria,
-				$Cena_Diaria, $EntreComida_Diaria,$Frecuencia_EntreComida,$Plan_Alimenticio, $Intensidad_Ejercicio,$Intensidad_Ejercicio2,
-				$Intensidad_Ejercicio3, $Intensidad_Ejercicio4,$Intensidad_Ejercicio5, $Programa_Ejercicio, $Actividades_deseables, 
-				$Actividades_indeseables,$deporte_Frecuente, $Minutos_Dia, $Dias_Semana,$Resultado_Ejercicio,$id_cliente ,$id_instructor );	
-			}
-			//DEvolviendo parámetros para la notificación				
-			$salidaJson=array("Agregado"=>"1" );
+			$salidaJson = InfoRutinaCliente($Parametros);
 			echo json_encode($salidaJson);
 		break;
 		
 		case 'AgregarRutina':
-			$nb_rutina			= $Parametros['nb_rutina'];
-			$id_CategoriaRutina	= $Parametros['id_CategoriaRutina'];			
-			$desc_rutina		= $Parametros['desc_rutina'];
-			$id_usuario			= $Parametros['id_usuario'];
-			$id_cliente			= $Parametros['id_cliente'];
-			//Llamando a la función de edición
-			
 			//DEvolviendo parámetros para la notificación				
 			$salidaJson = AgregarRutina($nb_rutina, $id_CategoriaRutina,$desc_rutina,$id_usuario, $id_cliente);
 			echo json_encode($salidaJson);
 		break;
+
+		case 'CambioLugarEjercicio':
+			
+			$AccionCambio = $Parametros['AccionCambio'];
+
+			switch($AccionCambio)
+			{
+				case 'SinPadre':
+					$salidaJson = CambioLugarEjercicioSinPadre($Parametros);
+					echo json_encode($salidaJson);
+				break;
+				
+				case 'SinHijo':
+					$salidaJson = CambioLugarEjercicioSinHijo($Parametros);
+					echo json_encode($salidaJson);
+				break;
+				
+				case 'ConAmbosBajoPosicion':
+					$salidaJson = ConAmbosBajoPosicion($Parametros);
+					echo json_encode($salidaJson);
+				break;
+				
+				case 'ConAmbosSubioPosicion':
+					$salidaJson = ConAmbosSubioPosicion($Parametros);
+					echo json_encode($salidaJson);
+				break;
+				
+			}//switch
+		break;
+
+
+		//casos viejos
 		
 		case 'RegistrarEjerciciosRutinas':
 			$id_rutina			= $Parametros['id_rutina'];
@@ -220,10 +148,10 @@
 			AgregarRelacionEjercicio($id_ejercicio, $relacion);
 		break;
 		
-		case 'AsignarRutinaACliente':
+		case 'AsignarRutinaCliente':
 			
 			//Mandando los valores a BD ya sea para agregar y o actualizar
-			$salidaJson = AsignarRutinaACliente($Parametros);
+			$salidaJson = AsignarRutinaCliente($Parametros);
 			echo json_encode($salidaJson);
 		break;
 		
@@ -523,6 +451,92 @@
 		return $datos;
 	}//ExisteRutinaCliente
 
+	function InfoRutinaCliente($Parametros)
+	{
+		$id         = $Parametros['id'];
+		$consultar  = new Consultar();
+		$ejercicios = $consultar->_ConsultarInformacionRutinaPreFinalClientePorId($id);
+		$cantidad   = count($ejercicios);
+		$exito      = ($cantidad>0)?1:0;
+		$datos      = array("exito"=>$exito,"ejercicios"=>$ejercicios);
+		return $datos;
+	}//InfoRutinaCliente
+
+	// Funciones de rutinas clientes
+
+	function CambioLugarEjercicioSinPadre($Parametros)
+	{
+		$id_Rutina        = $Parametros['id_rutina'];
+		$id_Cambio        = $Parametros['id_cambio'];
+		$id_Hijo          = $Parametros['id_Hijo'];
+		$Cantidad_Puestos = $Parametros['Cantidad_Puestos'];
+		$consultar        = new Consultar();
+		$agregar          = new Agregar();
+		$actualizar       = new Actualizar();
+		$id_dia 		  = "";
+
+		//Casos a definir 1) cuando la cantidad de puestos es 1 2) cuando la cantidad de puestos es mayor a 1
+		
+		//Caso 1) cuando la cantidad de puestos es 1, solo se hará un intercambio de valores
+		if ($Cantidad_Puestos == 1)
+		{
+			
+			//Obteniendo el id del id_PosicionEjercicio que fue movido
+			$ResultadoIdEjercicioCambiar = $consultar->_ConsultarId_EjercicioClientePorId_PosicionEjercicio($id_Rutina, $id_Cambio);
+			$id_EjercicioClienteCambio 	 = $ResultadoIdEjercicioCambiar['id'];
+			$id_dia 				     = $ResultadoIdEjercicioCambiar['id_dia'];
+			//Obtener el id del id_PosicionEjercicio hijo a intercambiar
+			$ResultadoIdEjercicioCambiar = $consultar->_ConsultarId_EjercicioClientePorId_PosicionEjercicio($id_Rutina, $id_Hijo);
+			$id_EjercicioClienteHijo 	 = $ResultadoIdEjercicioCambiar['id'];
+			
+			//Cambiando el valor para ambos, el que fue movido y el hijo.
+			
+			// 1)  id que fue movido
+			$ResPosicionMovido = $actualizar->_ActualizarPosicionPorRutinaEjercicioYValor($id_Rutina,$id_EjercicioClienteCambio, $id_Hijo);
+			
+			// 2) id del hijo, del id que fue movido
+			$ResPosicionHijo   = $actualizar->_ActualizarPosicionPorRutinaEjercicioYValor($id_Rutina,$id_EjercicioClienteHijo, $id_Cambio);
+
+
+		}
+		else  
+		{
+			//Caso 2) se tiene que hacer un cambio por la cantidad de espacios recorridos
+			
+			//Obtener el id del ejercicio que contiene el id_PosicionEjercicio
+			$ResultadoIdEjercicioCambiar = $consultar->_ConsultarId_EjercicioClientePorId_PosicionEjercicio($id_Rutina, $id_Cambio);
+			$id_ejercicioRutinaCliente 	 = $ResultadoIdEjercicioCambiar['id']; //Id del ejercicio a cambairle la posición
+			$id_dia 				     = $ResultadoIdEjercicioCambiar['id_dia'];
+
+			//Tomando el id desde el último a cambiarse hasta el primero, se hace desde el último para evitar repetidos u otros problemas
+			
+			$contador = 0;
+			//echo "Cambio, no padre más de un espacio";
+			for($i=0; $i<$Cantidad_Puestos; $i++)
+			{
+				$contador++;
+				$id_PosicionEjercicioCambiar = $id_Cambio-$contador;
+				echo $id_PosicionEjercicioCambiar;
+				//Actualizando la posición del ejercicioo del último al primero
+				//$resulAc=$actualizar -> _ActualizarIdPosicionEjercicioPorIdRutinaYidPosicionEjercicio($id_Rutina, $id_PosicionEjercicioCambiar);
+			
+			}//for
+			
+			//Actualizando el id_PosicionEjercicio por el del hijo, que solía ser la primera posición
+			
+			//Cambiarle el id_PosicionEjercicio por el del id_hijo
+			//$ResPosicionActualiza = $actualizar->_ActualizarPosicionPorRutinaEjercicioYValor($id_Rutina,$id_ejercicioRutinaCliente, $id_Hijo);
+			
+		} //else
+
+		//trayendo de nuevo los ejercicios 
+		/*$ejercicios = $consultar->_ConsultarInformacionPorRutinaYDiaRutinasClientes($id_Rutina,$id_dia);
+		$cantidad   = count($ejercicios);
+		$exito      = ($cantidad>0)?1:0;
+		$datos      = array("exito"=>$exito,"dia"=>$id_dia,"ejercicios"=>$ejercicios);
+		return $datos;*/
+	} //CambioLugarEjercicioSinPadre
+
 	function EjecutarTransaccion($objeto)
 	{
 		R::freeze(1);
@@ -652,72 +666,77 @@
 	}//AgregarRelacionEjercicio
 	
 	
-	function AsignarRutinaACliente($Parametros)
+	function AsignarRutinaCliente($Parametros)
 	{
 		date_default_timezone_set("Mexico/General");
+		session_start();
 		//Tomando los valores
-		$id_cliente		= $Parametros['id_cliente'];
+		$id_instructor  = $_SESSION['Sesion']['id_usuario'];
+		$id_cliente		= $Parametros['Cliente'];
 		$id_rutina		= $Parametros['id_rutina'];
-		$id_instructor	= $Parametros['id_instructor'];
+		$fh_creacion    = date("Y-m-d"); //fecha del día de hoy
+		$exito          = 0;
+
+		//buscar la información de la rutina y tomando lo sdatos.
+		$rutina         = R::load("sgrutinas",$id_rutina);
+		$id_categoriarutina = $rutina->id_categoriarutina;
+		$nb_rutina      = $rutina->nb_rutina;
+		$desc_rutina    = $rutina->desc_rutina;
+		$id_tipocuerpo  = $rutina->id_tipocuerpo;
+
 		$consultar 		= new Consultar();
 		$agregar  		= new Agregar();
 		
-		//tomar todos los datos de la rutina que asignaremos al cliente
-		$resultRutina 		= $consultar->_ConsultarRutinaPorId($id_rutina);
-		$filarutina  		= $resultRutina->fetch_assoc();
-		$id_CategoriaRutina = $filarutina['id_CategoriaRutina'];
-		$nb_rutina			= $filarutina['nb_rutina'];
-		$desc_rutina		= $filarutina['desc_rutina'];
-		$id_tipocuerpo 		= $filarutina['id_tipocuerpo'];
-		$fh_Creacion		= date("Y-m-d"); //fecha del día de hoy
-		
 		//Agregando en la Tabla sg_rutinasclientes Los datos de la rutina
-		$ResultAgregarRutinaCliente = $agregar->_AgregarRutinaCliente($nb_rutina, $id_CategoriaRutina,$desc_rutina,$id_instructor, $fh_Creacion,$id_cliente,$id_tipocuerpo);
-		$filaResultAgregarRutina	= $ResultAgregarRutinaCliente->fetch_assoc();
-		$id_RutinaCliente			= $filaResultAgregarRutina['id_rutinaCliente']; //id de la rutina recien insertada.
-		
-		//Tomando la información de la rutina recien agregadadel cliente.
-		$resultRutinaCliente = $consultar->_ConsultarRutinasClientesPorIdCliente($id_cliente);
-		$filaRutinaCliente   = $resultRutinaCliente->fetch_assoc();
-		$id_RutinaCliente    = $filaRutinaCliente['id_rutinaCliente'];
-		
-		//Tomando los ejercicios de la rutina
-		$ResultEjercicios = $consultar->_ConsultarInfoTotalEjerciciosPorIdRutina($id_rutina);
-		$num_Ejercicios   = $ResultEjercicios->num_rows; //Num Ejercicios
-		
-		
-		
-		//se toma la información de cada ejercicio y se manda a la base de datos
-		$ejercicios = array();
-		for($i=0; $i<$num_Ejercicios; $i++)
+		$rutina_agregar = R::dispense("sgrutinasclientes");
+		$rutina_agregar->id_usuariocreacion = $id_instructor;
+		$rutina_agregar->id_categoriarutina = $id_categoriarutina;
+		$rutina_agregar->id_cliente         = $id_cliente;
+		$rutina_agregar->id_tipocuerpo      = $id_tipocuerpo;
+		$rutina_agregar->nb_rutina          = $nb_rutina;
+		$rutina_agregar->desc_rutina        = $desc_rutina;
+		$rutina_agregar->fh_creacion        = $fh_creacion;
+		$rutina_agregar->sn_activo          = 1;
+		$id_rutinacliente 				    = EjecutarTransaccion($rutina_agregar);
+		$agregados 							= array();
+		if(is_numeric($id_rutinacliente))
 		{
-			$filaEjercicio = $ResultEjercicios->fetch_assoc(); //Se toma la primera fila del ejercicio.
-			 
-			 //Tomando los datos del ejercicio
-			 $id_Ejercicio 		   	 = $filaEjercicio['id_Ejercicio'];
-			 $id_dia 	   		   	 = $filaEjercicio['id_dia'];
-			 $id_RutinaEj  		  	 = $filaEjercicio['id_Rutina'];	
-			 $id_CategoriaRutinaEj	 = $filaEjercicio['id_Ejercicio'];
-			 $id_TipoRutinaEjercicio = $filaEjercicio['id_TipoRutinaEjercicio'];
-			 $id_PosicionEjercicio	 = $filaEjercicio['id_PosicionEjercicio'];
-			 $num_Circuitos			 = $filaEjercicio['num_Circuitos'];
-			 $num_Repeticiones		 = $filaEjercicio['num_Repeticiones'];
-			 $ejercicio_relacion	 = $filaEjercicio['ejercicio_relacion'];
-			 
-			 //Creando un array y guardando los valores para mandarlos a un array total.
-			 $ejercicio = array("id_Ejercicio"=>$id_Ejercicio,"id_dia"=>$id_dia,"id_Rutina"=>$id_RutinaCliente,
-			 					"id_CategoriaRutinaEj"=>$id_CategoriaRutinaEj,"id_TipoRutinaEjercicio"=>$id_TipoRutinaEjercicio,
-								"id_TipoRutinaEjercicio"=>$id_TipoRutinaEjercicio,"id_PosicionEjercicio"=>$id_PosicionEjercicio,
-								"num_Circuitos"=>$num_Circuitos,"num_Repeticiones"=>$num_Repeticiones,"num_Repeticiones"=>$num_Repeticiones,
-								"id_instructor"=>$id_instructor,"ejercicio_relacion"=>$ejercicio_relacion);	
-								
-			array_push($ejercicios,$ejercicio);
-			//$ResultAgregarEjercicioRutinaCliente = $agregar->_RegistrarEjerciciosRutinaClienteAsignacion($id_Ejercicio,$id_instructor,$id_dia, $id_RutinaCliente, $id_CategoriaRutinaEj, $id_TipoRutinaEjercicio, $num_Circuitos, $num_Repeticiones, $id_PosicionEjercicio);
-		}//for
-		
-		$ResultAgregarEjercicioRutinaCliente = $agregar->_RegistrarEjerciciosRutinaClienteAsignacion($ejercicios);
-		$salidaJson=array("id_rutina"=>$id_RutinaCliente);
-		return $salidaJson;
+			// Si entra aquí es por que agregó correctamente la rutina.
+			// Se procede a buscar todos los ejercicios de la rutina que se agrega.
+			//Tomando los ejercicios de la rutina
+			$ejercicios = $consultar->_ConsultarInfoTotalEjerciciosPorIdRutina($id_rutina);
+			$cantidad   = count($ejercicios);
+			if($cantidad>0)
+			{
+				//Aquí si entra si hay ejercicios.
+				foreach ($ejercicios as $ejercicio) 
+				{
+					//agregando los datos del ejercicio a la tabla de ejercicios rutina clientes.
+					$ejerciciocliente =  R::dispense("sgejerciciosrutinacliente");
+					$ejerciciocliente->id_ejercicio       = $ejercicio['id_ejercicio'];
+					$ejerciciocliente->id_usuariocreacion = $ejercicio['id_usuariocreacion'];
+					$ejerciciocliente->id_dia             = $ejercicio['id_dia'];
+					$ejerciciocliente->id_rutina          = $id_rutinacliente;
+					$ejerciciocliente->id_categoriarutina = $ejercicio['id_categoriarutina'];
+					$ejerciciocliente->id_tiporutinaejercicio = $ejercicio['id_tiporutinaejercicio'];
+					$ejerciciocliente->id_posicionejercicio = $ejercicio['id_posicionejercicio'];
+					$ejerciciocliente->num_circuitos = $ejercicio['num_circuitos'];
+					$ejerciciocliente->num_repeticiones = $ejercicio['num_repeticiones'];
+					$ejerciciocliente->ejercicio_relacion = $ejercicio['ejercicio_relacion'];
+					$ejerciciocliente->sn_activo = 1;
+					$ejercicioid = EjecutarTransaccion($ejerciciocliente);
+					if(is_numeric($ejercicioid))
+					{
+						$dato = array("id"=>$ejercicioid);
+						array_push($agregados,$dato);
+					}
+				}//foreach
+				$cantidad_agregados = count($agregados);
+				$exito = ($cantidad==$cantidad_agregados)?1:0;
+			}//if $cantidad>0
+		}//if
+		$datos = array("exito"=>$exito,"id_rutinacliente"=>$id_rutinacliente);
+		return $datos;
 	}//AsignarRutinaACliente
 	
 	function DesactivarRutina($id_cliente)
@@ -731,66 +750,6 @@
 	}//DesactivarRutina
 	
 	//Funciones de cambio de logar de la rutina de clientes
-	
-	function CambioLugarEjercicioSinPadre($id_Rutina,$id_Cambio,$id_Hijo, $Cantidad_Puestos)
-	{
-		
-		$consultar  = new Consultar();
-		$agregar    = new Agregar();
-		$actualizar = new Actualizar();
-		
-		//Casos a definir 1) cuando la cantidad de puestos es 1 2) cuando la cantidad de puestos es mayor a 1
-		
-		//Caso 1) cuando la cantidad de puestos es 1, solo se hará un intercambio de valores
-		if ($Cantidad_Puestos == 1)
-		{
-			//Obteniendo el id del id_PosicionEjercicio que fue movido
-			$ResultadoIdEjercicioCambiar = $consultar->_ConsultarId_EjercicioClientePorId_PosicionEjercicio($id_Rutina, $id_Cambio);
-			$filaCambio 				 = $ResultadoIdEjercicioCambiar->fetch_assoc();
-			$id_EjercicioClienteCambio 	 = $filaCambio['id_ejercicioRutinaCliente'];
-			
-			//Obtener el id del id_PosicionEjercicio hijo a intercambiar
-			$ResultadoIdEjercicioCambiar = $consultar->_ConsultarId_EjercicioClientePorId_PosicionEjercicio($id_Rutina, $id_Hijo);
-			$filaCambioHijo 			 = $ResultadoIdEjercicioCambiar->fetch_assoc();
-			$id_EjercicioClienteHijo 	 = $filaCambioHijo['id_ejercicioRutinaCliente'];
-			
-			//Cambiando el valor para ambos, el que fue movido y el hijo.
-			
-			// 1)  id que fue movido
-			$ResPosicionMovido = $actualizar->_ActualizarPosicionPorRutinaEjercicioYValor($id_Rutina,$id_EjercicioClienteCambio, $id_Hijo);
-			
-			// 2) id del hijo, del id que fue movido
-			$ResPosicionHijo   = $actualizar->_ActualizarPosicionPorRutinaEjercicioYValor($id_Rutina,$id_EjercicioClienteHijo, $id_Cambio);
-		}
-		else  
-		{
-			//Caso 2) se tiene que hace run cambio por la cantidad de espacios recorridos
-			
-			//Obtener el id del ejercicio que contiene el id_PosicionEjercicio
-			$ResultadoIdEjercicioCambiar = $consultar->_ConsultarId_EjercicioClientePorId_PosicionEjercicio($id_Rutina, $id_Cambio);
-			$filaIdEjercicioCambiar = $ResultadoIdEjercicioCambiar->fetch_assoc();
-			$id_ejercicioRutinaCliente = $filaIdEjercicioCambiar['id_ejercicioRutinaCliente']; //Id del ejercicio a cambairle la posición
-			
-			//Tomando el id desde el último a cambiarse hasta el primero, se hace desde el último para evitar repetidos u otros problemas
-			
-			$contador = 0;
-			echo "Cambio, no padre más de un espacio";
-			for($i=0; $i<$Cantidad_Puestos; $i++)
-			{
-				$contador++;
-				$id_PosicionEjercicioCambiar = $id_Cambio-$contador;
-				//Actualizando la posición del ejercicioo del último al primero
-				$resulAc=$actualizar -> _ActualizarIdPosicionEjercicioPorIdRutinaYidPosicionEjercicio($id_Rutina, $id_PosicionEjercicioCambiar);
-			
-			}//for
-			
-			//Actualizando el id_PosicionEjercicio por el del hijo, que solía ser la primera posición
-			
-			//Cambiarle el id_PosicionEjercicio por el del id_hijo
-			$ResPosicionActualiza = $actualizar->_ActualizarPosicionPorRutinaEjercicioYValor($id_Rutina,$id_ejercicioRutinaCliente, $id_Hijo);
-			
-		} //else
-	} //CambioLugarEjercicioSinPadre
 	
 	function CambioLugarEjercicioSinHijo($id_Rutina,$id_Cambio,$id_Padre, $Cantidad_Puestos)
 	{

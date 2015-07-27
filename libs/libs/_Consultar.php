@@ -492,7 +492,7 @@
 
 		function EjecutarTransaccionSinglerow($query,$id)
 		{
-			
+			R::freeze(1);
 			R::begin();
 			    try{
 			       $objeto = R::getRow($query,[$id]);
@@ -1257,12 +1257,81 @@
 
 		INNER JOIN sgusuarios Usuarios ON
 		Rut.id_UsuarioCreacion=Usuarios.id
-		where Rut.id= ?  AND Eje.id_Rutina=? AND Eje.sn_activo=1 and Eje.id_dia=?
-		ORDER BY dias.id,id_PosicionEjercicio asc, id_ejercicio asc
+		where Rut.id= ?  AND Eje.id_rutina=? AND Eje.sn_activo=1 and Eje.id_dia=?
+		ORDER BY dias.id,id_posicionejercicio asc, id_ejercicio asc
 		';	
 		$ejercicios = $this->EjecutarTransaccionAll3Params($query,$id_rutina,$id_rutina,$id_dia);
 		return $ejercicios;
 	}//_ConsultarInformacionPorRutinaYDia
+
+	function _ConsultarInformacionPorRutinaYDiaRutinasClientes($id_rutina, $id_dia)
+	{
+		$query = '
+			SELECT 
+			/* Datos de la tabla sg_rutinas*/
+			Rut.id as id_rutina,
+			Rut.id_usuariocreacion,
+			Rut.fh_creacion,
+			Rut.nb_rutina,
+			Rut.desc_rutina,
+
+			/* Datos de Categoría Rutina*/
+			CatRu.nb_categoriarutina,
+
+			/* Datos de la tabla sg_ejercicios*/
+			Ejer.nb_ejercicio,
+
+			/* Datos de ejercicio sg_ejerciciosrutina*/
+			Eje.num_circuitos,
+			Eje.num_repeticiones,
+			Eje.id as "id_ejercicio",
+			Eje.id_dia,
+			Eje.id_posicionejercicio,
+			/* Datos de la tabla sg_tiposrutina*/
+			TipRu.nb_tiporutina,
+
+			/* DAtos de la tabla días*/
+			dias.nb_dia,
+
+			/* Datos de sg_musculos*/
+			Musc.nb_musculo,
+
+			/* Datos de la tabla sg_usuarios*/
+			Usuarios.nb_nombre,
+			Usuarios.nb_apellidos
+
+			FROM
+			sgrutinas Rut
+
+			/* JOINS*/
+			INNER JOIN 
+			sgejerciciosrutinacliente Eje
+			ON Eje.id_Rutina = Rut.id
+
+			INNER JOIN sgcategoriasrutina CatRu
+			ON CatRu.id=Rut.id_categoriarutina
+
+			INNER JOIN sgejercicios Ejer
+			ON Eje.id_ejercicio=Ejer.id
+
+			INNER JOIN sgtiposrutina TipRu
+			ON TipRu.id=Ejer.id_tiporutina
+
+			INNER JOIN sgdias dias
+			ON Eje.id_dia=dias.id
+
+			INNER JOIN sgmusculos Musc
+			ON Musc.id=Ejer.id_musculo
+
+			INNER JOIN sgusuarios Usuarios ON
+			Rut.id_UsuarioCreacion=Usuarios.id
+			where Rut.id= ?  AND Eje.id_rutina=? AND Eje.sn_activo=1 and Eje.id_dia=?
+			ORDER BY dias.id,id_posicionejercicio asc, id_ejercicio asc
+		';	
+		$ejercicios = $this->EjecutarTransaccionAll3Params($query,$id_rutina,$id_rutina,$id_dia);
+		return $ejercicios;
+	}//_ConsultarInformacionPorRutinaYDia
+
 
 	function _ConsultarDiasSemana()
 	{
@@ -1270,6 +1339,39 @@
 		$dias = $this->EjecutarTransaccionAllNoParams($query);
 		return $dias;
 	}//_ConsultarDiasSemana
+
+	function _ConsultarInfoTotalEjerciciosPorIdRutina($id_rutina)
+	{
+		$query='
+			select * from sgejerciciosrutina where id_rutina = ? and sn_activo=1 order by id_posicionejercicio
+		';
+		$ejercicios = $this->EjecutarTransaccionAll($query,$id_rutina);	
+		return $ejercicios;
+	}
+
+	function _ConsultarId_EjercicioClientePorId_PosicionEjercicio($id_Rutina, $id_Posicion)
+	{
+		$query= '
+		SELECT 
+		Rut.id,
+		Rut.id_posicionejercicio,
+		Rut.id_dia 
+		FROM sgejerciciosrutinacliente  Rut
+		where Rut.id_rutina= ? and Rut.id_posicionejercicio= ? and Rut.sn_activo=1
+		';
+		R::freeze(1);
+			R::begin();
+			    try{
+			       $info = R::getRow($query,[$id_Rutina,$id_Posicion]);
+			        R::commit();
+			    }
+			    catch(Exception $e) {
+			       $info =  R::rollback();
+			       $info = "Error";
+			    }
+			R::close();
+			return $info;		
+	}//_ConsultarId_EjercicioClientePorId_PosicionEjercicio
 
 	//queries viejos
 
@@ -2398,79 +2500,88 @@
 	{
 		$query='
 		SELECT 
-			/* Datos de la tabla sg_rutinas*/
-			Rut.id_rutinaCliente,
-			Rut.id_UsuarioCreacion,
-			Rut.fh_Creacion,
-			Rut.nb_rutina,
-			Rut.desc_rutina,
-			
-			/* Datos de Categoría Rutina*/
-			CatRu.nb_CategoriaRutina,
-			
-			/* Datos de la tabla sg_ejercicios*/
-			Ejer.nb_ejercicio,
-			
-			/* Datos de ejercicio sg_ejerciciosrutinacliente*/
-			Eje.num_Circuitos,
-			Eje.num_Repeticiones,
-			Eje.id_EjercicioRutinaCliente as "id_ejercicio",
-			Eje.id_dia,
-			Eje.id_PosicionEjercicio,
-			Eje.ejercicio_relacion,
-			/* Datos de la tabla sg_tiposrutina*/
-			TipRu.nb_TipoRutina,
-			
-			/* DAtos de la tabla días*/
-			dias.nb_dia,
-			
-			/* Datos de sg_musculos*/
-			Musc.nb_musculo,
-			
-			/* Datos de la tabla sg_usuarios*/
-			Usuarios.nb_nombre,
-			Usuarios.nb_apellidos,
-			
-			/* Datos de la tabla sg_maquinas */
-			Maq.id,
-			Maq.nb_maquina,
-			Maq.num_maquina
-			
-			FROM
-			sg_rutinasclientes Rut
-			
-			/* JOINS*/
-			LEFT JOIN 
-			sg_ejerciciosrutinacliente Eje
-			ON Eje.id_Rutina
-			
-			INNER JOIN sg_categoriasrutina CatRu
-			ON CatRu.id=Rut.id_CategoriaRutina
-			
-			INNER JOIN sg_ejercicios Ejer
-			ON Eje.id_Ejercicio=Ejer.id
-			
-			INNER JOIN sg_tiposrutina TipRu
-			ON TipRu.id=Ejer.id_TipoRutina
-			
-			INNER JOIN sg_dias dias
-			ON Eje.id_dia=dias.id
-			
-			INNER JOIN sg_musculos Musc
-			ON Musc.id=Ejer.id_musculo
-			
-			INNER JOIN sg_usuarios Usuarios ON
-			Rut.id_UsuarioCreacion=Usuarios.id_usuario
-			
-			LEFT JOIN sg_maquinas Maq ON
-			Ejer.id_maquina = Maq.id
-			
-			where Rut.id_rutinaCliente="'.$id.'" AND Eje.id_Rutina="'.$id.'" AND Eje.sn_activo=1 
-				ORDER BY dias.id,Eje.id_PosicionEjercicio asc, id_ejercicio asc 
+		/* Datos de la tabla sg_rutinas*/
+		Rut.id as id_rutinacliente,
+		Rut.id_usuariocreacion,
+		Rut.fh_creacion,
+		Rut.nb_rutina,
+		Rut.desc_rutina,
+
+		/* Datos de Categoría Rutina*/
+		CatRu.nb_categoriarutina,
+
+		/* Datos de la tabla sg_ejercicios*/
+		Ejer.nb_ejercicio,
+
+		/* Datos de ejercicio sg_ejerciciosrutinacliente*/
+		Eje.num_circuitos,
+		Eje.num_repeticiones,
+		Eje.id as "id_ejercicio",
+		Eje.id_dia,
+		Eje.id_posicionejercicio,
+		Eje.ejercicio_relacion,
+		/* Datos de la tabla sg_tiposrutina*/
+		TipRu.nb_tiporutina,
+
+		/* DAtos de la tabla días*/
+		dias.nb_dia,
+
+		/* Datos de sg_musculos*/
+		Musc.nb_musculo,
+
+		/* Datos de la tabla sg_usuarios*/
+		Usuarios.nb_nombre,
+		Usuarios.nb_apellidos,
+
+		/* Datos de la tabla sg_maquinas */
+		Maq.id,
+		Maq.nb_maquina,
+		Maq.num_maquina
+
+		FROM
+		sgrutinasclientes Rut
+
+		/* JOINS*/
+		LEFT JOIN 
+		sgejerciciosrutinacliente Eje
+		ON Eje.id_Rutina
+
+		INNER JOIN sgcategoriasrutina CatRu
+		ON CatRu.id=Rut.id_categoriarutina
+
+		INNER JOIN sgejercicios Ejer
+		ON Eje.id_ejercicio=Ejer.id
+
+		INNER JOIN sgtiposrutina TipRu
+		ON TipRu.id=Ejer.id_tiporutina
+
+		INNER JOIN sgdias dias
+		ON Eje.id_dia=dias.id
+
+		INNER JOIN sgmusculos Musc
+		ON Musc.id=Ejer.id_musculo
+
+		INNER JOIN sgusuarios Usuarios ON
+		Rut.id_usuariocreacion=Usuarios.id
+
+		LEFT JOIN sgmaquinas Maq ON
+		Ejer.id_maquina = Maq.id
+
+		where Rut.id=? AND Eje.id_Rutina=? AND Eje.sn_activo=1 
+		ORDER BY dias.id,Eje.id_posicionejercicio asc, id_ejercicio asc
 			';
-		$con=Conectar::_con();
-		$result=$con->query($query) or die("Error en: $query ".mysqli_error($query));
-		return $result;
+		R::freeze(1);
+		R::begin();
+			    try{
+			       $ejercicios = R::getAll($query,[$id,$id]);
+			        R::commit();
+			    }
+			    catch(Exception $e) {
+			       $ejercicios =  R::rollback();
+			       $ejercicios = "Error";
+			    }
+			R::close();
+			return $ejercicios;
 	}//_ConsultarInformacionRutinaPreFinalPorId
 	
 	//Método para el módulo de Rutinas
@@ -2539,22 +2650,14 @@
 			INNER JOIN sg_usuarios Usuarios ON
 			Rut.id_UsuarioCreacion=Usuarios.id_usuario
 			where Rut.id_rutinaCliente="'.$id_rutina.'" AND Eje.id_Rutina="'.$id_rutina.'" AND Eje.sn_activo=1 and Eje.id_dia="'.$id_dia.'"
-				ORDER BY dias.id,id_PosicionEjercicio asc, id_ejercicio asc 
+				ORDER BY dias.id,id_posicionejercicio asc, id_ejercicio asc 
 		';	
 		$con=Conectar::_con();
 		$result=$con->query($query) or die("Error en: $query ".mysqli_error($query));
 		return $result;
 	}//_ConsultarInformacionPorRutinaYDia
 	
-	function _ConsultarInfoTotalEjerciciosPorIdRutina($id_rutina)
-	{
-		$query='
-			select * from sg_ejerciciosrutina where id_Rutina = "'.$id_rutina.'" and sn_activo=1 order by id_PosicionEjercicio
-		';
-		$con=Conectar::_con();
-		$result=$con->query($query) or die("Error en: $query ".mysqli_error($query));
-		return $result;	
-	}
+	
 	
 	function _ConsultarNumeroDeRepeticionesEjercicioPorId($id)
 	{
@@ -2639,19 +2742,7 @@
 	
 	
 	
-	function _ConsultarId_EjercicioClientePorId_PosicionEjercicio($id_Rutina, $id_PosicionEjercicio)
-	{
-		$query= '
-		SELECT 
-		Rut.id_ejercicioRutinaCliente,
-		Rut.id_PosicionEjercicio 
-		FROM sg_ejerciciosrutinacliente  Rut
-		where Rut.id_Rutina="'.$id_Rutina.'" and Rut.id_PosicionEjercicio="'.$id_PosicionEjercicio.'" and Rut.sn_activo=1
-		';
-		$con=Conectar::_con();
-		$result=$con->query($query) or die("Error en: $query ".mysqli_error($query));
-		return $result;
-	}//_ConsultarId_EjercicioClientePorId_PosicionEjercicio
+	
 	
 	function _ConsultarInfoFormularioPorIdCliente($id_cliente)
 	{
