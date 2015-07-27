@@ -763,6 +763,7 @@ $scope.domingo   = [];
          .success(function(data, status, headers, config) 
          {            
               exito = data.exito;
+              console.log(data);
               if(exito==1)
               {
                 var id_diaCambio = data.dia;

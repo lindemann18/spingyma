@@ -1301,29 +1301,29 @@
 			Usuarios.nb_apellidos
 
 			FROM
-			sgrutinas Rut
+			sgrutinasclientes Rut
 
 			/* JOINS*/
-			INNER JOIN 
+			LEFT JOIN 
 			sgejerciciosrutinacliente Eje
 			ON Eje.id_Rutina = Rut.id
 
-			INNER JOIN sgcategoriasrutina CatRu
+			LEFT JOIN sgcategoriasrutina CatRu
 			ON CatRu.id=Rut.id_categoriarutina
 
-			INNER JOIN sgejercicios Ejer
+			LEFT JOIN sgejercicios Ejer
 			ON Eje.id_ejercicio=Ejer.id
 
-			INNER JOIN sgtiposrutina TipRu
+			LEFT JOIN sgtiposrutina TipRu
 			ON TipRu.id=Ejer.id_tiporutina
 
-			INNER JOIN sgdias dias
+			LEFT JOIN sgdias dias
 			ON Eje.id_dia=dias.id
 
-			INNER JOIN sgmusculos Musc
+			LEFT JOIN sgmusculos Musc
 			ON Musc.id=Ejer.id_musculo
 
-			INNER JOIN sgusuarios Usuarios ON
+			LEFT JOIN sgusuarios Usuarios ON
 			Rut.id_UsuarioCreacion=Usuarios.id
 			where Rut.id= ?  AND Eje.id_rutina=? AND Eje.sn_activo=1 and Eje.id_dia=?
 			ORDER BY dias.id,id_posicionejercicio asc, id_ejercicio asc

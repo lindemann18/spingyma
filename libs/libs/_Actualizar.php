@@ -57,24 +57,16 @@
 		}//_ActualizarIdPosicionEjercicioPorIdRutinaYidPosicionEjercicioTemplate
 
 		//Este método es para el módulo de Clientes
-		function _ActualizarIdPosicionEjercicioPorIdRutinaYidPosicionEjercicio($id_rutina,$id_posicion)
+		function _ActualizarIdPosicionEjercicioPorIdRutinaYidPosicionEjercicio($id_rutina,$id_posicion,$id_dia)
 		{
-			$query= '
-			UPDATE sgejerciciosrutinacliente as EjercicioRutinaCliente, 
-			(
-				SELECT 
-				Rut.id,
-				Rut.id_posicionejercicio 
-				FROM sgejerciciosrutinacliente  Rut
-				where Rut.id=? and Rut.id_posicionejercicio=? and Rut.sn_activo=1
-			) as temp
-			SET EjercicioRutinaCliente.id_posicionejercicio = temp.id_posicionejercicio+1 
-			WHERE EjercicioRutinaCliente.id_rutina=? and EjercicioRutinaCliente.id_posicionejercicio=?
-			';	
+			$query ='
+				update sgejerciciosrutinacliente set 
+				id_posicionejercicio = id_posicionejercicio+1 
+				where id_posicionejercicio <=? and id_rutina = ? and id_dia = ?';
 			  R::freeze(1);
 			R::begin();
 		    try{
-		       $info = R::getRow($query,[$id_rutina,$id_posicion,$id_rutina,$id_posicion]);
+		       $info = R::getRow($query,[$id_posicion,$id_rutina,$id_dia]);
 		        R::commit();
 		    }
 		    catch(Exception $e) {
@@ -104,6 +96,28 @@
 			R::begin();
 		    try{
 		       $info = R::getRow($query,[$id_rutina,$id_posicion,$id_rutina,$id_posicion]);
+		        R::commit();
+		    }
+		    catch(Exception $e) {
+		       $info =  R::rollback();
+		       $info = "Error";
+		    }
+
+			R::close();
+			return $info;
+		}//_ActualizarIdPosicionEjercicioPorIdRutinaYidPosicionEjercicioRestaTemp
+
+		function _ActualizarIdPosicionEjercicioPorIdRutinaYidPosicionEjercicioRestaClie($id_rutina,$id_posicion,$id_dia)
+		{
+			$query= '
+				update sgejerciciosrutinacliente set 
+				id_posicionejercicio = id_posicionejercicio-1 
+				where id_posicionejercicio >=? and id_rutina = ? and id_dia = ?
+			';	
+			 R::freeze(1);
+			R::begin();
+		    try{
+		       $info = R::getRow($query,[$id_posicion,$id_rutina,$id_dia]);
 		        R::commit();
 		    }
 		    catch(Exception $e) {
