@@ -100,6 +100,27 @@
 			}//switch
 		break;
 
+		case 'EjerciciosRutinaOrden':
+			//DEvolviendo parámetros para la notificación				
+			$salidaJson = EjerciciosRutinaOrden($Parametros);
+			echo json_encode($salidaJson);
+		break;
+
+		case 'AgregarRelacionEjercicio':
+			//Mandando los valores a BD ya sea para agregar y o actualizar
+			$salidaJson = AgregarRelacionEjercicio($Parametros);
+			echo json_encode($salidaJson);
+		break;
+
+		case 'AgregarRepeticionesEjercicio':
+			$salidaJson = AgregarRepeticionesEjercicio($Parametros);
+			echo json_encode($salidaJson);
+		break;
+
+		case 'AgregarCircuitosEjercicio':
+			$salidaJson = AgregarCircuitosEjercicio($Parametros);
+			echo json_encode($salidaJson);
+		break;
 
 		//casos viejos
 		
@@ -117,36 +138,9 @@
 			RegistrarEjerciciosRutinas($id_rutina, $id_usuario,$id_dia,$id_CategoriaRutina, $EjerciciosRutina, $CantidadEjercicios, $id_TipoRutina);
 			//echo json_encode($salidaJson);
 		break;
+	
 		
-		case 'AgregarRepeticionesEjercicio':
-			
-			//Tomando los valores
-			$id_ejercicio		=$Parametros['id_ejercicio'];
-			$num_repeticiones	=$Parametros['num_repeticiones'];
-			
-			//Mandando los valores a BD ya sea para agregar y o actualizar
-			AgregarRepeticionesEjercicio($id_ejercicio, $num_repeticiones);
-		break;
 		
-		case 'AgregarCircuitosEjercicio':
-			
-			//Tomando los valores
-			$id_ejercicio		=$Parametros['id_ejercicio'];
-			$num_circuitos		=$Parametros['num_circuitos'];
-			
-			//Mandando los valores a BD ya sea para agregar y o actualizar
-			AgregarCircuitosEjercicio($id_ejercicio, $num_circuitos);
-		break;
-		
-		case 'AgregarRelacionEjercicio':
-			
-			//Tomando los valores
-			$id_ejercicio	= $Parametros['id_ejercicio'];
-			$relacion		= $Parametros['relacion'];
-			
-			//Mandando los valores a BD ya sea para agregar y o actualizar
-			AgregarRelacionEjercicio($id_ejercicio, $relacion);
-		break;
 		
 		case 'AsignarRutinaCliente':
 			
@@ -155,27 +149,6 @@
 			echo json_encode($salidaJson);
 		break;
 		
-		
-		case 'AgregarRepeticionesEjercicio':
-			
-			//Tomando los valores
-			$id_ejercicio		= $Parametros['id_ejercicio'];
-			$num_repeticiones	= $Parametros['num_repeticiones'];
-			$id_rutina			= $Parametros['id_rutina'];	
-			
-			//Mandando los valores a BD ya sea para agregar y o actualizar
-			AgregarRepeticionesEjercicio($id_ejercicio, $num_repeticiones, $id_rutina);
-		break;
-		
-		case 'AgregarCircuitosEjercicio':
-			
-			//Tomando los valores
-			$id_ejercicio	= $Parametros['id_ejercicio'];
-			$num_circuitos	= $Parametros['num_circuitos'];
-			
-			//Mandando los valores a BD ya sea para agregar y o actualizar
-			AgregarCircuitosEjercicio($id_ejercicio, $num_circuitos);
-		break;
 		
 		case 'DesactivarRutina':
 			
@@ -704,7 +677,58 @@
 		R::close();
 		return $respuesta;
 	}//EjecutarTransacción
-	
+		
+	function EjerciciosRutinaOrden($Parametros)
+	{
+		$id         = $Parametros['id'];
+		$consultar  = new Consultar();
+		$ejercicios = $consultar->_ConsultarInformacionRutinaPreFinalClientePorId($id);
+		$cantidad   = count($ejercicios);
+		$exito      = ($cantidad>0)?1:0;
+		$datos      = array("exito"=>$exito,"ejercicios"=>$ejercicios);
+		return $datos;
+	}//EjerciciosRutinaOrden
+
+	function AgregarRelacionEjercicio($Parametros)
+	{
+		$id_ejercicio = $Parametros['id_ejercicio'];
+		$relacion     = $Parametros['relacion'];
+
+		$ejercicio = R::load("sgejerciciosrutinacliente",$id_ejercicio);
+		$ejercicio->ejercicio_relacion = $relacion;
+		$respuesta = EjecutarTransaccion($ejercicio);
+		$exito     = is_numeric($respuesta);
+		$datos     = array("exito"=>$exito);
+		return $datos;
+	}//AgregarRelacionEjercicio
+
+	function AgregarRepeticionesEjercicio($Parametros)
+	{
+		$id_ejercicio     = $Parametros['id_ejercicio'];
+		$num_repeticiones = $Parametros['num_repeticiones'];
+		$id_rutina 	      = $Parametros['id_rutina'];
+
+		$ejercicio = R::load("sgejerciciosrutinacliente",$id_ejercicio);
+		$ejercicio->num_repeticiones = $num_repeticiones;
+		$respuesta = EjecutarTransaccion($ejercicio);
+		$exito     = is_numeric($respuesta);
+		$datos     = array("exito"=>$exito);
+		return $datos;
+	}//AgregarRepeticionesEjercicio
+
+	function AgregarCircuitosEjercicio($Parametros)
+	{
+		$id_ejercicio  = $Parametros['id_ejercicio'] ;
+		$num_circuitos = $Parametros['num_circuitos'] ;
+
+		$ejercicio = R::load("sgejerciciosrutinacliente",$id_ejercicio);
+		$ejercicio->num_circuitos = $num_circuitos;
+		$respuesta = EjecutarTransaccion($ejercicio);
+		$exito     = is_numeric($respuesta);
+		$datos     = array("exito"=>$exito);
+		return $datos;
+
+	}///AgregarCircuitosEjercicio
 
 	//Funciones viejas
 	function EditarCliente1($Parametros)
@@ -791,33 +815,6 @@
 		$agregar=new Agregar();
 		$result=$agregar->_RegistrarEjerciciosRutinasClientes($id_rutina, $id_usuario,$id_dia,$id_CategoriaRutina, $EjerciciosRutina, $CantidadEjercicios, $id_TipoRutina);
 	}//RegistrarEjerciciosRutinas
-	
-	function AgregarRepeticionesEjercicio($id_ejercicio, $num_repeticiones)
-	{
-		//Buscar si ya existe algún valor, de ser así entonces se actualiza
-		$consultar 	= new Consultar();
-		$agregar	= new Agregar();
-		$actualizar = new Actualizar();
-		
-		$result=$actualizar->_ActualizarNumeroRepeticionesEjercicioClientePorId($id_ejercicio, $num_repeticiones);	
-		
-	}//AgregarRepeticionesEjercicio
-	
-	function AgregarCircuitosEjercicio($id_ejercicio, $num_circuitos)
-	{
-		//Buscar si ya existe algún valor, de ser así entonces se actualiza
-		$consultar=new Consultar();
-		$actualizar=new Actualizar();
-		
-		$result=$actualizar->_ActualizarNumeroCircuitosEjercicioClientePorId($id_ejercicio, $num_circuitos);
-		
-	}///AgregarCircuitosEjercicio
-	
-	function AgregarRelacionEjercicio($id_ejercicio, $relacion)
-	{
-		$actualizar = new Actualizar();
-		$result     = $actualizar->_ActualizarRelacionEjerciciosClientes($id_ejercicio, $relacion);
-	}//AgregarRelacionEjercicio
 	
 	
 	function AsignarRutinaCliente($Parametros)
