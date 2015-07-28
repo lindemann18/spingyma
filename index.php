@@ -242,7 +242,10 @@
 	      	templateUrl:'modulos/Clientes/RutinaOrden.html'
 	    })
 	    
-
+	    .when('/RutinaPrefinalC',{
+	    	controller: 'RutinaprefinalC',
+	      	templateUrl:'modulos/Clientes/Rutinas_Prefinal.html'
+	    })
 
 	    .otherwise({
 	      redirectTo:'/'

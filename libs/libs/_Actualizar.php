@@ -181,6 +181,51 @@
 			return $objeto;
 		}
 
+		//Este método es para el módulo de Clientes
+		function _ActualizarIdPosicionEjercicioPorIdRutinaYidPosicionEjercicioResta($id_Rutina, $Inicio_Cambio,$id_Padre,$id_dia)
+		{
+			$query= '
+			update sgejerciciosrutinacliente set 
+			id_posicionejercicio = id_posicionejercicio-1 
+			where id_posicionejercicio >=? and 
+			id_posicionejercicio<=? and id_rutina = ?  and id_dia = ? 
+			';	
+			R::freeze(1);
+			R::begin();
+			    try{
+			       $objeto = R::getRow($query,[$Inicio_Cambio,$id_Padre,$id_Rutina,$id_dia]);
+			        R::commit();
+			    }
+			    catch(Exception $e) {
+			       $objeto =  R::rollback();
+			       $objeto = "Error";
+			    }
+			R::close();
+			return $objeto;
+		}//_ActualizarIdPosicionEjercicioPorIdRutinaYidPosicionEjercicioResta
+
+		function _ActualizarIdPosicionEjercicioSubioPosicion($id_rutina,$Inicio_Cambio,$id_hijo,$id_dia)
+		{
+			$query= '
+			update sgejerciciosrutinacliente set 
+			id_posicionejercicio = id_posicionejercicio+1 
+			where id_posicionejercicio <=? and id_posicionejercicio>=? 
+			and id_rutina = ?  and id_dia = ? 
+			';	
+			R::freeze(1);
+			R::begin();
+			    try{
+			       $objeto = R::getRow($query,[$Inicio_Cambio,$id_hijo,$id_rutina,$id_dia]);
+			        R::commit();
+			    }
+			    catch(Exception $e) {
+			       $objeto =  R::rollback();
+			       $objeto = "Error";
+			    }
+			R::close();
+			return $objeto;
+		}//_ActualizarIdPosicionEjercicioSubioPosicion
+
 		//funciones Viejas
 
 		function EliminarUsuario($id)	
@@ -567,27 +612,7 @@
 		//Este método es para el módulo de rutinas
 		
 		
-		//Este método es para el módulo de Clientes
-		function _ActualizarIdPosicionEjercicioPorIdRutinaYidPosicionEjercicioResta($id_rutina,$id_posicionEjercicio)
-		{
-			$query= '
-			UPDATE sg_ejerciciosrutinacliente as EjercicioRutinaCliente, 
-			(
-				SELECT 
-				Rut.id_ejercicioRutinaCliente,
-				Rut.id_PosicionEjercicio 
-				FROM sg_ejerciciosrutinacliente  Rut
-				where Rut.id_Rutina="'.$id_rutina.'" and Rut.id_PosicionEjercicio="'.$id_posicionEjercicio.'"
-			) as temp
-			SET EjercicioRutinaCliente.id_PosicionEjercicio = temp.id_PosicionEjercicio-1 
-			WHERE EjercicioRutinaCliente.id_Rutina="'.$id_rutina.'" and EjercicioRutinaCliente.id_PosicionEjercicio="'.$id_posicionEjercicio.'"
-			';	
-			echo $query."<br>";
-			 $conectar=new Conectar();
-			$con=Conectar::_con();
-			$result=$con->query($query)or die("Error en $query ".mysqli_error($query));
-			return $result;
-		}//_ActualizarIdPosicionEjercicioPorIdRutinaYidPosicionEjercicioResta
+		
 		
 		
 		

@@ -566,6 +566,129 @@
 		return $datos;
 	}//CambioLugarEjercicioSinHijo
 
+	function ConAmbosBajoPosicion($Parametros)
+	{
+		$id_Rutina        = $Parametros['id_rutina'];
+		$id_Cambio        = $Parametros['id_cambio'];
+		$id_Hijo          = $Parametros['id_Hijo'];
+		$id_Padre         = $Parametros['id_Padre'];
+		$Cantidad_Puestos = $Parametros['Cantidad_Puestos'];
+		$consultar        = new Consultar();
+		$agregar          = new Agregar();
+		$actualizar       = new Actualizar();
+		$id_dia 		  = "";
+		
+		//Casos a definir 1) cuando la cantidad de puestos es 1 2) cuando la cantidad de puestos es mayor a 1
+		
+		//Caso 1) cuando la cantidad de puestos es 1, solo se hará un intercambio de valores
+		if ($Cantidad_Puestos == 1)
+		{
+			//Obteniendo el id del id_PosicionEjercicio que fue movido
+			$ResultadoIdEjercicioCambiar = $consultar->_ConsultarId_EjercicioClientePorId_PosicionEjercicio($id_Rutina, $id_Cambio);
+			$id_EjercicioClienteCambio 	 = $ResultadoIdEjercicioCambiar['id'];
+			$id_dia 				     = $ResultadoIdEjercicioCambiar['id_dia'];
+			
+			//Obtener el id del id_PosicionEjercicio hijo a intercambiar
+			$ResultadoIdEjercicioCambiar = $consultar->_ConsultarId_EjercicioClientePorId_PosicionEjercicio($id_Rutina, $id_Padre);
+			$id_EjercicioClientPadre 	 = $ResultadoIdEjercicioCambiar['id'];
+			
+			//Cuando se baja una sola posición en la lista y se tiene, padre he hijo, se hace meramente un intercambio de posiciones tal cual
+			//Al que se le movió se le asigna la posición del padre y al pdre se le asigna la posición del que fue movido
+			
+			// 1)  id que fue movido
+			$ResPosicionMovido = $actualizar->_ActualizarPosicionPorRutinaEjercicioYValor($id_Rutina,$id_EjercicioClienteCambio, $id_Padre);
+			
+			// 2) id del hijo, del id que fue movido
+			$ResPosicionHijo   = $actualizar->_ActualizarPosicionPorRutinaEjercicioYValor($id_Rutina,$id_EjercicioClientPadre, $id_Cambio);
+
+		}
+		else
+		{
+			//caso 2= cuando la cantidad de puestos que se ha bajado es mayor que 1, se cuenta con padre he hijo.
+			
+			//Obtener el id del ejercicio que contiene el id_PosicionEjercicio
+			$ResultadoIdEjercicioCambiar = $consultar->_ConsultarId_EjercicioClientePorId_PosicionEjercicio($id_Rutina, $id_Cambio);
+			$id_ejercicioRutinaCliente 	 = $ResultadoIdEjercicioCambiar['id'];
+			$id_dia 				     = $ResultadoIdEjercicioCambiar['id_dia'];
+			
+			$Inicio_Cambio = $id_Cambio + 1; //es desde donde se comienza a hacer el ajuste de posiciones.
+			$resulAc = $actualizar -> _ActualizarIdPosicionEjercicioPorIdRutinaYidPosicionEjercicioResta($id_Rutina, $Inicio_Cambio,$id_Padre,$id_dia);
+			 
+			//Actualizando el id_PosicionEjercicio por el del hijo, que solía ser la primera posición
+			
+			//Cambiarle el id_PosicionEjercicio por el del id_hijo
+			$ResPosicionActualiza = $actualizar->_ActualizarPosicionPorRutinaEjercicioYValor($id_Rutina,$id_ejercicioRutinaCliente, $id_Padre);
+			
+		}//else
+		//trayendo de nuevo los ejercicios 
+		$ejercicios = $consultar->_ConsultarInformacionPorRutinaYDiaRutinasClientes($id_Rutina,$id_dia);
+		$cantidad   = count($ejercicios);
+		$exito      = ($cantidad>0)?1:0;
+		$datos      = array("exito"=>$exito,"dia"=>$id_dia,"ejercicios"=>$ejercicios);
+		return $datos;
+	}//ConAmbosBajoPosicion
+	
+
+	function ConAmbosSubioPosicion($Parametros)
+	{
+		$id_Rutina        = $Parametros['id_rutina'];
+		$id_Cambio        = $Parametros['id_cambio'];
+		$id_Hijo          = $Parametros['id_Hijo'];
+		$Cantidad_Puestos = $Parametros['Cantidad_Puestos'];
+		$consultar        = new Consultar();
+		$agregar          = new Agregar();
+		$actualizar       = new Actualizar();
+		$id_dia 		  = "";
+		
+		//Casos a definir 1) cuando la cantidad de puestos es 1 2) cuando la cantidad de puestos es mayor a 1
+		
+		//Caso 1) cuando la cantidad de puestos es 1, solo se hará un intercambio de valores
+		if ($Cantidad_Puestos == 1)
+		{
+			//Obteniendo el id del id_PosicionEjercicio que fue movido
+			$ResultadoIdEjercicioCambiar = $consultar->_ConsultarId_EjercicioClientePorId_PosicionEjercicio($id_Rutina, $id_Cambio);
+			$id_EjercicioClienteCambio 	 = $ResultadoIdEjercicioCambiar['id'];
+			$id_dia 				     = $ResultadoIdEjercicioCambiar['id_dia'];
+			
+			//Obtener el id del id_PosicionEjercicio padre a intercambiar
+			//Obtener el id del id_PosicionEjercicio hijo a intercambiar
+			$ResultadoIdEjercicioCambiar = $consultar->_ConsultarId_EjercicioClientePorId_PosicionEjercicio($id_Rutina, $id_Hijo);
+			$id_EjercicioClientPadre 	 = $ResultadoIdEjercicioCambiar['id'];
+			
+			//Cuando se baja una sola posición en la lista y se tiene, padre he hijo, se hace meramente un intercambio de posiciones tal cual
+			//Al que se le movió se le asigna la posición del padre y al pdre se le asigna la posición del que fue movido
+			
+			// 1)  id que fue movido
+			$ResPosicionMovido = $actualizar->_ActualizarPosicionPorRutinaEjercicioYValor($id_Rutina,$id_EjercicioClienteCambio, $id_Hijo);
+			
+			// 2) id del hijo, del id que fue movido
+			$ResPosicionHijo   = $actualizar->_ActualizarPosicionPorRutinaEjercicioYValor($id_Rutina,$id_EjercicioClientPadre, $id_Cambio);
+
+		}//if
+		else
+		{
+			//caso 2= cuando la cantidad de puestos que se ha bajado es mayor que 1, se cuenta con padre he hijo.
+			
+			//Obtener el id del ejercicio que contiene el id_PosicionEjercicio
+			$ResultadoIdEjercicioCambiar = $consultar->_ConsultarId_EjercicioClientePorId_PosicionEjercicio($id_Rutina, $id_Cambio);
+			$id_ejercicioRutinaCliente 	 = $ResultadoIdEjercicioCambiar['id'];
+			$id_dia 				     = $ResultadoIdEjercicioCambiar['id_dia'];
+
+			
+			$Inicio_Cambio = $id_Cambio - 1; //es desde donde se comienza a hacer el ajuste de posiciones.
+			$resulAc = $actualizar -> _ActualizarIdPosicionEjercicioSubioPosicion($id_Rutina, $Inicio_Cambio,$id_Hijo,$id_dia);
+				 
+			
+			//Cambiarle el id_PosicionEjercicio por el del id_hijo
+			$ResPosicionActualiza = $actualizar->_ActualizarPosicionPorRutinaEjercicioYValor($id_Rutina,$id_ejercicioRutinaCliente, $id_Hijo);
+		}//else
+		$ejercicios = $consultar->_ConsultarInformacionPorRutinaYDiaRutinasClientes($id_Rutina,$id_dia);
+		$cantidad   = count($ejercicios);
+		$exito      = ($cantidad>0)?1:0;
+		$datos      = array("exito"=>$exito,"dia"=>$id_dia,"ejercicios"=>$ejercicios);
+		return $datos;
+	}//ConAmbosSubioPosicion
+
 	function EjecutarTransaccion($objeto)
 	{
 		R::freeze(1);
@@ -581,7 +704,7 @@
 		R::close();
 		return $respuesta;
 	}//EjecutarTransacción
-
+	
 
 	//Funciones viejas
 	function EditarCliente1($Parametros)
@@ -783,116 +906,6 @@
 	
 	//Funciones de cambio de logar de la rutina de clientes
 	
-	
-	
-	function ConAmbosBajoPosicion($id_Rutina,$id_Cambio,$id_Padre, $id_Hijo,$Cantidad_Puestos)
-	{
-		$consultar  = new Consultar();
-		$agregar    = new Agregar();
-		$actualizar = new Actualizar();
-		
-		//Casos a definir 1) cuando la cantidad de puestos es 1 2) cuando la cantidad de puestos es mayor a 1
-		
-		//Caso 1) cuando la cantidad de puestos es 1, solo se hará un intercambio de valores
-		if ($Cantidad_Puestos == 1)
-		{
-			//Obteniendo el id del id_PosicionEjercicio que fue movido
-			$ResultadoIdEjercicioCambiar = $consultar->_ConsultarId_EjercicioClientePorId_PosicionEjercicio($id_Rutina, $id_Cambio);
-			$filaCambio 				 = $ResultadoIdEjercicioCambiar->fetch_assoc();
-			$id_EjercicioClienteCambio 	 = $filaCambio['id_ejercicioRutinaCliente'];
-			
-			//Obtener el id del id_PosicionEjercicio padre a intercambiar
-			$ResultadoIdEjercicioCambiar = $consultar->_ConsultarId_EjercicioClientePorId_PosicionEjercicio($id_Rutina, $id_Padre);
-			$filaCambioHijo 			 = $ResultadoIdEjercicioCambiar->fetch_assoc();
-			$id_EjercicioClientPadre 	 = $filaCambioHijo['id_ejercicioRutinaCliente'];
-			
-			//Cuando se baja una sola posición en la lista y se tiene, padre he hijo, se hace meramente un intercambio de posiciones tal cual
-			//Al que se le movió se le asigna la posición del padre y al pdre se le asigna la posición del que fue movido
-			
-			// 1)  id que fue movido
-			$ResPosicionMovido = $actualizar->_ActualizarPosicionPorRutinaEjercicioYValor($id_Rutina,$id_EjercicioClienteCambio, $id_Padre);
-			
-			// 2) id del hijo, del id que fue movido
-			$ResPosicionHijo   = $actualizar->_ActualizarPosicionPorRutinaEjercicioYValor($id_Rutina,$id_EjercicioClientPadre, $id_Cambio);
-		}
-		else
-		{
-			//caso 2= cuando la cantidad de puestos que se ha bajado es mayor que 1, se cuenta con padre he hijo.
-			echo "ambos, bajó posición";
-			//Obtener el id del ejercicio que contiene el id_PosicionEjercicio
-			$ResultadoIdEjercicioCambiar = $consultar->_ConsultarId_EjercicioClientePorId_PosicionEjercicio($id_Rutina, $id_Cambio);
-			$filaIdEjercicioCambiar 	 = $ResultadoIdEjercicioCambiar->fetch_assoc();
-			$id_ejercicioRutinaCliente 	 = $filaIdEjercicioCambiar['id_ejercicioRutinaCliente']; //Id del ejercicio a cambairle la posición
-			
-			$Inicio_Cambio = $id_Cambio + 1; //es desde donde se comienza a hacer el ajuste de posiciones.
-			$contador 	   = 1; // Donde se da el incremento de posiciones.
-			for ($i=0; $i<$Cantidad_Puestos; $i++)
-			{
-				//Actualizando la posición del ejercicioo del último al primero.
-				$resulAc = $actualizar -> _ActualizarIdPosicionEjercicioPorIdRutinaYidPosicionEjercicioResta($id_Rutina, $Inicio_Cambio);
-			 $Inicio_Cambio = $Inicio_Cambio + $contador;
-			}//for
-			//Actualizando el id_PosicionEjercicio por el del hijo, que solía ser la primera posición
-			
-			//Cambiarle el id_PosicionEjercicio por el del id_hijo
-			$ResPosicionActualiza = $actualizar->_ActualizarPosicionPorRutinaEjercicioYValor($id_Rutina,$id_ejercicioRutinaCliente, $id_Padre);
-			
-		}//else
-	}//ConAmbosBajoPosicion
-	
-	function ConAmbosSubioPosicion($id_Rutina,$id_Cambio,$id_Padre, $id_Hijo,$Cantidad_Puestos)
-	{
-		$consultar  = new Consultar();
-		$agregar    = new Agregar();
-		$actualizar = new Actualizar();
-		
-		//Casos a definir 1) cuando la cantidad de puestos es 1 2) cuando la cantidad de puestos es mayor a 1
-		
-		//Caso 1) cuando la cantidad de puestos es 1, solo se hará un intercambio de valores
-		if ($Cantidad_Puestos == 1)
-		{
-			//Obteniendo el id del id_PosicionEjercicio que fue movido
-			$ResultadoIdEjercicioCambiar = $consultar->_ConsultarId_EjercicioClientePorId_PosicionEjercicio($id_Rutina, $id_Cambio);
-			$filaCambio 				 = $ResultadoIdEjercicioCambiar->fetch_assoc();
-			$id_EjercicioClienteCambio 	 = $filaCambio['id_ejercicioRutinaCliente'];
-			
-			//Obtener el id del id_PosicionEjercicio padre a intercambiar
-			$ResultadoIdEjercicioCambiar = $consultar->_ConsultarId_EjercicioClientePorId_PosicionEjercicio($id_Rutina, $id_Hijo);
-			$filaCambioHijo 			 = $ResultadoIdEjercicioCambiar->fetch_assoc();
-			$id_EjercicioClientPadre 	 = $filaCambioHijo['id_ejercicioRutinaCliente'];
-			
-			//Cuando se baja una sola posición en la lista y se tiene, padre he hijo, se hace meramente un intercambio de posiciones tal cual
-			//Al que se le movió se le asigna la posición del padre y al pdre se le asigna la posición del que fue movido
-			
-			// 1)  id que fue movido
-			$ResPosicionMovido = $actualizar->_ActualizarPosicionPorRutinaEjercicioYValor($id_Rutina,$id_EjercicioClienteCambio, $id_Hijo);
-			
-			// 2) id del hijo, del id que fue movido
-			$ResPosicionHijo   = $actualizar->_ActualizarPosicionPorRutinaEjercicioYValor($id_Rutina,$id_EjercicioClientPadre, $id_Cambio);
-		}//if
-		else
-		{
-			//caso 2= cuando la cantidad de puestos que se ha bajado es mayor que 1, se cuenta con padre he hijo.
-			
-			//Obtener el id del ejercicio que contiene el id_PosicionEjercicio
-			$ResultadoIdEjercicioCambiar = $consultar->_ConsultarId_EjercicioClientePorId_PosicionEjercicio($id_Rutina, $id_Cambio);
-			$filaIdEjercicioCambiar 	 = $ResultadoIdEjercicioCambiar->fetch_assoc();
-			$id_ejercicioRutinaCliente 	 = $filaIdEjercicioCambiar['id_ejercicioRutinaCliente']; //Id del ejercicio a cambairle la posición
-			echo "ambos, subió posición";
-			$Inicio_Cambio = $id_Cambio - 1; //es desde donde se comienza a hacer el ajuste de posiciones.
-			$contador 	   = 1; // Donde se da el incremento de posiciones.
-			for ($i=0; $i<$Cantidad_Puestos; $i++)
-			{
-				//Actualizando la posición del ejercicioo del último al primero.
-				$resulAc = $actualizar -> _ActualizarIdPosicionEjercicioPorIdRutinaYidPosicionEjercicio($id_Rutina, $Inicio_Cambio);
-				 $Inicio_Cambio = $Inicio_Cambio - $contador;
-			}//for
-			//Actualizando el id_PosicionEjercicio por el del hijo, que solía ser la primera posición
-			
-			//Cambiarle el id_PosicionEjercicio por el del id_hijo
-			$ResPosicionActualiza = $actualizar->_ActualizarPosicionPorRutinaEjercicioYValor($id_Rutina,$id_ejercicioRutinaCliente, $id_Hijo);
-		}//else
-	}//ConAmbosSubioPosicion
 	
 	function ConsultarTiposCuerpo()
 	{

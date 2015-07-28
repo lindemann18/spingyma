@@ -985,13 +985,24 @@ $scope.definirEjercicioDia = function(dia,ejercicio)
       });
     }//InicializarTablas
 
-
+$scope.RutinaPrefinal = function()
+{
+	bootbox.confirm("Desea ir al final de la rutina?", function(result) {
+		console.log(result);
+	  	if(result==true)
+	  	{
+	  		$scope.$apply(function(){
+	  			$location.path('/RutinaPrefinalC').search({Rut:$scope.id_rutina,Cliente:$scope.cliente});
+	  		});
+	  	}//if
+	});
+}//RutinaPrefinal
    
 
 //Tomadno los datos
 $scope.id_rutina     = $routeParams.Rut;
-$scope.cliente = $routeParams.cliente;
-var params     = $methodsService.Json("InfoRutinaCliente",$scope.id_rutina);
+$scope.cliente 		 = $routeParams.Cliente;
+var params     		 = $methodsService.Json("InfoRutinaCliente",$scope.id_rutina);
 
 var url = 'modulos/Clientes/Funciones.php';
 $http({method: "post",url: url,data: $.param({Params:params}), 
@@ -1072,6 +1083,10 @@ headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
 .error(function(data, status, headers, config){
 	$methodsService.alerta(2,"algo falló, disculpe las molestias");
 });
+})//RutinaOrdenC
+
+.controller('RutinaprefinalC',function($scope,$http,$location,$methodsService,$routeParams){
+	alert("hola");
 })
 
 .service('respservice', function() {
