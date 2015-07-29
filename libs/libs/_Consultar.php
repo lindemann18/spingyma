@@ -1373,6 +1373,27 @@
 			return $info;		
 	}//_ConsultarId_EjercicioClientePorId_PosicionEjercicio
 
+	function _ConsultarResultadosPruebaslight($tipo_prueba, $id_cliente)
+	{
+		$query='
+			select * from sgpruebaslight pruebas 
+			where tipo_prueba=?
+			and id_cliente=? order by pruebas.fh_creacion DESC limit 3
+		';
+		R::freeze(1);
+			R::begin();
+			    try{
+			       $info = R::getAll($query,[$tipo_prueba,$id_cliente]);
+			        R::commit();
+			    }
+			    catch(Exception $e) {
+			       $info =  R::rollback();
+			       $info = "Error";
+			    }
+			R::close();
+			return $info;	
+	}//_ConsultarResultadosPruebaslight
+
 	//queries viejos
 
 

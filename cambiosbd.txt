@@ -183,8 +183,8 @@ por problemas con mayúsculas.
 	cambió por desc_ejerciciorutina.
 99)	el campo num_Circuitos de la tabla sgejerciciosrutinacliente se
 	cambió por num_circuitos.
-100)el campo num_Repeticiones de la tabla sgejerciciosrutinacliente se
-	cambió por num_repeticiones.							
+100)el campo num_Repeticiones de la tabla sgejerciciosrutinacliente 	se cambió por num_repeticiones.
+101) se creó la tabla sgpruebaslight, se dejará el archivo en la carpeta.							
 
 
 

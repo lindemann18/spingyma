@@ -10,6 +10,21 @@ $scope.showfilter      = false;
 $scope.clitr           = 0;
 
 //Funciones
+$scope.AplicarBiotest = function(id)
+{
+	
+		bootbox.confirm("Desea aplicar el biotest a este cliente?", function(result) {
+		console.log(result);
+	  	if(result==true)
+	  	{
+	  		$scope.$apply(function(){
+	  			$location.path('/Biotest').search({Cliente:id});
+	  		});
+	  	}//if
+	});
+	
+}//AplicarBiotest
+
 $scope.RutinaCliente = function(id)
 {
 	bootbox.confirm("Desea ir al apartado de rutinas para clientes?", function(result) {

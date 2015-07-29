@@ -1,18 +1,20 @@
 <?php
-	//Funciones de los test de evaluación física
+	session_start();
 	include("../../libs/libs.php");
+	$conexion   = new ConexionBean(); //Variable de conexión
+	$con        = $conexion->_con(); //Variable de conexión
 	$Params=(isset($_GET['Params']))?$_GET['Params']:$_POST['Params'];
 	$Parametros=json_decode($Params,true);
 	$Accion=$Parametros['Accion'];
-	if(isset ($_POST['Params']))
-	{
-		
-		
-	}
-	
+
 	//Switch de las funciones
 	switch($Accion)
 	{
+		case 'EjecutarTest':
+			$salidaJson = EjecutarTest($Parametros);
+			echo json_encode($salidaJson);
+		break;
+
 		case 'CondicionFisica':
 			$id_Cliente		   = $Parametros['Id_Cliente'];
 			$ResultadoEvaluado = $Parametros['ResultadoEvaluado'];
@@ -162,290 +164,117 @@
 	}//switch de opciones
 	
 	///Funciones de condición física///
-	function CondicionFisica($id_Cliente,$ResultadoEvaluado,$id_instructor)
+
+	function EjecutarTest($Parametros)
 	{
-		$consultar = new Consultar(); 
+		//Tomando los datos.
+		$peso    = $Parametros['peso'];
+		$altura  = $Parametros['altura'];
+		$cliente = $Parametros['cliente'];
+		$imc     = IMCLight($peso,$altura,$cliente);
+		$peso    = PesoLight($peso,$altura,$cliente);
 		
-		//Buscando la información del cliente para hacer el test
+	}//EjecutarTest
+
+	//Funciones viejas
+
+	function IMCLight($peso,$altura,$cliente)
+	{
+		//Sacando el índice de masa corporal
+		$alturaMetros   = $altura/100; //convirtiéndo la altura en metros
+		$alturaCuadrada = $alturaMetros*$alturaMetros;
+		$imc			= number_format($peso/$alturaCuadrada,2); //Dejando el númnero con solo 2 decimales	
+		$Diagnostico	= DiagnosticoAcordeResultadoIMC($imc);
+		$porcentajeResultado = "";
 		$consultar = new Consultar();
-		$result	   = $consultar->_ConsultarClientesPorId($id_Cliente);	
-		$fila	   = $result->fetch_assoc();
-		//tomando sexo y edad
-		$edad	   = $fila['num_edad'];
-		$sexo	   = $fila['de_genero'];
-		$DescPrueba = "Condicion Física";
-		if($sexo=="MASCULINO")	
+		$resultadoPruebas = "";
+		//Verificando si está dentro del rango 
+		if($Diagnostico == "Fuera de rango")
 		{
-			$Condicion = EvaluacionMasculinaCondicionFisica($edad,$ResultadoEvaluado); //resultado de la prueba
-			//En esta línea se agregan el resultado de la prueba, se obtienen los datos necesarios y se devuelve el array para
-			//devolver a la pantalla principal.
-			if($Condicion=="Fuera de rango")
-			{
-				$salidaJson=array("Tipo_Prueba"=>1, "Resultado"=>$Condicion, "id_cliente"=>$id_Cliente,"id_instructor"=>$id_instructor,
-				"Resultado_Evaluado"=>$ResultadoEvaluado);
-			}
-			else
-			{	
-				$salidaJson = AgregadoYfuncionesDeCondicionFisica($id_instructor,$id_Cliente,$Condicion,$ResultadoEvaluado,$DescPrueba); 
-			}
-			return $salidaJson;
+			
+		}
+		else
+		{
+			//Tomar la fecha de hoy
+			date_default_timezone_set("America/Chihuahua");
+			$fh_creacion = date("Y-m-d"); //fecha del día de hoy
+			$porcentaje  = PorcentajeAcordeResultadoPeso($Diagnostico);
+			//Guardando el resultado.
+			$Prueba      = R::findOne( 'sgtipospruebas', ' nm_prueba = ? ', [ 'Imc' ] );
+			$id_prueba   = $Prueba->id;
+			$desc_prueba = "IMC";
+			$id_inst     = $_SESSION['usuario']['id'];
+			$respuesta   = GuardarResultadoPruebasLight($id_inst,$cliente,$id_prueba,$desc_prueba,$Diagnostico,$porcentaje,$fh_creacion,$imc);
+
+			//Tomando los resultados del cliente de esa prueba.
+			$resultadoPruebas=$consultar->_ConsultarResultadosPruebaslight($id_prueba,$cliente);
+			
+		}//else
+		$datosimc    = array("resultado_numerico"=>$imc,"Diagnostico"=>$Diagnostico,"resultados"=>$resultadoPruebas);
+		return $datosimc;
+	}//IMC
+
+	function PesoLight($peso,$altura,$cliente)
+	{
+		$RangoDePeso = RangoDePesoPorAltura($altura, $peso);
+		$porcentajeResultado = "";
+		//haciendo la verificación de errores
+		if($RangoDePeso=="Fuera de rango")
+		{
+			
 		}//if
 		else
 		{
-			$Condicion = EvaluacionFemeninaCondicionFisica($edad,$ResultadoEvaluado); //resultado de la prueba
-			//En esta línea se agregan el resultado de la prueba, se obtienen los datos necesarios y se devuelve el array para
-			//devolver a la pantalla principal.
-			if($Condicion=="Fuera de rango")
-			{
-				$salidaJson=array("Tipo_Prueba"=>1, "Resultado"=>$Condicion, "id_cliente"=>$id_Cliente,"id_instructor"=>$id_instructor,
-				"Resultado_Evaluado"=>$ResultadoEvaluado);
-			}
-			else{$salidaJson=AgregadoYfuncionesDeCondicionFisica($id_instructor,$id_Cliente,$Condicion,$ResultadoEvaluado,$DescPrueba); }
-			return $salidaJson;
-		}
-		
-	}//CondicionFisica
-	
+			//Tomar la fecha de hoy
+			date_default_timezone_set("America/Chihuahua");
+			$fh_creacion = date("Y-m-d"); //fecha del día de hoy
+			$porcentajeResultado = PorcentajeAcordeResultadoPeso($RangoDePeso);	
+			$Prueba      = R::findOne( 'sgtipospruebas', ' nm_prueba = ? ', [ 'Peso' ] );
+			$id_prueba   = $Prueba->id;
+			$desc_prueba = "IMC";
+			$respuesta   = GuardarResultadoPruebasLight($id_inst,$cliente,$id_prueba,$desc_prueba,$Diagnostico,$porcentaje,$fh_creacion,$imc);
 
-	//Función para determinar el rango de edades en el que se encuentra la persona
-	function EvaluacionMasculinaCondicionFisica($edad, $resultado)
-	{
-		$res="";
-		if($res=="" && $resultado<49 || $resultado>82)
-		{
-			 $res="Fuera de rango";
-		}//if
-		else{
-		switch($edad)
-			{
-				//se declara res vacío, si cae en alguno de los rangos de edad, se debe verificar que 
-				//resultado fue, si no es se asigna cadena vacía y se sigue buscando.
-								
-				//case de las edades
-				case $edad >=18 && $edad<=25:
-				
-					if($res=="" && $resultado>=49 && $resultado<=55) $res="Atleta";
-					if($res=="" && $resultado>=56 && $resultado<=61) $res="Excelente";	
-					if($res=="" && $resultado>=62 && $resultado<=69) $res="Bueno";	
-					if($res=="" && $resultado>=70 && $resultado<=81) $res="Promedio";
-					if($res=="" && $resultado>=82)$res="Pobre";
-				break;
-				
-				case $edad >=26 && $edad<=35:
-					if($res=="" && $resultado>=49 && $resultado<=54) $res="Atleta";
-					if($res=="" && $resultado>=55 && $resultado<=61) $res="Excelente";
-					if($res=="" && $resultado>=62 && $resultado<=70) $res="Bueno";
-					if($res=="" && $resultado>=71 && $resultado<=81) $res="Promedio";
-					if($res=="" && $resultado>=82)$res="Pobre";
-				break;
-					
-				case $edad >=36 && $edad<=45:
-					if($res=="" && $resultado>=50 && $resultado<=56) $res="Atleta";
-					if($res=="" && $resultado>=57 && $resultado<=62) $res="Excelente";
-					if($res=="" && $resultado>=63 && $resultado<=70) $res="Bueno";
-					if($res=="" && $resultado>=71 && $resultado<=82) $res="Promedio";
-					if($res=="" && $resultado>=83)					 $res="Pobre";
-				break;
-				
-				case $edad >=46 && $edad<=55:
-					if($res=="" && $resultado>=50 && $resultado<=57) $res="Atleta";
-					if($res=="" && $resultado>=58 && $resultado<=63) $res="Excelente";
-					if($res=="" && $resultado>=64 && $resultado<=71) $res="Bueno";
-					if($res=="" && $resultado>=72 && $resultado<=83) $res="Promedio";
-					if($res=="" && $resultado>=84)					 $res="Pobre";
-				break;
-				
-				case $edad >=56 && $edad<=65:
-					if($res=="" && $resultado>=51 && $resultado<=56) $res="Atleta";
-					if($res=="" && $resultado>=57 && $resultado<=61) $res="Excelente";
-					if($res=="" && $resultado>=62 && $resultado<=71) $res="Bueno";
-					if($res=="" && $resultado>=72 && $resultado<=81) $res="Promedio";
-					if($res=="" && $resultado>=82)					 $res="Pobre";
-				break;
-				
-				case $edad >65:
-					if($res=="" && $resultado>=50 && $resultado<=55) $res="Atleta";
-					if($res=="" && $resultado>=56 && $resultado<=61) $res="Excelente";
-					if($res=="" && $resultado>=62 && $resultado<=69) $res="Bueno";
-					if($res=="" && $resultado>=70 && $resultado<=79) $res="Promedio";
-					if($res=="" && $resultado>=80)					 $res="Pobre";
-				break;
-				
-				default:
-					$res="Fuera de rango";
-				break;
-				
-			}//switch
+			//Tomando los resultados del cliente de esa prueba.
+			$resultadoPruebas=$consultar->_ConsultarResultadosPruebaslight($id_prueba,$cliente);
 		}//else
-			$condicion = $res;
-			return $condicion;
-	}//EvaluacionMasculina
-	
-	function EvaluacionFemeninaCondicionFisica($edad, $resultado)
+		$datosimc    = array("resultado_numerico"=>$imc,"Diagnostico"=>$Diagnostico,"resultados"=>$resultadoPruebas);
+		return $datosimc;
+	}//Peso
+
+	function GuardarResultadoPruebasLight($id_inst,$cliente,$id_prueba,$desc_prueba,$Diagnostico,$porcentaje,$fh_creacion,$imc)
 	{
-		$res="";
-		if($res=="" && $resultado<49 || $resultado>82)
-		{
-			 $res="Fuera de rango";
-		}//if
-		else{
-		switch($edad)
-			{
-				//se declara res vacío, si cae en alguno de los rangos de edad, se debe verificar que 
-				//resultado fue, si no es se asigna cadena vacía y se sigue buscando.
-								
-				//case de las edades
-				case $edad >=18 && $edad<=25:
-						if($res=="" && $resultado>=50 && $resultado<=60) $res="Atleta";
-						if($res=="" && $resultado>=61 && $resultado<=68) $res="Excelente";	
-						if($res=="" && $resultado>=69 && $resultado<=73) $res="Bueno";	
-						if($res=="" && $resultado>=74 && $resultado<=84) $res="Promedio";
-						if($res=="" && $resultado>=85)					 $res="Pobre";						
-				break;
-				
-				case $edad >=26 && $edad<=35:
-					if($res=="" && $resultado>=50 && $resultado<=59)$res="Atleta";
-					if($res=="" && $resultado>=60 && $resultado<=64)$res="Excelente";
-					if($res=="" && $resultado>=65 && $resultado<=72)$res="Bueno";
-					if($res=="" && $resultado>=73 && $resultado<=82)$res="Promedio";
-					if($res=="" && $resultado>=83)$res="Pobre";
-				break;
-					
-				case $edad >=36 && $edad<=45:
-					if($res=="" && $resultado>=50 && $resultado<=59)$res="Atleta";
-					if($res=="" && $resultado>=60 && $resultado<=64)$res="Excelente";
-					if($res=="" && $resultado>=65 && $resultado<=73)$res="Bueno";
-					if($res=="" && $resultado>=74 && $resultado<=84)$res="Promedio";
-					if($res=="" && $resultado>=85)$res="Pobre";
-				break;
-				
-				case $edad >=46 && $edad<=55:
-					if($res=="" && $resultado>=50 && $resultado<=60)$res="Atleta";
-					if($res=="" && $resultado>=61 && $resultado<=65)$res="Excelente";
-					if($res=="" && $resultado>=66 && $resultado<=73)$res="Bueno";
-					if($res=="" && $resultado>=74 && $resultado<=83)$res="Promedio";
-					if($res=="" && $resultado>=84)$res="Pobre";
-				break;
-				
-				case $edad >=56 && $edad<=65:
-					if($res=="" && $resultado>=50 && $resultado<=59)$res="Atleta";
-					if($res=="" && $resultado>=60 && $resultado<=64)$res="Excelente";
-					if($res=="" && $resultado>=65 && $resultado<=73)$res="Bueno";
-					if($res=="" && $resultado>=74 && $resultado<=83)$res="Promedio";
-					if($res=="" && $resultado>=84)$res="Pobre";
-				break;
-				
-				case $edad >65:
-					if($res=="" && $resultado>=50 && $resultado<=59)$res="Atleta";
-					if($res=="" && $resultado>=60 && $resultado<=64)$res="Excelente";
-					if($res=="" && $resultado>=65 && $resultado<=72)$res="Bueno";
-					if($res=="" && $resultado>=73 && $resultado<=84)$res="Promedio";
-					if($res=="" && $resultado>=84)$res="Pobre";
-				break;
-				
-				
-				default:
-					$res="Fuera de rango";
-				break;
-				
-			}//switch
-	}//else
-			$condicion=$res;
-			return $condicion;
-	}
-	
-	function PorcentajeAcordeResultado($resultado)
+		$pruebastore = R::dispense("sgpruebaslight");
+		$pruebastore->id_instructor = $id_inst;
+		$pruebastore->id_cliente    = $cliente;
+		$pruebastore->tipo_prueba   = $id_prueba;
+		$pruebastore->desc_prueba   = $desc_prueba;
+		$pruebastore->resultado_numerico = $imc;
+		$pruebastore->resultado          = $Diagnostico;
+		$pruebastore->porcentaje         = $porcentaje;
+		$pruebastore->fh_creacion        = $fh_creacion;
+		$respuesta = EjecutarTransaccion($pruebastore);
+		return $respuesta;
+	}//GuardarResultadoPruebas
+
+	function EjecutarTransaccion($objeto)
 	{
-		$porcentaje = 0;
-		switch($resultado)	
-		{
-			case 'Atleta':    $porcentaje = 100; break;
-			case 'Excelente': $porcentaje = 80;  break;
-			case 'Bueno':     $porcentaje = 60;  break;
-			case 'Promedio':  $porcentaje = 40;  break;
-			case 'Pobre':     $porcentaje = 20;  break;
-		}//switch
-		
-		return $porcentaje;
-	}//PorcentajeAcordeResultado
-	
-	function AgregadoYfuncionesDeCondicionFisica($id_instructor,$id_Cliente,$Condicion,$ResultadoEvaluado,$DescPrueba)
-	{
-			$agregar    = new Agregar();
-			$consultar  = new Consultar(); 
-			//Tomando los valores para guardar el resultado de la prueba en la BD
-			$TipoPrueba = 1;
-			$porcentaje = PorcentajeAcordeResultado($Condicion);
-			//Guardando los resultados de la prueba
-			$resultado=$agregar->_AgregarResultadoPrueba($id_instructor, $id_Cliente, $TipoPrueba, $DescPrueba, $Condicion, $porcentaje,$ResultadoEvaluado);
-			
-			//Obteniendo pruebas de los últimos 3 meses para saber el resultado de la persona en las gráficas
-			$resultadoPruebas=$consultar->_ConsultarResultadosPruebas(1,$id_Cliente);
-			
-			//Creando un array con los resultados de las pruebas
-			$arrayResultados=array();
-			
-			//tomando los resultados
-			for($i=0; $i<3; $i++)
-			{
-				$fila=$resultadoPruebas->fetch_assoc();
-				$NumPrueba="Prueba".$i;
-				//Tomando los valores para asignarlos al array.
-				
-				//Si los valores vienen null, se les asigna 0 para que al llegar al lado del cliente se asigne otro valor y se cargue la gráfica
-				$fecha=($fila['fecha']!=null)?ConvertirTimeStamp($fila['fecha']):0; //Devolviendo un string con la fecha con el método de la línea 148
-				$porcentaje = ($fila['Porcentaje']!=null)?$fila['Porcentaje']:0;
-				$resultado  = $fila['Resultado'];
-				$Prueba     = array("Resultado"=>$resultado,"Porcentaje"=>$porcentaje, "Fecha"=>$fecha);	
-				array_push ($arrayResultados,$Prueba);
-			}
-			//print_r($arrayResultados);
-			//Tomando el consejo de la evaluación física
-			$resultConsejo = $consultar->_ConsultarConsejoAcordeResultado(1,$Condicion);
-			$filaConsejo   = $resultConsejo->fetch_assoc();
-			$consejo	   = $filaConsejo['Consejo'];
-			
-			//Guardando en la bitácora el biotest hecho
-			$ResultBitacora = $agregar->_AgregarRegistroBitacoraBiotest($id_instructor,$id_Cliente);
-			//DEvolviendo parámetros para la notificación				
-			$salidaJson=array("Condicion"=>$Condicion, "Resultado"=>$ResultadoEvaluado, "id_cliente"=>$id_Cliente,"Resultados"=>$arrayResultados,
-			"TipoPrueba"=>$TipoPrueba, "Consejo"=>$consejo);
-			return $salidaJson;
-	}
-	
-	function ConvertirTimeStamp($time) //función para devolver un string de la fecha a partir de una time stamp de mysql
-	{
-		//Quitando las horas y minutos
-		$fechas		    = explode(" ",$time);
-		$fechaSinHoras  = $fechas[0];
-		//Seperando los elementos de año, mes y día.
-		$ElementosFecha = explode("-",$fechaSinHoras);
-		$year			= $ElementosFecha[0];
-		@$month			= $ElementosFecha[1];
-		@$day			= $ElementosFecha[2];
-		$mes="";
-		//Asignando el nombre del mes correspondiente
-			if($month==1) $mes = "Enero";
-			if($month==2) $mes = "Febrero";
-			if($month==3) $mes = "Marzo";
-			if($month==4) $mes = "Abril";
-			if($month==5) $mes = "Mayo";
-			if($month==6) $mes = "Junio";
-			if($month==7) $mes = "Julio";
-			if($month==8) $mes = "Agosto";
-			if($month==9) $mes = "Septiembre";
-			if($month==10)$mes = "Octubre";
-			if($month==11)$mes = "Noviembre";
-			if($month==12)$mes = "Diciembre";	
-		
-		//Devolviendo el string de la fecha adecuado.
-		$Fechafinal = $day." de ".$mes." de ".$year;
-		return $Fechafinal;
-	}
-	
-	
+		R::freeze(1);
+		R::begin();
+		    try{
+		       $respuesta = R::store($objeto);
+		        R::commit();
+		    }
+		    catch(Exception $e) {
+		       $respuesta =  R::rollback();
+		       $respuesta = "Error";
+		    }
+		R::close();
+		return $respuesta;
+	}//EjecutarTransacción
+
+	//Funciones viejas
 	/////Funciones de medida de peso //////
-	function Peso($id_Cliente,$Altura,$id_instructor,$peso)
+	function Peso1($id_Cliente,$Altura,$id_instructor,$peso)
 	{
 		$agregar     = new Agregar();
 		$consultar   = new Consultar();
@@ -735,21 +564,8 @@
 		return $resultado;
 	}//RangoDePesoPorAltura
 
-	function PorcentajeAcordeResultadoPeso($resultado)
-	{
-		switch($resultado)	
-		{
-			case 'Peso Ideal': 	 $porcentaje=100; break;
-			case 'Sobre Peso': 	 $porcentaje=60;  break;
-			case 'Bajo de peso': $porcentaje=60;  break;
-			case 'Obesidad':     $porcentaje=20;  break;
-		}//switch
-		
-		return $porcentaje;
-	}//PorcentajeAcordeResultado
-	
 	//Funciones de IMC///
-	function IMC($id_Cliente,$Altura,$id_instructor,$peso)
+	function IMC1($id_Cliente,$Altura,$id_instructor,$peso)
 	{
 		$agregar   = new Agregar();
 		$consultar = new Consultar();
@@ -762,11 +578,11 @@
 		//Verificando si está dentro del rango 
 		if($Diagnostico == "Fuera de rango")
 		{
-			$salidaJson=array("Condicion"=>$Diagnostico, "Altura"=>$Altura, "id_cliente"=>$id_Cliente,"peso"=>$peso,
-			"TipoPrueba"=>3);
+			
 		}
-		else{
-		$porcentajeAcordeResultado=PorcentajeAcordeResultadoPeso($Diagnostico);
+		else
+		{
+		 $porcentajeAcordeResultado = PorcentajeAcordeResultadoPeso($Diagnostico);
 		
 		//Agregando el resultado en la BD
 		$TipoPrueba = 3;
@@ -804,6 +620,305 @@
 		}
 			return $salidaJson;
 	}
+
+	function CondicionFisica($id_Cliente,$ResultadoEvaluado,$id_instructor)
+	{
+		$consultar = new Consultar(); 
+		
+		//Buscando la información del cliente para hacer el test
+		$consultar = new Consultar();
+		$result	   = $consultar->_ConsultarClientesPorId($id_Cliente);	
+		$fila	   = $result->fetch_assoc();
+		//tomando sexo y edad
+		$edad	   = $fila['num_edad'];
+		$sexo	   = $fila['de_genero'];
+		$DescPrueba = "Condicion Física";
+		if($sexo=="MASCULINO")	
+		{
+			$Condicion = EvaluacionMasculinaCondicionFisica($edad,$ResultadoEvaluado); //resultado de la prueba
+			//En esta línea se agregan el resultado de la prueba, se obtienen los datos necesarios y se devuelve el array para
+			//devolver a la pantalla principal.
+			if($Condicion=="Fuera de rango")
+			{
+				$salidaJson=array("Tipo_Prueba"=>1, "Resultado"=>$Condicion, "id_cliente"=>$id_Cliente,"id_instructor"=>$id_instructor,
+				"Resultado_Evaluado"=>$ResultadoEvaluado);
+			}
+			else
+			{	
+				$salidaJson = AgregadoYfuncionesDeCondicionFisica($id_instructor,$id_Cliente,$Condicion,$ResultadoEvaluado,$DescPrueba); 
+			}
+			return $salidaJson;
+		}//if
+		else
+		{
+			$Condicion = EvaluacionFemeninaCondicionFisica($edad,$ResultadoEvaluado); //resultado de la prueba
+			//En esta línea se agregan el resultado de la prueba, se obtienen los datos necesarios y se devuelve el array para
+			//devolver a la pantalla principal.
+			if($Condicion=="Fuera de rango")
+			{
+				$salidaJson=array("Tipo_Prueba"=>1, "Resultado"=>$Condicion, "id_cliente"=>$id_Cliente,"id_instructor"=>$id_instructor,
+				"Resultado_Evaluado"=>$ResultadoEvaluado);
+			}
+			else{$salidaJson=AgregadoYfuncionesDeCondicionFisica($id_instructor,$id_Cliente,$Condicion,$ResultadoEvaluado,$DescPrueba); }
+			return $salidaJson;
+		}
+		
+	}//CondicionFisica
+	
+
+	//Función para determinar el rango de edades en el que se encuentra la persona
+	function EvaluacionMasculinaCondicionFisica($edad, $resultado)
+	{
+		$res="";
+		if($res=="" && $resultado<49 || $resultado>82)
+		{
+			 $res="Fuera de rango";
+		}//if
+		else{
+		switch($edad)
+			{
+				//se declara res vacío, si cae en alguno de los rangos de edad, se debe verificar que 
+				//resultado fue, si no es se asigna cadena vacía y se sigue buscando.
+								
+				//case de las edades
+				case $edad >=18 && $edad<=25:
+				
+					if($res=="" && $resultado>=49 && $resultado<=55) $res="Atleta";
+					if($res=="" && $resultado>=56 && $resultado<=61) $res="Excelente";	
+					if($res=="" && $resultado>=62 && $resultado<=69) $res="Bueno";	
+					if($res=="" && $resultado>=70 && $resultado<=81) $res="Promedio";
+					if($res=="" && $resultado>=82)$res="Pobre";
+				break;
+				
+				case $edad >=26 && $edad<=35:
+					if($res=="" && $resultado>=49 && $resultado<=54) $res="Atleta";
+					if($res=="" && $resultado>=55 && $resultado<=61) $res="Excelente";
+					if($res=="" && $resultado>=62 && $resultado<=70) $res="Bueno";
+					if($res=="" && $resultado>=71 && $resultado<=81) $res="Promedio";
+					if($res=="" && $resultado>=82)$res="Pobre";
+				break;
+					
+				case $edad >=36 && $edad<=45:
+					if($res=="" && $resultado>=50 && $resultado<=56) $res="Atleta";
+					if($res=="" && $resultado>=57 && $resultado<=62) $res="Excelente";
+					if($res=="" && $resultado>=63 && $resultado<=70) $res="Bueno";
+					if($res=="" && $resultado>=71 && $resultado<=82) $res="Promedio";
+					if($res=="" && $resultado>=83)					 $res="Pobre";
+				break;
+				
+				case $edad >=46 && $edad<=55:
+					if($res=="" && $resultado>=50 && $resultado<=57) $res="Atleta";
+					if($res=="" && $resultado>=58 && $resultado<=63) $res="Excelente";
+					if($res=="" && $resultado>=64 && $resultado<=71) $res="Bueno";
+					if($res=="" && $resultado>=72 && $resultado<=83) $res="Promedio";
+					if($res=="" && $resultado>=84)					 $res="Pobre";
+				break;
+				
+				case $edad >=56 && $edad<=65:
+					if($res=="" && $resultado>=51 && $resultado<=56) $res="Atleta";
+					if($res=="" && $resultado>=57 && $resultado<=61) $res="Excelente";
+					if($res=="" && $resultado>=62 && $resultado<=71) $res="Bueno";
+					if($res=="" && $resultado>=72 && $resultado<=81) $res="Promedio";
+					if($res=="" && $resultado>=82)					 $res="Pobre";
+				break;
+				
+				case $edad >65:
+					if($res=="" && $resultado>=50 && $resultado<=55) $res="Atleta";
+					if($res=="" && $resultado>=56 && $resultado<=61) $res="Excelente";
+					if($res=="" && $resultado>=62 && $resultado<=69) $res="Bueno";
+					if($res=="" && $resultado>=70 && $resultado<=79) $res="Promedio";
+					if($res=="" && $resultado>=80)					 $res="Pobre";
+				break;
+				
+				default:
+					$res="Fuera de rango";
+				break;
+				
+			}//switch
+		}//else
+			$condicion = $res;
+			return $condicion;
+	}//EvaluacionMasculina
+	
+	function EvaluacionFemeninaCondicionFisica($edad, $resultado)
+	{
+		$res="";
+		if($res=="" && $resultado<49 || $resultado>82)
+		{
+			 $res="Fuera de rango";
+		}//if
+		else{
+		switch($edad)
+			{
+				//se declara res vacío, si cae en alguno de los rangos de edad, se debe verificar que 
+				//resultado fue, si no es se asigna cadena vacía y se sigue buscando.
+								
+				//case de las edades
+				case $edad >=18 && $edad<=25:
+						if($res=="" && $resultado>=50 && $resultado<=60) $res="Atleta";
+						if($res=="" && $resultado>=61 && $resultado<=68) $res="Excelente";	
+						if($res=="" && $resultado>=69 && $resultado<=73) $res="Bueno";	
+						if($res=="" && $resultado>=74 && $resultado<=84) $res="Promedio";
+						if($res=="" && $resultado>=85)					 $res="Pobre";						
+				break;
+				
+				case $edad >=26 && $edad<=35:
+					if($res=="" && $resultado>=50 && $resultado<=59)$res="Atleta";
+					if($res=="" && $resultado>=60 && $resultado<=64)$res="Excelente";
+					if($res=="" && $resultado>=65 && $resultado<=72)$res="Bueno";
+					if($res=="" && $resultado>=73 && $resultado<=82)$res="Promedio";
+					if($res=="" && $resultado>=83)$res="Pobre";
+				break;
+					
+				case $edad >=36 && $edad<=45:
+					if($res=="" && $resultado>=50 && $resultado<=59)$res="Atleta";
+					if($res=="" && $resultado>=60 && $resultado<=64)$res="Excelente";
+					if($res=="" && $resultado>=65 && $resultado<=73)$res="Bueno";
+					if($res=="" && $resultado>=74 && $resultado<=84)$res="Promedio";
+					if($res=="" && $resultado>=85)$res="Pobre";
+				break;
+				
+				case $edad >=46 && $edad<=55:
+					if($res=="" && $resultado>=50 && $resultado<=60)$res="Atleta";
+					if($res=="" && $resultado>=61 && $resultado<=65)$res="Excelente";
+					if($res=="" && $resultado>=66 && $resultado<=73)$res="Bueno";
+					if($res=="" && $resultado>=74 && $resultado<=83)$res="Promedio";
+					if($res=="" && $resultado>=84)$res="Pobre";
+				break;
+				
+				case $edad >=56 && $edad<=65:
+					if($res=="" && $resultado>=50 && $resultado<=59)$res="Atleta";
+					if($res=="" && $resultado>=60 && $resultado<=64)$res="Excelente";
+					if($res=="" && $resultado>=65 && $resultado<=73)$res="Bueno";
+					if($res=="" && $resultado>=74 && $resultado<=83)$res="Promedio";
+					if($res=="" && $resultado>=84)$res="Pobre";
+				break;
+				
+				case $edad >65:
+					if($res=="" && $resultado>=50 && $resultado<=59)$res="Atleta";
+					if($res=="" && $resultado>=60 && $resultado<=64)$res="Excelente";
+					if($res=="" && $resultado>=65 && $resultado<=72)$res="Bueno";
+					if($res=="" && $resultado>=73 && $resultado<=84)$res="Promedio";
+					if($res=="" && $resultado>=84)$res="Pobre";
+				break;
+				
+				
+				default:
+					$res="Fuera de rango";
+				break;
+				
+			}//switch
+	}//else
+			$condicion=$res;
+			return $condicion;
+	}
+	
+	function PorcentajeAcordeResultado($resultado)
+	{
+		$porcentaje = 0;
+		switch($resultado)	
+		{
+			case 'Atleta':    $porcentaje = 100; break;
+			case 'Excelente': $porcentaje = 80;  break;
+			case 'Bueno':     $porcentaje = 60;  break;
+			case 'Promedio':  $porcentaje = 40;  break;
+			case 'Pobre':     $porcentaje = 20;  break;
+		}//switch
+		
+		return $porcentaje;
+	}//PorcentajeAcordeResultado
+	
+	function AgregadoYfuncionesDeCondicionFisica($id_instructor,$id_Cliente,$Condicion,$ResultadoEvaluado,$DescPrueba)
+	{
+			$agregar    = new Agregar();
+			$consultar  = new Consultar(); 
+			//Tomando los valores para guardar el resultado de la prueba en la BD
+			$TipoPrueba = 1;
+			$porcentaje = PorcentajeAcordeResultado($Condicion);
+			//Guardando los resultados de la prueba
+			$resultado=$agregar->_AgregarResultadoPrueba($id_instructor, $id_Cliente, $TipoPrueba, $DescPrueba, $Condicion, $porcentaje,$ResultadoEvaluado);
+			
+			//Obteniendo pruebas de los últimos 3 meses para saber el resultado de la persona en las gráficas
+			$resultadoPruebas=$consultar->_ConsultarResultadosPruebas(1,$id_Cliente);
+			
+			//Creando un array con los resultados de las pruebas
+			$arrayResultados=array();
+			
+			//tomando los resultados
+			for($i=0; $i<3; $i++)
+			{
+				$fila=$resultadoPruebas->fetch_assoc();
+				$NumPrueba="Prueba".$i;
+				//Tomando los valores para asignarlos al array.
+				
+				//Si los valores vienen null, se les asigna 0 para que al llegar al lado del cliente se asigne otro valor y se cargue la gráfica
+				$fecha=($fila['fecha']!=null)?ConvertirTimeStamp($fila['fecha']):0; //Devolviendo un string con la fecha con el método de la línea 148
+				$porcentaje = ($fila['Porcentaje']!=null)?$fila['Porcentaje']:0;
+				$resultado  = $fila['Resultado'];
+				$Prueba     = array("Resultado"=>$resultado,"Porcentaje"=>$porcentaje, "Fecha"=>$fecha);	
+				array_push ($arrayResultados,$Prueba);
+			}
+			//print_r($arrayResultados);
+			//Tomando el consejo de la evaluación física
+			$resultConsejo = $consultar->_ConsultarConsejoAcordeResultado(1,$Condicion);
+			$filaConsejo   = $resultConsejo->fetch_assoc();
+			$consejo	   = $filaConsejo['Consejo'];
+			
+			//Guardando en la bitácora el biotest hecho
+			$ResultBitacora = $agregar->_AgregarRegistroBitacoraBiotest($id_instructor,$id_Cliente);
+			//DEvolviendo parámetros para la notificación				
+			$salidaJson=array("Condicion"=>$Condicion, "Resultado"=>$ResultadoEvaluado, "id_cliente"=>$id_Cliente,"Resultados"=>$arrayResultados,
+			"TipoPrueba"=>$TipoPrueba, "Consejo"=>$consejo);
+			return $salidaJson;
+	}
+	
+	function ConvertirTimeStamp($time) //función para devolver un string de la fecha a partir de una time stamp de mysql
+	{
+		//Quitando las horas y minutos
+		$fechas		    = explode(" ",$time);
+		$fechaSinHoras  = $fechas[0];
+		//Seperando los elementos de año, mes y día.
+		$ElementosFecha = explode("-",$fechaSinHoras);
+		$year			= $ElementosFecha[0];
+		@$month			= $ElementosFecha[1];
+		@$day			= $ElementosFecha[2];
+		$mes="";
+		//Asignando el nombre del mes correspondiente
+			if($month==1) $mes = "Enero";
+			if($month==2) $mes = "Febrero";
+			if($month==3) $mes = "Marzo";
+			if($month==4) $mes = "Abril";
+			if($month==5) $mes = "Mayo";
+			if($month==6) $mes = "Junio";
+			if($month==7) $mes = "Julio";
+			if($month==8) $mes = "Agosto";
+			if($month==9) $mes = "Septiembre";
+			if($month==10)$mes = "Octubre";
+			if($month==11)$mes = "Noviembre";
+			if($month==12)$mes = "Diciembre";	
+		
+		//Devolviendo el string de la fecha adecuado.
+		$Fechafinal = $day." de ".$mes." de ".$year;
+		return $Fechafinal;
+	}
+	
+	
+	
+
+	function PorcentajeAcordeResultadoPeso($resultado)
+	{
+		switch($resultado)	
+		{
+			case 'Peso Ideal': 	 $porcentaje=100; break;
+			case 'Sobre Peso': 	 $porcentaje=60;  break;
+			case 'Bajo de peso': $porcentaje=60;  break;
+			case 'Obesidad':     $porcentaje=20;  break;
+		}//switch
+		
+		return $porcentaje;
+	}//PorcentajeAcordeResultado
+	
+	
 	
 	function DiagnosticoAcordeResultadoIMC($resultado)
 	{

@@ -19,6 +19,7 @@
 <script src="js/controlers/componentesrutinas.js"></script>
 <script src="js/controlers/rutinas.js"></script>
 <script src="js/controlers/clientes.js"></script>
+<script src="js/controlers/biotest.js"></script>
 <!-- css -->
 <link rel="stylesheet" href="css/loading.css" />
 <!-- jQuery 2.0.2 -->
@@ -46,7 +47,7 @@
 </html>
 
 <script type="text/javascript">
-	angular.module('app',['ngRoute','AppUsuarios','Methods','AppUtilidades','AppRutinasComp','AppClientes','ngCookies','Rutinas'])
+	angular.module('app',['ngRoute','AppUsuarios','Methods','AppUtilidades','AppRutinasComp','AppClientes','ngCookies','Rutinas','AppBiotest'])
 	.config(function($routeProvider)
 	{
 	    $routeProvider
@@ -245,6 +246,12 @@
 	    .when('/RutinaPrefinalC',{
 	    	controller: 'RutinaprefinalC',
 	      	templateUrl:'modulos/Clientes/Rutinas_Prefinal.html'
+	    })
+
+	    //Direcciones de biotest.
+	    .when('/Biotest',{
+	    	controller: 'BiotestC',
+	      	templateUrl:'modulos/Biotest/Biotest.html'
 	    })
 
 	    .otherwise({

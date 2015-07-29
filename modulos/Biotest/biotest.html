@@ -1,0 +1,150 @@
+<style type="text/css">
+	.LabelPregunta {width: 100%;}
+	.hide {display: none;}
+</style>
+
+
+            <!-- Right side column. Contains the navbar and content of the page -->
+<aside class="right-side">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            Clientes
+            <small>Biotest Para Clientes</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
+            <li class="active">Biotest</li>
+        </ol>
+    </section>
+    
+    
+    <!-- Main content -->
+    <section class="content">
+    	<!-- HEADER DEL CONTENIDO-->
+        <div class="alert alert-danger alert-dismissible col-md-12" role="alert" id="alerta" style="display:none;">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <strong>Atención!</strong> <p id="ErrorTexto"></p>
+        </div>
+        <h4 class="page-header">
+            Biotest Light
+            <small>
+            	En este apartado podrá aplicar el biotest a los clientes de <span class="text-red">spin gym</span>, asegúrese de ingresar correctamente los datos para un correcto resultado.
+            </small>
+        </h4>
+        <!-- HEADER DEL CONTENIDO-->
+        <div class="col-md-12 Loading" ng-hide="mostrarbuscando!=true">
+            <h1 class="text-center">Cargando</h1>
+            <div class="sk-spinner sk-spinner-wandering-cubes">
+              <div class="sk-cube1"></div>
+              <div class="sk-cube2"></div>
+            </div>
+        </div><!-- loading-->
+        <!-- FORMULARIO -->
+        <form ng-submit="EjecutarTest()" >
+        <!-- RENGLON CON EL FORMULARIO Y DOS COLUMNAS-->
+        <div class="row">
+        	<!-- COLUMNA IZQUIERDA -->
+        	<div class="col-md-6">
+            	<!-- CAJA -->
+				<div class="box box-primary">
+                    <!-- HEADER DE LA CAJA -->
+                    <div class="box-header">
+                        <h3 class="box-title">Formulario 1- Cuerpo</h3>
+                    </div>
+                    <!-- HEADER DE LA CAJA -->
+                        
+                    <!-- CUERPO DE LA CAJA -->
+                    <div class="box-body">
+                    	<div class="form-group">
+                            <label for="nb_cliente" class="LabelPregunta">Peso (Kilogramos)</label>
+                            <input class="form-control" ng-model="biotest.peso" required>
+                        </div>
+                    	
+                    	 <div class="form-group">
+                            <label for="nb_cliente" class="LabelPregunta">Altura (Centímetros)</label>
+                           <input class="form-control" ng-model="biotest.altura" required>
+                        </div>
+                    
+                      
+                    </div>
+                    <!-- CUERPO DE LA CAJA -->
+
+                    <!-- FOOTER DE LA CAJA -->
+                    <div class="box-footer">
+                         Los campos marcados con <span class="text-red"><strong>*</strong></span> son obligatorios.
+                    </div>
+                    <!-- FOOTER DE LA CAJA -->
+                </div>
+                <!-- CAJA -->
+            </div>
+            <!-- COLUMNA IZQUIERDA -->
+            
+            <!-- COLUMNA DERECHA -->
+        	<div class="col-md-6">
+				<!-- CAJA -->
+                <div class="box box-warning">
+                    <!-- HEADER DE LA CAJA -->
+                    <div class="box-header">
+                        <h3 class="box-title">Formulario 2-Medidas</h3>
+                    </div>
+                    <!-- HEADER DE LA CAJA -->
+                    
+                    <!-- CUERPO DE LA CAJA -->
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label for="nb_cliente" class="LabelPregunta">Espalda</label>
+                           <input class="form-control" ng-model="biotest.espalda" required>
+                        </div>
+                       
+                        <div class="form-group">
+                            <label for="nb_cliente" class="LabelPregunta">Pecho</label>
+                           <input class="form-control" ng-model="biotest.pecho" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="nb_cliente" class="LabelPregunta">Abdomen</label>
+                           <input class="form-control" ng-model="biotest.abdomen" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="nb_cliente" class="LabelPregunta">Cadera</label>
+                           <input class="form-control" ng-model="biotest.cadera" required>
+                        </div>
+                        
+                         <div class="form-group">
+                            <label for="nb_cliente" class="LabelPregunta">Brazo</label>
+                           <input class="form-control" ng-model="biotest.brazo" required>
+                        </div>
+                        
+                         <div class="form-group">
+                            <label for="nb_cliente" class="LabelPregunta">Muslo</label>
+                           <input class="form-control" ng-model="biotest.muslo" required>
+                        </div>
+                        
+                         
+                    </div>
+                    <!-- CUERPO DE LA CAJA -->
+                    
+					<!-- FOOTER DE LA CAJA -->
+                    <div class="box-footer">
+                        Los campos marcados con <span class="text-red"><strong>*</strong></span> son obligatorios.
+                    </div>
+                    <!-- FOOTER DE LA CAJA -->
+                </div>
+                <!-- CAJA -->
+            </div>
+            <!-- COLUMNA DERECHA -->
+        </div>
+        <!-- RENGLON CON EL FORMULARIO Y DOS COLUMNAS-->
+        
+        <div class="row">
+        	<div class="col-md-6" align="right"><button type="submit" class="btn btn-primary" >REGISTRAR</button></div>
+            <div class="col-md-6" align="left"><button type="button" class="btn btn-danger" ng-click="Redirigir('Clientes')">CANCELAR</button></div>
+        </div>
+        </form>
+        <!-- FORMULARIO -->
+    </section>
+</aside>
+
+</div>
