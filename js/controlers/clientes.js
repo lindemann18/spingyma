@@ -602,6 +602,44 @@ $scope.AsignarRutina = function(id)
 	});
 }//AsignarRutina
 
+$scope.ContinuarR = function()
+{
+	bootbox.confirm("Desea eliminar la rutina del cliente?.", function(result) {
+		console.log(result);
+	  	if(result==true)
+	  	{
+	  		$scope.$apply(function(){
+	  			params = $methodsService.Json("DesactivarRutina",$scope.id); var url = 'modulos/Clientes/Funciones.php';
+			     $http({method: "post",url: url,data: $.param({Params:params}), 
+			      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+			    })
+			     .success(function(data, status, headers, config) 
+			     {          	
+		       		exito = data.exito;
+		       		if(exito==1)
+		       		{
+		       			$location.path('/ClientesRutina').search({id:$scope.id});
+		       		}//if
+		       		
+		      }) .error(function(data, status, headers, config){$methodsService.alerta(2,"algo falló, disculpe las molestias");});
+	  		});
+	  	}//if
+	});
+}//ContinuarR
+
+$scope.CancelarR = function()
+{
+	bootbox.confirm("Desea cancelar la operación?.", function(result) {
+		console.log(result);
+	  	if(result==true)
+	  	{
+	  		$scope.$apply(function(){
+	  			$location.path('/Clientes').search({});
+	  		});
+	  	}//if
+	});
+}//CancelarR
+
 $scope.obtenerdir = function(pagina)
 {
 	var direccion="";
@@ -648,7 +686,7 @@ $scope.obtenerdir = function(pagina)
 		break;
 
 		case 1:
-			direccion = 'modulos/Clientes/paginas/rutinas_desasignar.html';
+			$scope.url = 'modulos/Clientes/paginas/rutinas_desasignar.html';
 		break;
 	}//switch
 

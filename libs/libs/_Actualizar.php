@@ -226,6 +226,21 @@
 			return $objeto;
 		}//_ActualizarIdPosicionEjercicioSubioPosicion
 
+		function _EliminarRutinaClientePorIdcliente($id,$id_rutina)
+		{
+			//Eliminando la rutina del cliente para evitar muchos datos innecesarios
+			$query='
+			DELETE FROM  sgrutinasclientes WHERE id_cliente=?
+			';
+			
+			//Eliminando los ejercicios de las rutinas que se eliminan, para evitar demasiados datos.
+			$query2 = '
+			DELETE FROM sgejerciciosrutinacliente  WHERE id_rutina = ?
+			';	
+			$objeto = R::exec($query,[$id]);
+			$objeto = R::exec($query2,[$id_rutina]);
+			return $objeto;
+		}
 		//funciones Viejas
 
 		function EliminarUsuario($id)	
@@ -659,36 +674,7 @@
 			return $result;
 		}//_EliminarRutinaClienteActualPorId
 		
-		function _EliminarRutinaClientePorIdcliente($id_cliente)
-		{
-			/*$query='
-			UPDATE sg_rutinasclientes SET sn_activo=0
-			WHERE id_cliente="'.$id_cliente.'"
-			';	*/
-			
-			//Consultar el id de la rutina a eliminar 
-			$consultar		  = new Consultar();
-			$resultRutina	  = $consultar->_ConsultarRutinasClientesPorIdCliente($id_cliente);
-			$filaRutina   	  = $resultRutina->fetch_assoc();
-			$id_rutinaCliente = $filaRutina['id_rutinaCliente'];
-			
-			//Eliminando la rutina del cliente para evitar muchos datos innecesarios
-			$query='
-			DELETE FROM  sg_rutinasclientes WHERE id_rutinaCliente="'.$id_rutinaCliente.'"
-			';
-			
-			//Eliminando los ejercicios de las rutinas que se eliminan, para evitar demasiados datos.
-			$query2 = '
-			DELETE FROM sg_ejerciciosrutinacliente  WHERE id_Rutina = "'.$id_rutinaCliente.'"
-			';	
-			$conectar = new Conectar();
-			$con	  = Conectar::_con();
-			
-			//ejecutando los queries.
-			$result	  = $con->query($query)or die("Error en $query ".mysqli_error($query));
-			$result2  = $con->query($query2)or die("Error en $query ".mysqli_error($query2));
-			return $result;
-		}
+		
 		
 	}//ACtualizar
 ?>

@@ -122,6 +122,11 @@
 			echo json_encode($salidaJson);
 		break;
 
+		case 'DesactivarRutina':
+			$salidaJson = DesactivarRutina($Parametros);
+			echo json_encode($salidaJson);
+		break;
+
 		//casos viejos
 		
 		case 'RegistrarEjerciciosRutinas':
@@ -149,18 +154,6 @@
 			echo json_encode($salidaJson);
 		break;
 		
-		
-		case 'DesactivarRutina':
-			
-			//Tomando los valores
-			$id_cliente	= $Parametros['id_cliente'];
-			//Desactivando la rutina para asignar una nueva
-			DesactivarRutina($id_cliente);
-		break;
-		
-		
-
-
 		case 'ConsultarTiposCuerpo':
 			$salidaJson = ConsultarTiposCuerpo();
 			echo json_encode($salidaJson);
@@ -730,6 +723,22 @@
 
 	}///AgregarCircuitosEjercicio
 
+	function DesactivarRutina($Parametros)
+	{
+		$id = $Parametros['id'];
+		$rutina = R::findOne("sgrutinasclientes","id_cliente=?",[$id]);
+		$id_rutina = $rutina->id;
+		$actualizar = new Actualizar();
+		$exito      = 0;
+		$resultado  = $actualizar->_EliminarRutinaClientePorIdcliente($id,$id_rutina);
+		if(is_numeric($resultado))
+		{
+			$exito = 1;
+		}
+		$datos = array("exito"=>$exito);
+		return $datos;
+	}//DesactivarRutina
+
 	//Funciones viejas
 	function EditarCliente1($Parametros)
 	{
@@ -891,15 +900,6 @@
 		return $datos;
 	}//AsignarRutinaACliente
 	
-	function DesactivarRutina($id_cliente)
-	{
-		date_default_timezone_set("Mexico/General");
-		$consultar  = new Consultar();
-		$agregar    = new Agregar();
-		$actualizar = new Actualizar();
-		$result		= $actualizar->_EliminarRutinaClientePorIdcliente($id_cliente);
-		
-	}//DesactivarRutina
 	
 	//Funciones de cambio de logar de la rutina de clientes
 	
