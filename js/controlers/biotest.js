@@ -1,8 +1,61 @@
 angular.module('AppBiotest',['ngRoute','angularUtils.directives.dirPagination','Methods','ngCookies',"highcharts-ng"])
 
+.controller('MenuBiotest',function($scope,$http,$location,$methodsService,$routeParams){
+	$scope.Cliente = $routeParams.Cliente;
+	$scope.Aplicar = function()
+	{
+		bootbox.confirm("Desea Aplicar el biotest?", function(result) {
+		console.log(result);
+	  	if(result==true)
+	  	{
+	  		$scope.$apply(function(){
+				$location.path('/Biotest').search({Cliente:$scope.Cliente});
+			});
+	  	}//if
+	  });
+		
+	}
+})
+
 .controller('BiotestC',function($scope,$http,$location,$methodsService,$routeParams){
 //Funciones
 $scope.cliente = $routeParams.Cliente;
+$scope.biotest = {peso:"",altura:"",espalda:"",pecho:"",abdomen:"",cadera:"",brazo:"",muslo:"",Accion:""};
+//Se debe verificar el último biotest del cliente.s
+var params = $methodsService.Json("UltimoBiotestCliente",$scope.cliente);
+var url = 'modulos/Biotest/Funciones.php';
+ $http({method: "post",url: url,data: $.param({Params:params}), 
+  headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+})
+ .success(function(data, status, headers, config) 
+ {          	
+   		$scope.permiso = data.permiso;
+   		$scope.diastrans = data.Dias_trans;
+   		if($scope.permiso==1)
+   		{
+   			$scope.url = "modulos/Biotest/paginas/form.html";
+   		}//if
+   		else
+   		{
+   			$scope.url = "modulos/Biotest/paginas/error.html";
+   		}
+  })  
+ .error(function(data, status, headers, config){
+ 	$methodsService.alerta(2,"algo falló, disculpe las molestias");
+ });
+
+$scope.Redirigir = function(direccion)
+{
+	bootbox.confirm("Desea regresar a clientes?", function(result) {
+		console.log(result);
+	  	if(result==true)
+	  	{
+	  		$scope.$apply(function(){
+			$methodsService.Redirigir(direccion);
+			});
+	  	}//if
+	  });
+}
 
 $scope.EjecutarTest = function()
 {
@@ -86,6 +139,8 @@ $scope.EjecutarTest = function()
 	   				$scope.imc  	= data.imc;
 	   				$scope.imm  	= data.imm;
 	   				$scope.immAnt   = data.immAnt;
+	   				$scope.consejoP = data.consejoPeso;
+	   				$scope.consejoI = data.consejoimc;
 	   				$scope.condpeso = $scope.peso[0].resultado;
 	   				$scope.condIMC  = $scope.imc[0].resultado;
 	   				$methodsService.ResultadoPeso($scope.peso[0].porcentaje,"#ProgresBarPeso");
@@ -123,11 +178,11 @@ $scope.EjecutarTest = function()
 
 					$scope.chartConfig = {
 				         options: {chart: {type: 'bar'}},
-				         series: [{name: fecha1,color: "#00a65a",data: [resultado1imc]}, {
+				         series: [{name: fecha1,color: "#00a65a",data: [resultado1]}, {
 				            name: fecha2,
 				            color:"#428bca",
-				            data: [resultado2imc]
-				        }, {name: fecha3,color:"#f56954",data: [resultado3imc]}],
+				            data: [resultado2]
+				        }, {name: fecha3,color:"#f56954",data: [resultado3]}],
 				        title: {text: TituloPrueba},loading: false};
 
 				    $scope.chartConfig2 = {
@@ -138,54 +193,125 @@ $scope.EjecutarTest = function()
 				        title: {text: TituloPruebaimc},loading: false};
 
 				        //Definiendo los datos de la prueba de IMM.
-				        Fecha=pruebas[0].Fecha; //Fecha para todas las primeras 8 pruebas.
-					//Perímetro brazo relajado
-					Perimetro_brazo_relajado   = "IMM - Espalda";
-					Per_Brazo				   = "";
-					//Perímetro brazo_flexionado
-					Perimetro_brazo_flexionado = "IMM - Pecho";
-					Per_Brazo_Fle			   = "";
-					//Perímetro Femoral
-					Perimetro_femoral = "IMM - Abdomen";
-					Per_Femoral		  = "";
-					//Perímetro de pantorrilla
-					Perimetro_Pantorrilla = "IMM - Cadera";
-					Per_Pantorrilla		  = "";
-					//Perímetro Cintura
-					Cintura			= "IMM - Brazo";
-					CantidadCintura = "";
-					//Perímetro Cadera
-					Cadera		   = "IMM - Muslo";
-					CantidadCadera = "";
+				        Fecha=$scope.imm[0].fh_creacion; //Fecha para todas las primeras 8 pruebas.
+						
+						//Perímetro brazo relajado
+						Espalda       = "IMM - Espalda";
+						Per_Espalda	  = "";
+						//Perímetro brazo_flexionado
+						Pecho 		  = "IMM - Pecho";
+						Per_Pecho	  = "";
+						//Perímetro Femoral
+						Abdomen 	  = "IMM - Abdomen";
+						Per_Abdomen	  = "";
+						//Perímetro de pantorrilla
+						Cadera 		  = "IMM - Cadera";
+						Per_Cadera	  = "";
+						//Perímetro Cintura
+						Brazo	      = "IMM - Brazo";
+						CantidadBrazo = "";
+						//Perímetro Cadera
+						Muslo		  = "IMM - Muslo";
+						CantidadMuslo = "";
 					
 					//Se hace en un ciclo por que no se sabe en que orden vienen.
 					for(i=0; i<6; i++)
 					{
 						//Tomando los valores de las pruebas a partir del nombre de las mismas.
-						switch($scope.imm[i].DescPrueba)
+						switch($scope.imm[i].desc_prueba)
 						{
 							case "IMM - Espalda": 
-								Per_Brazo = $scope.imm[i].porcentaje;
+								Per_Espalda   = parseInt($scope.imm[i].resultado_numerico);
 							break;
 							case 'IMM - Pecho': 
-								Per_Brazo_Fle = $scope.imm[i].porcentaje;
+								Per_Pecho     = parseInt($scope.imm[i].resultado_numerico);
 							break;
 							case 'IMM - Abdomen': 
-								Per_Femoral = $scope.imm[i].porcentaje;
+								Per_Abdomen   = parseInt($scope.imm[i].resultado_numerico);
 							break;
 							case 'IMM - Cadera': 
-								Per_Pantorrilla = $scope.imm[i].porcentaje;
+								Per_Cadera    = parseInt($scope.imm[i].resultado_numerico);
 							break;
 							case 'IMM - Brazo': 
-								CantidadCintura = $scope.imm[i].porcentaje;
+								CantidadBrazo = parseInt($scope.imm[i].resultado_numerico);
 							break;
 							case 'IMM - Muslo': 
-								CantidadCadera = $scope.imm[i].porcentaje;
+								CantidadMuslo = parseInt($scope.imm[i].resultado_numerico);
 							break;
 							
 						}//switch
 						
 					}//for
+
+					//2dos resultados de IMM
+					//Tomando los valores de Pruebas 2, que son las pruebas más antiguas del mes pasado.
+					//Perímetro Per_Espalda2
+					Per_Espalda2   = "";
+					//Perímetro Per_Pecho2
+					Per_Pecho2	   = "";
+					//Perímetro de Per_Abdomen2
+					Per_Abdomen2   = "";
+					//Perímetro Per_Cadera2
+					Per_Cadera2    = "";
+					//Perímetro CantidadBrazo2
+					CantidadBrazo2 = "";
+					//Perímetro CantidadMuslo2
+					CantidadMuslo2 = "";
+					
+					//Se hace en un ciclo por que no se sabe en que orden vienen.
+					Fecha2=($scope.immAnt[0].fh_creacion!=0)?$scope.immAnt[0].fh_creacion:"BioTest No hecho"; //Fecha para todas las primeras 8 pruebas.
+					
+					// Si vienen en 0 cualquiera de la descripción de las pruebas es el primer biotest, de no ser así es el 2do o cualquier otro.
+					// Para efecto de que se vean las pruebas se asignan en 0 todos los valores dado que no hay otro punto de comparación.
+					
+					if($scope.immAnt[0].desc_prueba == 0)
+					{
+						Per_Espalda2   = 0;
+						Per_Pecho2	   = 0;
+						Per_Abdomen2   = 0;
+						Per_Cadera2    = 0;
+						CantidadBrazo2 = 0;
+						CantidadMuslo2 = 0;
+					}
+					else
+					{
+						for(i=0; i<6; i++)
+						{
+							//Tomando los valores de las pruebas a partir del nombre de las mismas.
+							switch($scope.immAnt[i].desc_prueba)
+							{
+								case "IMM - Espalda": 
+									Per_Espalda2   = parseInt($scope.immAnt[i].resultado_numerico);
+								break;
+								case 'IMM - Pecho': 
+									Per_Pecho2     = parseInt($scope.immAnt[i].resultado_numerico);
+								break;
+								case 'IMM - Abdomen': 
+									Per_Abdomen2   = parseInt($scope.immAnt[i].resultado_numerico);
+								break;
+								case 'IMM - Cadera': 
+									Per_Cadera2    = parseInt($scope.immAnt[i].resultado_numerico);
+								break;
+								case 'IMM - Brazo': 
+									CantidadBrazo2 = parseInt($scope.immAnt[i].resultado_numerico);
+								break;
+								case 'IMM - Muslo': 
+									CantidadMuslo2 = parseInt($scope.immAnt[i].resultado_numerico);
+								break;
+								
+							}//switch
+							
+						}//for
+						
+					}//else
+					$scope.chartimm = {
+						options: {chart: {type: 'bar'}},
+			         series: [{name: Fecha,color: "#00a65a",data: [Per_Espalda,Per_Pecho,Per_Abdomen,Per_Cadera,CantidadBrazo,CantidadMuslo]}, 
+			         		  {name: Fecha2,color:"#428bca",data: [Per_Espalda2,Per_Pecho2,Per_Abdomen2,Per_Cadera2,CantidadBrazo2,CantidadMuslo2]}],
+			        title: {text: "IMM"},loading: false
+						
+					};
+
 
 	   			break;
 
@@ -197,6 +323,32 @@ $scope.EjecutarTest = function()
  .error(function(data, status, headers, config){
  	$methodsService.alerta(2,"algo falló, disculpe las molestias");
  });
+
+$scope.Redirigir = function(direccion)
+{
+	bootbox.confirm("Desea regresar a clientes?", function(result) {
+		console.log(result);
+	  	if(result==true)
+	  	{
+	  		$scope.$apply(function(){
+			$methodsService.Redirigir(direccion);
+			});
+	  	}//if
+	  });
+}//Volver
+
+$scope.ObtenerOptions = function(Fecha,Fecha2,Per_Espalda,Per_Pecho,Per_Abdomen,Per_Cadera,CantidadBrazo,CantidadMuslo,Per_Espalda2,Per_Pecho2,Per_Abdomen2,Per_Cadera2,CantidadBrazo2,CantidadMuslo2)
+{
+	options = {
+		options: {chart: {type: 'bar'}},
+		series: [
+		{name: Fecha,color: "#00a65a",data: [Per_Espalda,Per_Pecho,Per_Abdomen,Per_Cadera,CantidadBrazo,CantidadMuslo]}, 
+		{name: Fecha2,color:"#428bca",data: [Per_Espalda2,Per_Pecho2,Per_Abdomen2,Per_Cadera2,CantidadBrazo2,CantidadMuslo2]}],
+		title: {text: "IMM"},loading: false
+	};
+	return options;
+}//Obtener optiosn
+
 
 
 })

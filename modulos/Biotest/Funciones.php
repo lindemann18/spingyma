@@ -20,6 +20,11 @@
 			echo json_encode($salidaJson);
 		break;
 
+		case 'UltimoBiotestCliente':
+			$salidaJson = UltimoBiotestCliente($Parametros);
+			echo json_encode($salidaJson);
+		break;
+
 		//Casos viejos
 
 		case 'CondicionFisica':
@@ -250,18 +255,29 @@
 		$resultadoPeso = $consultar->_ConsultarResultadosPruebaslight($id_prueba,$cliente);
 		$cantidadpeso  = count($resultadoPeso);
 		$exitopeso     = ($cantidadpeso>0)?1:0;
+		$datospeso     = $consultar->_ConsultarResultadoPruebaCliente($cliente,$id_prueba);
+		$resultpeso    = $datospeso['resultado'];
+		$Prueba        = R::findOne( 'sgconsejos', ' id_tipo_prueba = ?  and Resultado = ?', [$id_prueba,$resultpeso] );
+		$consejoPeso   = $Prueba['consejo'];
 		// Resuiltados de IMC.
 		$Prueba        = R::findOne( 'sgtipospruebas', ' nm_prueba = ? ', [ 'Imc' ] );
-		$id_prueba     = $Prueba->id;
-		$resultadoImc  = $consultar->_ConsultarResultadosPruebaslight($id_prueba,$cliente);
+		$id_pruebaimc  = $Prueba->id;
+		$resultadoImc  = $consultar->_ConsultarResultadosPruebaslight($id_pruebaimc,$cliente);
 		$cantidadimc   = count($resultadoImc);
 		$exitoimc      = ($cantidadimc>0)?1:0;
+		$datosimc      = $consultar->_ConsultarResultadoPruebaCliente($cliente,$id_pruebaimc);
+		$resulimc      = $datosimc['resultado'];
+		$Prueba        = R::findOne( 'sgconsejos', ' id_tipo_prueba = ?  and Resultado = ?', [$id_pruebaimc,$resulimc] );
+		$consejoimc    = $Prueba['consejo'];
 		// Resuiltados de IMM.
 		$Prueba        = R::findOne( 'sgtipospruebas', ' nm_prueba = ? ', [ 'Imm' ] );
 		$id_prueba     = $Prueba->id;
 		$resultadoImm  = $consultar->_ConsultarResultadosPruebasIMM($id_prueba,$cliente);
 		$cantidadimm   = count($resultadoImm);
 		$exitoimm      = ($cantidadimm>0)?1:0;
+
+		//Resultados de los consejos.
+		
 
 		//Verificando la cantidad de resultados para autocompletar.
 		if($cantidadpeso<3)
@@ -323,11 +339,39 @@
 		//Devolviendo los datos
 		$datos =  array("exitoPeso"=>$exitopeso,"exitoimc"=>$exitoimc,"exitoimm"=>$exitoimm,
 						"peso"=>$resultadoPeso,"imc"=>$resultadoImc,"imm"=>$immActuales,
-						"immAnt"=>$immAnteriores);
+						"immAnt"=>$immAnteriores,"consejoPeso"=>$consejoPeso,"consejoimc"=>$consejoimc);
 		return $datos;
 	}//ResultadosBiotest
 
-	
+	function UltimoBiotestCliente($Parametros)	
+	{
+		$cliente   = $Parametros['id'];
+		$consultar = new Consultar();
+		$bioresult = $consultar->_ConsultarFechaUltimoBiotestRealizado($cliente);
+		$fecha     = $bioresult['Ultimo_Biotest'];
+		$permiso   = 0;
+		$Dias_trans = 0;
+		if ($fecha !="")
+		{
+			date_default_timezone_set("America/Chihuahua");
+			$Fecha_Actual  = date("Y-m-d"); //fecha del día de hoy.
+			//Si trae una fecha se verifica cuantos días han transcurrido.
+			$fechas		   = explode(" ",$fecha);
+			$fechaSinHoras = $fechas[0];
+			$Utilidades	   = new Utilidades();
+			$resdias       = $Utilidades->udate($Fecha_Actual,$fechaSinHoras);
+			$Dias_trans    = ($resdias['Dias_Transcurridos']!="")?$resdias['Dias_Transcurridos']:0;
+			$permiso       = ($Dias_trans >=15)?1:0; //Silas fechas osn idénticas, no hay permiso
+			
+		}//if
+		else
+		{
+			$permiso = true; 
+		}//else
+
+		$datos = array("permiso"=>$permiso,"Dias_trans"=>$Dias_trans);
+		return $datos;
+	}//UltimoBiotestCliente
 
 	function IMCResultado ($peso,$altura)
 	{

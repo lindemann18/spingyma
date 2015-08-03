@@ -18,7 +18,7 @@ $scope.AplicarBiotest = function(id)
 	  	if(result==true)
 	  	{
 	  		$scope.$apply(function(){
-	  			$location.path('/Biotest').search({Cliente:id});
+	  			$location.path('/BiotestMenu').search({Cliente:id});
 	  		});
 	  	}//if
 	});

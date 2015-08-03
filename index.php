@@ -250,6 +250,10 @@
 	    })
 
 	    //Direcciones de biotest.
+	    .when('/BiotestMenu',{
+	    	controller: 'MenuBiotest',
+	      	templateUrl:'modulos/Biotest/biotest_menu.html'
+	    })
 	    .when('/Biotest',{
 	    	controller: 'BiotestC',
 	      	templateUrl:'modulos/Biotest/Biotest.html'

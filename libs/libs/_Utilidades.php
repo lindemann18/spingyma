@@ -5,12 +5,20 @@ class Utilidades
 	function udate($fecha_comparacion, $fecha_actual) 
 	{
 		$query = '
-			SELECT DATEDIFF("'.$fecha_actual.'","'.$fecha_comparacion.'") as Dias_Transcurridos;
+			SELECT DATEDIFF(?,?) as Dias_Transcurridos;
 		';
-		$conectar=new Conectar();
-		$con=Conectar::_con();
-		$result=$con->query($query)or die("Error en $query ".mysqli_error($query));
-		return $result;	
+		R::freeze(1);
+			R::begin();
+			    try{
+			       $info = R::getRow($query,[$fecha_actual,$fecha_comparacion]);
+			        R::commit();
+			    }
+			    catch(Exception $e) {
+			       $info =  R::rollback();
+			       $info = "Error";
+			    }
+			R::close();
+			return $info;
 	}//udate
 	
 	function ReportePdf($id_cliente)

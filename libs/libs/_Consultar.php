@@ -130,7 +130,7 @@
 					LEFT JOIN 
 					sgtipospruebas pru
 					ON con.id_tipo_prueba = pru.id
-					where  con.id=1 ORDER BY id ASC
+					where  con.id= ? ORDER BY id ASC
 			    	';
 			       $Consejo = R::getRow($query,[$id]);
 			        R::commit();
@@ -1415,6 +1415,36 @@
 			return $info;	
 	}//_ConsultarResultadosPruebaslight
 
+	function _ConsultarResultadoPruebaCliente($cliente,$Prueba)
+	{
+		$query='
+			select id,resultado from sgpruebaslight 
+			where id_cliente = ? and tipo_prueba = ? 
+			order by id desc limit 1
+		';
+		R::freeze(1);
+			R::begin();
+			    try{
+			       $info = R::getRow($query,[$cliente,$Prueba]);
+			        R::commit();
+			    }
+			    catch(Exception $e) {
+			       $info =  R::rollback();
+			       $info = "Error";
+			    }
+			R::close();
+			return $info;	
+	}//_ConsultarResultadoPruebaCliente
+
+	function _ConsultarFechaUltimoBiotestRealizado($id_cliente)
+	{
+		$query = '
+			select MAX(fh_creacion) as "Ultimo_Biotest" from sgpruebaslight where id_cliente = ?
+		';
+		$result = $this->EjecutarTransaccionSinglerow($query,$id_cliente);
+		return $result;
+	}//_ConsultarFechaUltimoBiotest
+
 	//queries viejos
 
 
@@ -1631,16 +1661,7 @@
 	
 	//Queries relacionados con el BIOTEST
 	
-	function _ConsultarFechaUltimoBiotestRealizado($id_cliente)
-	{
-		$query = '
-			select MAX(fecha) as "Ultimo_Biotest" from sg_pruebas where id_cliente = "'.$id_cliente.'"
-		';
-		$conectar=new Conectar();
-		$con=Conectar::_con();
-		$result=$con->query($query)or die("Error en $query ".mysqli_error($query));
-		return $result;
-	}//_ConsultarFechaUltimoBiotest
+	
 		
 	function _ConsultarResultadosPruebas($tipo_prueba, $id_cliente)
 	{
