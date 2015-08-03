@@ -270,6 +270,88 @@ var miModulo = angular.module("Methods", []);
 		return DiaRutina;
 		}
 
+		this.ObtenerOptions = function(fecha3,resultado3,fecha2,resultado2,fecha1,resultado1,TituloPrueba)
+		{
+		  options= {
+				         options: {
+				            chart: {
+				                type: 'bar'
+				            }
+				        },
+				       series: [{
+				            name: fecha1,
+				            color: "#00a65a",
+				            data: [resultado1]
+				        }, {
+				            name: fecha2,
+				            color:"#428bca",
+				            data: [resultado2]
+				        }, {
+				            name: fecha3,
+				            color:"#f56954",
+				            data: [resultado3]
+				        }],
+				        title: {
+				            text: TituloPrueba
+				        },
+				        loading: false
+
+				    };
+			return options;	
+		} //optoins
+
+		this.ResultadoPeso = function(Porcentaje,id)
+		{
+			console.log(Porcentaje);
+			console.log(id);
+			switch(Porcentaje)
+			{
+				case '100':
+					$(id).addClass("progress-bar-success");
+					$(id).css("width","100%");
+				break;
+				
+				case '60':
+					$(id).addClass("progress-bar-success");
+					$(id).css("width","60%");
+				break;
+				
+				case '20':
+					$(id).css("width","20%");
+				break;
+			}//switch
+		}
+
+		this.ClaseBiotestResult = function(condicion,id)
+		{
+			switch(condicion)
+			{
+				case 'Atleta':
+					$(id).addClass("progress-bar-success");
+					$(id).css("width","100%");
+				break;
+				
+				case 'Excelente':
+					$(id).addClass("progress-bar-success");
+					$(id).css("width","80%");
+				break;
+				
+				case 'Bueno':
+					$(id).css("width","60%");
+				break;
+				
+				case 'Promedio':
+					$(id).addClass("progress-bar-warning");
+					$(id).css("width","40%");
+				break;
+				
+				case 'Pobre':
+					$(id).addClass("progress-bar-danger");
+					$(id).css("width","20%");
+				break;
+			}//switch
+		}//ClaseBiotestResult
+
 		this.RetornarIdPorNombre = function(dia)
 		{
 			var id_inputreturn ="";

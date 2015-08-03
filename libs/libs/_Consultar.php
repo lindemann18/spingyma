@@ -1394,6 +1394,27 @@
 			return $info;	
 	}//_ConsultarResultadosPruebaslight
 
+	function _ConsultarResultadosPruebasIMM($tipo_prueba, $id_cliente)
+	{
+		$query='
+			select * from sgpruebaslight pruebas 
+			where tipo_prueba=?
+			and id_cliente=? order by pruebas.fh_creacion DESC limit 12
+		';
+		R::freeze(1);
+			R::begin();
+			    try{
+			       $info = R::getAll($query,[$tipo_prueba,$id_cliente]);
+			        R::commit();
+			    }
+			    catch(Exception $e) {
+			       $info =  R::rollback();
+			       $info = "Error";
+			    }
+			R::close();
+			return $info;	
+	}//_ConsultarResultadosPruebaslight
+
 	//queries viejos
 
 
@@ -1634,7 +1655,7 @@
 	}
 	
 	
-	function _ConsultarResultadosPruebasIMM($tipo_prueba, $id_cliente) //consulta el último biotest para imm se necesitan 16 campos.
+	function _ConsultarResultadosPruebasIMM1($tipo_prueba, $id_cliente) //consulta el último biotest para imm se necesitan 16 campos.
 	{
 		$query='
 			select * from sg_pruebas  

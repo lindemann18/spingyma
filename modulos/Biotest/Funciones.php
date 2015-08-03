@@ -15,6 +15,13 @@
 			echo json_encode($salidaJson);
 		break;
 
+		case 'ResultadosBiotest':
+			$salidaJson = ResultadosBiotest($Parametros);
+			echo json_encode($salidaJson);
+		break;
+
+		//Casos viejos
+
 		case 'CondicionFisica':
 			$id_Cliente		   = $Parametros['Id_Cliente'];
 			$ResultadoEvaluado = $Parametros['ResultadoEvaluado'];
@@ -171,39 +178,193 @@
 		$peso    = $Parametros['peso'];
 		$altura  = $Parametros['altura'];
 		$cliente = $Parametros['cliente'];
-		$imc     = IMCLight($peso,$altura,$cliente);
-		$peso    = PesoLight($peso,$altura,$cliente);
+		$espalda = $Parametros['espalda'];
+		$pecho   = $Parametros['pecho'];
+		$abdomen = $Parametros['abdomen'];
+		$cadera  = $Parametros['cadera'];
+		$brazo   = $Parametros['brazo'];
+		$muslo   = $Parametros['muslo'];
+
+		//Obteniendo los valores a ver si están fuera de rango.
+		$diagnosticoimc  = IMCResultado($peso,$altura);
+		$diagnosticopeso = RangoDePesoPorAltura($altura, $peso);
+		$exitoimc        = 0;
+		$exitoPeso       = 0;
+		$imcDatos 	     = "";
+		$pesoDatos 		 = "";
+
+		if($diagnosticoimc!="Fuera de rango" && $diagnosticopeso!="Fuera de rango")
+		{
+			date_default_timezone_set("America/Chihuahua");
+			$fh_creacion  = date("Y-m-d"); //fecha del día de hoy
+			$id_inst      = $_SESSION['usuario']['id'];
+			//si entra aquí es por que los datos ingresados son correctos.
+			$imcDatos     = IMCLight($peso,$altura,$cliente,$fh_creacion,$id_inst);
+			$pesoDatos    = PesoLight($peso,$altura,$cliente,$fh_creacion,$id_inst);
+			$exitoimc     = 1;
+			$exitoPeso    = 1;
+
+			//Tomando el id de l aprueba IMM
+			//Guardando el resultado.
+			$Prueba       = R::findOne( 'sgtipospruebas', ' nm_prueba = ? ', [ 'Imm' ] );
+			$id_pruebaimm = $Prueba->id;
+			
+			
+
+			//Agregando los datos de las medidas.
+			$Diagnostico  = "No Aplica";
+			$desc_espalda = "IMM - Espalda";
+			$respuesta    = GuardarResultadoPruebasLight($id_inst,$cliente,$id_pruebaimm,$desc_espalda,$Diagnostico,0,$fh_creacion,$espalda);
+			$desc_pecho   = "IMM - Pecho";
+			$respuesta    = GuardarResultadoPruebasLight($id_inst,$cliente,$id_pruebaimm,$desc_pecho,$Diagnostico,0,$fh_creacion,$espalda);
+			$desc_abd     = "IMM - Abdomen";
+			$respuesta    = GuardarResultadoPruebasLight($id_inst,$cliente,$id_pruebaimm,$desc_abd,$Diagnostico,0,$fh_creacion,$espalda);
+			$desc_cad     = "IMM - Cadera";
+			$respuesta    = GuardarResultadoPruebasLight($id_inst,$cliente,$id_pruebaimm,$desc_cad,$Diagnostico,0,$fh_creacion,$espalda);
+			$desc_bra     = "IMM - Brazo";
+			$respuesta    = GuardarResultadoPruebasLight($id_inst,$cliente,$id_pruebaimm,$desc_bra,$Diagnostico,0,$fh_creacion,$espalda);
+			$desc_mus     = "IMM - Muslo";
+			$respuesta    = GuardarResultadoPruebasLight($id_inst,$cliente,$id_pruebaimm,$desc_mus,$Diagnostico,0,$fh_creacion,$espalda);
+			
+		}//if
+		else
+		{
+			//si se entra aquí es por que alguno de los elementos está fuera del rango de valores
+			$exitoPeso = ($diagnosticopeso!="Fuera de rango")?1:0;
+			$exitoimc  = ($diagnosticoimc!="Fuera de rango")?1:0;
+		}//else
 		
+		$datos = array("imc"=>$imcDatos,"peso"=>$pesoDatos,"exitoimc"=>$exitoimc,"exitoPeso"=>$exitoPeso);
+		return $datos;
 	}//EjecutarTest
 
-	//Funciones viejas
+	function ResultadosBiotest($Parametros)
+	{
+		//Tomando los valores
+		$cliente       = $Parametros['id'];
+		$consultar     = new Consultar();
+		//Se deben buscar los resultados de toda slas pruebas.
+		// Resuiltados de peso.
+		$Prueba        = R::findOne( 'sgtipospruebas', ' nm_prueba = ? ', [ 'Peso' ] );
+		$id_prueba     = $Prueba->id;
+		$resultadoPeso = $consultar->_ConsultarResultadosPruebaslight($id_prueba,$cliente);
+		$cantidadpeso  = count($resultadoPeso);
+		$exitopeso     = ($cantidadpeso>0)?1:0;
+		// Resuiltados de IMC.
+		$Prueba        = R::findOne( 'sgtipospruebas', ' nm_prueba = ? ', [ 'Imc' ] );
+		$id_prueba     = $Prueba->id;
+		$resultadoImc  = $consultar->_ConsultarResultadosPruebaslight($id_prueba,$cliente);
+		$cantidadimc   = count($resultadoImc);
+		$exitoimc      = ($cantidadimc>0)?1:0;
+		// Resuiltados de IMM.
+		$Prueba        = R::findOne( 'sgtipospruebas', ' nm_prueba = ? ', [ 'Imm' ] );
+		$id_prueba     = $Prueba->id;
+		$resultadoImm  = $consultar->_ConsultarResultadosPruebasIMM($id_prueba,$cliente);
+		$cantidadimm   = count($resultadoImm);
+		$exitoimm      = ($cantidadimm>0)?1:0;
 
-	function IMCLight($peso,$altura,$cliente)
+		//Verificando la cantidad de resultados para autocompletar.
+		if($cantidadpeso<3)
+		{
+			for($i=0; $i<=$cantidadpeso; $i++)
+			{
+				$datopeso = array("desc_prueba"=>0,"fh_creacion"=>0,"id"=>0,"id_cliente"=>$cliente,
+								  "id_instructor"=>0,"porcentaje"=>0,"resultado"=>0,
+								  "resultado_numerico"=>0,"tipo_prueba"=>0);
+				array_push($resultadoPeso,$datopeso);
+			}//for
+		}//if
+
+		if($cantidadimc<3)
+		{
+			for($i=0; $i<=$cantidadimm; $i++)
+			{
+				$datopeso = array("desc_prueba"=>0,"fh_creacion"=>0,"id"=>0,"id_cliente"=>$cliente,
+								  "id_instructor"=>0,"porcentaje"=>0,"resultado"=>0,
+								  "resultado_numerico"=>0,"tipo_prueba"=>0);
+				array_push($resultadoImc,$datopeso);
+			}//for
+		}//if
+
+		// Verificando la cantidad de reusltados de IMM
+		// se debe agrupar por fechas.
+		$immActuales   = array();
+		$immAnteriores = array();
+
+		if($cantidadimm<12)
+		{
+			$immActuales = $resultadoImm;
+
+			//Haciendo un ciclo para insertar los datos falsos.
+			for($i=0; $i<6; $i++)
+			{
+				$datoimm = array("desc_prueba"=>0,"fh_creacion"=>0,"id"=>0,"id_cliente"=>0,
+								 "id_instructor"=>0,"porcentaje"=>0,"resultado"=>0,
+								 "resultado_numerico"=>0,"tipo_prueba"=>0);
+				array_push($immAnteriores,$datoimm);
+			}//for
+
+
+		}//if
+		else
+		{
+			// Si entra aquí es por que tiene resultads viejos.
+			$fechaprueba = $resultadoImm[0]['fh_creacion'];
+			for($i=0; $i<12; $i++)
+			{
+				$fechaimm = $resultadoImm[$i]['fh_creacion'];
+				if($fechaprueba==$fechaimm)
+				{
+					array_push($immActuales,$resultadoImm[$i]);
+				}else{array_push($immAnteriores,$resultadoImm[$i]);}
+			}//for
+		}//else
+
+		//Devolviendo los datos
+		$datos =  array("exitoPeso"=>$exitopeso,"exitoimc"=>$exitoimc,"exitoimm"=>$exitoimm,
+						"peso"=>$resultadoPeso,"imc"=>$resultadoImc,"imm"=>$immActuales,
+						"immAnt"=>$immAnteriores);
+		return $datos;
+	}//ResultadosBiotest
+
+	
+
+	function IMCResultado ($peso,$altura)
 	{
 		//Sacando el índice de masa corporal
 		$alturaMetros   = $altura/100; //convirtiéndo la altura en metros
 		$alturaCuadrada = $alturaMetros*$alturaMetros;
 		$imc			= number_format($peso/$alturaCuadrada,2); //Dejando el númnero con solo 2 decimales	
 		$Diagnostico	= DiagnosticoAcordeResultadoIMC($imc);
+		return $Diagnostico;
+	}//IMCResultado
+
+	function IMCOperacion($peso,$altura)
+	{
+		$alturaMetros   = $altura/100; //convirtiéndo la altura en metros
+		$alturaCuadrada = $alturaMetros*$alturaMetros;
+		$imc			= number_format($peso/$alturaCuadrada,2); //Dejando el númnero con solo 2 decimales	
+		return $imc;
+	}//IMCOperacion
+
+	function IMCLight($peso,$altura,$cliente,$fh_creacion,$id_inst)
+	{
+		$imc 				 = IMCOperacion($peso,$altura);
+		$Diagnostico	     = DiagnosticoAcordeResultadoIMC($imc);
 		$porcentajeResultado = "";
-		$consultar = new Consultar();
-		$resultadoPruebas = "";
+		$consultar        	 = new Consultar();
+		$resultadoPruebas 	 = "";
+
 		//Verificando si está dentro del rango 
-		if($Diagnostico == "Fuera de rango")
-		{
-			
-		}
-		else
+		if($Diagnostico != "Fuera de rango")
 		{
 			//Tomar la fecha de hoy
-			date_default_timezone_set("America/Chihuahua");
-			$fh_creacion = date("Y-m-d"); //fecha del día de hoy
 			$porcentaje  = PorcentajeAcordeResultadoPeso($Diagnostico);
+
 			//Guardando el resultado.
 			$Prueba      = R::findOne( 'sgtipospruebas', ' nm_prueba = ? ', [ 'Imc' ] );
 			$id_prueba   = $Prueba->id;
 			$desc_prueba = "IMC";
-			$id_inst     = $_SESSION['usuario']['id'];
 			$respuesta   = GuardarResultadoPruebasLight($id_inst,$cliente,$id_prueba,$desc_prueba,$Diagnostico,$porcentaje,$fh_creacion,$imc);
 
 			//Tomando los resultados del cliente de esa prueba.
@@ -214,40 +375,35 @@
 		return $datosimc;
 	}//IMC
 
-	function PesoLight($peso,$altura,$cliente)
+	function PesoLight($peso,$altura,$cliente,$fh_creacion,$id_inst)
 	{
-		$RangoDePeso = RangoDePesoPorAltura($altura, $peso);
-		$porcentajeResultado = "";
+		$Diagnostico = RangoDePesoPorAltura($altura, $peso);
+		$porcentaje  = "";
+		$consultar   = new Consultar();
+
 		//haciendo la verificación de errores
-		if($RangoDePeso=="Fuera de rango")
+		if($Diagnostico!="Fuera de rango")
 		{
-			
-		}//if
-		else
-		{
-			//Tomar la fecha de hoy
-			date_default_timezone_set("America/Chihuahua");
-			$fh_creacion = date("Y-m-d"); //fecha del día de hoy
-			$porcentajeResultado = PorcentajeAcordeResultadoPeso($RangoDePeso);	
+			$porcentaje  = PorcentajeAcordeResultadoPeso($Diagnostico);	
 			$Prueba      = R::findOne( 'sgtipospruebas', ' nm_prueba = ? ', [ 'Peso' ] );
 			$id_prueba   = $Prueba->id;
-			$desc_prueba = "IMC";
-			$respuesta   = GuardarResultadoPruebasLight($id_inst,$cliente,$id_prueba,$desc_prueba,$Diagnostico,$porcentaje,$fh_creacion,$imc);
+			$desc_prueba = "Peso";
+			$respuesta   = GuardarResultadoPruebasLight($id_inst,$cliente,$id_prueba,$desc_prueba,$Diagnostico,$porcentaje,$fh_creacion,$peso);
 
 			//Tomando los resultados del cliente de esa prueba.
 			$resultadoPruebas=$consultar->_ConsultarResultadosPruebaslight($id_prueba,$cliente);
 		}//else
-		$datosimc    = array("resultado_numerico"=>$imc,"Diagnostico"=>$Diagnostico,"resultados"=>$resultadoPruebas);
+		$datosimc    = array("resultado_numerico"=>$peso,"Diagnostico"=>$Diagnostico,"resultados"=>$resultadoPruebas);
 		return $datosimc;
 	}//Peso
 
 	function GuardarResultadoPruebasLight($id_inst,$cliente,$id_prueba,$desc_prueba,$Diagnostico,$porcentaje,$fh_creacion,$imc)
 	{
-		$pruebastore = R::dispense("sgpruebaslight");
-		$pruebastore->id_instructor = $id_inst;
-		$pruebastore->id_cliente    = $cliente;
-		$pruebastore->tipo_prueba   = $id_prueba;
-		$pruebastore->desc_prueba   = $desc_prueba;
+		$pruebastore 					 = R::dispense("sgpruebaslight");
+		$pruebastore->id_instructor      = $id_inst;
+		$pruebastore->id_cliente         = $cliente;
+		$pruebastore->tipo_prueba        = $id_prueba;
+		$pruebastore->desc_prueba        = $desc_prueba;
 		$pruebastore->resultado_numerico = $imc;
 		$pruebastore->resultado          = $Diagnostico;
 		$pruebastore->porcentaje         = $porcentaje;

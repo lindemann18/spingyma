@@ -12,6 +12,7 @@
 <script src="js/dirPagination.js"></script>
 <script src="js/angular-cookies.min.js"></script>
 <script src="js/bootbox.min.js" type="text/javascript"></script>
+<script src="js/highcharts-ng.js" type="text/javascript"></script>
 <!-- Controlers-->
 <script src="js/users.js"></script>
 <script src="js/methods.js"></script>
@@ -252,6 +253,15 @@
 	    .when('/Biotest',{
 	    	controller: 'BiotestC',
 	      	templateUrl:'modulos/Biotest/Biotest.html'
+	    })
+
+	    .when('/BiotestError',{
+	    	controller: 'ErrorBiotest',
+	      	templateUrl:'modulos/Biotest/Error.html'
+	    })
+	    .when('/BiotestResultados',{
+	    	controller: 'ResultadosBiotest',
+	      	templateUrl:'modulos/Biotest/Resultadolight.html'
 	    })
 
 	    .otherwise({
