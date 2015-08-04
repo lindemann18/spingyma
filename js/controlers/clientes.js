@@ -457,7 +457,17 @@ $scope.InfoRutina = function(id)
 		console.log(result);
 	  	if(result==true)
 	  	{	$scope.$apply(function(){
-	  			
+	  			var params = $methodsService.Json("ObtenerRutinaPorCliente",$scope.id_cliente);
+	  			var url = 'modulos/Biotest/Funciones.php';
+				 $http({method: "post",url: url,data: $.param({Params:params}), 
+				  headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+				})
+				 .success(function(data, status, headers, config) 
+				 {          	
+				   		rutina = data.rutina;
+				   		$location.path('/RutinaOrdenC').search({Rut:rutina,Cliente:$scope.id_cliente});
+				  })  
+				 .error(function(data, status, headers, config){$methodsService.alerta(2,"algo falló, disculpe las molestias");});
 	  		});//apply
 	  	}//if
 	  });//botbox
@@ -1144,6 +1154,32 @@ $scope.Rut     = $routeParams.Rut;
 $scope.Cliente = $routeParams.Cliente;	
 
 //Funciones
+
+$scope.EnviarRutina = function()
+{
+	bootbox.confirm("Desea enviar la rutina?", function(result) {
+		console.log(result);
+	  	if(result==true)
+	  	{
+	  		$scope.$apply(function(){
+	  			alert("hola");
+	  			var url = 'modulos/Clientes/CrearPdf.php';
+			     $http({method: "post",url: url,data: $.param({id_rutina:$scope.Rut}), 
+			      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+			    })
+			     .success(function(data, status, headers, config) 
+			     {            
+			       
+			         
+			      })  
+			     .error(function(data, status, headers, config){
+			      $methodsService.alerta(2,"algo falló, disculpe las molestias");
+			     });
+	  		});
+	  	}//if
+	});
+}//EnviarRutina
+
 $scope.CambioTabla = function(id,newValue)
 {
   if($(id2).hasClass("Repeticiones"))

@@ -1445,6 +1445,29 @@
 		return $result;
 	}//_ConsultarFechaUltimoBiotest
 
+	function _ConsultarInformacionClientePorRutinaId($id_rutina)
+		{
+			$query='
+				select 
+				/* Datos de sg_rutinasclientes*/
+				RUT.id,
+
+				/* Datos de sg_clientes*/
+				Clie.nb_cliente,
+				Clie.nb_apellidos,
+				Clie.de_email,
+				Clie.id as id_cliente
+
+				from sgrutinasclientes RUT
+				INNER JOIN sgclientes Clie
+				ON Clie.id=RUT.id_cliente
+
+				where Rut.id=?
+			';	
+			$result = $this->EjecutarTransaccionSinglerow($query,$id_rutina);
+		return $result;
+		}//_ConsultarInformacionClientePorRutinaId
+		
 	//queries viejos
 
 
@@ -1562,30 +1585,6 @@
 			return $result;
 		}//_ConsultarClientesPorInstructor
 		
-		function _ConsultarInformacionClientePorRutinaId($id_rutina)
-		{
-			$query='
-				select 
-				/* Datos de sg_rutinasclientes*/
-				RUT.id_rutinaCliente,
-				
-				/* Datos de sg_clientes*/
-				Clie.nb_cliente,
-				Clie.nb_apellidos,
-				Clie.de_email,
-				Clie.id_cliente
-				
-				from sg_rutinasclientes RUT
-				INNER JOIN sg_clientes Clie
-				ON Clie.id_cliente=RUT.id_cliente
-				
-				where id_rutinaCliente="'.$id_rutina.'"
-			';	
-			$conectar=new Conectar();
-			$con=Conectar::_con();
-			$result=$con->query($query)or die("Error en $query ".mysqli_error($query));
-			return $result;
-		}//_ConsultarInformacionClientePorRutinaId
 		
 		function _ConsultarClientesFormulario()
 		{

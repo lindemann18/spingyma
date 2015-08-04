@@ -1,30 +1,31 @@
 <?php
 require("phpToPDF.php"); 
 include("../../libs/libs.php");
-$id_rutina=$_GET['id_rutina'];
-
+$id_rutina=$_POST['id_rutina'];
+$conexion   = new ConexionBean(); //Variable de conexión
+$con        = $conexion->_con(); //Variable de conexión
 
 $consultar=new Consultar();
 //Consultar los ejercicios de la rutina
 $result   = $consultar->_ConsultarInformacionRutinaPreFinalClientePorId($id_rutina);
-$num_rows = $result->num_rows;
+$num_rows = count($result);
 
 //Consultar información del cliente acorde la rutina
 $resultCliente = $consultar->_ConsultarInformacionClientePorRutinaId($id_rutina);
-$filaCliente   = $resultCliente->fetch_assoc();
+
 
 //Datos del cliente
-$nb_nombre 	  	 = $filaCliente['nb_cliente'];
-$nb_apellidos 	 = $filaCliente['nb_apellidos'];
-$de_email	  	 = $filaCliente['de_email'];
-$id_cliente		 = $filaCliente['id_cliente'];
+$nb_nombre 	  	 = $resultCliente['nb_cliente'];
+$nb_apellidos 	 = $resultCliente['nb_apellidos'];
+$de_email	  	 = $resultCliente['de_email'];
+$id_cliente		 = $resultCliente['id_cliente'];
 $nombre_completo = utf8_decode($nb_nombre." ".$nb_apellidos);		
 
 //Datos del cliente
-$nb_nombre 	  	 = $filaCliente['nb_cliente'];
-$nb_apellidos 	 = $filaCliente['nb_apellidos'];
-$de_email	  	 = $filaCliente['de_email'];
-$id_cliente		 = $filaCliente['id_cliente'];
+$nb_nombre 	  	 = $resultCliente['nb_cliente'];
+$nb_apellidos 	 = $resultCliente['nb_apellidos'];
+$de_email	  	 = $resultCliente['de_email'];
+$id_cliente		 = $resultCliente['id_cliente'];
 
 //Fecha actual
 date_default_timezone_set("Mexico/General");
@@ -35,15 +36,15 @@ $ejercicios="";
 
 for($i=0; $i<$num_rows; $i++)
 {
-	$filaInfo = $result->fetch_assoc();
+	$filaInfo = $result[$i];
 	$ejercicios.="
 	<tr class=\"text-center\" align=\"center\">
 		<td class=\"text-center\">".$filaInfo['num_maquina']."</td>
 		<td class=\"text-center\">".$filaInfo['nb_ejercicio']."</td>
-		<td class=\"text-center\">".$filaInfo['nb_TipoRutina']."</td>
+		<td class=\"text-center\">".$filaInfo['nb_tiporutina']."</td>
 		<td class=\"text-center\">".$filaInfo['nb_dia']."</td>
-		<td class=\"text-center\">".$filaInfo['num_Circuitos']."</td>
-		<td class=\"text-center\">".$filaInfo['num_Repeticiones']."</td>
+		<td class=\"text-center\">".$filaInfo['num_circuitos']."</td>
+		<td class=\"text-center\">".$filaInfo['num_repeticiones']."</td>
 		<td class=\"text-center\">".$filaInfo['ejercicio_relacion']."</td>
 	</tr>";
 }
@@ -236,6 +237,7 @@ $mail->Body    = 'Desde SpinGym queremos que disfrutes tu tiempo aqu&iacute;, pa
 $mail->WordWrap   = 50;
 $mail->AddAddress($de_email, $nombre_completo);
 $mail->IsHTML(true); // send as HTML*/
+/*
 if(!$mail->Send())
 {
 	unlink($_SERVER['DOCUMENT_ROOT']."/".$mailFile); //Eliminando archivo
@@ -252,6 +254,6 @@ else
 	$salidaJson=array("id_cliente"=>$id_cliente);
 	echo json_encode($salidaJson);
 }
-
+*/
 
 ?>

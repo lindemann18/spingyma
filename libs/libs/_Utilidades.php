@@ -10,7 +10,7 @@ class Utilidades
 		R::freeze(1);
 			R::begin();
 			    try{
-			       $info = R::getRow($query,[$fecha_actual,$fecha_comparacion]);
+			       $info = R::getRow($query,[$fecha_comparacion,$fecha_actual]);
 			        R::commit();
 			    }
 			    catch(Exception $e) {

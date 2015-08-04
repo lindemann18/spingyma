@@ -25,6 +25,16 @@
 			echo json_encode($salidaJson);
 		break;
 
+		case 'ObtenerRutinaPorCliente':
+			$salidaJson = ObtenerRutinaPorCliente($Parametros);
+			echo json_encode($salidaJson);
+		break;
+
+		case 'EnviarResultados':
+			$salidaJson = EnviarResultados($Parametros);
+			echo json_encode($salidaJson);
+		break;
+
 		//Casos viejos
 
 		case 'CondicionFisica':
@@ -372,6 +382,23 @@
 		$datos = array("permiso"=>$permiso,"Dias_trans"=>$Dias_trans);
 		return $datos;
 	}//UltimoBiotestCliente
+
+	function ObtenerRutinaPorCliente($Parametros)
+	{
+		$cliente = $Parametros['id'];
+		//Obteniendo el número de rutina por cliente.
+		$consultar = new Consultar();
+		$resultrut = $consultar->_ConsultarRutinasClientesPorIdCliente($cliente);
+		$id_rutina = $resultrut['id'];
+		$datos     = array("rutina"=>$id_rutina);
+		return $datos;
+	}//ObtenerRutinaPorCliente
+
+	function EnviarResultados($Parametros)
+	{
+		$cliente = $Parametros['id'];
+		echo $cliente;
+	}//ResultadosBiotest
 
 	function IMCResultado ($peso,$altura)
 	{
