@@ -120,6 +120,30 @@ $scope.EjecutarTest = function()
 	$scope.cliente = $routeParams.cliente;
 	params         = $methodsService.Json("ResultadosBiotest",$scope.cliente);
 	
+	//Funciones
+	$scope.enviar = function()
+	{
+		bootbox.confirm("Desea regresar a clientes?", function(result) {
+		  	if(result==true)
+		  	{
+		  		$scope.$apply(function(){
+					var params = $methodsService.Json("EnviarResultados",$scope.cliente);
+					var url = 'modulos/Biotest/Funciones.php';
+					 $http({method: "post",url: url,data: $.param({Params:params}), 
+					  headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+					})
+					 .success(function(data, status, headers, config) 
+					 {          	
+					   		
+					  })  
+					 .error(function(data, status, headers, config){
+					 	$methodsService.alerta(2,"algo falló, disculpe las molestias");
+					 });
+				});
+		  	}//if
+	  	});
+	}//enviar
+
 	var url = 'modulos/Biotest/Funciones.php';
 	 $http({method: "post",url: url,data: $.param({Params:params}), 
 	  headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
