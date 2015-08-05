@@ -34,9 +34,14 @@ class Utilidades
 		//tomando los resultados
 		for($i=0; $i<$num_rows; $i++)
 		{
-
+			$fila  				= $resultPeso[$i];
+			$resultado_numerico = $fila['resultado_numerico'];
+			$des_prueba 		= $fila['desc_prueba'];
+			$Cond 				= $fila['resultado'];
+			$fh_creacion 		= $fila['fh_creacion'];
+			$porcentaje         = $fila['porcentaje'];
 		}//for
-		
+
 	}//ReportePdf
 
 	function ReportePdf2($id_cliente)
