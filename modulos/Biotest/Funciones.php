@@ -231,15 +231,15 @@
 			$desc_espalda = "IMM - Espalda";
 			$respuesta    = GuardarResultadoPruebasLight($id_inst,$cliente,$id_pruebaimm,$desc_espalda,$Diagnostico,0,$fh_creacion,$espalda);
 			$desc_pecho   = "IMM - Pecho";
-			$respuesta    = GuardarResultadoPruebasLight($id_inst,$cliente,$id_pruebaimm,$desc_pecho,$Diagnostico,0,$fh_creacion,$espalda);
+			$respuesta    = GuardarResultadoPruebasLight($id_inst,$cliente,$id_pruebaimm,$desc_pecho,$Diagnostico,0,$fh_creacion,$pecho);
 			$desc_abd     = "IMM - Abdomen";
-			$respuesta    = GuardarResultadoPruebasLight($id_inst,$cliente,$id_pruebaimm,$desc_abd,$Diagnostico,0,$fh_creacion,$espalda);
+			$respuesta    = GuardarResultadoPruebasLight($id_inst,$cliente,$id_pruebaimm,$desc_abd,$Diagnostico,0,$fh_creacion,$abdomen);
 			$desc_cad     = "IMM - Cadera";
-			$respuesta    = GuardarResultadoPruebasLight($id_inst,$cliente,$id_pruebaimm,$desc_cad,$Diagnostico,0,$fh_creacion,$espalda);
+			$respuesta    = GuardarResultadoPruebasLight($id_inst,$cliente,$id_pruebaimm,$desc_cad,$Diagnostico,0,$fh_creacion,$cadera);
 			$desc_bra     = "IMM - Brazo";
-			$respuesta    = GuardarResultadoPruebasLight($id_inst,$cliente,$id_pruebaimm,$desc_bra,$Diagnostico,0,$fh_creacion,$espalda);
+			$respuesta    = GuardarResultadoPruebasLight($id_inst,$cliente,$id_pruebaimm,$desc_bra,$Diagnostico,0,$fh_creacion,$brazo);
 			$desc_mus     = "IMM - Muslo";
-			$respuesta    = GuardarResultadoPruebasLight($id_inst,$cliente,$id_pruebaimm,$desc_mus,$Diagnostico,0,$fh_creacion,$espalda);
+			$respuesta    = GuardarResultadoPruebasLight($id_inst,$cliente,$id_pruebaimm,$desc_mus,$Diagnostico,0,$fh_creacion,$muslo);
 			
 		}//if
 		else
@@ -397,7 +397,7 @@
 	function EnviarResultados($Parametros)
 	{
 		$cliente = $Parametros['id'];
-		echo $cliente;
+		
 	}//ResultadosBiotest
 
 	function IMCResultado ($peso,$altura)

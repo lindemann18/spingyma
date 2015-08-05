@@ -1465,9 +1465,44 @@
 				where Rut.id=?
 			';	
 			$result = $this->EjecutarTransaccionSinglerow($query,$id_rutina);
-		return $result;
+			return $result;
 		}//_ConsultarInformacionClientePorRutinaId
 		
+		function _ConsultarResultadosPruebasReporte($id_prueba, $id_cliente)
+	{
+		$query = '
+		SELECT distinct
+		/* Condición física */
+		Con_Fis.resultado_numerico, 
+		Con_Fis.desc_prueba, 
+		Con_Fis.resultado, 
+		Con_Fis.fh_creacion,
+		Con_Fis.porcentaje
+		/* Condición física*/
+
+		FROM sgpruebaslight Pruebas
+		LEFT JOIN 
+		(
+		select distinct * from sgpruebaslight Prueb 
+		where tipo_prueba=?
+		and id_cliente=?  order by Prueb.fh_creacion DESC limit 3 
+		) Con_Fis ON (Pruebas.id_cliente=Con_Fis.id_cliente)
+		where Pruebas.id_cliente = ?  order by fh_creacion desc
+		';	
+		R::freeze(1);
+			R::begin();
+			    try{
+			       $info = R::getRow($query,[$id_prueba,$id_cliente,$id_cliente]);
+			        R::commit();
+			    }
+			    catch(Exception $e) {
+			       $info =  R::rollback();
+			       $info = "Error";
+			    }
+			R::close();
+			return $info;	
+	}//_ConsultarResultadosPruebasReporte
+
 	//queries viejos
 
 
@@ -1688,33 +1723,7 @@
 		return $result;
 	}
 	
-	function _ConsultarResultadosPruebasReporte($id_prueba, $id_cliente)
-	{
-		$query = '
-		SELECT distinct
-		/* Condición física */
-		Con_Fis.resultado_numerico, 
-		Con_Fis.Desc_Prueba, 
-		Con_Fis.Resultado, 
-		Con_Fis.fecha,
-		Con_Fis.Porcentaje
-		
-		
-		/* Condición física*/
-		
-		FROM sg_pruebas Pruebas
-		LEFT JOIN 
-		(
-			select distinct * from sg_pruebas Prueb 
-			where Tipo_Prueba="'.$id_prueba.'" 
-			and id_cliente="'.$id_cliente.'"  order by Prueb.fecha DESC limit 3 
-		) Con_Fis ON (Pruebas.id_cliente=Con_Fis.id_cliente)
-			where Pruebas.id_cliente = "'.$id_cliente.'"  order by fecha desc
-		';	
-		$con=Conectar::_con();
-		$result=$con->query($query) or die("Error en: $query ".mysqli_error($query));
-		return $result;
-	}//_ConsultarResultadosPruebasReporte
+	
 	
 	function _ConsultarFechaUltimoBiotest($id_cliente, $tipoPrueba)
 	{

@@ -23,9 +23,26 @@ class Utilidades
 	
 	function ReportePdf($id_cliente)
 	{
+		$consultar = new Consultar();
+		//Conseguir información de todas las pruebas
+		$Prueba     = R::findOne( 'sgtipospruebas', ' nm_prueba = ? ', [ 'Peso' ] );
+		$id_peso    = $Prueba->id;
+
+		$resultPeso = $consultar->_ConsultarResultadosPruebasReporte($id_peso,$id_cliente);
+		$num_rows   = count($resultPeso);
+		$Peso       = array();
+		//tomando los resultados
+		for($i=0; $i<$num_rows; $i++)
+		{
+
+		}//for
+		
+	}//ReportePdf
+
+	function ReportePdf2($id_cliente)
+	{
 		
 		$consultar = new Consultar();
-		
 		//Conseguir información de todas las pruebas
 		$result    = $consultar->_ConsultarResultadosPruebasReporte(1,$id_cliente);
 		$num_rows  = $result->num_rows;
