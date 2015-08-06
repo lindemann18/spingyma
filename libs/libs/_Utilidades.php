@@ -31,7 +31,7 @@ class Utilidades
 		$resultPeso = $consultar->_ConsultarResultadosPruebasReporte($id_peso,$id_cliente);
 		$num_rows   = count($resultPeso);
 		$Peso       = array();
-		//tomando los resultados
+		//tomando los resultados de peso
 		for($i=0; $i<$num_rows; $i++)
 		{
 			$fila  				= $resultPeso[$i];
@@ -40,8 +40,118 @@ class Utilidades
 			$Cond 				= $fila['resultado'];
 			$fh_creacion 		= $fila['fh_creacion'];
 			$porcentaje         = $fila['porcentaje'];
+			$resultConsejo 		= $consultar->_ConsultarConsejoAcordeResultado($id_peso,$Cond);
+			$consejo	   		= $resultConsejo['consejo'];
+			$resultadosPeso     = $this->PesoResultados($porcentaje);
+			$Barra				= $resultadosPeso['Barra'];
+			$Longitud			= $resultadosPeso['Longitud'];
+			$prueba_peso        = array("resultado_numerico"=>$resultado_numerico,
+										"des_prueba"=>$des_prueba,"resultado"=>$Cond,
+										"fh_creacion"=>$fh_creacion,
+										"porcentaje"=>$porcentaje,"consejo"=>$consejo,
+										"Barra"=>$Barra,"Longitud"=>$Longitud);
+			array_push($Peso,$prueba_peso);
 		}//for
+		if($num_rows<3)
+		{
+			$repetir = 3-$num_rows;
+			for($i=0; $i<$repetir; $i++)
+			{
+				$prueba_peso        = array("resultado_numerico"=>0,
+										"des_prueba"=>0,"resultado"=>0,
+										"fh_creacion"=>"Biotest No Hecho",
+										"porcentaje"=>0,"consejo"=>0,
+										"Barra"=>0,"Longitud"=>0);
+			array_push($Peso,$prueba_peso);
+			}//for
+		}//if
+			
+		//tomando los resultados de IMC
+		$Prueba     = R::findOne( 'sgtipospruebas', ' nm_prueba = ? ', [ 'Imc' ] );
+		$id_imc     = $Prueba->id;
 
+		$resultImc  = $consultar->_ConsultarResultadosPruebasReporte($id_imc,$id_cliente);
+		$rows_imc   = count($resultImc);
+		$Imc        = array();
+
+		for($i=0; $i<$rows_imc; $i++)
+		{
+			$fila  				= $resultImc[$i];
+			$resultado_numerico = $fila['resultado_numerico'];
+			$des_prueba 		= $fila['desc_prueba'];
+			$Cond 				= $fila['resultado'];
+			$fh_creacion 		= $fila['fh_creacion'];
+			$porcentaje         = $fila['porcentaje'];
+			$resultConsejo 		= $consultar->_ConsultarConsejoAcordeResultado($id_imc,$Cond);
+			$consejo	   		= $resultConsejo['consejo'];
+			$resultadosPeso     = $this->PesoResultados($porcentaje);
+			$Barra				= $resultadosPeso['Barra'];
+			$Longitud			= $resultadosPeso['Longitud'];
+			$prueba_imc         = array("resultado_numerico"=>$resultado_numerico,
+										"des_prueba"=>$des_prueba,"resultado"=>$Cond,
+										"fh_creacion"=>$fh_creacion,
+										"porcentaje"=>$porcentaje,"consejo"=>$consejo,
+										"Barra"=>$Barra,"Longitud"=>$Longitud);
+			array_push($Imc,$prueba_imc);
+		}//for
+		if($rows_imc<3)
+		{
+			$repetir = 3-$rows_imc;
+			for($i=0; $i<$repetir; $i++)
+			{
+				$prueba_imc        = array("resultado_numerico"=>0,
+										"des_prueba"=>0,"resultado"=>0,
+										"fh_creacion"=>"Biotest No Hecho",
+										"porcentaje"=>0,"consejo"=>0,
+										"Barra"=>0,"Longitud"=>0);
+			array_push($Imc,$prueba_imc);
+			}//for
+		}//if
+
+		//tomando los resultados de IMM
+		$Prueba     = R::findOne( 'sgtipospruebas', ' nm_prueba = ? ', [ 'Imm' ] );
+		$id_imm     = $Prueba->id;
+		$ResultadosIMM = $consultar->_ConsultarResultadosPruebasIMM($id_imm,$id_cliente);
+		$num_rowsIMM   = count($ResultadosIMM);
+		$IMM		   = array();
+		$IMM2		   = array();
+		
+
+		if($num_rowsIMM<12)
+		{
+			//Guardando en el primer array para asegurarnos si el usuario ha hecho más de un biotest.
+			for($i=0; $i<$num_rowsIMM; $i++)
+			{
+				$filaIMM 	 = $ResultadosIMM[$i];
+				$desc_prueba = $filaIMM['desc_prueba'];
+				$resultado   = $filaIMM['resultado_numerico'];
+				$fecha       = $filaIMM['fh_creacion'];
+				$pruebaimm   = array("desc_prueba"=>$desc_prueba, "resultado"=>$resultado, "fecha"=>$fecha);
+				array_push($IMM, $pruebaimm);
+				$desc_prueba2 = 0;
+				$resultado2   = 0;
+				$fecha2       = 0;
+				$pruebaimm2   = array("desc_prueba"=>$desc_prueba, "resultado"=>$resultado, "fecha"=>$fecha);
+				array_push($IMM2, $pruebaimm2);
+			}//for
+		}//if
+		else
+		{
+			$fechaprueba = $ResultadosIMM[0]['fh_creacion'];
+			for($i=0; $i<12; $i++)
+			{
+				$fechaimm = $ResultadosIMM[$i]['fh_creacion'];
+				if($fechaprueba==$fechaimm)
+				{
+					array_push($IMM,$ResultadosIMM[$i]);
+				}else{array_push($IMM2,$ResultadosIMM[$i]);}
+			}//for
+		}
+		
+
+		$datos = array("Peso"=>$Peso,"Imc"=>$Imc,"IMM"=>$IMM,"IMM2"=>$IMM2);
+
+		echo json_encode($datos);
 	}//ReportePdf
 
 	function ReportePdf2($id_cliente)

@@ -1492,7 +1492,7 @@
 		R::freeze(1);
 			R::begin();
 			    try{
-			       $info = R::getRow($query,[$id_prueba,$id_cliente,$id_cliente]);
+			       $info = R::getAll($query,[$id_prueba,$id_cliente,$id_cliente]);
 			        R::commit();
 			    }
 			    catch(Exception $e) {
@@ -1503,6 +1503,24 @@
 			return $info;	
 	}//_ConsultarResultadosPruebasReporte
 
+	function _ConsultarConsejoAcordeResultado($tipo_prueba, $resultado)
+	{
+		$query='
+			select * from sgconsejos where id_tipo_prueba=? and Resultado=?;
+		';	
+		R::freeze(1);
+			R::begin();
+			    try{
+			       $info = R::getRow($query,[$tipo_prueba,$resultado]);
+			        R::commit();
+			    }
+			    catch(Exception $e) {
+			       $info =  R::rollback();
+			       $info = "Error";
+			    }
+			R::close();
+			return $info;
+	}	
 	//queries viejos
 
 
@@ -1735,15 +1753,7 @@
 		return $result;
 	}
 		
-	function _ConsultarConsejoAcordeResultado($tipo_prueba, $resultado)
-	{
-		$query='
-			select * from sg_consejos where id_tipo_prueba="'.$tipo_prueba.'" and resultado="'.$resultado.'";
-		';	
-		$con=Conectar::_con();
-		$result=$con->query($query) or die("Error en: $query ".mysqli_error($query));
-		return $result;
-	}	
+	
 	
 	function _ConsultarBioTestPorIdCliente($id_cliente)
 	{
