@@ -47,8 +47,8 @@ class Utilidades
 			$Longitud			= $resultadosPeso['Longitud'];
 			$prueba_peso        = array("resultado_numerico"=>$resultado_numerico,
 										"des_prueba"=>$des_prueba,"resultado"=>$Cond,
-										"fh_creacion"=>$fh_creacion,
-										"porcentaje"=>$porcentaje,"consejo"=>$consejo,
+										"fecha"=>$fh_creacion,
+										"Porcentaje"=>$porcentaje,"consejo"=>$consejo,
 										"Barra"=>$Barra,"Longitud"=>$Longitud);
 			array_push($Peso,$prueba_peso);
 		}//for
@@ -59,8 +59,8 @@ class Utilidades
 			{
 				$prueba_peso        = array("resultado_numerico"=>0,
 										"des_prueba"=>0,"resultado"=>0,
-										"fh_creacion"=>"Biotest No Hecho",
-										"porcentaje"=>0,"consejo"=>0,
+										"fecha"=>"Biotest No Hecho",
+										"Porcentaje"=>0,"consejo"=>0,
 										"Barra"=>0,"Longitud"=>0);
 			array_push($Peso,$prueba_peso);
 			}//for
@@ -147,11 +147,79 @@ class Utilidades
 				}else{array_push($IMM2,$ResultadosIMM[$i]);}
 			}//for
 		}
-		
+		$IMMLibre  = $this->DespejarValoresArrayIMM($IMM);
+		$IMMLibre2 = $this->DespejarValoresArrayIMM($IMM2);
 
-		$datos = array("Peso"=>$Peso,"Imc"=>$Imc,"IMM"=>$IMM,"IMM2"=>$IMM2);
+		//Tomando las diferencias de los resultados.
+		//Perímetro Espalda.
+		$Espalda     = $IMMLibre['Espalda'];
+		$Espalda2    = $IMMLibre2['Espalda'];
+		$Res_per_esp = 0;
+		$Resesp		 = $Espalda-$Espalda2;
+		if($Espalda==$Resesp)$Res_per_esp="Primer Biotest"; //Da la misma cantidad por que se le resta un 0 y no hay cambios.
+		if($Resesp>0 && $Espalda!=$Resesp)$Res_per_esp="Disminuiste: ".$Resesp;
+		if($Resesp==0)$Res_per_esp="Sin Cambios";
+		if($Resesp<0)$Res_per_esp="Aumentaste: ".($Resesp*-1);
 
-		echo json_encode($datos);
+		//Perímetro Pecho.
+		$Pecho     = $IMMLibre['Pecho'];
+		$Pecho2    = $IMMLibre2['Pecho'];
+		$Res_Pec   = 0;
+		$Respech	 = $Pecho-$Pecho2;
+		if($Pecho==$Respech)$Res_Pec="Primer Biotest"; //Da la misma cantidad por que se le resta un 0 y no hay cambios.
+		if($Respech>0 && $Pecho!=$Respech)$Res_Pec="Disminuiste: ".$Respech;
+		if($Respech==0)$Res_Pec="Sin Cambios";
+		if($Respech<0)$Res_Pec="Aumentaste: ".($Respech*-1);
+
+		//Perímetro Abdomen.
+		$Abdomen     = $IMMLibre['Abdomen'];
+		$Abdomen2    = $IMMLibre2['Abdomen'];
+		$Res_abd     = 0;
+		$Resabd	 = $Abdomen-$Abdomen2;
+		if($Abdomen==$Resabd)$Res_abd="Primer Biotest"; //Da la misma cantidad por que se le resta un 0 y no hay cambios.
+		if($Resabd>0 && $Abdomen!=$Resabd)$Res_abd="Disminuiste: ".$Resabd;
+		if($Resabd==0)$Res_abd="Sin Cambios";
+		if($Resabd<0)$Res_abd="Aumentaste: ".($Resabd*-1);
+
+		//Perímetro Cadera.
+		$Cadera     = $IMMLibre['Cadera'];
+		$Cadera2    = $IMMLibre2['Cadera'];
+		$Res_cad     = 0;
+		$Rescad	 = $Cadera-$Cadera2;
+		if($Cadera==$Rescad)$Res_cad="Primer Biotest"; //Da la misma cantidad por que se le resta un 0 y no hay cambios.
+		if($Rescad>0 && $Cadera!=$Rescad)$Res_cad="Disminuiste: ".$Rescad;
+		if($Rescad==0)$Res_cad="Sin Cambios";
+		if($Rescad<0)$Res_cad="Aumentaste: ".($Rescad*-1);
+
+		//Perímetro Brazo.
+		$Brazo     = $IMMLibre['Brazo'];
+		$Brazo2    = $IMMLibre2['Brazo'];
+		$Res_bra     = 0;
+		$Resbra	 = $Brazo-$Brazo2;
+		if($Brazo==$Resbra)$Res_bra="Primer Biotest"; //Da la misma cantidad por que se le resta un 0 y no hay cambios.
+		if($Resbra>0 && $Brazo!=$Resbra)$Res_bra="Disminuiste: ".$Res_bra;
+		if($Resbra==0)$Res_bra="Sin Cambios";
+		if($Resbra<0)$Res_bra="Aumentaste: ".($Resbra*-1);
+
+		//Perímetro Muslo.
+		$Muslo     = $IMMLibre['Muslo'];
+		$Muslo2    = $IMMLibre2['Muslo'];
+		$Res_mus     = 0;
+		$Resmus	 = $Muslo-$Muslo2;
+		if($Muslo==$Resmus)$Res_mus="Primer Biotest"; //Da la misma cantidad por que se le resta un 0 y no hay cambios.
+		if($Resmus>0 && $Muslo!=$Resmus)$Res_mus="Disminuiste: ".$Res_mus;
+		if($Resmus==0)$Res_mus="Sin Cambios";
+		if($Resmus<0)$Res_mus="Aumentaste: ".($Resmus*-1);
+
+		$resultadosIMM = array("Espalda"=>$Res_per_esp,"Pecho"=>$Res_Pec,
+							   "Abdomen"=>$Res_abd,"Cadera"=>$Res_cad,
+							   "Brazo"=>$Res_bra,"Muslo"=>$Res_mus);
+
+		$datos = array("Peso"=>$Peso,"Imc"=>$Imc,
+			           "IMM"=>$IMMLibre,"IMM2"=>$IMMLibre2,
+			           "resultadosIMM"=>$resultadosIMM);
+
+		return json_encode($datos);
 	}//ReportePdf
 
 	function ReportePdf2($id_cliente)
@@ -633,51 +701,44 @@ class Utilidades
 	function DespejarValoresArrayIMM($IMM)
 	{
 		//Se hace un ciclo para saber que es lo que viene y tomar los datos correctamente.
-		$Per_Brazo 	     = 0;
-		$Per_Brazo_Fle   = 0;
-		$Per_Femoral   	 = 0;
-		$Per_Pantorrilla = 0;
-		$CantidadCintura = 0;
-		$CantidadCadera  = 0;
-		$per_espalda_can = 0;
-		$Per_Pecho  	 = 0;
-		for($i=0; $i<8; $i++)
+		$Espalda = 0;
+		$Pecho   = 0;
+		$Abdomen = 0;
+		$Cadera  = 0;
+		$Brazo   = 0;
+		$Muslo   = 0;
+
+		for($i=0; $i<6; $i++)
 		{
 			//Tomando los valores de las pruebas a partir del nombre de las mismas.
 			switch($IMM[$i]['desc_prueba'])
 			{
-				case "IMM - Perimetro_brazo_relajado": 
-					$Per_Brazo 	     = $IMM[$i]['resultado'];
+				case "IMM - Espalda": 
+					$Espalda 	     = $IMM[$i]['resultado_numerico'];
 				break;
-				case 'IMM - Perimetro_brazo_flexionado': 
-					$Per_Brazo_Fle   = $IMM[$i]['resultado'];
+				case 'IMM - Pecho': 
+					$Pecho   = $IMM[$i]['resultado_numerico'];
 				break;
-				case 'IMM - Perimetro_femoral': 
-					$Per_Femoral     = $IMM[$i]['resultado'];
-				break;
-				case 'IMM - Perimetro_Pantorrilla': 
-					$Per_Pantorrilla = $IMM[$i]['resultado'];
-				break;
-				case 'IMM - Cintura': 
-					$CantidadCintura = $IMM[$i]['resultado'];
+				case 'IMM - Abdomen': 
+					$Abdomen     = $IMM[$i]['resultado_numerico'];
 				break;
 				case 'IMM - Cadera': 
-					$CantidadCadera  = $IMM[$i]['resultado'];
+					$Cadera = $IMM[$i]['resultado_numerico'];
 				break;
-				case 'IMM - Perimetro_Espalda': 
-					$per_espalda_can = $IMM[$i]['resultado'];
+				case 'IMM - Brazo': 
+					$Brazo = $IMM[$i]['resultado_numerico'];
 				break;
-				case 'IMM - Perimetro_Pecho': 
-					$Per_Pecho		 = $IMM[$i]['resultado'];
+				case 'IMM - Muslo': 
+					$Muslo  = $IMM[$i]['resultado_numerico'];
 				break;
 				
 			}//switch				
 		}//for
 		
-		$fecha = $IMM[0]['fecha'];
+		$fecha = $IMM[0]['fh_creacion'];
 		$fecha = $this->ConvertirTimeStamp($fecha);
-		$IMMLibre = array("Per_Brazo"=>$Per_Brazo,"Per_Brazo_Fle"=>$Per_Brazo_Fle,"Per_Femoral"=>$Per_Femoral,"Per_Pantorrilla"=>$Per_Pantorrilla,
-		"CantidadCintura"=>$CantidadCintura,"CantidadCadera"=>$CantidadCadera,"per_espalda_can"=>$per_espalda_can,"Per_Pecho"=>$Per_Pecho,"fecha"=>$fecha);	
+		$IMMLibre = array("Espalda"=>$Espalda,"Pecho"=>$Pecho,"Abdomen"=>$Abdomen,
+						 "Cadera"=>$Cadera,"Brazo"=>$Brazo,"Muslo"=>$Muslo,"fecha"=>$fecha);	
 		return $IMMLibre;
 	}//DespejarValoresArrayIMM
 	

@@ -1399,7 +1399,7 @@
 		$query='
 			select * from sgpruebaslight pruebas 
 			where tipo_prueba=?
-			and id_cliente=? order by pruebas.fh_creacion DESC limit 12
+			and id_cliente=? order by pruebas.fh_creacion ASC limit 12
 		';
 		R::freeze(1);
 			R::begin();
@@ -1521,6 +1521,29 @@
 			R::close();
 			return $info;
 	}	
+
+	function _ConsultarClientesPorId($id_Cliente)
+		{
+			$query='
+				SELECT
+				clientes.id as id_cliente,
+				clientes.nb_cliente,
+				clientes.nb_apellidos,
+				clientes.de_email,
+				clientes.num_celular,
+				clientes.de_genero,
+				clientes.fh_nacimiento,
+				usuarios.nb_nombre as "Ins_nombre", 
+				usuarios.nb_apellidos as "Ins_apellido",
+			    TIMESTAMPDIFF(YEAR, clientes.fh_nacimiento, CURDATE()) AS num_edad  
+				FROM sgclientes clientes
+				inner join sgusuarios  usuarios on clientes.id_usuario_registro=usuarios.id
+				where clientes.sn_activo=1 and clientes.id=?
+			
+			';
+			$datos = R::getRow($query,[$id_Cliente]);
+			return $datos;
+		}//_ConsultarClientesPorId
 	//queries viejos
 
 
@@ -1565,32 +1588,6 @@
 			return $result;
 		}//_ConsultarUsuarioVerificarSiTieneRutinas
 		
-		
-		
-		function _ConsultarClientesPorId($id_Cliente)
-		{
-			$query='
-				SELECT
-				clientes.id_cliente,
-				clientes.nb_cliente,
-				clientes.nb_apellidos,
-				clientes.de_email,
-				clientes.num_celular,
-				clientes.de_genero,
-				clientes.fh_nacimiento,
-				usuarios.nb_nombre as "Ins_nombre", 
-				usuarios.nb_apellidos as "Ins_apellido",
-			    TIMESTAMPDIFF(YEAR, clientes.fh_nacimiento, CURDATE()) AS num_edad  
-				FROM sg_clientes clientes
-				inner join sg_usuarios  usuarios on clientes.id_usuario_registro=usuarios.id_usuario
-				where clientes.sn_activo=1 and id_cliente="'.$id_Cliente.'"
-			
-			';
-			$conectar=new Conectar();
-			$con=Conectar::_con();
-			$result=$con->query($query)or die("Error en $query ".mysqli_error($query));
-			return $result;
-		}//_ConsultarClientesPorId
 		
 		
 		function _ConsultarClientesPorInstructor($id_instructor)
