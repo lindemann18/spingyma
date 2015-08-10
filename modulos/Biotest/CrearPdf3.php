@@ -23,7 +23,7 @@
 		$fechaPeso2   = $Peso[1]['fecha'];
 		$PorcenPeso3  = $Peso[2]['Porcentaje'];
 		$fechaPeso3   = $Peso[2]['fecha'];
-
+        
 		//Datos de IMC
 		$Imc 	      = $decode['Imc'];
 		$BarraImc     = $Imc[0]['Barra'];
@@ -37,18 +37,35 @@
 		$fechaImc3    = $Imc[2]['fh_creacion'];
 
 		// Datos de IMM
-		$IMM 		     = $decode['IMM'];
-		$fecha			 = $IMM['fecha'];
+		$IMM      = $decode['IMM'];
+		$fechaimm = $IMM['fecha'];
+        $Espalda  = $IMM['Espalda'];
+        $Pecho    = $IMM['Pecho'];
+        $Abdomen  = $IMM['Abdomen'];
+        $Cadera   = $IMM['Cadera'];
+        $Brazo    = $IMM['Brazo'];
+        $Muslo    = $IMM['Muslo'];
 		
 
 		// DAtos de IMM2
 		//Tomando los datos del IMM2.
 		$IMM2 		 	  = $decode['IMM2'];
-		
+		$fechaimm2 = $IMM2['fecha'];
+        $Espalda2  = $IMM2['Espalda'];
+        $Pecho2    = $IMM2['Pecho'];
+        $Abdomen2  = $IMM2['Abdomen'];
+        $Cadera2   = $IMM2['Cadera'];
+        $Brazo2    = $IMM2['Brazo'];
+        $Muslo2    = $IMM2['Muslo'];
 
 		//Datos de la diferencia de IMM
 		$resultadosIMM = $decode['resultadosIMM'];
-
+        $EspaldaR  = $resultadosIMM['Espalda'];
+        $PechoR    = $resultadosIMM['Pecho'];
+        $AbdomenR  = $resultadosIMM['Abdomen'];
+        $CaderaR   = $resultadosIMM['Cadera'];
+        $BrazoR    = $resultadosIMM['Brazo'];
+        $MusloR    = $resultadosIMM['Muslo'];
 		
 		//Consultar la información del cliente
 		$ResultCliente   = $consultar->_ConsultarClientesPorId($id_cliente);
@@ -99,13 +116,17 @@ body{    padding-top: 0px !important;}
         background-repeat: no-repeat;
     background-size: 78%;
     background-position: 0px 35px;
-    height: 233px;}
+    height: 255px;}
 .Logo {background-image: url(../../css/img/logosinfondo.png);
         background-repeat: no-repeat;
     background-size: 96%;
     background-position: 0px 37px;
     height: 200px;}
-#datos{margin-top: 50%;}    
+.vacio{height: 200px;}    
+#datos{margin-top: 50%;}  
+.containerbar{    margin-bottom: 3%}  
+.ResultadosIMM{margin-top: 5%;border: 1px solid #ccc;margin-left: 8%;padding: 4%;}
+.ContainerGraphic2{    margin-left: 8%; margin-top: 2%;}
 
 </style>
 <html>
@@ -119,14 +140,37 @@ body{    padding-top: 0px !important;}
      
 </head>
 <body>
-
-
-
 	<div class="container-fluid">
 		<div class="row">
 		<!-- valores escondidos-->
-		
-		
+		<input type="hidden" id="fechaPeso" value="<?php echo $fechaPeso?>">
+		<input type="hidden" id="fechaPeso2" value="<?php echo $fechaPeso2?>">
+        <input type="hidden" id="fechaPeso3" value="<?php echo $fechaPeso3?>">
+        <input type="hidden" id="PorcenPeso1" value="<?php echo $PorcenPeso1?>">
+        <input type="hidden" id="PorcenPeso2" value="<?php echo $PorcenPeso2?>">
+        <input type="hidden" id="PorcenPeso3" value="<?php echo $PorcenPeso3?>">
+        <!-- valores de IMC-->
+        <input type="hidden" id="fechaImc" value="<?php echo $fechaImc?>">
+        <input type="hidden" id="fechaImc2" value="<?php echo $fechaImc2?>">
+        <input type="hidden" id="fechaImc3" value="<?php echo $fechaImc3?>">
+        <input type="hidden" id="PorcenImc1" value="<?php echo $PorcenImc1?>">
+        <input type="hidden" id="PorcenImc2" value="<?php echo $PorcenImc2?>">
+        <input type="hidden" id="PorcenImc3" value="<?php echo $PorcenImc3?>">
+        <!-- valores de IMM-->
+        <input type="hidden" id="Espalda" value="<?php echo $Espalda?>">
+        <input type="hidden" id="Pecho" value="<?php echo $Pecho?>">
+        <input type="hidden" id="Abdomen" value="<?php echo $Abdomen?>">
+        <input type="hidden" id="Cadera" value="<?php echo $Cadera?>">
+        <input type="hidden" id="Brazo" value="<?php echo $Brazo?>">
+        <input type="hidden" id="Muslo" value="<?php echo $Muslo?>">
+
+        <input type="hidden" id="Espalda2" value="<?php echo $Espalda2?>">
+        <input type="hidden" id="Pecho2" value="<?php echo $Pecho2?>">
+        <input type="hidden" id="Abdomen2" value="<?php echo $Abdomen2?>">
+        <input type="hidden" id="Cadera2" value="<?php echo $Cadera2?>">
+        <input type="hidden" id="Brazo2" value="<?php echo $Brazo2?>">
+        <input type="hidden" id="Muslo2" value="<?php echo $Muslo2?>">
+        
 		<!-- fin valores escondidos-->
 				
                  
@@ -142,6 +186,7 @@ body{    padding-top: 0px !important;}
 	                   		<div class="col-md-2 Logo pull-right">
 	                   			<div class="col-md-12" id="datos">
 	                   				<h5 class="text-left">Resultados De <strong>Biotest</strong></h5>
+                                    <h5 class="text-left">Biotest: <strong><?php echo $fecha_actual;?></strong></h5>
 	                   			</div>
 	                   		</div>
 	                   		<div class="col-md-8 Consejo">
@@ -150,213 +195,128 @@ body{    padding-top: 0px !important;}
 	                   			</p>
 	                   		</div>
 	                   	</div><!-- Datos -->
+                        <div class="col-md-1"></div>
+                        <div class="col-md-10 ContainerGraphic" style="border: 1px solid #ccc">
+                            <div class="col-md-2"></div>
+                            <div class="col-md-8" id="chart_div"></div>    
+                        </div><!-- ContainerGraphic -->
+                        
                  	</div><!--containerbar -->  
 				 
-				 <!-- Peso -->
-				 <div class="col-sm-12  col-xs-12 containerbar pull-right Grafica" id="ContainerBar"> 
-                 <h1 class="text-center">Peso</h1>
-                  <h2 id="CondicionTitulo" ></h2>  
-                    <div class="progress">
-                        <div class="progress-bar ".$BarraPeso."" role="progressbar" aria-valuenow="60" aria-valuemin="0"
-                         aria-valuemax="100" id="ProgresBarResultado" style="".$LongitudPeso."">
-                        <span class="sr-only">60% Complete</span>
-                      </div>
-                    </div><!--progress -->
-                    
-                    <!-- Barra de comparación-->
-                 ".$progress."
-                    <p class="text-center ">".$ConsejoPeso."</p>
-					<div id="chart_peso" style="height:270px; width:800px;"align="center"></div>
-					<h1>&nbsp;</h1> <!-- para hacer el espacio y bajarlo-->
-					<h1>&nbsp;</h1> <!-- para hacer el espacio y bajarlo-->
-                 </div><!--containerbar -->  
-				 <!-- Final de Peso  -->
-				 
-				 <!-- Stamina -->
-				 <div class="col-sm-12  col-xs-12 containerbar pull-right Grafica" id="ContainerBar"> 
-                 <h1 class="text-center">Stamina</h1>
-                  <h2 id="CondicionTitulo" ></h2>  
-                    <div class="progress">
-                        <div class="progress-bar ".$BarraStam."" role="progressbar" aria-valuenow="60"
-						 aria-valuemin="0"
-                         aria-valuemax="100" id="ProgresBarResultado" style="".$Longitudstam."">
-                        <span class="sr-only">60% Complete</span>
-                      </div>
-                    </div><!--progress -->
-                    
-                    <!-- Barra de comparación-->
-                 ".$progress."
-				  <p class="text-center ">".$Consejostam."</p>
-				  <div id="chart_stamina" style="height:270px; width:800px;"align="center"></div>
-                 </div><!--containerbar --> 
-				 
-				 <!-- final stamina-->
-				 
-				 <!-- fuerza-->
-			
-				 
-				  <div class="col-sm-12  col-xs-12 containerbar pull-right Grafica" id="ContainerBar"> 
-                 <h1 class="text-center">Fuerza</h1>
-                  <h2 id="CondicionTitulo" ></h2>  
-                    <div class="progress">
-                        <div class="progress-bar ".$BarraFuerza."" role="progressbar" aria-valuenow="60"
-						 aria-valuemin="0"
-                         aria-valuemax="100" id="ProgresBarResultado" style="".$Longitudfuer."">
-                        <span class="sr-only">60% Complete</span>
-                      </div>
-                    </div><!--progress -->
-                    
-                    <!-- Barra de comparación-->
-                 ".$progress."
-				 <p class="text-center ">".$Consejofuer."</p>
-				 <div id="chart_fuerza" style="height:270px; width:800px;"align="center"></div>
-				 <h1>&nbsp;</h1> <!-- para hacer el espacio y bajarlo-->
-                 </div><!--containerbar -->  
-				 
-				  <div class="col-sm-12  col-xs-12 containerbar pull-right Grafica" id="ContainerBar"> 
-				  </br></br>
-				  <h1>&nbsp;</h1>
-				  <h1>&nbsp;</h1>
-				  <h1>&nbsp;</h1> <!-- para hacer el espacio y bajarlo-->
-				  <h1>&nbsp;</h1> <!-- para hacer el espacio y bajarlo-->
-                 <h1 class="text-center">Resistencia</h1>
-                  <h2 id="CondicionTitulo" ></h2>  
-                    <div class="progress">
-                        <div class="progress-bar ".$BarraResis."" role="progressbar" aria-valuenow="60"
-						 aria-valuemin="0"
-                         aria-valuemax="100" id="ProgresBarResultado" style="".$LongitudResi."">
-                        <span class="sr-only">60% Complete</span>
-                      </div>
-                    </div><!--progress -->
-                    
-                    <!-- Barra de comparación--> 
-                 ".$progress."
-				 <p class="text-center ">".$ConsejoResi."</p>
-				 <div id="chart_Resistencia" style="height:270px; width:800px;"align="center"></div>
-                 </div><!--containerbar --> 
-				  
-				 
-				 
-				 <div class="col-sm-12  col-xs-12 containerbar pull-right Grafica" id="ContainerBar">
-				 <div class="col-sm-12  col-xs-12 " id="ContainerBar">
-					 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-				 </div> 
-                 <h1 class="text-center">Flexibilidad</h1>
-                  <h2 id="CondicionTitulo" ></h2>  
-                    <div class="progress">
-                        <div class="progress-bar ".$BarraFlexi."" role="progressbar" aria-valuenow="60"
-						 aria-valuemin="0"
-                         aria-valuemax="100" id="ProgresBarResultado" style="".$LongitudFlexi."">
-                        <span class="sr-only">60% Complete</span>
-                      </div>
-                    </div><!--progress -->
-                    
-                    <!-- Barra de comparación-->
-                 ".$progress."
-				 <p class="text-center ">".$ConsejoFlexi."</p>
-				 <div id="chart_flexibilidad" style="height:270px; width:800px;"align="center"></div>
-				 <h1>&nbsp;</h1> <!-- para hacer el espacio y bajarlo-->
-				 <h1>&nbsp;</h1> <!-- para hacer el espacio y bajarlo-->
-				 <h1>&nbsp;</h1> <!-- para hacer el espacio y bajarlo-->
-				 <h1>&nbsp;</h1> <!-- para hacer el espacio y bajarlo-->
-                 </div><!--containerbar --> 
-				 
-				   <div class='col-sm-12 col-xs-12 containerbar pull-left Grafica' id='ContainerBar'> 
-                  <h2 id="CondicionTitulo" class="text-center" >IMM</h2>  
-                      <div class="Resultados2 col-sm-4 col-xs-4">
+                    <!-- Peso-->
+                   <div class="col-sm-12  col-xs-12 containerbar pull-right Grafica" id="ContainerBar"> 
+                        <div class="col-md-12 Cabecera">
+                            <h1 class="text-left">IMC</h1>
+                        </div>
+                        <div class="col-md-12 Datos">
+                            <div class="col-md-3 ResultImg">
+                            </div>
+                            <div class="col-md-2 vacio pull-right">
+                                <div class="col-md-12" id="datos">
+                                    
+                                </div>
+                            </div>
+                            <div class="col-md-8 Consejo">
+                                <p class="text-center">
+                                    <?php echo utf8_decode($ConsejoImc);?>
+                                </p>
+                            </div>
+                        </div><!-- Datos -->
+                        <div class="col-md-1"></div>
+                        <div class="col-md-10 ContainerGraphic" style="border: 1px solid #ccc">
+                            <div class="col-md-2"></div>
+                            <div class="col-md-8" id="chart_imc"></div>    
+                        </div><!-- ContainerGraphic -->
+                        
+                    </div><!--containerbar -->  
+
+                     <!-- Peso-->
+                   <div class="col-sm-12  col-xs-12 containerbar pull-right Grafica" id="ContainerBar"> 
+                        <div class="col-md-12 Cabecera">
+                            <h1 class="text-left">IMM</h1>
+                        </div>
+                        
+                        <div class="col-md-10 ResultadosIMM">
+                            <div class="Resultados2 col-sm-4 col-xs-4">
                                   <!-- Segundos Resultados-->
-                               <h5 id="Fecha" class="text-center">".$fecha2."</h5>
+                               <h5 id="Fecha" class="text-center"><?php echo $fechaimm2;?></h5>
                                 <!--Primeros Resultados -->
-                            	<div class="col-sm-12 col-xs-12 Cintura pull-right">
-                                	<label class="text-center col-sm-12 col-xs-12 ">Cintura: ".$CantidadCintura2."</label>
+                                <div class="col-sm-12 col-xs-12 Espalda pull-right">
+                                    <label class="text-center col-sm-12 col-xs-12 ">Espalda: <?php echo $Espalda2;?></label>
                                  </div>
                                 <div class="col-sm-12 col-xs-12 Cadera pull-right">
-                                	<label class="text-center col-sm-12 col-xs-12">Cadera: ". $CantidadCadera2."</label>
+                                    <label class="text-center col-sm-12 col-xs-12">Pecho: <?php echo $Pecho2; ?></label>
                                  </div>
                                 <div class="col-sm-12 col-xs-12 Per_Espalda  pull-right">
-                                	<label class="text-center col-sm-12 col-xs-12">Espalda: ". $per_espalda_can2."</label>
+                                    <label class="text-center col-sm-12 col-xs-12">Abdomen: <?php echo $Abdomen2;?></label>
                                 </div>
                                 <div class="col-sm-12 col-xs-12 Per_Pecho  pull-right">
-                                	<label class="text-center col-sm-12 col-xs-12 ">Pecho: ". $Per_Pecho2 ."</label>
+                                    <label class="text-center col-sm-12 col-xs-12 ">Cadera: <?php echo $Cadera2;?></label>
                                  </div>
                                 <div class="col-sm-21 col-xs-12 Per_Brazo pull-right">
-                                	<label class="text-center col-sm-12 col-xs-12 right">Brazo: ". $Per_Brazo2."</label>
+                                    <label class="text-center col-sm-12 col-xs-12 right">Brazo: <?php echo $Brazo2;?></label>
                                  </div>
                                 <div class="col-sm-12 col-xs-12 Per_Brazo_Fle pull-right">
-                                	<label class="text-center col-sm-12 col-xs-12">Brazo Flexionado: ". $Per_Brazo_Fle2."</label>
+                                    <label class="text-center col-sm-12 col-xs-12">Muslo: <?php echo $Muslo2;?></label>
                                  </div>
-                                <div class="col-sm-12 col-xs-12 Perimetro_femoral pull-right">
-                                	<label class="text-center col-sm-12 col-xs-12">Femoral: ".$Per_Femoral2."</label>
-                                 </div>
-                                <div class="col-sm-12 col-xs-12 Per_Pantorrilla pull-right">
-                                	<label class="text-center col-sm-12 col-xs-12">Pantorrilla: ". $Per_Pantorrilla2."</label>
-                                </div>
                             </div><!-- Resultados -->
                             
                             
                             <div class="Resultados col-sm-4 col-xs-4 pull-right">
-                            	<h5 id="text-left" style="margin-left:12%">Resultados</h5>
+                                <h5 id="text-left" style="margin-left:12%">Resultados</h5>
                                 <!--Resultados Finales -->
-                            	<div class="col-sm-10  col-xs-10 Cintura pull-left">
-                                	<label for="" id="" class="text-left col-sm-6 right">". $ResCintura."</label>
-                                 </div>
-                                <div class="col-sm-10  col-xs-10 Cadera pull-left">
-                                	<label for="" id="" class="text-left col-sm-6 right">". $Res_Cadera."</label>
-                                 </div>
-                                <div class="col-sm-10  col-xs-10 Per_Espalda  pull-left">
-                                	<label for="" id="" class="text-left col-sm-6 right">". $Res_per_esp."</label>
-                                </div>
-                                <div class="col-sm-10  col-xs-10 Per_Pecho   pull-left">
-                                	<label for="" id=" " class="text-left col-sm-6 right">". $Res_pecho ."</label>
-                                 </div>
-                                <div class="col-sm-10  col-xs-10 Per_Brazo pull-left">
-                                	<label for="" id="" class="text-left col-sm-6 right">". $Res_Brazo."</label>
-                                 </div>
-                                <div class="col-sm-10  col-xs-10 Per_Brazo_Fle pull-left">
-                                	<label for="" id="" class="text-left col-sm-6 right">". $Res_BrazoFle."</label>
-                                 </div>
-                                <div class="col-sm-10  col-xs-10 Perimetro_femoral pull-left">
-                                	<label for="" id="" class="text-left col-sm-6 right">". $Res_PeriFemo."</label>
-                                 </div>
-                                <div class="col-sm-10  col-xs-10 Per_Pantorrilla pull-left">
-                                	<label for="" id="" class="text-left col-sm-6 right">". $ResPerPant."</label>
-                                </div>
-                            </div><!-- Resultados -->
-							
-							
-                            
-                        	<div class="Resultados col-sm-4 col-xs-4 pull-right">
-                            	<h5 id="Fecha" class="text-center">". $fecha."</h5>
-                                <!--Primeros Resultados -->
-                            	<div class="col-sm-12 col-xs-12 Cintura pull-right">
-                                <label class="text-center col-xs-12 col-sm-12">Cintura: ".$CantidadCintura."</label>
+                                <div class="col-sm-12 col-xs-12 Espalda pull-right">
+                                    <label class="text-center col-sm-12 col-xs-12 ">Espalda: <?php echo $EspaldaR;?></label>
                                  </div>
                                 <div class="col-sm-12 col-xs-12 Cadera pull-right">
-                                	<label class="text-center col-xs-12 col-sm-12">Cadera: ". $CantidadCadera."</label>
+                                    <label class="text-center col-sm-12 col-xs-12">Pecho: <?php echo $PechoR; ?></label>
                                  </div>
                                 <div class="col-sm-12 col-xs-12 Per_Espalda  pull-right">
-                                	<label class="text-center col-xs-12 col-sm-12">Espalda: ". $per_espalda_can."</label>
+                                    <label class="text-center col-sm-12 col-xs-12">Abdomen: <?php echo $AbdomenR;?></label>
                                 </div>
-                                <div class="col-sm-12 col-xs-12 Per_Pecho pull-right">
-                                	<label class="text-center col-xs-12 col-sm-12">Pecho: ". $Per_Pecho ."</label>
+                                <div class="col-sm-12 col-xs-12 Per_Pecho  pull-right">
+                                    <label class="text-center col-sm-12 col-xs-12 ">Cadera: <?php echo $CaderaR;?></label>
                                  </div>
                                 <div class="col-sm-21 col-xs-12 Per_Brazo pull-right">
-                                	<label class="text-center col-xs-12 col-sm-12">Brazo: ". $Per_Brazo."</label>
+                                    <label class="text-center col-sm-12 col-xs-12 right">Brazo: <?php echo $BrazoR;?></label>
                                  </div>
                                 <div class="col-sm-12 col-xs-12 Per_Brazo_Fle pull-right">
-                                	<label class="text-center col-xs-12 col-sm-12">Brazo Flexionado: ". $Per_Brazo_Fle."</label>
+                                    <label class="text-center col-sm-12 col-xs-12">Muslo: <?php echo $MusloR;?></label>
                                  </div>
-                                <div class="col-sm-12 col-xs-12 Perimetro_femoral pull-right">
-                                	<label class="text-center col-xs-12 col-sm-12">Femoral: ". $Per_Femoral."</label>
+                            </div><!-- Resultados -->
+                            
+                            
+                            
+                            <div class="Resultados col-sm-4 col-xs-4 pull-right">
+                                <h5 id="Fecha" class="text-center"><?php echo $fechaimm;?></h5>
+                                <!--Primeros Resultados -->
+                                <div class="col-sm-12 col-xs-12 Espalda pull-right">
+                                    <label class="text-center col-sm-12 col-xs-12 ">Espalda: <?php echo $Espalda;?></label>
                                  </div>
-                                <div class="col-sm-12 col-xs-12 Per_Pantorrilla pull-right">
-                                	<label class="text-center col-xs-12 col-sm-12">Pantorrill: ". $Per_Pantorrilla."</label>
+                                <div class="col-sm-12 col-xs-12 Cadera pull-right">
+                                    <label class="text-center col-sm-12 col-xs-12">Pecho: <?php echo $Pecho; ?></label>
+                                 </div>
+                                <div class="col-sm-12 col-xs-12 Per_Espalda  pull-right">
+                                    <label class="text-center col-sm-12 col-xs-12">Abdomen: <?php echo $Abdomen;?></label>
                                 </div>
+                                <div class="col-sm-12 col-xs-12 Per_Pecho  pull-right">
+                                    <label class="text-center col-sm-12 col-xs-12 ">Cadera: <?php echo $Cadera;?></label>
+                                 </div>
+                                <div class="col-sm-21 col-xs-12 Per_Brazo pull-right">
+                                    <label class="text-center col-sm-12 col-xs-12 right">Brazo: <?php echo $Brazo;?></label>
+                                 </div>
+                                <div class="col-sm-12 col-xs-12 Per_Brazo_Fle pull-right">
+                                    <label class="text-center col-sm-12 col-xs-12">Muslo: <?php echo $Muslo;?></label>
+                                 </div>
                                 </div><!-- Resultados-->
-								
-                  </div><!--containerbar -->
-				  <div id="chart_imm" style="height:300px; width:800px;"align="center"
-				  class="col-md-12 col-xs-12"></div>
+                        </div><!-- Resultados-->
+                        <div class="col-md-10 ContainerGraphic2" style="border: 1px solid #ccc">
+                            <div class="col-md-2"></div>
+                            <div class="col-md-8" id="chart_imm"></div>    
+                        </div><!-- ContainerGraphic -->
+                    </div><!--containerbar -->  
+                
+				 
 		</div> <!-- row -->
 	</div> <!-- container fluid-->
 
@@ -366,211 +326,82 @@ body{    padding-top: 0px !important;}
       google.load('visualization', '1.0', {'packages':['corechart']});
       google.setOnLoadCallback(drawChart);
 
-      function drawChart() {
-		  
-		  //Tomando los datos de las fechas
-		  
-        var data = google.visualization.arrayToDataTable([
-        ['Resultados', 'Condicion Fisica',{ role: 'style' }],
-        ['".$fechaCond."', ".$dato1.",'silver'],
-        ['".$fechaCond2."', ".$dato2.",'silver'],
-        ['".$fechaCond3."', ".$dato3.",'silver']
-      ]);
-	
-		var data2 = google.visualization.arrayToDataTable([
-        ['Resultados', 'Peso',{ role: 'style' }],
-        ['".$fechaPeso."', ".$PorcenPeso1.",'silver'],
-        ['".$fechaPeso2."', ".$PorcenPeso2.",'silver'],
-        ['".$fechaPeso3."', ".$PorcenPeso3.",'silver']
-      ]);
-	  
-	  var data3 = google.visualization.arrayToDataTable([
-        ['Resultados', 'Stamina',{ role: 'style' }],
-        ['".$fechaStam."', ".$PorcenStam1.",'silver'],
-        ['".$fechaStam2."', ".$PorcenStam2.",'silver'],
-        ['".$fechaStam3."', ".$PorcenStam3.",'silver']
-      ]);
-	  
-	  var data4 = google.visualization.arrayToDataTable([
-        ['Resultados', 'Fuerza',{ role: 'style' }],
-        ['".$fechaFuer."', ".$PorcenFuer.",'silver'],
-        ['".$fechaFuer2."', ".$PorcenFuer2.",'silver'],
-        ['".$fechaFuer3."', ".$PorcenFuer3.",'silver']
-      ]);
-	  
-	  var data5 = google.visualization.arrayToDataTable([
-        ['Resultados', 'Resistencia',{ role: 'style' }],
-        ['".$fechaResis."', ".$PorcenResis.",'silver'],
-        ['".$fechaResis2."', ".$PorcenResis2.",'silver'],
-        ['".$fechaResis3."', ".$PorcenResis3.",'silver']
-      ]);
-	  
-	  var data6 = google.visualization.arrayToDataTable([
-        ['Resultados', 'Flexibilidad',{ role: 'style' }],
-        ['".$fechaFlexi."', ".$PorcenFlexi.",'silver'],
-        ['".$fechaFlexi2."', ".$PorcenFlexi2.",'silver'],
-        ['".$fechaFlexi3."', ".$PorcenFlexi3.",'silver']
-      ]);
-	
-		var data7 = new google.visualization.arrayToDataTable([
-          ['Resultados', '".$fecha."', '".$fecha2."'],
-          ['Cintura', ".$CantidadCintura.", ".$CantidadCintura2."],
-          ['Cadera', ".$CantidadCadera.", ".$CantidadCadera2."],
-          ['Espalda', ".$per_espalda_can.", ".$per_espalda_can2."],
-          ['Pecho', ".$Per_Pecho.", ".$Per_Pecho2."],
-          ['Brazo', ".$Per_Brazo.", ".$Per_Brazo2."],
-		  ['brazo Flexionado', ".$Per_Brazo_Fle.", ".$Per_Brazo_Fle2."],
-		  ['Perimetro femoral', ".$Per_Femoral.", ".$Per_Femoral2."],
-		  ['Pantorrilla', ".$Per_Pantorrilla.", ".$Per_Pantorrilla2."]
-        ]);
-     
+       //Tomando los datos de las fechas
+          fechaPeso   = $("#fechaPeso").val();
+          fechaPeso2  = $("#fechaPeso2").val();
+          fechaPeso3  = $("#fechaPeso3").val();
+          PorcenPeso1 = parseInt($("#PorcenPeso1").val());
+          PorcenPeso2 = parseInt($("#PorcenPeso2").val());
+          PorcenPeso3 = parseInt($("#PorcenPeso3").val());
+        // Datos de IMC
+        fechaImc   = $("#fechaImc").val();
+        fechaImc2  = $("#fechaImc2").val();
+        fechaImc3  = $("#fechaImc3").val();
+        PorcenImc1 = parseInt($("#PorcenImc1").val());
+        PorcenImc2 = parseInt($("#PorcenImc2").val());
+        PorcenImc3 = parseInt($("#PorcenImc3").val());
+                
+        // Datos de IMM
+        Espalda = parseInt($("#Espalda").val());
+        Pecho   = parseInt($("#Pecho").val());
+        Abdomen = parseInt($("#Abdomen").val());
+        Cadera  = parseInt($("#Cadera").val());
+        Brazo   = parseInt($("#Brazo").val());
+        Muslo   = parseInt($("#Muslo").val());
 
-      var options = {
-        title: 'Condicion Fisica',
-		colors: ['silver'],
-        chartArea: {width: '50%'},
-        annotations: {
-          alwaysOutside: true,
-          textStyle: {
-            fontSize: 12,
-            auraColor: 'none',
-            color: '#555'
-          },
-          boxStyle: {
-            stroke: '#ccc',
-            strokeWidth: 1,
-            gradient: {
-              color1: '#f3e5f5',
-              color2: '#f3e5f5',
-              x1: '0%', y1: '0%',
-              x2: '100%', y2: '100%'
-            }
-          }
-        },
-        hAxis: {
-          title: 'Resultados Totales',
-          minValue: 0,
-        },
-        vAxis: {
-          title: 'Resultados'
-        }
-      };
-	  
-	 var options2 = {
-        title: 'Peso', chartArea: {width: '50%'},
-		colors: ['silver'],
-        annotations: {alwaysOutside: true, textStyle: {fontSize: 12,auraColor: 'none',color: '#555'},
-          boxStyle: { stroke: '#ccc', strokeWidth: 1, gradient: {color1: '#f3e5f5',color2: '#f3e5f5',x1: '0%', y1: '0%',x2: '100%', y2: '100%'}}
-        },
-        hAxis: {title: 'Resultados Totales',minValue: 0,},
-        vAxis: {title: 'Resultados'}
-      }; // Options 2
-	  
-	  var options3 = {
-        title: 'Stamina', chartArea: {width: '50%'},
-		colors: ['silver'],
-        annotations: {alwaysOutside: true, textStyle: {fontSize: 12,auraColor: 'none',color: '#555'},
-          boxStyle: { stroke: '#ccc', strokeWidth: 1, gradient: {color1: '#f3e5f5',color2: '#f3e5f5',x1: '0%', y1: '0%',x2: '100%', y2: '100%'}}
-        },
-        hAxis: {title: 'Resultados Totales',minValue: 0,},
-        vAxis: {title: 'Resultados'}
-      }; // Options 3
-	  
-	  var options4 = {
-        title: 'Fuerza', chartArea: {width: '50%'},
-		colors: ['silver'],
-        annotations: {alwaysOutside: true, textStyle: {fontSize: 12,auraColor: 'none',color: '#555'},
-          boxStyle: { stroke: '#ccc', strokeWidth: 1, gradient: {color1: '#f3e5f5',color2: '#f3e5f5',x1: '0%', y1: '0%',x2: '100%', y2: '100%'}}
-        },
-        hAxis: {title: 'Resultados Totales',minValue: 0,},
-        vAxis: {title: 'Resultados'}
-      }; // Options 4
-	  
-	   var options5 = {
-        title: 'Resistencia', chartArea: {width: '50%'},
-		colors: ['silver'],
-        annotations: {alwaysOutside: true, textStyle: {fontSize: 12,auraColor: 'none',color: '#555'},
-          boxStyle: { stroke: '#ccc', strokeWidth: 1, gradient: {color1: '#f3e5f5',color2: '#f3e5f5',x1: '0%', y1: '0%',x2: '100%', y2: '100%'}}
-        },
-        hAxis: {title: 'Resultados Totales',minValue: 0,},
-        vAxis: {title: 'Resultados'}
-      }; // Options 5
-	  
-	   var options6 = {
-        title: 'Flexibilidad', chartArea: {width: '50%'},
-		colors: ['silver'],
-        annotations: {alwaysOutside: true, textStyle: {fontSize: 12,auraColor: 'none',color: '#555'},
-          boxStyle: { stroke: '#ccc', strokeWidth: 1, gradient: {color1: '#f3e5f5',color2: '#f3e5f5',x1: '0%', y1: '0%',x2: '100%', y2: '100%'}}
-        },
-        hAxis: {title: 'Resultados Totales',minValue: 0,},
-        vAxis: {title: 'Resultados'}
-      }; // Options 6
-	  
-	   var options7 = {
-          width: 900,
-          chart: {
-            title: 'IMM',
-			colors: ['silver'],
-            subtitle: ''
-          },
-          bars: 'horizontal', // Required for Material Bar Charts.
-          series: {
-            0: { axis: 'distance' }, // Bind series 0 to an axis named 'distance'.
-            1: { axis: 'brightness' } // Bind series 1 to an axis named 'brightness'.
-          },
-          axes: {
-            x: {
-              distance: {label: 'parsecs'}, // Bottom x-axis.
-              brightness: {side: 'top', label: 'apparent magnitude'} // Top x-axis.
-            }
-          } // option 7
-        };
-	  
-	   var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
-      chart.draw(data, options);
-	  
-	  var chart2 = new google.visualization.BarChart(document.getElementById('chart_peso'));
-      chart2.draw(data2, options2);
-	  
-	  var chart3 = new google.visualization.BarChart(document.getElementById('chart_stamina'));
-      chart3.draw(data3, options3);
-	  
-	  var chart4 = new google.visualization.BarChart(document.getElementById('chart_fuerza'));
-      chart4.draw(data4, options4);
-	  
-	  var chart5 = new google.visualization.BarChart(document.getElementById('chart_Resistencia'));
-      chart5.draw(data5, options5);
-	  
-	  var chart6 = new google.visualization.BarChart(document.getElementById('chart_flexibilidad'));
-      chart6.draw(data6, options6);
-	  
-	   var chart7 = new google.visualization.BarChart(document.getElementById('chart_imm'));
-      chart7.draw(data7, options7);
+        Espalda2 = parseInt($("#Espalda2").val());
+        Pecho2   = parseInt($("#Pecho2").val());
+        Abdomen2 = parseInt($("#Abdomen2").val());
+        Cadera2  = parseInt($("#Cadera2").val());
+        Brazo2   = parseInt($("#Brazo2").val());
+        Muslo2   = parseInt($("#Muslo2").val());
+
+        
+
+      function drawChart() {
+
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Topping');
+        data.addColumn('number', 'Porcentaje Peso', { role: 'style' });
+        data.addRows([
+          [fechaPeso, PorcenPeso1,],
+          [fechaPeso2, PorcenPeso2,],
+          [fechaPeso3, PorcenPeso3,]
+        ]);
+
+        var data2 = new google.visualization.DataTable();
+        data2.addColumn('string', 'Topping');
+        data2.addColumn('number', 'Porcentaje', { role: 'style' });
+        data2.addRows([
+          [fechaImc, PorcenImc1,],
+          [fechaImc2, PorcenImc2,],
+          [fechaImc3, PorcenImc3,]
+        ]);
+
+        var data3 = new google.visualization.arrayToDataTable([
+          ['Resultados',fechaImc, fechaImc2],
+          ['Espalda', Espalda, Espalda2],
+          ['Pecho', Pecho, Pecho2],
+          ['Abdomen', Abdomen, Abdomen2],
+          ['Cadera', Cadera, Cadera2],
+          ['Brazo', Brazo,Brazo2],
+          ['Muslo', Muslo,Muslo2]
+        ]);
+
+        var options  = {'title':'Peso','width':650,'height':480,};
+        var options2  = {'title':'IMC','width':650,'height':480,};
+        var options3  = {'title':'IMM','width':650,'height':480,};
+
+        var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+        var chart = new google.visualization.BarChart(document.getElementById('chart_imc'));
+        chart.draw(data2, options2);
+		var chart = new google.visualization.BarChart(document.getElementById('chart_imm'));
+        chart.draw(data3, options3);
+            
+		
 	  
       }
     </script>  
       </html>";
 
-
-
-// PUT YOUR HTML HEADER IN A VARIABLE
-$my_html_header="
-<div style="display:block; background-color:#f2f2f2; padding:10px; border-bottom:2pt solid #cccccc; color:#6e6e6e; font-size:.85em; font-family:verdana;">
-  <div style="float:left; width:33%; text-align:left;">
-      <img src="http://imagizer.imageshack.us/v2/128x32q90/673/NaZt1l.png">
-  </div>
-  <div style="float:left; width:33%; text-align:center;">
-     Resultados de Biotest
-  </div>
-  <div style="float:left; width:33%; text-align:right;">
-     Reporte: ".$fecha_actual."
-  </div>
-  <br style="clear:left;"/>
-</div>";
-
-
-
-
-
-
-?>
