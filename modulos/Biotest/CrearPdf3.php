@@ -74,36 +74,7 @@
 		$de_email	  	 = $ResultCliente['de_email'];
 
 		$nombre_completo = utf8_decode($nb_nombre." ".$nb_apellidos);	
-		
-		$progress    = '
-			   <div class="progress">
-                                                 <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="40" 
-                                                	 aria-valuemin="0" aria-valuemax="100" style="width: 20%">
-                                               		Pobre&nbsp;&nbsp;
-                                                 </div>
-                                             	
-                                                 <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="40" 
-                                                 	aria-valuemin="0" aria-valuemax="100" style="width: 20%">
-                                               		Promedio&nbsp;&nbsp;
-                                                 </div>
-                                                
-                                              <div class="progress-bar" role="progressbar" aria-valuenow="40" aria-valuemin="0"
-                                                   aria-valuemax="100" style="width: 20%">
-                                                   Bueno&nbsp;&nbsp;
-                                               </div>
-                                               
-                                                <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" 
-                                                    aria-valuemin="0" aria-valuemax="100" style="width: 20%">
-                                                	Excelente&nbsp;&nbsp;
-                                                </div>
-                                                
-                                               <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" 
-                                               		aria-valuemin="0" aria-valuemax="100" style="width: 20%">
-                                               		Atleta&nbsp;&nbsp;
-                                               </div>
-												
-                                        </div><!-- Progress -->
-		';
+	
 		//Fecha actual
 date_default_timezone_set("Mexico/General");
 $fecha_actual = date("Y-m-d"); //fecha del día de hoy
@@ -174,147 +145,147 @@ body{    padding-top: 0px !important;}
 		<!-- fin valores escondidos-->
 				
                  
-				 <!-- Peso-->
-                   <div class="col-sm-12  col-xs-12 containerbar pull-right Grafica" id="ContainerBar"> 
-	                   	<div class="col-md-12 Cabecera">
-	                   		<h1 class="text-left">Peso</h1>
-	                   	</div>
-	                   	<div class="col-md-12 Datos">
-	                   		<div class="col-md-3 ResultImg">
-	                   		</div>
+<!-- Peso-->
+<div class="col-sm-12  col-xs-12 containerbar pull-right Grafica" id="ContainerBar"> 
+ 	<div class="col-md-12 Cabecera">
+ 		<h1 class="text-left">Peso</h1>
+ 	</div>
+ 	<div class="col-md-12 Datos">
+ 		<div class="col-md-3 ResultImg">
+ 		</div>
 
-	                   		<div class="col-md-2 Logo pull-right">
-	                   			<div class="col-md-12" id="datos">
-	                   				<h5 class="text-left">Resultados De <strong>Biotest</strong></h5>
-                                    <h5 class="text-left">Biotest: <strong><?php echo $fecha_actual;?></strong></h5>
-	                   			</div>
-	                   		</div>
-	                   		<div class="col-md-8 Consejo">
-	                   			<p class="text-center">
-	                   				<?php echo utf8_decode($ConsejoPeso);?>
-	                   			</p>
-	                   		</div>
-	                   	</div><!-- Datos -->
-                        <div class="col-md-1"></div>
-                        <div class="col-md-10 ContainerGraphic" style="border: 1px solid #ccc">
-                            <div class="col-md-2"></div>
-                            <div class="col-md-8" id="chart_div"></div>    
-                        </div><!-- ContainerGraphic -->
-                        
-                 	</div><!--containerbar -->  
+ 		<div class="col-md-2 Logo pull-right">
+ 			<div class="col-md-12" id="datos">
+ 				<h5 class="text-left">Resultados De <strong>Biotest</strong></h5>
+                <h5 class="text-left">Biotest: <strong><?php echo $fecha_actual;?></strong></h5>
+ 			</div>
+ 		</div>
+ 		<div class="col-md-8 Consejo">
+ 			<p class="text-center">
+ 				<?php echo utf8_decode($ConsejoPeso);?>
+ 			</p>
+ 		</div>
+ 	</div><!-- Datos -->
+    <div class="col-md-1"></div>
+    <div class="col-md-10 ContainerGraphic" style="border: 1px solid #ccc">
+        <div class="col-md-2"></div>
+        <div class="col-md-8" id="chart_div"></div>    
+    </div><!-- ContainerGraphic -->
+    
+</div><!--containerbar -->  
 				 
-                    <!-- Peso-->
-                   <div class="col-sm-12  col-xs-12 containerbar pull-right Grafica" id="ContainerBar"> 
-                        <div class="col-md-12 Cabecera">
-                            <h1 class="text-left">IMC</h1>
-                        </div>
-                        <div class="col-md-12 Datos">
-                            <div class="col-md-3 ResultImg">
-                            </div>
-                            <div class="col-md-2 vacio pull-right">
-                                <div class="col-md-12" id="datos">
-                                    
-                                </div>
-                            </div>
-                            <div class="col-md-8 Consejo">
-                                <p class="text-center">
-                                    <?php echo utf8_decode($ConsejoImc);?>
-                                </p>
-                            </div>
-                        </div><!-- Datos -->
-                        <div class="col-md-1"></div>
-                        <div class="col-md-10 ContainerGraphic" style="border: 1px solid #ccc">
-                            <div class="col-md-2"></div>
-                            <div class="col-md-8" id="chart_imc"></div>    
-                        </div><!-- ContainerGraphic -->
-                        
-                    </div><!--containerbar -->  
+  <!-- IMC-->
+ <div class="col-sm-12  col-xs-12 containerbar pull-right Grafica" id="ContainerBar"> 
+      <div class="col-md-12 Cabecera">
+          <h1 class="text-left">IMC</h1>
+      </div>
+      <div class="col-md-12 Datos">
+          <div class="col-md-3 ResultImg">
+          </div>
+          <div class="col-md-2 vacio pull-right">
+              <div class="col-md-12" id="datos">
+                  
+              </div>
+          </div>
+          <div class="col-md-8 Consejo">
+              <p class="text-center">
+                  <?php echo utf8_decode($ConsejoImc);?>
+              </p>
+          </div>
+      </div><!-- Datos -->
+      <div class="col-md-1"></div>
+      <div class="col-md-10 ContainerGraphic" style="border: 1px solid #ccc">
+          <div class="col-md-2"></div>
+          <div class="col-md-8" id="chart_imc"></div>    
+      </div><!-- ContainerGraphic -->
+      
+  </div><!--containerbar -->  
 
-                     <!-- Peso-->
-                   <div class="col-sm-12  col-xs-12 containerbar pull-right Grafica" id="ContainerBar"> 
-                        <div class="col-md-12 Cabecera">
-                            <h1 class="text-left">IMM</h1>
-                        </div>
-                        
-                        <div class="col-md-10 ResultadosIMM">
-                            <div class="Resultados2 col-sm-4 col-xs-4">
-                                  <!-- Segundos Resultados-->
-                               <h5 id="Fecha" class="text-center"><?php echo $fechaimm2;?></h5>
-                                <!--Primeros Resultados -->
-                                <div class="col-sm-12 col-xs-12 Espalda pull-right">
-                                    <label class="text-center col-sm-12 col-xs-12 ">Espalda: <?php echo $Espalda2;?></label>
-                                 </div>
-                                <div class="col-sm-12 col-xs-12 Cadera pull-right">
-                                    <label class="text-center col-sm-12 col-xs-12">Pecho: <?php echo $Pecho2; ?></label>
-                                 </div>
-                                <div class="col-sm-12 col-xs-12 Per_Espalda  pull-right">
-                                    <label class="text-center col-sm-12 col-xs-12">Abdomen: <?php echo $Abdomen2;?></label>
-                                </div>
-                                <div class="col-sm-12 col-xs-12 Per_Pecho  pull-right">
-                                    <label class="text-center col-sm-12 col-xs-12 ">Cadera: <?php echo $Cadera2;?></label>
-                                 </div>
-                                <div class="col-sm-21 col-xs-12 Per_Brazo pull-right">
-                                    <label class="text-center col-sm-12 col-xs-12 right">Brazo: <?php echo $Brazo2;?></label>
-                                 </div>
-                                <div class="col-sm-12 col-xs-12 Per_Brazo_Fle pull-right">
-                                    <label class="text-center col-sm-12 col-xs-12">Muslo: <?php echo $Muslo2;?></label>
-                                 </div>
-                            </div><!-- Resultados -->
-                            
-                            
-                            <div class="Resultados col-sm-4 col-xs-4 pull-right">
-                                <h5 id="text-left" style="margin-left:12%">Resultados</h5>
-                                <!--Resultados Finales -->
-                                <div class="col-sm-12 col-xs-12 Espalda pull-right">
-                                    <label class="text-center col-sm-12 col-xs-12 ">Espalda: <?php echo $EspaldaR;?></label>
-                                 </div>
-                                <div class="col-sm-12 col-xs-12 Cadera pull-right">
-                                    <label class="text-center col-sm-12 col-xs-12">Pecho: <?php echo $PechoR; ?></label>
-                                 </div>
-                                <div class="col-sm-12 col-xs-12 Per_Espalda  pull-right">
-                                    <label class="text-center col-sm-12 col-xs-12">Abdomen: <?php echo $AbdomenR;?></label>
-                                </div>
-                                <div class="col-sm-12 col-xs-12 Per_Pecho  pull-right">
-                                    <label class="text-center col-sm-12 col-xs-12 ">Cadera: <?php echo $CaderaR;?></label>
-                                 </div>
-                                <div class="col-sm-21 col-xs-12 Per_Brazo pull-right">
-                                    <label class="text-center col-sm-12 col-xs-12 right">Brazo: <?php echo $BrazoR;?></label>
-                                 </div>
-                                <div class="col-sm-12 col-xs-12 Per_Brazo_Fle pull-right">
-                                    <label class="text-center col-sm-12 col-xs-12">Muslo: <?php echo $MusloR;?></label>
-                                 </div>
-                            </div><!-- Resultados -->
-                            
-                            
-                            
-                            <div class="Resultados col-sm-4 col-xs-4 pull-right">
-                                <h5 id="Fecha" class="text-center"><?php echo $fechaimm;?></h5>
-                                <!--Primeros Resultados -->
-                                <div class="col-sm-12 col-xs-12 Espalda pull-right">
-                                    <label class="text-center col-sm-12 col-xs-12 ">Espalda: <?php echo $Espalda;?></label>
-                                 </div>
-                                <div class="col-sm-12 col-xs-12 Cadera pull-right">
-                                    <label class="text-center col-sm-12 col-xs-12">Pecho: <?php echo $Pecho; ?></label>
-                                 </div>
-                                <div class="col-sm-12 col-xs-12 Per_Espalda  pull-right">
-                                    <label class="text-center col-sm-12 col-xs-12">Abdomen: <?php echo $Abdomen;?></label>
-                                </div>
-                                <div class="col-sm-12 col-xs-12 Per_Pecho  pull-right">
-                                    <label class="text-center col-sm-12 col-xs-12 ">Cadera: <?php echo $Cadera;?></label>
-                                 </div>
-                                <div class="col-sm-21 col-xs-12 Per_Brazo pull-right">
-                                    <label class="text-center col-sm-12 col-xs-12 right">Brazo: <?php echo $Brazo;?></label>
-                                 </div>
-                                <div class="col-sm-12 col-xs-12 Per_Brazo_Fle pull-right">
-                                    <label class="text-center col-sm-12 col-xs-12">Muslo: <?php echo $Muslo;?></label>
-                                 </div>
-                                </div><!-- Resultados-->
-                        </div><!-- Resultados-->
-                        <div class="col-md-10 ContainerGraphic2" style="border: 1px solid #ccc">
-                            <div class="col-md-2"></div>
-                            <div class="col-md-8" id="chart_imm"></div>    
-                        </div><!-- ContainerGraphic -->
-                    </div><!--containerbar -->  
+ <!-- IMM-->
+<div class="col-sm-12  col-xs-12 containerbar pull-right Grafica" id="ContainerBar"> 
+    <div class="col-md-12 Cabecera">
+        <h1 class="text-left">IMM</h1>
+    </div>
+    
+    <div class="col-md-10 ResultadosIMM">
+        <div class="Resultados2 col-sm-4 col-xs-4">
+              <!-- Segundos Resultados-->
+           <h5 id="Fecha" class="text-center"><?php echo $fechaimm2;?></h5>
+            <!--Primeros Resultados -->
+            <div class="col-sm-12 col-xs-12 Espalda pull-right">
+                <label class="text-center col-sm-12 col-xs-12 ">Espalda: <?php echo $Espalda2;?></label>
+             </div>
+            <div class="col-sm-12 col-xs-12 Cadera pull-right">
+                <label class="text-center col-sm-12 col-xs-12">Pecho: <?php echo $Pecho2; ?></label>
+             </div>
+            <div class="col-sm-12 col-xs-12 Per_Espalda  pull-right">
+                <label class="text-center col-sm-12 col-xs-12">Abdomen: <?php echo $Abdomen2;?></label>
+            </div>
+            <div class="col-sm-12 col-xs-12 Per_Pecho  pull-right">
+                <label class="text-center col-sm-12 col-xs-12 ">Cadera: <?php echo $Cadera2;?></label>
+             </div>
+            <div class="col-sm-21 col-xs-12 Per_Brazo pull-right">
+                <label class="text-center col-sm-12 col-xs-12 right">Brazo: <?php echo $Brazo2;?></label>
+             </div>
+            <div class="col-sm-12 col-xs-12 Per_Brazo_Fle pull-right">
+                <label class="text-center col-sm-12 col-xs-12">Muslo: <?php echo $Muslo2;?></label>
+             </div>
+        </div><!-- Resultados -->
+        
+        
+        <div class="Resultados col-sm-4 col-xs-4 pull-right">
+            <h5 id="text-left" style="margin-left:12%">Resultados</h5>
+            <!--Resultados Finales -->
+            <div class="col-sm-12 col-xs-12 Espalda pull-right">
+                <label class="text-center col-sm-12 col-xs-12 ">Espalda: <?php echo $EspaldaR;?></label>
+             </div>
+            <div class="col-sm-12 col-xs-12 Cadera pull-right">
+                <label class="text-center col-sm-12 col-xs-12">Pecho: <?php echo $PechoR; ?></label>
+             </div>
+            <div class="col-sm-12 col-xs-12 Per_Espalda  pull-right">
+                <label class="text-center col-sm-12 col-xs-12">Abdomen: <?php echo $AbdomenR;?></label>
+            </div>
+            <div class="col-sm-12 col-xs-12 Per_Pecho  pull-right">
+                <label class="text-center col-sm-12 col-xs-12 ">Cadera: <?php echo $CaderaR;?></label>
+             </div>
+            <div class="col-sm-21 col-xs-12 Per_Brazo pull-right">
+                <label class="text-center col-sm-12 col-xs-12 right">Brazo: <?php echo $BrazoR;?></label>
+             </div>
+            <div class="col-sm-12 col-xs-12 Per_Brazo_Fle pull-right">
+                <label class="text-center col-sm-12 col-xs-12">Muslo: <?php echo $MusloR;?></label>
+             </div>
+        </div><!-- Resultados -->
+        
+        
+        
+        <div class="Resultados col-sm-4 col-xs-4 pull-right">
+            <h5 id="Fecha" class="text-center"><?php echo $fechaimm;?></h5>
+            <!--Primeros Resultados -->
+            <div class="col-sm-12 col-xs-12 Espalda pull-right">
+                <label class="text-center col-sm-12 col-xs-12 ">Espalda: <?php echo $Espalda;?></label>
+             </div>
+            <div class="col-sm-12 col-xs-12 Cadera pull-right">
+                <label class="text-center col-sm-12 col-xs-12">Pecho: <?php echo $Pecho; ?></label>
+             </div>
+            <div class="col-sm-12 col-xs-12 Per_Espalda  pull-right">
+                <label class="text-center col-sm-12 col-xs-12">Abdomen: <?php echo $Abdomen;?></label>
+            </div>
+            <div class="col-sm-12 col-xs-12 Per_Pecho  pull-right">
+                <label class="text-center col-sm-12 col-xs-12 ">Cadera: <?php echo $Cadera;?></label>
+             </div>
+            <div class="col-sm-21 col-xs-12 Per_Brazo pull-right">
+                <label class="text-center col-sm-12 col-xs-12 right">Brazo: <?php echo $Brazo;?></label>
+             </div>
+            <div class="col-sm-12 col-xs-12 Per_Brazo_Fle pull-right">
+                <label class="text-center col-sm-12 col-xs-12">Muslo: <?php echo $Muslo;?></label>
+             </div>
+            </div><!-- Resultados-->
+    </div><!-- Resultados-->
+    <div class="col-md-10 ContainerGraphic2" style="border: 1px solid #ccc">
+        <div class="col-md-2"></div>
+        <div class="col-md-8" id="chart_imm"></div>    
+    </div><!-- ContainerGraphic -->
+</div><!--containerbar -->  
                 
 				 
 		</div> <!-- row -->
