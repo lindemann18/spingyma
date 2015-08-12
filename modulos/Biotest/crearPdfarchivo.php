@@ -94,24 +94,26 @@ $my_html = "<html>
 
 <style type=\"text/css\">
 body{    padding-top: 0px !important;}
-.Cabecera {background-color: #b02823; color:white; font-family: serif;}
+.Cabecera {background-color: #b02823; color:white; font-family: serif; margin-bottom:3%;}
 .right{margin-right:8%;}
 .ResultImg{background-image: url(../../css/img/grafica.jpg);
         background-repeat: no-repeat;}
-.Logo {}
+.Logo {margin-top:30px;}
 .spinlogo{margin-left:26px;}
 .vacio{height: 200px;}    
 #datos{width:300px; float:right}  
-.containerbar{    margin-bottom: 3%;}  
-.ResultadosIMM{margin-top: 5%;border: 1px solid #ccc;margin-left: 8%;padding: 4%;}
+.containerbar{margin-bottom: 3%; margin-top:3%;}  
+.containerbarPeso{margin-bottom: 3%;}  
+.ResultadosIMM{margin-top: 5%; border: 1px solid #ccc;margin-left: 8%;padding: 4%; width:100%}
 .ContainerGraphic2{ margin-left: 8%; margin-top: 2%;}
 .Consejo{width:450px; }
-.ContainerGraphic{height:350px;}
+.ContainerGraphic{height:360px; margin-top:25px;}
+.ResultadoIMM{width:100%;}
 </style>
 
 <!-- Dibujando el reporte-->
 <!-- Peso-->
-<div class=\" containerbar Grafica\" id=\"ContainerBar\"> 
+<div class=\" containerbarPeso Grafica\" id=\"ContainerBar\" style=\"margin-bottom:80px;\"> 
  	<div class=\"col-md-12 col-xs-12 col-sm-12 Cabecera\">
  		<h1 class=\"text-left\">Peso</h1>
  	</div>
@@ -120,15 +122,14 @@ body{    padding-top: 0px !important;}
  		</div>
 
  		<div class=\"  Logo \">
- 			<div class=\"datos \" id=\"datos\">
- 				<div style=\"col-md-12 col-sm-12\" class=\"spinlogo\">
+ 			  <div class=\"datos \" id=\"datos\">
+ 				  <div style=\"col-md-12 col-sm-12\" class=\"spinlogo\">
  					<img src=\"http://imagizer.imageshack.us/v2/128x32q90/673/NaZt1l.png\">
  				</div>
  				<div class=\"col-md-12 col-sm-12 \">
  					<h5 class=\"text-left\">Resultados De <strong>Biotest</strong></h5>
-                	<h5 class=\"text-left\">Biotest: <strong>".$fecha_actual."</strong></h5>
-                </div>
- 			</div>
+          <h5 class=\"text-left\">Biotest: <strong>".$fecha_actual."</strong></h5>
+        </div>
  		</div>
 
  		<div class=\" Consejo\" align=\"center\">
@@ -139,48 +140,46 @@ body{    padding-top: 0px !important;}
  	</div><!-- Datos -->
 
 	
-    <div class=\"ContainerGraphic\" style=\"border: 1px solid #ccc\">
-        <div  id=\"chart_div\" style=\"height:270px; width:800px;\" align=\"center\"></div>    
+    <div class=\"\" style=\"border: 1px solid #ccc\">
+        <div  id=\"chart_div\" style=\" width:800px;\" align=\"center\"></div>    
     </div><!-- ContainerGraphic -->
     
 </div><!--containerbar -->  
 
 <!-- IMC-->
- <div class=\"col-sm-12  col-xs-12 containerbar pull-right Grafica\" id=\"ContainerBar\"> 
-      <div class=\"col-md-12 Cabecera\">
-          <h1 class=\"text-left\">IMC</h1>
-      </div>
-      <div class=\"col-md-12 Datos\">
-          <div class=\"col-md-3 ResultImg\">
-          </div>
-          <div class=\"col-md-2 vacio pull-right\">
-              <div class=\"col-md-12\" id=\"datos\">
-                  
-              </div>
-          </div>
-          <div class=\"col-md-8 Consejo\">
-              <p class=\"text-center\">
-                  ".utf8_decode($ConsejoImc)."
-              </p>
-          </div>
-      </div><!-- Datos -->
-      <div class=\"col-md-1\"></div>
-      <div class=\"col-md-10 ContainerGraphic\" style=\"border: 1px solid #ccc\">
-          <div class=\"col-md-2\"></div>
-          <div class=\"col-md-8\" id=\"chart_imc\"></div>    
-      </div><!-- ContainerGraphic -->
-      
-  </div><!--containerbar -->
+ <div class=\" containerbar Grafica\" id=\"ContainerBar\" style=\"margin-bottom:280px;\"> 
+  <div class=\"col-md-12 col-xs-12 col-sm-12 Cabecera\">
+    <h1 class=\"text-left\">IMC</h1>
+  </div>
+  
+  <div class=\"  Datos\">
+    
+
+    <div class=\" Consejo\" align=\"center\">
+      <p class=\"text-center\">
+        ".$ConsejoImc."
+      </p>
+    </div>
+  </div><!-- Datos -->
+
+  
+    <div class=\"ContainerGraphic\" style=\"border: 1px solid #ccc; height:320px;\">
+        <div  id=\"chart_imc\" style=\" width:800px;\" align=\"center\"></div>    
+    </div><!-- ContainerGraphic -->
+    
+</div><!--containerbar -->  
 
 
  <!-- IMM-->
-<div class=\"col-sm-12  col-xs-12 containerbar pull-right Grafica\" id=\"ContainerBar\"> 
+<div class=\"col-md-12 containerbar  \" > 
     <div class=\"col-md-12 Cabecera\">
         <h1 class=\"text-left\">IMM</h1>
     </div>
     
-    <div class=\"col-md-10 ResultadosIMM\">
-        <div class=\"Resultados2 col-sm-4 col-xs-4\">
+    <div class=\"col-md-12 col-xs-12 col-lg-4 \" style=\"border:1px solid #ccc; height:350px\">
+      <div style=\"width:1000px;\">
+
+       <div class=\"Resultados2 col-md-4 col-xs-4 col-lg-4 pull-left \" >
               <!-- Segundos Resultados-->
            <h5 id=\"Fecha\" class=\"text-center\">".$fechaimm2."</h5>
             <!--Primeros Resultados -->
@@ -190,7 +189,7 @@ body{    padding-top: 0px !important;}
             <div class=\"col-sm-12 col-xs-12 Cadera pull-right\">
                 <label class=\"text-center col-sm-12 col-xs-12\">Pecho: ".$Pecho2."</label>
              </div>
-            <div class=\"col-sm-12 col-xs-12 Per_Espalda  pull-right\">
+            <div class=\"col-sm-12 col-xs-12 Per_Espalda \">
                 <label class=\"text-center col-sm-12 col-xs-12\">Abdomen: ".$Abdomen2."</label>
             </div>
             <div class=\"col-sm-12 col-xs-12 Per_Pecho  pull-right\">
@@ -205,7 +204,7 @@ body{    padding-top: 0px !important;}
         </div><!-- Resultados -->
         
         
-        <div class=\"Resultados col-sm-4 col-xs-4 pull-right\">
+        <div class=\"Resultados  col-md-4 col-xs-4 col-lg-4 pull-right \" >
             <h5 id=\"text-left\" style=\"margin-left:12%\">Resultados</h5>
             <!--Resultados Finales -->
             <div class=\"col-sm-12 col-xs-12 Espalda pull-right\">
@@ -214,8 +213,8 @@ body{    padding-top: 0px !important;}
             <div class=\"col-sm-12 col-xs-12 Cadera pull-right\">
                 <label class=\"text-center col-sm-12 col-xs-12\">Pecho: ".$PechoR."</label>
              </div>
-            <div class=\"col-sm-12 col-xs-12 Per_Espalda  pull-right\">
-                <label class=\"text-center col-sm-12 col-xs-12\">Abdomen: ".$AbdomenR."</label>
+            <div class=\"col-sm-12 col-xs-12 col-md-12 col-lg-12 Per_Espalda\">
+                <label class=\" text-center col-sm-12 col-xs-12 col-md-12 col-lg-12\">Abdomen: ".$AbdomenR."</label>
             </div>
             <div class=\"col-sm-12 col-xs-12 Per_Pecho  pull-right\">
                 <label class=\"text-center col-sm-12 col-xs-12\">Cadera: ".$CaderaR."</label>
@@ -227,37 +226,37 @@ body{    padding-top: 0px !important;}
                 <label class=\"text-center col-sm-12 col-xs-12\">Muslo: ".$MusloR."</label>
              </div>
         </div><!-- Resultados -->
-        
-        
-        
-        <div class=\"Resultados col-sm-4 col-xs-4 col-md-12 col-xl-12 pull-right\">
+      
+        <div class=\"Resultados col-md-4 col-xs-4 col-lg-4 pull-right\" >
             <h5 id=\"Fecha\" class=\"text-center\">".$fechaimm."</h5>
             <!--Primeros Resultados -->
-            <div class=\"col-sm-12 col-xs-12 col-md-12 col-xl-12 Espalda pull-right\">
+            <div class=\"ResultadoIMM Espalda pull-right\">
                 <label class=\"text-center col-sm-12 col-xs-12 \">Espalda: ".$Espalda."</label>
              </div>
-            <div class=\"col-sm-12 col-xs-12 col-md-12 col-xl-12 Cadera pull-right\">
+            <div class=\"ResultadoIMM Cadera pull-right\">
                 <label class=\"text-center col-sm-12 col-xs-12\">Pecho: ".$Pecho."</label>
              </div>
-            <div class=\"col-sm-12 col-xs-12 col-md-12 col-xl-12 Per_Espalda  pull-right\">
+            <div class=\"ResultadoIMMPer_Espalda  pull-right\">
                 <label class=\"text-center col-sm-12 col-xs-12\">Abdomen: ".$Abdomen."</label>
             </div>
-            <div class=\"col-sm-12 col-xs-12 col-md-12 col-xl-12 Per_Pecho  pull-right\">
+            <div class=\"ResultadoIMM Per_Pecho  pull-right\">
                 <label class=\"text-center col-sm-12 col-xs-12 \">Cadera: ".$Cadera."</label>
              </div>
-            <div class=\"col-sm-12 col-xs-12 col-md-12 col-xl-12 Per_Brazo pull-right\">
+            <div class=\"ResultadoIMM Per_Brazo pull-right\">
                 <label class=\"text-center col-sm-12 col-xs-12 right\">Brazo: ".$Brazo."</label>
              </div>
-            <div class=\"col-sm-12 col-xs-12 col-md-12 col-xl-12 Per_Brazo_Fle pull-right\">
+            <div class=\"ResultadoIMM Per_Brazo_Fle pull-right\">
                 <label class=\"text-center col-sm-12 col-xs-12\">Muslo: ".$Muslo."</label>
              </div>
             </div><!-- Resultados-->
-    </div><!-- Resultados-->
-    <div class=\"col-md-10 ContainerGraphic2\" style=\"border: 1px solid #ccc\">
-        <div class=\"col-md-2\"></div>
-        <div class=\"col-md-8\" id=\"chart_imm\"></div>    
+    </div><!-- Contenedor-->
+    </div><!-- container result-->
+    <div class=\"ContainerGraphic\" style=\"border: 1px solid #ccc\">
+        <div  id=\"chart_imm\" style=\"height:270px; width:800px;\" align=\"center\"></div>    
     </div><!-- ContainerGraphic -->
-</div><!--containerbar -->    
+    </div><!-- -->    
+</div><!--containerbar -->  
+
     </div> <!-- row -->
 	</div> <!-- container fluid-->
 </body>
@@ -270,20 +269,40 @@ body{    padding-top: 0px !important;}
 	
 	var data = new google.visualization.DataTable();
         data.addColumn('string', 'Topping');
-        data.addColumn('number', 'Porcentaje Peso', { role: 'style' });
+        data.addColumn('number', 'Peso', { role: 'style' });
         data.addRows([
           ['".$fechaPeso."', ".$PorcenPeso1.",],
           ['".$fechaPeso2."', ".$PorcenPeso2.",],
           ['".$fechaPeso3."', ".$PorcenPeso3.",]
         ]);	  
-		 
-		
-
-        var options  = {'title':'Peso','width':650,'height':350,};
+		  
+      var data2 = new google.visualization.DataTable();
+        data2.addColumn('string', 'Topping');
+        data2.addColumn('number', 'IMM', { role: 'style' });
+        data2.addRows([
+          ['".$fechaImc."', ".$PorcenImc1.",],
+          ['".$fechaImc2."',".$PorcenImc2.",],
+          ['".$fechaImc3."',".$PorcenImc3.",]
+        ]);
+		  
+       var data3 = new google.visualization.arrayToDataTable([
+          ['Resultados','".$fechaImc."', '".$fechaImc2."'],
+          ['Espalda', ".$Espalda.", ".$Espalda2."],
+          ['Pecho', ".$Pecho.", ".$Pecho2."],
+          ['Abdomen', ".$Abdomen.", ".$Abdomen2."],
+          ['Cadera', ".$Cadera.", ".$Cadera2."],
+          ['Brazo', ".$Brazo.",".$Brazo2."],
+          ['Muslo', ".$Muslo.",".$Muslo2."]
+        ]);
         
+        var options  = {'title':'Peso','width':700,'height':350,};
+        var options2 = {'title':'IMC','width':730,'height':300,};
+        var options3  = {'title':'IMM','width':700,'height':350,};
 
         var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
         chart.draw(data, options);
+        var chart = new google.visualization.BarChart(document.getElementById('chart_imc'));
+        chart.draw(data2, options2);
     }
     </script>  
       </html>";
