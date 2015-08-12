@@ -147,7 +147,7 @@ body{    padding-top: 0px !important;}
 </div><!--containerbar -->  
 
 <!-- IMC-->
- <div class=\" containerbar Grafica\" id=\"ContainerBar\" style=\"margin-bottom:280px;\"> 
+ <div class=\" containerbar Grafica\" id=\"ContainerBar\" style=\"margin-bottom:320px;\"> 
   <div class=\"col-md-12 col-xs-12 col-sm-12 Cabecera\">
     <h1 class=\"text-left\">IMC</h1>
   </div>
@@ -189,7 +189,7 @@ body{    padding-top: 0px !important;}
             <div class=\"col-sm-12 col-xs-12 Cadera pull-right\">
                 <label class=\"text-center col-sm-12 col-xs-12\">Pecho: ".$Pecho2."</label>
              </div>
-            <div class=\"col-sm-12 col-xs-12 Per_Espalda \">
+            <div class=\"ResultadoIMM col-sm-12 col-xs-12 col-md-12 col-lg-12 Per_Espalda \">
                 <label class=\"text-center col-sm-12 col-xs-12\">Abdomen: ".$Abdomen2."</label>
             </div>
             <div class=\"col-sm-12 col-xs-12 Per_Pecho  pull-right\">
@@ -236,7 +236,7 @@ body{    padding-top: 0px !important;}
             <div class=\"ResultadoIMM Cadera pull-right\">
                 <label class=\"text-center col-sm-12 col-xs-12\">Pecho: ".$Pecho."</label>
              </div>
-            <div class=\"ResultadoIMMPer_Espalda  pull-right\">
+            <div class=\"ResultadoIMM Per_Espalda  pull-right\">
                 <label class=\"text-center col-sm-12 col-xs-12\">Abdomen: ".$Abdomen."</label>
             </div>
             <div class=\"ResultadoIMM Per_Pecho  pull-right\">
@@ -251,9 +251,11 @@ body{    padding-top: 0px !important;}
             </div><!-- Resultados-->
     </div><!-- Contenedor-->
     </div><!-- container result-->
-    <div class=\"ContainerGraphic\" style=\"border: 1px solid #ccc\">
-        <div  id=\"chart_imm\" style=\"height:270px; width:800px;\" align=\"center\"></div>    
-    </div><!-- ContainerGraphic -->
+    
+
+      <div class=\"ContainerGraphic col-md-12 col-lg-12 col-xs-12 \" style=\"border: 1px solid #ccc\">
+          <div  id=\"chart_imm\" style=\"height:270px; width:800px;\" align=\"center\"></div>    
+      </div><!-- ContainerGraphic -->
     </div><!-- -->    
 </div><!--containerbar -->  
 
@@ -303,6 +305,8 @@ body{    padding-top: 0px !important;}
         chart.draw(data, options);
         var chart = new google.visualization.BarChart(document.getElementById('chart_imc'));
         chart.draw(data2, options2);
+        var chart = new google.visualization.BarChart(document.getElementById('chart_imm'));
+        chart.draw(data3, options3);
     }
     </script>  
       </html>";
