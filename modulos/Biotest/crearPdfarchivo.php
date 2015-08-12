@@ -109,6 +109,12 @@ body{    padding-top: 0px !important;}
 .Consejo{width:450px; }
 .ContainerGraphic{height:360px; margin-top:25px;}
 .ResultadoIMM{width:100%;}
+#chart_div{margin-left:15%;}
+#chart_imc{margin-left:15%;}
+#chart_imm{margin-left:15%;}
+.Resultados{margin-top:8%;}
+.Resultados2{margin-top:8%;}
+.Resultados3{margin-top:8%;}
 </style>
 
 <!-- Dibujando el reporte-->
@@ -176,7 +182,7 @@ body{    padding-top: 0px !important;}
         <h1 class=\"text-left\">IMM</h1>
     </div>
     
-    <div class=\"col-md-12 col-xs-12 col-lg-4 \" style=\"border:1px solid #ccc; height:350px\">
+    <div class=\"col-md-12 col-xs-12 col-lg-4  resultadosCompara\" style=\"border:1px solid #ccc; height:350px\">
       <div style=\"width:1000px;\">
 
        <div class=\"Resultados2 col-md-4 col-xs-4 col-lg-4 pull-left \" >
@@ -205,7 +211,7 @@ body{    padding-top: 0px !important;}
         
         
         <div class=\"Resultados  col-md-4 col-xs-4 col-lg-4 pull-right \" >
-            <h5 id=\"text-left\" style=\"margin-left:12%\">Resultados</h5>
+            <h5 class=\"text-center\">Resultados</h5>
             <!--Resultados Finales -->
             <div class=\"col-sm-12 col-xs-12 Espalda pull-right\">
                 <label class=\"text-center col-sm-12 col-xs-12\">Espalda: ".$EspaldaR."</label>
@@ -227,7 +233,7 @@ body{    padding-top: 0px !important;}
              </div>
         </div><!-- Resultados -->
       
-        <div class=\"Resultados col-md-4 col-xs-4 col-lg-4 pull-right\" >
+        <div class=\"Resultados3 col-md-4 col-xs-4 col-lg-4 pull-right\" >
             <h5 id=\"Fecha\" class=\"text-center\">".$fechaimm."</h5>
             <!--Primeros Resultados -->
             <div class=\"ResultadoIMM Espalda pull-right\">

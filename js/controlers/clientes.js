@@ -451,6 +451,18 @@ $params = $methodsService.Json("InfoClienteRutinas",$scope.id_cliente);
 $scope.currentPage     = 1; // Página actual, para paginación
 $scope.pageSize 	   = 5;   // Tamaño de la página, para paginación.
 //Funciones
+$scope.CrearRutina = function(id)
+{
+	bootbox.confirm("Desea crear una rutina a este cliente?", function(result) {
+		console.log(result);
+	  	if(result==true)
+	  	{	$scope.$apply(function(){
+	  			$location.path('/Rutinas_Registrar').search({Cliente:$scope.id_cliente});
+	  		});//apply
+	  	}//if
+	  });//botbox
+}//CrearRutina
+
 $scope.InfoRutina = function(id)
 {
 	bootbox.confirm("Desea ver la rutina de este cliente?", function(result) {

@@ -21,6 +21,7 @@
 <script src="js/controlers/rutinas.js"></script>
 <script src="js/controlers/clientes.js"></script>
 <script src="js/controlers/biotest.js"></script>
+<script src="js/controlers/clientes_rutina.js"></script>
 <!-- css -->
 <link rel="stylesheet" href="css/loading.css" />
 <!-- jQuery 2.0.2 -->
@@ -48,7 +49,7 @@
 </html>
 
 <script type="text/javascript">
-	angular.module('app',['ngRoute','AppUsuarios','Methods','AppUtilidades','AppRutinasComp','AppClientes','ngCookies','Rutinas','AppBiotest'])
+	angular.module('app',['ngRoute','AppUsuarios','Methods','AppUtilidades','AppRutinasComp','AppClientes','ngCookies','Rutinas','AppBiotest','AppClientesRutina'])
 	.config(function($routeProvider)
 	{
 	    $routeProvider
@@ -234,14 +235,19 @@
 	      	templateUrl:'modulos/Clientes/clientes_rutina.html'
 	    })
 
+	    .when('/RutinaOrdenC',{
+	    	controller: 'RutinaOrdenC',
+	      	templateUrl:'modulos/Clientes/RutinaOrden.html'
+	    })
+
 	    .when('/RutinasAsignar',{
 	    	controller: 'AsignarRutinas',
 	      	templateUrl:'modulos/Clientes/Asignar_Rutinas.html'
 	    })
 
-	    .when('/RutinaOrdenC',{
-	    	controller: 'RutinaOrdenC',
-	      	templateUrl:'modulos/Clientes/RutinaOrden.html'
+	    .when('/Rutinas_Registrar',{
+	    	controller: 'ClientesRutina',
+	      	templateUrl:'modulos/Clientes/Rutinas_Registrar.html'
 	    })
 	    
 	    .when('/RutinaPrefinalC',{
