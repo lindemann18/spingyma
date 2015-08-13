@@ -38,17 +38,12 @@
                                 <i class="fa fa-users"></i> <span>Clientes</span>
                             </a>
                         </li>
-                        <li class="treeview" id="m-biotest">
-                            <a href="#">
+                       <li id="m-clientes">
+                            <a href="#/Biotestultra">
                                 <i class="fa fa-bar-chart-o"></i>
                                 <span>BioTest Ultra</span>
                                 <i class="fa fa-angle-left pull-right"></i>
                             </a>
-                            <ul class="treeview-menu">
-                                <li><a href="charts/morris.html"><i class="fa fa-angle-double-right"></i> Morris</a></li>
-                                <li><a href="charts/flot.html"><i class="fa fa-angle-double-right"></i> Flot</a></li>
-                                <li><a href="charts/inline.html"><i class="fa fa-angle-double-right"></i> Inline charts</a></li>
-                            </ul>
                         </li>
                      
                         <li class="treeview" id="m-utilidades">

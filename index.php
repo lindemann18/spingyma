@@ -22,6 +22,7 @@
 <script src="js/controlers/clientes.js"></script>
 <script src="js/controlers/biotest.js"></script>
 <script src="js/controlers/clientes_rutina.js"></script>
+<script src="js/controlers/biotest_ultra.js"></script>
 <!-- css -->
 <link rel="stylesheet" href="css/loading.css" />
 <!-- jQuery 2.0.2 -->
@@ -49,7 +50,7 @@
 </html>
 
 <script type="text/javascript">
-	angular.module('app',['ngRoute','AppUsuarios','Methods','AppUtilidades','AppRutinasComp','AppClientes','ngCookies','Rutinas','AppBiotest','AppClientesRutina'])
+	angular.module('app',['ngRoute','AppUsuarios','Methods','AppUtilidades','AppRutinasComp','AppClientes','ngCookies','Rutinas','AppBiotest','AppClientesRutina','AppBiotestUltra'])
 	.config(function($routeProvider)
 	{
 	    $routeProvider
@@ -272,6 +273,12 @@
 	    .when('/BiotestResultados',{
 	    	controller: 'ResultadosBiotest',
 	      	templateUrl:'modulos/Biotest/Resultadolight.html'
+	    })
+
+	    //Direcciones de Biotest Ultra
+	     .when('/Biotestultra',{
+	    	controller: 'BiotestUltra',
+	      	templateUrl:'modulos/BiotestUltra/clientes_listado.html'
 	    })
 
 	    .otherwise({

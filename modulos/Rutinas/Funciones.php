@@ -1032,6 +1032,13 @@
 		$cantidadc = count($cuerpos);
 		$exitoc    = ($cantidadc>0)?1:0;
 
+		if($exitoc==1)
+		{
+			//inyectando  la opción todos a la lista de géneros
+			$todose = array("id"=>"Todos","nb_cuerpo"=>"Todos");
+			array_push($cuerpos,$todose);
+		}
+
 		$datos    = array("exito"=>$exito,"tipos_rut"=>$tipos_rut,"exitog"=>$exitog,
 						   "generos"=>$generos,"exitoed"=>$exitoed,"Edades"=>$Edades,
 						   "exitoc"=>$exitoc,"cuerpos"=>$cuerpos);

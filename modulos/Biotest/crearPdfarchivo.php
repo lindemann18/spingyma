@@ -99,7 +99,8 @@ body{    padding-top: 0px !important;}
 .ResultImg{background-image: url(../../css/img/grafica.jpg);
         background-repeat: no-repeat;}
 .Logo {margin-top:30px;}
-.spinlogo{margin-left:26px;}
+.spinlogo{margin-left:170px;}
+.FechasDatos{margin-left:145px; width:300px}
 .vacio{height: 200px;}    
 #datos{width:300px; float:right}  
 .containerbar{margin-bottom: 3%; margin-top:3%;}  
@@ -132,9 +133,9 @@ body{    padding-top: 0px !important;}
  				  <div style=\"col-md-12 col-sm-12\" class=\"spinlogo\">
  					<img src=\"http://imagizer.imageshack.us/v2/128x32q90/673/NaZt1l.png\">
  				</div>
- 				<div class=\"col-md-12 col-sm-12 \">
+ 				<div class=\" FechasDatos \">
  					<h5 class=\"text-left\">Resultados De <strong>Biotest</strong></h5>
-          <h5 class=\"text-left\">Biotest: <strong>".$fecha_actual."</strong></h5>
+          <h5 class=\"text-left\" style=\"margin-left:20px\">Biotest: <strong>".$fecha_actual."</strong></h5>
         </div>
  		</div>
 
@@ -174,6 +175,8 @@ body{    padding-top: 0px !important;}
     </div><!-- ContainerGraphic -->
     
 </div><!--containerbar -->  
+
+
 
 
  <!-- IMM-->

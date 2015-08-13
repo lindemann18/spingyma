@@ -988,7 +988,7 @@
 		$condiciontip = ($tipo_rutina!="Todos")?"AND Rut.id_categoriarutina =".$tipo_rutina." ":"";
 		$condiciongen = ($genero!="Todos")?"AND Rut.id_generorutina =".$genero." ":"";
 		$condicioned  = ($edad!="Todos")?"AND Rut.id_edad =".$edad." ":"";
-		$condicioncue = ($cuerpo!="Todos")?"AND Rut.id_cuerpo =".$cuerpo." ":"";
+		$condicioncue = ($cuerpo!="Todos")?"AND Rut.id_tipocuerpo =".$cuerpo." ":"";
 
 		//Este querie devuelve TODAS las rutinas ordenadas de principiante hasta avanzado.
 		$query = '
@@ -1003,7 +1003,8 @@
 		Gen.id as id_genero,
 		Gen.nb_tiporutina,
 		cuerpo.id as id_cuerpo,
-		cuerpo.nb_cuerpo
+		cuerpo.nb_cuerpo,
+		edad.nb_edad
 		FROM sgrutinas Rut
 		left JOIN sgusuarios Usu
 		ON Usu.id=Rut.id_usuariocreacion
@@ -1013,6 +1014,8 @@
 		ON Gen.id= Rut.id_generorutina
 		LEFT JOIN sgtipocuerpo cuerpo
 		ON cuerpo.id = Rut.id_tipocuerpo
+		LEFT JOIN sgedad edad
+		ON edad.id = Rut.id_edad
 		where  Rut.sn_activo=1   
 		'.$condicionent.'
 		'.$condiciontip.'
@@ -1021,7 +1024,6 @@
 		'.$condicioncue.'
 		order by id_rutina asc
 		';
-
 		R::freeze(1);	
 		R::begin();
 	    try{

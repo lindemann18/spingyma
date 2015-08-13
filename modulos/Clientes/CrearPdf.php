@@ -110,7 +110,7 @@ $my_html="<html>
 				</p>
 			  </div> <!-- div contenedor del texto-->
 			  <div class=\"\">
-            <table class=\"table table-striped col-xs-12 col-sm-12 col-md-12 \">
+            <table class=\"table table-striped col-xs-12 col-sm-12 col-md-12 \" border= \"1\">
               <thead>
                 <tr>
 					<th class=\"text-center\">MAQUINA</th>
