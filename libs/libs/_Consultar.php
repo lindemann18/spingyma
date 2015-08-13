@@ -294,6 +294,24 @@
 			return $cat;
 		}//_ConsultarTiposRutina
 
+		function _ConsultarEdades()
+		{
+			R::begin();
+			    try{
+			    	$query = '
+						SELECT * from sgedad;
+			    	';
+			       $cat = R::getAll($query);
+			        R::commit();
+			    }
+			    catch(Exception $e) {
+			       $cat =  R::rollback();
+			       $cat = "error";
+			    }
+			R::close();
+			return $cat;
+		}//_ConsultarEdades
+
 		function _ConsultarTipoRutinaPorId($id)
 		{
 			R::begin();
@@ -863,7 +881,8 @@
 		Gen.id as id_genero,
 		Gen.nb_tiporutina,
 		cuerpo.id as id_cuerpo,
-		cuerpo.nb_cuerpo
+		cuerpo.nb_cuerpo,
+		edad.nb_edad
 		FROM sgrutinas Rut
 		left JOIN sgusuarios Usu
 		ON Usu.id=Rut.id_usuariocreacion
@@ -873,6 +892,8 @@
 		ON Gen.id= Rut.id_generorutina
 		LEFT JOIN sgtipocuerpo cuerpo
 		ON cuerpo.id = Rut.id_tipocuerpo
+		LEFT JOIN sgedad edad
+		ON edad.id = Rut.id_edad
 		where  Rut.sn_activo=1   order by id_rutina asc
 		';	
 		$rutinas = $this->EjecutarTransaccionAllNoParams($query);
@@ -960,12 +981,15 @@
 		return $generos;
 	}//_ConsultarGenerosRutinaPorEntrenador
 
-	function _ConsultarRutinasFiltradas($entrenador,$tipo_rutina,$genero)
+	function _ConsultarRutinasFiltradas($entrenador,$tipo_rutina,$genero,$edad,$cuerpo)
 	{
 		//definiendo las condiciones			
 		$condicionent = ($entrenador!="Todos")?"AND Rut.id_usuariocreacion =".$entrenador." ":"";
 		$condiciontip = ($tipo_rutina!="Todos")?"AND Rut.id_categoriarutina =".$tipo_rutina." ":"";
 		$condiciongen = ($genero!="Todos")?"AND Rut.id_generorutina =".$genero." ":"";
+		$condicioned  = ($edad!="Todos")?"AND Rut.id_edad =".$edad." ":"";
+		$condicioncue = ($cuerpo!="Todos")?"AND Rut.id_cuerpo =".$cuerpo." ":"";
+
 		//Este querie devuelve TODAS las rutinas ordenadas de principiante hasta avanzado.
 		$query = '
 		SELECT
@@ -993,6 +1017,8 @@
 		'.$condicionent.'
 		'.$condiciontip.'
 		'.$condiciongen.'
+		'.$condicioned.'
+		'.$condicioncue.'
 		order by id_rutina asc
 		';
 

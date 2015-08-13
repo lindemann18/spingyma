@@ -161,12 +161,16 @@ $scope.CategoriasporEnt = function()
     })
      .success(function(data, status, headers, config) 
      {          	
-       		exito  = data.exito;
-       		exitog = data.exitog;
+       		exito   = data.exito;
+       		exitog  = data.exitog;
+          exitoed = data.exitoed;
+          exitoc  = data.exitoc;
        		if(exito==1)
        		{
        			$scope.tipos_rut = data.tipos_rut;
        			$scope.generos   = data.generos;
+            $scope.Edades    = data.Edades;
+            $scope.cuerpos   = data.cuerpos;
        		}//if
        		
       })  
@@ -189,14 +193,16 @@ var url = 'modulos/Rutinas/Funciones.php';
        		exitot   = data.exitot;
        		exitog   = data.exitog;
        		exitoe   = data.exitoe;
+          exitoed  = data.exitoed;
+
        		switch(true)
        		{
        			case exito==1 && exitot==1 && exitog==1 && exitoe==1:
        				$scope.rutinas        = data.rutinas;
        				$scope.entrenadores    = data.entrenadores;
 	       			$scope.mostrarbuscando = false;	
-					$scope.mostrarcontent  = true;
-					console.log($scope.entrenadores);
+					    $scope.mostrarcontent  = true;
+					    console.log($scope.entrenadores);
        			break;
 
        			case exito!=1 || exitot!=1 || exitog!=1 || exitoe!=1:
@@ -370,18 +376,20 @@ $scope.veriricarRutina = function()
        		exitog = data.exitog;
        		exitoc = data.exitoc;
        		exitor = data.exitor;
+          exitoe = data.exitoe;
        		console.log(data);
        		switch(true)
        		{
-       			case exitot==1 && exitog==1 && exitoc==1 && exitor==1:
+       			case exitot==1 && exitog==1 && exitoc==1 && exitor==1 && exitoe==1:
        				//Tomando los arrays de criterios
        				$scope.generos  = data.generos;
        				$scope.cuerpos  = data.cuerpos;
        				$scope.cat_rut  = data.cat_rut;
        				$scope.tiposRut = data.tiposRut;
+              $scope.Edades   = data.Edades;
        			break;
 
-       			case exitot!=1 || exitog!=1 || exitoc!=1 || exitor!=1:
+       			case exitot!=1 || exitog!=1 || exitoc!=1 || exitor!=1 || exitoe!=1:
        				$methodsService.alerta(2,"algo falló, disculpe las molestias");
        			break;
 
@@ -1455,6 +1463,7 @@ params = $methodsService.Json("EjerciciosRutinaOrden",$scope.Rut);
           exito  = data.exito;  exitot = data.exitot; 
           exitog = data.exitog; exitoc = data.exitoc;
           exitor = data.exitor;
+          exitoe = data.exitoe;
           switch(true)
           {
             case exito==1 && exitot==1 && exitog==1 && exitoc==1 && exitor==1:
@@ -1463,6 +1472,7 @@ params = $methodsService.Json("EjerciciosRutinaOrden",$scope.Rut);
               $scope.cat_rut = data.cat_rut;
               $scope.generos = data.generos;
               $scope.cuerpos = data.cuerpos;
+              $scope.Edades  = data.Edades;
             break;
 
             case exito!=1 || exitot!=1 || exitog!=1 || exitoc!=1 || exitor!=1:

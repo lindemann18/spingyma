@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50620
 File Encoding         : 65001
 
-Date: 2015-07-26 23:59:41
+Date: 2015-08-12 22:53:01
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -271,6 +271,24 @@ INSERT INTO `sgdias` VALUES ('4', 'Jueves', 'Jueves');
 INSERT INTO `sgdias` VALUES ('5', 'Viernes', 'Viernes');
 INSERT INTO `sgdias` VALUES ('6', 'Sábado', 'Sabado');
 INSERT INTO `sgdias` VALUES ('7', 'Domingo', 'Domingo');
+
+-- ----------------------------
+-- Table structure for `sgedad`
+-- ----------------------------
+DROP TABLE IF EXISTS `sgedad`;
+CREATE TABLE `sgedad` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nb_edad` varchar(50) DEFAULT NULL,
+  `desc_edad` varchar(250) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of sgedad
+-- ----------------------------
+INSERT INTO `sgedad` VALUES ('1', 'Teen', 'Adolescente de edades de 13 a los 19 años.');
+INSERT INTO `sgedad` VALUES ('2', 'Joven', 'Jóvenes para edades de 20 a 39 años');
+INSERT INTO `sgedad` VALUES ('3', 'Adulto', 'Adultos de edades de 40 años  a 60 años.');
 
 -- ----------------------------
 -- Table structure for `sgejercicios`
@@ -630,7 +648,7 @@ CREATE TABLE `sgejerciciosrutina` (
   `ejercicio_relacion` varchar(10) CHARACTER SET utf8mb4 DEFAULT NULL,
   `sn_activo` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3757 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3810 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sgejerciciosrutina
@@ -2667,6 +2685,59 @@ INSERT INTO `sgejerciciosrutina` VALUES ('3753', '145', '1', '4', '158', '2', '5
 INSERT INTO `sgejerciciosrutina` VALUES ('3754', '146', '1', '4', '158', '2', '5', '62', null, null, null, null, null, '1');
 INSERT INTO `sgejerciciosrutina` VALUES ('3755', '148', '1', '4', '158', '2', '5', '63', null, null, null, null, null, '1');
 INSERT INTO `sgejerciciosrutina` VALUES ('3756', '149', '1', '4', '158', '2', '5', '64', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3757', '172', '1', '1', '159', '3', '3', '1', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3758', '173', '1', '1', '159', '3', '3', '2', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3759', '174', '1', '1', '159', '3', '3', '3', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3760', '175', '1', '1', '159', '3', '3', '4', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3761', '176', '1', '1', '159', '3', '3', '5', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3762', '50', '1', '1', '159', '3', '4', '6', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3763', '51', '1', '1', '159', '3', '4', '7', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3764', '52', '1', '1', '159', '3', '4', '8', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3765', '54', '1', '1', '159', '3', '4', '9', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3766', '55', '1', '1', '159', '3', '4', '10', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3767', '68', '1', '1', '159', '3', '4', '11', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3768', '144', '1', '1', '159', '3', '5', '12', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3769', '145', '1', '1', '159', '3', '5', '13', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3770', '146', '1', '1', '159', '3', '5', '14', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3771', '148', '1', '1', '159', '3', '5', '15', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3772', '149', '1', '1', '159', '3', '5', '16', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3773', '150', '1', '1', '159', '3', '5', '17', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3774', '247', '1', '1', '159', '3', '9', '18', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3775', '248', '1', '1', '159', '3', '9', '19', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3776', '249', '1', '1', '159', '3', '9', '20', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3777', '250', '1', '1', '159', '3', '9', '21', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3778', '251', '1', '1', '159', '3', '9', '22', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3779', '173', '1', '2', '159', '3', '3', '23', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3780', '174', '1', '2', '159', '3', '3', '24', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3781', '175', '1', '2', '159', '3', '3', '25', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3782', '176', '1', '2', '159', '3', '3', '26', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3783', '177', '1', '2', '159', '3', '3', '27', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3784', '172', '1', '3', '159', '3', '3', '28', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3785', '173', '1', '3', '159', '3', '3', '29', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3786', '174', '1', '3', '159', '3', '3', '30', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3787', '175', '1', '3', '159', '3', '3', '31', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3788', '176', '1', '3', '159', '3', '3', '32', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3789', '177', '1', '3', '159', '3', '3', '33', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3790', '178', '1', '3', '159', '3', '3', '34', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3791', '48', '1', '4', '159', '3', '4', '35', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3792', '49', '1', '4', '159', '3', '4', '36', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3793', '50', '1', '4', '159', '3', '4', '37', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3794', '51', '1', '4', '159', '3', '4', '38', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3795', '52', '1', '4', '159', '3', '4', '39', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3796', '54', '1', '4', '159', '3', '4', '40', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3797', '55', '1', '4', '159', '3', '4', '41', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3798', '191', '1', '4', '159', '3', '10', '42', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3799', '192', '1', '4', '159', '3', '10', '43', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3800', '193', '1', '4', '159', '3', '10', '44', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3801', '194', '1', '4', '159', '3', '10', '45', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3802', '195', '1', '4', '159', '3', '10', '46', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3803', '196', '1', '4', '159', '3', '10', '47', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3804', '169', '1', '5', '159', '3', '3', '48', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3805', '170', '1', '5', '159', '3', '3', '49', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3806', '171', '1', '5', '159', '3', '3', '50', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3807', '172', '1', '5', '159', '3', '3', '51', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3808', '2', '1', '6', '159', '3', '1', '52', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3809', '2', '1', '7', '159', '3', '1', '53', null, null, null, null, null, '1');
 
 -- ----------------------------
 -- Table structure for `sgejerciciosrutinacliente`
@@ -3030,6 +3101,49 @@ INSERT INTO `sgmusculos` VALUES ('34', '1', '3', 'Chocobanana', 'salkjdakldjla',
 INSERT INTO `sgmusculos` VALUES ('35', '1', '4', 'Chocofresa', 'cocha pacha', '0');
 
 -- ----------------------------
+-- Table structure for `sgpruebaslight`
+-- ----------------------------
+DROP TABLE IF EXISTS `sgpruebaslight`;
+CREATE TABLE `sgpruebaslight` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_instructor` int(11) DEFAULT NULL,
+  `id_cliente` int(11) DEFAULT NULL,
+  `tipo_prueba` int(11) DEFAULT NULL,
+  `desc_prueba` varchar(250) DEFAULT NULL,
+  `resultado_numerico` double(11,0) DEFAULT NULL,
+  `resultado` varchar(250) DEFAULT NULL,
+  `porcentaje` int(11) DEFAULT NULL,
+  `fh_creacion` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of sgpruebaslight
+-- ----------------------------
+INSERT INTO `sgpruebaslight` VALUES ('1', '1', '2', '3', 'IMC', '26', 'Sobre Peso', '60', '2015-06-31');
+INSERT INTO `sgpruebaslight` VALUES ('2', '1', '2', '2', 'Peso', '84', 'Peso Ideal', '100', '2015-06-31');
+INSERT INTO `sgpruebaslight` VALUES ('3', '1', '2', '4', 'IMM - Espalda', '124', 'No Aplica', '0', '2015-06-31');
+INSERT INTO `sgpruebaslight` VALUES ('4', '1', '2', '4', 'IMM - Pecho', '124', 'No Aplica', '0', '2015-06-31');
+INSERT INTO `sgpruebaslight` VALUES ('5', '1', '2', '4', 'IMM - Abdomen', '124', 'No Aplica', '0', '2015-06-31');
+INSERT INTO `sgpruebaslight` VALUES ('6', '1', '2', '4', 'IMM - Cadera', '124', 'No Aplica', '0', '2015-06-31');
+INSERT INTO `sgpruebaslight` VALUES ('7', '1', '2', '4', 'IMM - Brazo', '124', 'No Aplica', '0', '2015-06-31');
+INSERT INTO `sgpruebaslight` VALUES ('8', '1', '2', '4', 'IMM - Muslo', '124', 'No Aplica', '0', '2015-06-31');
+INSERT INTO `sgpruebaslight` VALUES ('9', '1', '2', '4', 'IMM - Espalda', '124', 'No Aplica', '0', '2015-07-31');
+INSERT INTO `sgpruebaslight` VALUES ('10', '1', '2', '4', 'IMM - Pecho', '124', 'No Aplica', '0', '2015-07-31');
+INSERT INTO `sgpruebaslight` VALUES ('11', '1', '2', '4', 'IMM - Abdomen', '124', 'No Aplica', '0', '2015-07-31');
+INSERT INTO `sgpruebaslight` VALUES ('12', '1', '2', '4', 'IMM - Cadera', '124', 'No Aplica', '0', '2015-07-31');
+INSERT INTO `sgpruebaslight` VALUES ('13', '1', '2', '4', 'IMM - Brazo', '124', 'No Aplica', '0', '2015-07-31');
+INSERT INTO `sgpruebaslight` VALUES ('14', '1', '2', '4', 'IMM - Muslo', '124', 'No Aplica', '0', '2015-07-31');
+INSERT INTO `sgpruebaslight` VALUES ('15', '1', '12', '3', 'IMC', '26', 'Sobre Peso', '60', '2015-08-12');
+INSERT INTO `sgpruebaslight` VALUES ('16', '1', '12', '2', 'Peso', '83', 'Peso Ideal', '100', '2015-08-12');
+INSERT INTO `sgpruebaslight` VALUES ('17', '1', '12', '4', 'IMM - Espalda', '120', 'No Aplica', '0', '2015-08-12');
+INSERT INTO `sgpruebaslight` VALUES ('18', '1', '12', '4', 'IMM - Pecho', '121', 'No Aplica', '0', '2015-08-12');
+INSERT INTO `sgpruebaslight` VALUES ('19', '1', '12', '4', 'IMM - Abdomen', '122', 'No Aplica', '0', '2015-08-12');
+INSERT INTO `sgpruebaslight` VALUES ('20', '1', '12', '4', 'IMM - Cadera', '125', 'No Aplica', '0', '2015-08-12');
+INSERT INTO `sgpruebaslight` VALUES ('21', '1', '12', '4', 'IMM - Brazo', '132', 'No Aplica', '0', '2015-08-12');
+INSERT INTO `sgpruebaslight` VALUES ('22', '1', '12', '4', 'IMM - Muslo', '110', 'No Aplica', '0', '2015-08-12');
+
+-- ----------------------------
 -- Table structure for `sgrutinas`
 -- ----------------------------
 DROP TABLE IF EXISTS `sgrutinas`;
@@ -3039,100 +3153,102 @@ CREATE TABLE `sgrutinas` (
   `id_categoriarutina` int(11) DEFAULT NULL,
   `id_generorutina` int(11) DEFAULT NULL,
   `id_tipocuerpo` int(11) DEFAULT NULL,
+  `id_edad` int(11) DEFAULT NULL,
   `nb_rutina` varchar(250) CHARACTER SET latin1 NOT NULL,
   `desc_rutina` varchar(500) NOT NULL,
   `sn_activo` int(11) NOT NULL DEFAULT '1',
   `fh_creacion` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=159 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=160 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sgrutinas
 -- ----------------------------
-INSERT INTO `sgrutinas` VALUES ('1', '1', '1', null, null, 'Acondicionamiento', 'Rutina de acondicinamiento principiantes, adapta a las personas a condiciones físicas pesadas.', '0', '');
-INSERT INTO `sgrutinas` VALUES ('2', '1', '2', '1', null, 'Acondicionamiento', 'Rutina de acondicinamiento principiantes, adapta a las personas a condiciones físicas pesadas.', '0', '');
-INSERT INTO `sgrutinas` VALUES ('3', '2', '1', '2', '1', 'Acondicionamiento chingón', 'Rutina de acondicinamiento principiantes, adapta a las personas a condiciones físicas pesadas.', '1', '');
-INSERT INTO `sgrutinas` VALUES ('4', '2', '3', '3', '2', 'Acondicionamiento', 'Rutina de acondicinamiento principiantes, adapta a las personas a condiciones físicas pesadas.', '1', '');
-INSERT INTO `sgrutinas` VALUES ('5', '1', '1', null, null, 'Otr aprueba', 'laksdjklajl', '0', '2015-01-17');
-INSERT INTO `sgrutinas` VALUES ('50', '1', '1', null, null, 'TronchaToros', 'asdada', '0', '2014-09-16');
-INSERT INTO `sgrutinas` VALUES ('51', '1', '1', null, null, 'Choncha', 'asad', '0', '2014-09-16');
-INSERT INTO `sgrutinas` VALUES ('52', '1', '3', null, null, 'El destructor', 'rutina muy pesada', '0', '2014-09-17');
-INSERT INTO `sgrutinas` VALUES ('54', '1', '1', null, null, 'Prueba', 'aasdad', '0', '2014-09-19');
-INSERT INTO `sgrutinas` VALUES ('55', '1', '1', null, null, 'Mejora fisica', 'rutina de mejora fisica', '0', '2014-09-19');
-INSERT INTO `sgrutinas` VALUES ('56', '1', '2', null, null, 'TronchaToros', 'Troncha toros intermedia', '0', '2014-09-19');
-INSERT INTO `sgrutinas` VALUES ('57', '9', '1', null, null, 'Abominable', 'Rutina Abominable', '1', '2014-10-19');
-INSERT INTO `sgrutinas` VALUES ('60', '1', '2', null, null, 'Rutina nueva', 'akdjkldjlajdkadjkal', '0', '2014-11-17');
-INSERT INTO `sgrutinas` VALUES ('61', '1', '3', null, null, 'prueba2', 'adfasd', '0', '2015-01-15');
-INSERT INTO `sgrutinas` VALUES ('62', '1', '1', null, null, 'Chuvacosa', 'Chuvacosa', '0', '2015-01-17');
-INSERT INTO `sgrutinas` VALUES ('64', '1', '3', null, null, 'prueba1', 'adfas', '0', '2015-01-20');
-INSERT INTO `sgrutinas` VALUES ('65', '1', '1', null, null, 'htd11', 'Hombre teen delgado Nivel 1', '0', '2015-01-20');
-INSERT INTO `sgrutinas` VALUES ('66', '1', '1', null, null, 'HTN11', 'Hombre, Teen, Normal, Nivel 1', '0', '2015-01-20');
-INSERT INTO `sgrutinas` VALUES ('67', '1', '1', null, null, 'Rutina eliminadora', 'aspdkaspda', '0', '2015-01-21');
-INSERT INTO `sgrutinas` VALUES ('68', '1', '1', null, null, 'Pruebosa', 'askdadaj', '0', '2015-01-27');
-INSERT INTO `sgrutinas` VALUES ('69', '1', '1', null, null, 'pruebosienta', 'akdsalkda', '0', '2015-01-27');
-INSERT INTO `sgrutinas` VALUES ('70', '1', '1', null, null, 'cochapacha', 'alkdsjlda', '0', '2015-02-09');
-INSERT INTO `sgrutinas` VALUES ('71', '1', '1', null, null, 'HMJECN1V1', 'HOMBRE O MUJER JOVEN ECDOMORFO NIVEL 1 VERSION 1', '0', '2015-02-10');
-INSERT INTO `sgrutinas` VALUES ('72', '1', '1', null, null, 'HMJECN1V2', 'HOMBRE O MUJER JOVEN ECTOMORFO NIVEL 1 VERSIÓN 2', '0', '2015-02-10');
-INSERT INTO `sgrutinas` VALUES ('73', '1', '1', '3', '1', 'HMJECN1V2', 'HOMBRE O MUJER JOVEN ECTOMORFO NIVEL 1 VERSION 2', '1', '2015-02-10');
-INSERT INTO `sgrutinas` VALUES ('74', '1', '1', null, null, 'HMJECN1V3', 'HOMBRE O MUJER JOVEN ECTOMORFO NIVEL 1 VERSION 3', '0', '2015-02-10');
-INSERT INTO `sgrutinas` VALUES ('75', '1', '1', '3', null, 'HMJECN1V3', 'HOMBRE O MUJER JOVEN ECTOMORFO NIVEL 1 VERSION 3', '1', '2015-02-10');
-INSERT INTO `sgrutinas` VALUES ('76', '1', '1', '3', '2', 'HMTAMEN1V1', 'HOMBRE O MUJER TEEN Y ADULTO MESOMORFO NIVEL 1 VERSION 1', '1', '2015-02-10');
-INSERT INTO `sgrutinas` VALUES ('77', '1', '1', '3', '3', 'HMJENN1V1', 'HOMBRE O MUJER JOVEN ENDOMORFO NIVEL 1 VERSION 1', '1', '2015-02-10');
-INSERT INTO `sgrutinas` VALUES ('78', '1', '1', null, null, 'HJENN1V1', 'HOMBRE JOVEN ENDOMORFO NIVEL 1 VOLUMEN 1', '0', '2015-02-10');
-INSERT INTO `sgrutinas` VALUES ('79', '1', '1', null, null, 'HJENN1V1', 'HOMBRE JOVEN ENDOMORFO NIVEL 1 VERSION 1', '0', '2015-02-10');
-INSERT INTO `sgrutinas` VALUES ('80', '1', '1', '1', '3', 'HJENN1V1', 'HOMBRE JOVEN ENDOMORFO NIVEL 1 VERSION 1', '1', '2015-02-10');
-INSERT INTO `sgrutinas` VALUES ('81', '1', '1', '1', null, 'HJENN1V2', 'HOMBRE JOVEN ENDOMORFO NIVEL 1 VERSION 2', '1', '2015-02-11');
-INSERT INTO `sgrutinas` VALUES ('82', '1', '1', null, null, 'HJENN1V3', 'HOMBRE JOVEN ENDOMORFO NIVEL 1 VERSION 3', '0', '2015-02-11');
-INSERT INTO `sgrutinas` VALUES ('83', '1', '1', null, null, 'HJENN1V3', 'HOMBRE JOVEN ENDOMORFO NIVEL 1 VERSION 3', '0', '2015-02-11');
-INSERT INTO `sgrutinas` VALUES ('84', '1', '1', null, null, 'PRUEBA', 'DESCRIPCION TRISERIE', '0', '2015-02-11');
-INSERT INTO `sgrutinas` VALUES ('85', '1', '1', null, null, 'HJENN1V3', 'HOMBRE JOVEN ENDOMORFO NIVEL 1 VERSION 3', '0', '2015-02-11');
-INSERT INTO `sgrutinas` VALUES ('86', '1', '1', null, null, 'HJENN1V3', 'HOMBRE JOVEN ENDOMORFO NIVEL 1 VERSION 3', '0', '2015-02-12');
-INSERT INTO `sgrutinas` VALUES ('87', '1', '1', null, null, 'HJENN1V3', 'HOMBRE JOVEN ENDOMORFO NIVEL 1 VERSION 3', '0', '2015-02-12');
-INSERT INTO `sgrutinas` VALUES ('88', '1', '1', '1', '3', 'HJENN1V3', 'HOMBRE JOVEN ENDOMORFO NIVEL 1 VERSION 3', '1', '2015-02-12');
-INSERT INTO `sgrutinas` VALUES ('89', '1', '1', null, null, 'MJENN1V4', 'MUJER JOVEN ENDOMORFO', '0', '2015-02-12');
-INSERT INTO `sgrutinas` VALUES ('90', '1', '1', '2', null, 'MJENN1V4', 'MUJER JOVEN ENDOMORFO NIVEL 1 VERSION 1', '1', '2015-02-12');
-INSERT INTO `sgrutinas` VALUES ('91', '1', '1', null, null, 'MJENN1V5', 'MUJER JOVEN ENDOMORFO NIVEL 1 VERSION 5', '0', '2015-02-12');
-INSERT INTO `sgrutinas` VALUES ('92', '1', '1', null, null, 'MJENN1V5', 'MUJER JOVEN ENDOMORFO NIVEL 1 VERSION 5', '0', '2015-02-12');
-INSERT INTO `sgrutinas` VALUES ('93', '1', '1', '2', null, 'MJENN1V5', 'MUJER JOVEN ENDOMORFO NIVEL 1 VERSION 2', '1', '2015-02-12');
-INSERT INTO `sgrutinas` VALUES ('94', '1', '1', null, null, 'MJENN1V6', 'MUJER JOVEN ENDOMORFO NIVEL 1 VERSION 6', '0', '2015-02-12');
-INSERT INTO `sgrutinas` VALUES ('95', '1', '1', null, null, 'MJENN1V6', 'MUJER JOVEN ENDOMORFO NIVEL 1 VERSION 3', '0', '2015-02-12');
-INSERT INTO `sgrutinas` VALUES ('96', '1', '1', null, null, 'HJTMEN1V1', 'HOMBRE JOVEN TEEN MESOMORFO NIVEL 1 VERSION 1', '0', '2015-02-13');
-INSERT INTO `sgrutinas` VALUES ('97', '1', '1', null, null, 'HJMEN1V1', 'HOMBRE JOVEN MESOMORFO NIVEL 1 VERSION 1', '0', '2015-02-13');
-INSERT INTO `sgrutinas` VALUES ('98', '1', '1', '3', null, 'HMJAECN1V1', 'HOMBRE MUJER JOVEN ADULTO ECTOMORFO NIVEL 1 VERSION 1', '1', '2015-02-13');
-INSERT INTO `sgrutinas` VALUES ('99', '1', '1', '1', null, 'HJTAENNIV1', 'HOMBRE JOVEN TEEN ADULTO ENDOMORFO NIVEL 1 VERSION 1', '1', '2015-02-13');
-INSERT INTO `sgrutinas` VALUES ('100', '1', '1', null, null, 'HMTJENECN1V1', 'HOMBRE MUJER TEEN JOVEN ENDOMORFO ECTOMORFO NIVEL 1 VERSION 1', '0', '2015-02-13');
-INSERT INTO `sgrutinas` VALUES ('101', '1', '1', null, null, 'HMTJENECN1V1', 'HOMBRE MUJER TEEN JOVEN ENDOMORFO ECTOMORFO NIVEL 1 VERSION 1', '0', '2015-02-13');
-INSERT INTO `sgrutinas` VALUES ('102', '1', '1', null, null, 'liuhoo', 'uyg6tu', '0', '2015-02-16');
-INSERT INTO `sgrutinas` VALUES ('103', '1', '1', '3', null, 'HMTJENECN1V1', 'HOMBRE MUJER TEEN JOVEN ENDOMORFO ECTOMORFO NIVEL 1 VERSION 1', '1', '2015-02-16');
-INSERT INTO `sgrutinas` VALUES ('104', '1', '1', null, null, 'EFSG', 'RGEGEQRG', '0', '2015-02-16');
-INSERT INTO `sgrutinas` VALUES ('105', '1', '1', '3', null, 'HMJECN1V1', 'HOMBRE MUJER JOVEN ECTOMORFO NIVEL 1 VERSION 1', '1', '2015-02-16');
-INSERT INTO `sgrutinas` VALUES ('106', '1', '1', null, null, 'fhefew', 'doejdd', '0', '2015-02-16');
-INSERT INTO `sgrutinas` VALUES ('107', '1', '1', null, null, 'sfdrwf', 'doejdd', '0', '2015-02-16');
-INSERT INTO `sgrutinas` VALUES ('108', '1', '1', '3', null, 'HMJENN1V3', 'HOMBRE MUJER JOVEN ENDOMORFO NIVEL 1 VERSION 3', '1', '2015-02-16');
-INSERT INTO `sgrutinas` VALUES ('109', '1', '1', '3', null, 'HMTJAMEENN1V1', 'HOMBRE MUJER TEEN JOVEN ADULTO MESOMORFO ENDOMORFO NIVEL 1 VERSION 1', '1', '2015-02-16');
-INSERT INTO `sgrutinas` VALUES ('110', '1', '1', '1', null, 'HTAECN1V1', 'HOMBRE TEEN ADULTO ECTOMORFO NIVEL 1 VERSION 1', '1', '2015-02-17');
-INSERT INTO `sgrutinas` VALUES ('111', '1', '1', '1', null, 'HTAECN1V2', 'HOMBRE TEEN ADULTO ECTOMORFO NIVEL 1 VERSION 2', '1', '2015-02-17');
-INSERT INTO `sgrutinas` VALUES ('112', '1', '1', '1', null, 'HTAECN1V3', 'HOMBRE TEEN ADULTO ECTOMORFO NIVEL 1 VERSION 1', '1', '2015-02-17');
-INSERT INTO `sgrutinas` VALUES ('113', '1', '1', '1', null, 'HTAECN1V4', 'HOMBRE TEEN ADULTO ECTOMORFO NIVEL 1 VERSION 4', '1', '2015-02-17');
-INSERT INTO `sgrutinas` VALUES ('114', '1', '1', '2', null, 'HTAECN1V5', 'MUJER TEEN ADULTO ECTOMORFO NIVEL 1 VERSION 1', '1', '2015-02-17');
-INSERT INTO `sgrutinas` VALUES ('115', '1', '1', '2', null, 'MTAECN1V2', 'MUJER TEEN ADULTO ECTOMORFO NIVEL 1 VERSION 2', '1', '2015-02-18');
-INSERT INTO `sgrutinas` VALUES ('116', '1', '1', null, null, 'MTAECN1V3', 'MUJER TEEN ADULTO ECTOMORFO NIVEL 1 VERSION 3', '0', '2015-02-18');
-INSERT INTO `sgrutinas` VALUES ('117', '1', '1', '2', null, 'MTAECN1V3', 'MUJER TEEN ADULTO ECTOMORFO NIVEL 1 VERSION 3', '1', '2015-02-18');
-INSERT INTO `sgrutinas` VALUES ('118', '1', '1', '2', null, 'MTAECN1V4', 'MUJER TEEN ADULTO ECTOMORFO NIVEL 1 VERSION 4', '1', '2015-02-18');
-INSERT INTO `sgrutinas` VALUES ('119', '1', '1', '3', null, 'HMTJECN1V1', 'HOMBRE O MUJER TEEN JOVEN  ECTOMORFO NIVEL 1 VERSION 1', '1', '2015-03-02');
-INSERT INTO `sgrutinas` VALUES ('120', '1', '1', '3', null, 'HMTJMN1V1', 'HOMBRE O MUJER TEEN JOVEN MESOMORFO NIVEL 1 VERSION 1', '1', '2015-03-02');
-INSERT INTO `sgrutinas` VALUES ('121', '1', '1', null, null, 'HMTJMEN1V2', 'HOMBRE O MUJER TEEN JOVEN MESOMORFO NIVEL 1 VERSION 2', '0', '2015-03-02');
-INSERT INTO `sgrutinas` VALUES ('122', '1', '1', '3', null, 'HMTJMEN1V2', 'HOMBRE O MUJER TEEN JOVEN MESOMORFO NIVEL 1 VERSION 2', '1', '2015-03-02');
-INSERT INTO `sgrutinas` VALUES ('123', '1', '1', null, null, 'HMTJMEN1V1', 'HOMBRE O MUJER TEEN JOVEN MESOMORFO NIVEL 1 VERSION 1', '0', '2015-03-03');
-INSERT INTO `sgrutinas` VALUES ('124', '1', '1', '3', null, 'HMJAECN1V2', 'HOMBRE O MUJER JOVEN ADULTO ECTOMORFO NIVEL 1 VERSION 2', '1', '2015-03-04');
-INSERT INTO `sgrutinas` VALUES ('125', '1', '1', '3', null, 'HMJAECN1V3', 'HOMBRE O MUJER JOVEN ADULTO ECTOMORFO NIVEL 1 VERSION 3', '1', '2015-03-04');
-INSERT INTO `sgrutinas` VALUES ('126', '1', '1', '3', null, 'HMJMEN1V1', 'HOMBRE O MUJER JOVEN MESOMORFO NIVEL 1 VERSION 1', '1', '2015-03-04');
-INSERT INTO `sgrutinas` VALUES ('127', '1', '1', '3', null, 'HMTJENN1V1', 'HOMBRE O MUJER TEEN JOVEN ENDOMORFO NIVEL 1 VERSION 1', '1', '2015-03-04');
-INSERT INTO `sgrutinas` VALUES ('128', '1', '1', '3', null, 'HMTJENN1V2', 'HOMBRO O MUJER TEEN JOVEN ENDOMORFO NIVEL 1 VERSION 2', '1', '2015-03-04');
-INSERT INTO `sgrutinas` VALUES ('129', '1', '1', '3', null, 'HMTJENN1V3', 'HOMBRE O MUJER TEEN JOVEN ENDOMORFO NIVEL 1 VERSION 3', '1', '2015-03-04');
-INSERT INTO `sgrutinas` VALUES ('130', '1', '1', '3', null, 'HMTJAMEN1V1', 'HOMBRE O MUJER TEEN JOVEN ADULTO MESOMORFO NIVEL 1 VERSION 1', '1', '2015-03-04');
-INSERT INTO `sgrutinas` VALUES ('156', '1', '3', '2', '1', 'Rutina Pruebosa', 'lkajdslajdas', '1', '2015-07-19');
-INSERT INTO `sgrutinas` VALUES ('158', '1', '2', '3', '2', 'Rutina De prueba', 'adsdjakdalk', '1', '2015-07-19');
+INSERT INTO `sgrutinas` VALUES ('1', '1', '1', null, null, null, 'Acondicionamiento', 'Rutina de acondicinamiento principiantes, adapta a las personas a condiciones físicas pesadas.', '0', '');
+INSERT INTO `sgrutinas` VALUES ('2', '1', '2', '1', null, null, 'Acondicionamiento', 'Rutina de acondicinamiento principiantes, adapta a las personas a condiciones físicas pesadas.', '0', '');
+INSERT INTO `sgrutinas` VALUES ('3', '2', '1', '2', '1', null, 'Acondicionamiento chingón', 'Rutina de acondicinamiento principiantes, adapta a las personas a condiciones físicas pesadas.', '1', '');
+INSERT INTO `sgrutinas` VALUES ('4', '2', '3', '3', '2', null, 'Acondicionamiento', 'Rutina de acondicinamiento principiantes, adapta a las personas a condiciones físicas pesadas.', '1', '');
+INSERT INTO `sgrutinas` VALUES ('5', '1', '1', null, null, null, 'Otr aprueba', 'laksdjklajl', '0', '2015-01-17');
+INSERT INTO `sgrutinas` VALUES ('50', '1', '1', null, null, null, 'TronchaToros', 'asdada', '0', '2014-09-16');
+INSERT INTO `sgrutinas` VALUES ('51', '1', '1', null, null, null, 'Choncha', 'asad', '0', '2014-09-16');
+INSERT INTO `sgrutinas` VALUES ('52', '1', '3', null, null, null, 'El destructor', 'rutina muy pesada', '0', '2014-09-17');
+INSERT INTO `sgrutinas` VALUES ('54', '1', '1', null, null, null, 'Prueba', 'aasdad', '0', '2014-09-19');
+INSERT INTO `sgrutinas` VALUES ('55', '1', '1', null, null, null, 'Mejora fisica', 'rutina de mejora fisica', '0', '2014-09-19');
+INSERT INTO `sgrutinas` VALUES ('56', '1', '2', null, null, null, 'TronchaToros', 'Troncha toros intermedia', '0', '2014-09-19');
+INSERT INTO `sgrutinas` VALUES ('57', '9', '1', null, null, null, 'Abominable', 'Rutina Abominable', '1', '2014-10-19');
+INSERT INTO `sgrutinas` VALUES ('60', '1', '2', null, null, null, 'Rutina nueva', 'akdjkldjlajdkadjkal', '0', '2014-11-17');
+INSERT INTO `sgrutinas` VALUES ('61', '1', '3', null, null, null, 'prueba2', 'adfasd', '0', '2015-01-15');
+INSERT INTO `sgrutinas` VALUES ('62', '1', '1', null, null, null, 'Chuvacosa', 'Chuvacosa', '0', '2015-01-17');
+INSERT INTO `sgrutinas` VALUES ('64', '1', '3', null, null, null, 'prueba1', 'adfas', '0', '2015-01-20');
+INSERT INTO `sgrutinas` VALUES ('65', '1', '1', null, null, null, 'htd11', 'Hombre teen delgado Nivel 1', '0', '2015-01-20');
+INSERT INTO `sgrutinas` VALUES ('66', '1', '1', null, null, null, 'HTN11', 'Hombre, Teen, Normal, Nivel 1', '0', '2015-01-20');
+INSERT INTO `sgrutinas` VALUES ('67', '1', '1', null, null, null, 'Rutina eliminadora', 'aspdkaspda', '0', '2015-01-21');
+INSERT INTO `sgrutinas` VALUES ('68', '1', '1', null, null, null, 'Pruebosa', 'askdadaj', '0', '2015-01-27');
+INSERT INTO `sgrutinas` VALUES ('69', '1', '1', null, null, null, 'pruebosienta', 'akdsalkda', '0', '2015-01-27');
+INSERT INTO `sgrutinas` VALUES ('70', '1', '1', null, null, null, 'cochapacha', 'alkdsjlda', '0', '2015-02-09');
+INSERT INTO `sgrutinas` VALUES ('71', '1', '1', null, null, null, 'HMJECN1V1', 'HOMBRE O MUJER JOVEN ECDOMORFO NIVEL 1 VERSION 1', '0', '2015-02-10');
+INSERT INTO `sgrutinas` VALUES ('72', '1', '1', null, null, null, 'HMJECN1V2', 'HOMBRE O MUJER JOVEN ECTOMORFO NIVEL 1 VERSIÓN 2', '0', '2015-02-10');
+INSERT INTO `sgrutinas` VALUES ('73', '1', '1', '3', '1', null, 'HMJECN1V2', 'HOMBRE O MUJER JOVEN ECTOMORFO NIVEL 1 VERSION 2', '1', '2015-02-10');
+INSERT INTO `sgrutinas` VALUES ('74', '1', '1', null, null, null, 'HMJECN1V3', 'HOMBRE O MUJER JOVEN ECTOMORFO NIVEL 1 VERSION 3', '0', '2015-02-10');
+INSERT INTO `sgrutinas` VALUES ('75', '1', '1', '3', '1', '2', 'HMJECN1V3', 'HOMBRE O MUJER JOVEN ECTOMORFO NIVEL 1 VERSION 3', '1', '2015-02-10');
+INSERT INTO `sgrutinas` VALUES ('76', '1', '1', '3', '2', null, 'HMTAMEN1V1', 'HOMBRE O MUJER TEEN Y ADULTO MESOMORFO NIVEL 1 VERSION 1', '1', '2015-02-10');
+INSERT INTO `sgrutinas` VALUES ('77', '1', '1', '3', '3', null, 'HMJENN1V1', 'HOMBRE O MUJER JOVEN ENDOMORFO NIVEL 1 VERSION 1', '1', '2015-02-10');
+INSERT INTO `sgrutinas` VALUES ('78', '1', '1', null, null, null, 'HJENN1V1', 'HOMBRE JOVEN ENDOMORFO NIVEL 1 VOLUMEN 1', '0', '2015-02-10');
+INSERT INTO `sgrutinas` VALUES ('79', '1', '1', null, null, null, 'HJENN1V1', 'HOMBRE JOVEN ENDOMORFO NIVEL 1 VERSION 1', '0', '2015-02-10');
+INSERT INTO `sgrutinas` VALUES ('80', '1', '1', '1', '3', null, 'HJENN1V1', 'HOMBRE JOVEN ENDOMORFO NIVEL 1 VERSION 1', '1', '2015-02-10');
+INSERT INTO `sgrutinas` VALUES ('81', '1', '1', '1', null, null, 'HJENN1V2', 'HOMBRE JOVEN ENDOMORFO NIVEL 1 VERSION 2', '1', '2015-02-11');
+INSERT INTO `sgrutinas` VALUES ('82', '1', '1', null, null, null, 'HJENN1V3', 'HOMBRE JOVEN ENDOMORFO NIVEL 1 VERSION 3', '0', '2015-02-11');
+INSERT INTO `sgrutinas` VALUES ('83', '1', '1', null, null, null, 'HJENN1V3', 'HOMBRE JOVEN ENDOMORFO NIVEL 1 VERSION 3', '0', '2015-02-11');
+INSERT INTO `sgrutinas` VALUES ('84', '1', '1', null, null, null, 'PRUEBA', 'DESCRIPCION TRISERIE', '0', '2015-02-11');
+INSERT INTO `sgrutinas` VALUES ('85', '1', '1', null, null, null, 'HJENN1V3', 'HOMBRE JOVEN ENDOMORFO NIVEL 1 VERSION 3', '0', '2015-02-11');
+INSERT INTO `sgrutinas` VALUES ('86', '1', '1', null, null, null, 'HJENN1V3', 'HOMBRE JOVEN ENDOMORFO NIVEL 1 VERSION 3', '0', '2015-02-12');
+INSERT INTO `sgrutinas` VALUES ('87', '1', '1', null, null, null, 'HJENN1V3', 'HOMBRE JOVEN ENDOMORFO NIVEL 1 VERSION 3', '0', '2015-02-12');
+INSERT INTO `sgrutinas` VALUES ('88', '1', '1', '1', '3', null, 'HJENN1V3', 'HOMBRE JOVEN ENDOMORFO NIVEL 1 VERSION 3', '1', '2015-02-12');
+INSERT INTO `sgrutinas` VALUES ('89', '1', '1', null, null, null, 'MJENN1V4', 'MUJER JOVEN ENDOMORFO', '0', '2015-02-12');
+INSERT INTO `sgrutinas` VALUES ('90', '1', '1', '2', null, null, 'MJENN1V4', 'MUJER JOVEN ENDOMORFO NIVEL 1 VERSION 1', '1', '2015-02-12');
+INSERT INTO `sgrutinas` VALUES ('91', '1', '1', null, null, null, 'MJENN1V5', 'MUJER JOVEN ENDOMORFO NIVEL 1 VERSION 5', '0', '2015-02-12');
+INSERT INTO `sgrutinas` VALUES ('92', '1', '1', null, null, null, 'MJENN1V5', 'MUJER JOVEN ENDOMORFO NIVEL 1 VERSION 5', '0', '2015-02-12');
+INSERT INTO `sgrutinas` VALUES ('93', '1', '1', '2', null, null, 'MJENN1V5', 'MUJER JOVEN ENDOMORFO NIVEL 1 VERSION 2', '1', '2015-02-12');
+INSERT INTO `sgrutinas` VALUES ('94', '1', '1', null, null, null, 'MJENN1V6', 'MUJER JOVEN ENDOMORFO NIVEL 1 VERSION 6', '0', '2015-02-12');
+INSERT INTO `sgrutinas` VALUES ('95', '1', '1', null, null, null, 'MJENN1V6', 'MUJER JOVEN ENDOMORFO NIVEL 1 VERSION 3', '0', '2015-02-12');
+INSERT INTO `sgrutinas` VALUES ('96', '1', '1', null, null, null, 'HJTMEN1V1', 'HOMBRE JOVEN TEEN MESOMORFO NIVEL 1 VERSION 1', '0', '2015-02-13');
+INSERT INTO `sgrutinas` VALUES ('97', '1', '1', null, null, null, 'HJMEN1V1', 'HOMBRE JOVEN MESOMORFO NIVEL 1 VERSION 1', '0', '2015-02-13');
+INSERT INTO `sgrutinas` VALUES ('98', '1', '1', '3', null, null, 'HMJAECN1V1', 'HOMBRE MUJER JOVEN ADULTO ECTOMORFO NIVEL 1 VERSION 1', '1', '2015-02-13');
+INSERT INTO `sgrutinas` VALUES ('99', '1', '1', '1', null, null, 'HJTAENNIV1', 'HOMBRE JOVEN TEEN ADULTO ENDOMORFO NIVEL 1 VERSION 1', '1', '2015-02-13');
+INSERT INTO `sgrutinas` VALUES ('100', '1', '1', null, null, null, 'HMTJENECN1V1', 'HOMBRE MUJER TEEN JOVEN ENDOMORFO ECTOMORFO NIVEL 1 VERSION 1', '0', '2015-02-13');
+INSERT INTO `sgrutinas` VALUES ('101', '1', '1', null, null, null, 'HMTJENECN1V1', 'HOMBRE MUJER TEEN JOVEN ENDOMORFO ECTOMORFO NIVEL 1 VERSION 1', '0', '2015-02-13');
+INSERT INTO `sgrutinas` VALUES ('102', '1', '1', null, null, null, 'liuhoo', 'uyg6tu', '0', '2015-02-16');
+INSERT INTO `sgrutinas` VALUES ('103', '1', '1', '3', null, null, 'HMTJENECN1V1', 'HOMBRE MUJER TEEN JOVEN ENDOMORFO ECTOMORFO NIVEL 1 VERSION 1', '1', '2015-02-16');
+INSERT INTO `sgrutinas` VALUES ('104', '1', '1', null, null, null, 'EFSG', 'RGEGEQRG', '0', '2015-02-16');
+INSERT INTO `sgrutinas` VALUES ('105', '1', '1', '3', null, null, 'HMJECN1V1', 'HOMBRE MUJER JOVEN ECTOMORFO NIVEL 1 VERSION 1', '1', '2015-02-16');
+INSERT INTO `sgrutinas` VALUES ('106', '1', '1', null, null, null, 'fhefew', 'doejdd', '0', '2015-02-16');
+INSERT INTO `sgrutinas` VALUES ('107', '1', '1', null, null, null, 'sfdrwf', 'doejdd', '0', '2015-02-16');
+INSERT INTO `sgrutinas` VALUES ('108', '1', '1', '3', null, null, 'HMJENN1V3', 'HOMBRE MUJER JOVEN ENDOMORFO NIVEL 1 VERSION 3', '1', '2015-02-16');
+INSERT INTO `sgrutinas` VALUES ('109', '1', '1', '3', null, null, 'HMTJAMEENN1V1', 'HOMBRE MUJER TEEN JOVEN ADULTO MESOMORFO ENDOMORFO NIVEL 1 VERSION 1', '1', '2015-02-16');
+INSERT INTO `sgrutinas` VALUES ('110', '1', '1', '1', null, null, 'HTAECN1V1', 'HOMBRE TEEN ADULTO ECTOMORFO NIVEL 1 VERSION 1', '1', '2015-02-17');
+INSERT INTO `sgrutinas` VALUES ('111', '1', '1', '1', null, null, 'HTAECN1V2', 'HOMBRE TEEN ADULTO ECTOMORFO NIVEL 1 VERSION 2', '1', '2015-02-17');
+INSERT INTO `sgrutinas` VALUES ('112', '1', '1', '1', null, null, 'HTAECN1V3', 'HOMBRE TEEN ADULTO ECTOMORFO NIVEL 1 VERSION 1', '1', '2015-02-17');
+INSERT INTO `sgrutinas` VALUES ('113', '1', '1', '1', null, null, 'HTAECN1V4', 'HOMBRE TEEN ADULTO ECTOMORFO NIVEL 1 VERSION 4', '1', '2015-02-17');
+INSERT INTO `sgrutinas` VALUES ('114', '1', '1', '2', null, null, 'HTAECN1V5', 'MUJER TEEN ADULTO ECTOMORFO NIVEL 1 VERSION 1', '1', '2015-02-17');
+INSERT INTO `sgrutinas` VALUES ('115', '1', '1', '2', null, null, 'MTAECN1V2', 'MUJER TEEN ADULTO ECTOMORFO NIVEL 1 VERSION 2', '1', '2015-02-18');
+INSERT INTO `sgrutinas` VALUES ('116', '1', '1', null, null, null, 'MTAECN1V3', 'MUJER TEEN ADULTO ECTOMORFO NIVEL 1 VERSION 3', '0', '2015-02-18');
+INSERT INTO `sgrutinas` VALUES ('117', '1', '1', '2', null, null, 'MTAECN1V3', 'MUJER TEEN ADULTO ECTOMORFO NIVEL 1 VERSION 3', '1', '2015-02-18');
+INSERT INTO `sgrutinas` VALUES ('118', '1', '1', '2', null, null, 'MTAECN1V4', 'MUJER TEEN ADULTO ECTOMORFO NIVEL 1 VERSION 4', '1', '2015-02-18');
+INSERT INTO `sgrutinas` VALUES ('119', '1', '1', '3', null, null, 'HMTJECN1V1', 'HOMBRE O MUJER TEEN JOVEN  ECTOMORFO NIVEL 1 VERSION 1', '1', '2015-03-02');
+INSERT INTO `sgrutinas` VALUES ('120', '1', '1', '3', null, null, 'HMTJMN1V1', 'HOMBRE O MUJER TEEN JOVEN MESOMORFO NIVEL 1 VERSION 1', '1', '2015-03-02');
+INSERT INTO `sgrutinas` VALUES ('121', '1', '1', null, null, null, 'HMTJMEN1V2', 'HOMBRE O MUJER TEEN JOVEN MESOMORFO NIVEL 1 VERSION 2', '0', '2015-03-02');
+INSERT INTO `sgrutinas` VALUES ('122', '1', '1', '3', null, null, 'HMTJMEN1V2', 'HOMBRE O MUJER TEEN JOVEN MESOMORFO NIVEL 1 VERSION 2', '1', '2015-03-02');
+INSERT INTO `sgrutinas` VALUES ('123', '1', '1', null, null, null, 'HMTJMEN1V1', 'HOMBRE O MUJER TEEN JOVEN MESOMORFO NIVEL 1 VERSION 1', '0', '2015-03-03');
+INSERT INTO `sgrutinas` VALUES ('124', '1', '1', '3', null, null, 'HMJAECN1V2', 'HOMBRE O MUJER JOVEN ADULTO ECTOMORFO NIVEL 1 VERSION 2', '1', '2015-03-04');
+INSERT INTO `sgrutinas` VALUES ('125', '1', '1', '3', null, null, 'HMJAECN1V3', 'HOMBRE O MUJER JOVEN ADULTO ECTOMORFO NIVEL 1 VERSION 3', '1', '2015-03-04');
+INSERT INTO `sgrutinas` VALUES ('126', '1', '1', '3', null, null, 'HMJMEN1V1', 'HOMBRE O MUJER JOVEN MESOMORFO NIVEL 1 VERSION 1', '1', '2015-03-04');
+INSERT INTO `sgrutinas` VALUES ('127', '1', '1', '3', null, null, 'HMTJENN1V1', 'HOMBRE O MUJER TEEN JOVEN ENDOMORFO NIVEL 1 VERSION 1', '1', '2015-03-04');
+INSERT INTO `sgrutinas` VALUES ('128', '1', '1', '3', null, null, 'HMTJENN1V2', 'HOMBRO O MUJER TEEN JOVEN ENDOMORFO NIVEL 1 VERSION 2', '1', '2015-03-04');
+INSERT INTO `sgrutinas` VALUES ('129', '1', '1', '3', null, null, 'HMTJENN1V3', 'HOMBRE O MUJER TEEN JOVEN ENDOMORFO NIVEL 1 VERSION 3', '1', '2015-03-04');
+INSERT INTO `sgrutinas` VALUES ('130', '1', '1', '3', null, null, 'HMTJAMEN1V1', 'HOMBRE O MUJER TEEN JOVEN ADULTO MESOMORFO NIVEL 1 VERSION 1', '1', '2015-03-04');
+INSERT INTO `sgrutinas` VALUES ('156', '1', '3', '2', '1', null, 'Rutina Pruebosa', 'lkajdslajdas', '1', '2015-07-19');
+INSERT INTO `sgrutinas` VALUES ('158', '1', '2', '3', '2', null, 'Rutina De prueba', 'adsdjakdalk', '1', '2015-07-19');
+INSERT INTO `sgrutinas` VALUES ('159', '1', '3', '2', '2', '2', 'Rutina del mal', 'alksjdlkad', '1', '2015-08-12');
 
 -- ----------------------------
 -- Table structure for `sgrutinasclientes`
@@ -3154,7 +3270,7 @@ CREATE TABLE `sgrutinasclientes` (
 -- ----------------------------
 -- Records of sgrutinasclientes
 -- ----------------------------
-INSERT INTO `sgrutinasclientes` VALUES ('1', '1', '1', '2', '1', 'HMJECN1V2', 'HOMBRE O MUJER JOVEN ECTOMORFO NIVEL 1 VERSION 2', '2015-07-26', '1');
+INSERT INTO `sgrutinasclientes` VALUES ('1', '1', '1', '2', '1', 'HMJECN1V2', 'HOMBRE O MUJER JOVEN ECTOMORFO NIVEL 1 VERSION 2', '2015-08-12', '1');
 
 -- ----------------------------
 -- Table structure for `sgtipocuerpo`

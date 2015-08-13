@@ -973,6 +973,8 @@
 			array_push($entrenadores,$todose);
 		}
 
+		
+
 		$datos     = array("exito"=>$exito,"rutinas"=>$rutinas,"exitot"=>$exitot,
 						   "tipos_rut"=>$tipos_rut,"exitog"=>$exitog,"generos"=>$generos,
 						   "exitoe"=>$exitoe,"entrenadores"=>$entrenadores);
@@ -1013,8 +1015,26 @@
 			array_push($generos,$todos);
 		}
 
+		//Consultando los rangos de las edades
+		$Edades    = $consultar->_ConsultarEdades();
+		$cantidade = count($Edades);
+		$exitoed   = ($cantidade>0)?1:0;
+
+		if($exitoed==1)
+		{
+			//inyectando  la opción todos a la lista de géneros
+			$todose = array("id"=>"Todos","nb_edad"=>"Todos");
+			array_push($Edades,$todose);
+		}
+
+		//Consultando los tipos de cuerpos
+		$cuerpos   = $consultar->_ConsultarTiposCuerpo();
+		$cantidadc = count($cuerpos);
+		$exitoc    = ($cantidadc>0)?1:0;
+
 		$datos    = array("exito"=>$exito,"tipos_rut"=>$tipos_rut,"exitog"=>$exitog,
-						   "generos"=>$generos);
+						   "generos"=>$generos,"exitoed"=>$exitoed,"Edades"=>$Edades,
+						   "exitoc"=>$exitoc,"cuerpos"=>$cuerpos);
 		return $datos;
 	}//BuscarCategoriasPorEntrenador
 
@@ -1024,9 +1044,12 @@
 		$entrenador  = $Parametros['entrenador'];
 		$tipo_rutina = $Parametros['tipo_rutina'];
 		$genero 	 = $Parametros['genero'];
+		$edad        = $Parametros['edad'];
+		$cuerpo      = $Parametros['cuerpo'];
+
 		$consultar   = new Consultar();
 		//Obteniendo las rutinas filtradas.
-		$rutinas     = $consultar->_ConsultarRutinasFiltradas($entrenador,$tipo_rutina,$genero);
+		$rutinas     = $consultar->_ConsultarRutinasFiltradas($entrenador,$tipo_rutina,$genero,$edad,$cuerpo);
 		$cantidad    = count($rutinas);
 	 	$exito       = ($rutinas!="Error")?1:0;
 	 	$datos       = array("exito"=>$exito,"cantidad"=>$cantidad,"rutinas"=>$rutinas);
@@ -1072,9 +1095,15 @@
 		$cantidadr = count($tiposRut);
 		$exitor    = ($cantidadr>0)?1:0;
 
+		//Consultando los rangos de las edades
+		$Edades    = $consultar->_ConsultarEdades();
+		$cantidade = count($Edades);
+		$exitoe    = ($cantidade>0)?1:0;
+
 		$datos     = array("exitot"=>$exitot,"cat_rut"=>$tiposrutina,"exitog"=>$exitog,
 						   "generos"=>$generos,"exitoc"=>$exitoc,"cuerpos"=>$cuerpos,
-						   "exitor"=>$exitor,"tiposRut"=>$tiposRut);
+						   "exitor"=>$exitor,"tiposRut"=>$tiposRut,"exitoe"=>$exitoe,
+						   "Edades"=>$Edades);
 		return $datos;
 	}//RutinasAgregarCategorias
 
@@ -1107,6 +1136,7 @@
 		$rutina->id_tipocuerpo      = $Parametros['cuerpo'];
 		$rutina->nb_rutina          = $Parametros['nb_rutina'];
 		$rutina->desc_rutina        = $Parametros['desc_rutina'];
+		$rutina->id_edad 			= $Parametros['genero'];
 		$rutina->sn_activo          = 1;
 		$rutina->fh_creacion        = $fh_creacion;
 		$respuesta 					= EjecutarTransaccion($rutina);
@@ -1658,10 +1688,15 @@
 		$cantidadr = count($tiposRut);
 		$exitor    = ($cantidadr>0)?1:0;
 
+		//Consultando los rangos de las edades
+		$Edades    = $consultar->_ConsultarEdades();
+		$cantidade = count($Edades);
+		$exitoe    = ($cantidade>0)?1:0;
+
 		$datos     = array("exitot"=>$exitot,"cat_rut"=>$tiposrutina,"exitog"=>$exitog,
 						   "generos"=>$generos,"exitoc"=>$exitoc,"cuerpos"=>$cuerpos,
 						   "exitor"=>$exitor,"tiposRut"=>$tiposRut,"exito"=>$exito,
-						   "rutina"=>$rutina);
+						   "rutina"=>$rutina,"exitoe"=>$exitoe,"Edades"=>$Edades);
 		return $datos;
 	}//DatosEditarRutina
 
@@ -1674,6 +1709,7 @@
 		$rutina->id_categoriarutina = $Parametros['id_categoriarutina'];
 		$rutina->id_generorutina    = $Parametros['id_generorutina'];
 		$rutina->id_tipocuerpo      = $Parametros['id_tipocuerpo'];
+		$rutina->id_edad 			= $Parametros['id_edad'];
 		$respuesta = EjecutarTransaccion($rutina);
 		$exito = ($id==$respuesta)?1:0;
 		$datos = array("exito"=>$exito);
