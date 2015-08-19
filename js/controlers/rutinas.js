@@ -3,7 +3,7 @@ angular.module('Rutinas',['ngRoute','angularUtils.directives.dirPagination','Met
 .controller('infoRutinas',function($scope,$http,$location,$methodsService){
 //Variables 
 $scope.currentPage     = 1; // Página actual, para paginación
-$scope.pageSize 	   = 5;   // Tamaño de la página, para paginación.
+$scope.pageSize 	     = 5; // Tamaño de la página, para paginación.
 $scope.mostrarbuscando = true;	
 $scope.mostrarcontent  = false;	
 $scope.showfilter      = false;

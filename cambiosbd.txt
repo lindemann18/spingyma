@@ -186,7 +186,9 @@ por problemas con mayúsculas.
 100)el campo num_Repeticiones de la tabla sgejerciciosrutinacliente 	se cambió por num_repeticiones.
 101) se creó la tabla sgpruebaslight, se dejará el archivo en la carpeta.	
 102) se creó la tabla sgedades.
-103) a la tabla sgrutinas se le agregó el campo id_edad.						
+103) a la tabla sgrutinas se le agregó el campo id_edad.
+104) a la tabla sgrutinasclientes se le agregó el campo id_edad	
+105) a la tabla sgrutinasclientes se le agregó el campo id_generorutina						
 
 
 

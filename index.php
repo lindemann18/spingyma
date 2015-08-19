@@ -256,6 +256,17 @@
 	      	templateUrl:'modulos/Clientes/Rutinas_Prefinal.html'
 	    })
 
+	    .when('/RutinaCompC',{
+	    	controller: 'RutinaComplejaC',
+	      	templateUrl:'modulos/Clientes/Rutina_Comp.html'
+	    })
+
+	    .when('/AgregarRutina2C',{
+	    	controller: 'RutinaAgregar2C',
+	      	templateUrl:'modulos/Clientes/Rutinas_Registrar2.html'
+	    })
+
+
 	    //Direcciones de biotest.
 	    .when('/BiotestMenu',{
 	    	controller: 'MenuBiotest',

@@ -67,7 +67,7 @@
 		
 		case 'AgregarRutina':
 			//DEvolviendo parámetros para la notificación				
-			$salidaJson = AgregarRutina($nb_rutina, $id_CategoriaRutina,$desc_rutina,$id_usuario, $id_cliente);
+			$salidaJson = AgregarRutina($Parametros);
 			echo json_encode($salidaJson);
 		break;
 
@@ -127,23 +127,12 @@
 			echo json_encode($salidaJson);
 		break;
 
-		//casos viejos
-		
 		case 'RegistrarEjerciciosRutinas':
-			$id_rutina			= $Parametros['id_rutina'];
-			$id_usuario			= $Parametros['id_usuario'];
-			$id_dia				= $Parametros['id_dia'];
-			$id_CategoriaRutina	= $Parametros['id_CategoriaRutina'];			
-			$EjerciciosRutina	= $Parametros['EjerciciosRutina'];
-			$id_TipoRutina		= $Parametros['id_TipoRutina'];
-			$CantidadEjercicios	= $Parametros['CantidadEjercicios'];
-			//Llamando a la función de edición
-			
-			//DEvolviendo parámetros para la notificación				
-			RegistrarEjerciciosRutinas($id_rutina, $id_usuario,$id_dia,$id_CategoriaRutina, $EjerciciosRutina, $CantidadEjercicios, $id_TipoRutina);
-			//echo json_encode($salidaJson);
+			$salidaJson = RegistrarEjerciciosRutinas($Parametros);
+			echo json_encode($salidaJson);
 		break;
-	
+
+		//casos viejos
 		
 		
 		
@@ -739,6 +728,63 @@
 		return $datos;
 	}//DesactivarRutina
 
+	function RegistrarEjerciciosRutinas($Parametros)
+	{
+		//Tomando los datos
+		session_start();
+		if(isset($Parametros['id_rutina']))
+		{
+			$id_rutina = $Parametros['id_rutina'];
+		}
+		else{$id_rutina = $_SESSION['id_rutina'];}
+		$consultar          = new Consultar();
+		$id_dia             = $Parametros['id_dia'];
+		$id_CategoriaRutina = $Parametros['id_CategoriaRutina'];
+		$id_TipoRutina      = $Parametros['id_TipoRutina'];
+		$ejerciciosAgregar  = $Parametros['EjerciciosRutina'];
+		$cantidad           = count($ejerciciosAgregar);
+		
+		$id_usuario         = $_SESSION['usuario']['id'];
+		$errores            = array(); //Reporte de errrores
+		$guardados          = array(); // reporte de guardados
+		//Se procede a agregar los ejercicios.
+
+		for($i=0; $i<$cantidad; $i++)
+		{
+			$ejercicio = $ejerciciosAgregar[$i];
+			$posicion  = $consultar->_ConsultarPosicionEjercicioRutina($id_rutina);
+			$id_posicionejercicio = $posicion['id_posicionejercicio'];
+			//creando la variable he ingresando los datos.
+			$ejercicioAg = R::dispense("sgejerciciosrutinacliente");
+			$ejercicioAg->id_ejercicio  		 = $ejercicio;
+			$ejercicioAg->id_dia       		     = $id_dia;
+			$ejercicioAg->id_categoriarutina     = $id_CategoriaRutina;
+			$ejercicioAg->id_tiporutinaejercicio = $id_TipoRutina;
+			$ejercicioAg->id_rutina              = $id_rutina;
+			$ejercicioAg->id_usuariocreacion     = $id_usuario;
+			$ejercicioAg->id_posicionejercicio   = $id_posicionejercicio;
+			$ejercicioAg->sn_activo  	         = 1;
+			//Guardando el ejercicio
+			$respuesta = EjecutarTransaccion($ejercicioAg);
+			if(is_numeric($respuesta))
+			{
+				$resp = array("agregado"=>"si","id"=>$respuesta);
+				array_push($guardados,$resp);
+			}
+			else
+			{
+				$resp = array("agregado"=>"no");
+				array_push($errores,$resp);
+			}
+
+		}//For
+			
+		$cantidadagregados = count($guardados);
+		$exito   = ($cantidadagregados==$cantidad)?1:0;
+		$datos   = array("exito"=>$exito);
+		return $datos;
+	}//RegistrarEjerciciosRutinas
+
 	//Funciones viejas
 	function EditarCliente1($Parametros)
 	{
@@ -802,28 +848,32 @@
 		$Resultado_Ejercicio,$id_cliente ,$id_instructor);		
 	}				
 	
-	function AgregarRutina($nb_rutina, $id_CategoriaRutina,$desc_rutina,$id_usuario ,$id_cliente)
+	function AgregarRutina($Parametros)
 	{
+		//Creando la rutina
 		session_start();
-		$agregar=new Agregar();
-		//Tomar la fecha de hoy
-			date_default_timezone_set("America/Chihuahua");
-			$fh_Creacion = date("Y-m-d"); //fecha del día de hoy		
-			$result		 = $agregar->_AgregarRutinaCliente($nb_rutina, $id_CategoriaRutina,$desc_rutina,$id_usuario, $fh_Creacion,$id_cliente);
-			$fila		 = $result->fetch_assoc();
-			$id_rutina	 = $fila['id_rutinaCliente'];
-			
-			//Guardar en una variable de sesión la rutina
-			$_SESSION['id_rutina'] = $id_rutina;
-			$salidaJson=array("id_rutina"=>$id_rutina);
-			return $salidaJson;
+		date_default_timezone_set("America/Chihuahua");
+		$fh_creacion                = date("Y-m-d"); //fecha del día de hoy
+		$id_usuario 			    = $_SESSION['usuario']['id'];
+		$rutina 				    = R::dispense("sgrutinasclientes");
+		$rutina->id_usuariocreacion = $id_usuario;
+		$rutina->id_categoriarutina = $Parametros['categoria'];
+		$rutina->id_cliente  		= $Parametros['cliente'];
+		$rutina->id_generorutina    = $Parametros['genero'];
+		$rutina->id_tipocuerpo      = $Parametros['cuerpo'];
+		$rutina->nb_rutina          = $Parametros['nb_rutina'];
+		$rutina->desc_rutina        = $Parametros['desc_rutina'];
+		$rutina->id_edad 			= $Parametros['id_edad'];
+		$rutina->sn_activo          = 1;
+		$rutina->fh_creacion        = $fh_creacion;
+		$respuesta 					= EjecutarTransaccion($rutina);
+		$exito  					= (is_numeric($respuesta))?1:0;
+		$datos 						= array("exito"=>$exito,"id_rutina"=>$respuesta);
+
+		//Guardando en variable de sesión el id de la rutina
+		if(is_numeric($respuesta)){$_SESSION['id_rutina'] = $respuesta;}
+		return $datos;
 	}//AgregarRutina
-	
-	function RegistrarEjerciciosRutinas($id_rutina, $id_usuario,$id_dia,$id_CategoriaRutina, $EjerciciosRutina, $CantidadEjercicios, $id_TipoRutina)
-	{
-		$agregar=new Agregar();
-		$result=$agregar->_RegistrarEjerciciosRutinasClientes($id_rutina, $id_usuario,$id_dia,$id_CategoriaRutina, $EjerciciosRutina, $CantidadEjercicios, $id_TipoRutina);
-	}//RegistrarEjerciciosRutinas
 	
 	
 	function AsignarRutinaCliente($Parametros)
