@@ -1427,7 +1427,7 @@
 		$query='
 			select * from sgpruebaslight pruebas 
 			where tipo_prueba=?
-			and id_cliente=? order by pruebas.fh_creacion ASC limit 12
+			and id_cliente=? order by pruebas.fh_creacion DESC limit 12
 		';
 		R::freeze(1);
 			R::begin();
@@ -1468,6 +1468,14 @@
 	{
 		$query = '
 			select MAX(fh_creacion) as "Ultimo_Biotest" from sgpruebaslight where id_cliente = ?
+		';
+		$result = $this->EjecutarTransaccionSinglerow($query,$id_cliente);
+		return $result;
+	}//_ConsultarFechaUltimoBiotest
+	function _ConsultarFechaUltimoBiotestUltraRealizado($id_cliente)
+	{
+		$query = '
+			select MAX(fecha) as "Ultimo_Biotest" from sgpruebas where id_cliente = ?
 		';
 		$result = $this->EjecutarTransaccionSinglerow($query,$id_cliente);
 		return $result;

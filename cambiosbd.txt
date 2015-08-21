@@ -188,7 +188,13 @@ por problemas con mayúsculas.
 102) se creó la tabla sgedades.
 103) a la tabla sgrutinas se le agregó el campo id_edad.
 104) a la tabla sgrutinasclientes se le agregó el campo id_edad	
-105) a la tabla sgrutinasclientes se le agregó el campo id_generorutina						
+105) a la tabla sgrutinasclientes se le agregó el campo id_generorutina
+106) la tabla sg_pruebas se cambió por sgpruebas	
+107) el campo Tipo_Prueba de la tabla sgpruebas se cambió por tipo_prueba
+108) el campo Desc_Prueba de la tabla sgpruebas se cambió por desc_prueba
+109) el campo Resultado de la tabla sgpruebas se cambió por resultado
+110) el campo Porcentaje de la tabla sgpruebas se cambió por porcentaje
+
 
 
 

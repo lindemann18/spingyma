@@ -292,6 +292,16 @@
 	      	templateUrl:'modulos/BiotestUltra/clientes_listado.html'
 	    })
 
+	     .when('/BiotestUltraMenu',{
+	    	controller: 'BiotestUltraC',
+	      	templateUrl:'modulos/BiotestUltra/biotest_menu.html'
+	    })
+
+	     .when('/BiotestUltraAplicar',{
+	    	controller: 'UltraBiotest',
+	      	templateUrl:'modulos/BiotestUltra/biotest.html'
+	    })
+
 	    .otherwise({
 	      redirectTo:'/'
 	    });/*otherwhise*/
