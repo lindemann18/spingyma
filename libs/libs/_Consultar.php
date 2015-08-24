@@ -524,6 +524,22 @@
 			return $objeto;
 		}
 
+		function EjecutarTransaccionSinglerowDoubleParam($query,$param1,$param2)
+		{
+			R::freeze(1);
+			R::begin();
+			    try{
+			       $objeto = R::getRow($query,[$param1,$param2]);
+			        R::commit();
+			    }
+			    catch(Exception $e) {
+			       $objeto =  R::rollback();
+			       $objeto = "Error";
+			    }
+			R::close();
+			return $objeto;
+		}
+
 		function EjecutarTransaccionAll($query,$id)
 		{
 			
@@ -1472,10 +1488,29 @@
 		$result = $this->EjecutarTransaccionSinglerow($query,$id_cliente);
 		return $result;
 	}//_ConsultarFechaUltimoBiotest
+
+	function _ConsultarUltimoBiotestPruebaLight($id_cliente,$prueba)
+	{
+		$query = '
+			select MAX(fh_creacion) as "Ultimo_Biotest" from sgpruebaslight where id_cliente = ? and tipo_prueba = ?
+		';
+		$result = $this->EjecutarTransaccionSinglerowDoubleParam($query,$id_cliente,$prueba);
+		return $result;
+	}
+
+	function _ConsultarUltimoBiotestPrueba($id_cliente,$prueba)
+	{
+		$query = '
+			select MAX(DATE(fecha)) as "Ultimo_Biotest" from sgpruebas where id_cliente = ? and tipo_prueba = ?
+		';
+		$result = $this->EjecutarTransaccionSinglerowDoubleParam($query,$id_cliente,$prueba);
+		return $result;
+	}
+
 	function _ConsultarFechaUltimoBiotestUltraRealizado($id_cliente)
 	{
 		$query = '
-			select MAX(fecha) as "Ultimo_Biotest" from sgpruebas where id_cliente = ?
+			select MAX(DATE(fecha)) as "Ultimo_Biotest" from sgpruebas where id_cliente = ?
 		';
 		$result = $this->EjecutarTransaccionSinglerow($query,$id_cliente);
 		return $result;

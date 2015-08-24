@@ -302,6 +302,11 @@
 	      	templateUrl:'modulos/BiotestUltra/biotest.html'
 	    })
 
+	     .when('/BiotestUltraResultados',{
+	    	controller: 'ResultadosUltraBiotestPeso',
+	      	templateUrl:'modulos/BiotestUltra/ResultadoPeso.html'
+	    })
+
 	    .otherwise({
 	      redirectTo:'/'
 	    });/*otherwhise*/

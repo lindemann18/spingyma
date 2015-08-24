@@ -119,7 +119,7 @@ $scope.EjecutarTest = function()
 
 .controller('ResultadosBiotest',function($scope,$http,$location,$methodsService,$routeParams,$cookies){
 	$scope.cliente = $routeParams.cliente;
-	params         = $methodsService.Json("ResultadosBiotest",$scope.cliente);
+	var params         = $methodsService.Json("ResultadosBiotest",$scope.cliente);
 	
 	//Funciones
 	$scope.enviar = function()
