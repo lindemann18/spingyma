@@ -25,15 +25,34 @@
 			echo json_encode($salidaJson);
 		break;
 
-		//Casos viejos
-
 		case 'CondicionFisica':
-			$id_Cliente		   = $Parametros['Id_Cliente'];
-			$ResultadoEvaluado = $Parametros['ResultadoEvaluado'];
-			$id_instructor	   = $Parametros['id_instructor'];
-			$salidaJson		   = CondicionFisica($id_Cliente,$ResultadoEvaluado,$id_instructor);
+			$salidaJson = CondicionFisica($Parametros);
 			echo json_encode($salidaJson);
 		break;
+
+		case 'Fuerza':
+			$salidaJson = Fuerza($Parametros);
+			echo json_encode($salidaJson);
+		break;
+		
+
+		case 'Resultados':
+			$salidaJson = Resultados($Parametros);
+			echo json_encode($salidaJson);
+		break;
+
+		case 'Stamina':
+			$salidaJson = Stamina($Parametros);
+			echo json_encode($salidaJson);
+		break;
+
+
+		case 'Resistencia':
+			$salidaJson = Resistencia($Parametros);
+			echo json_encode($salidaJson);
+		break;
+
+		//Casos viejos
 		
 		
 		
@@ -64,29 +83,6 @@
 			echo json_encode($salidaJson);
 		break;
 		
-		case 'Stamina':
-			$id_Cliente	   = $Parametros['Id_Cliente'];
-			$id_instructor = $Parametros['id_instructor'];
-			$repeticiones  = $Parametros['repeticiones'];
-			$salidaJson	   = Stamina($id_Cliente,$repeticiones, $id_instructor);
-			echo json_encode($salidaJson);
-		break;
-		
-		case 'Fuerza':
-			$id_Cliente	   = $Parametros['Id_Cliente'];
-			$id_instructor = $Parametros['id_instructor'];
-			$repeticiones  = $Parametros['repeticiones'];
-			$salidaJson	   = Fuerza($id_Cliente,$repeticiones, $id_instructor);
-			echo json_encode($salidaJson);
-		break;
-		
-		case 'Resistencia':
-			$id_Cliente	   = $Parametros['Id_Cliente'];
-			$id_instructor = $Parametros['id_instructor'];
-			$repeticiones  = $Parametros['repeticiones'];
-			$salidaJson	   = Resistencia($id_Cliente,$repeticiones, $id_instructor);
-			echo json_encode($salidaJson);
-		break;
 		
 		case 'Flexibilidad':
 			$id_Cliente    = $Parametros['Id_Cliente'];
@@ -262,23 +258,27 @@
 		$Dias_transUl = 0;
 		$dias_limit = 15;
 		// Evaluando el biotest light
-		if ($fecha !="")
+		if($prueba=="Peso")
 		{
-			date_default_timezone_set("America/Chihuahua");
-			$Fecha_Actual  = date("Y-m-d"); //fecha del día de hoy.
-			//Si trae una fecha se verifica cuantos días han transcurrido.
-			$fechas		   = explode(" ",$fecha);
-			$fechaSinHoras = $fechas[0];
-			$Utilidades	   = new Utilidades();
-			$resdias       = $Utilidades->udate($Fecha_Actual,$fechaSinHoras);
-			$Dias_trans    = ($resdias['Dias_Transcurridos']!="")?$resdias['Dias_Transcurridos']:0;
-			$permiso       = ($Dias_trans >=15)?1:0; //Silas fechas osn idénticas, no hay permiso
-			
-		}//if
-		else
-		{
-			$permiso = 1; 
-		}//else
+			if ($fecha !="")
+			{
+				date_default_timezone_set("America/Chihuahua");
+				$Fecha_Actual  = date("Y-m-d"); //fecha del día de hoy.
+				//Si trae una fecha se verifica cuantos días han transcurrido.
+				$fechas		   = explode(" ",$fecha);
+				$fechaSinHoras = $fechas[0];
+				$Utilidades	   = new Utilidades();
+				$resdias       = $Utilidades->udate($Fecha_Actual,$fechaSinHoras);
+				$Dias_trans    = ($resdias['Dias_Transcurridos']!="")?$resdias['Dias_Transcurridos']:0;
+				$permiso       = ($Dias_trans >=15)?1:0; //Silas fechas osn idénticas, no hay permiso
+				
+			}//if
+			else
+			{
+				$permiso = 1; 
+			}//else
+		}//if $prueba=="Peso"
+		else{$permiso=1;}
 
 		// Evaluando el biotest ultra
 		$biotestUltra = $consultar->_ConsultarUltimoBiotestPrueba($cliente,$id_prueba);
@@ -484,6 +484,660 @@
 		R::close();
 		return $respuesta;
 	}//EjecutarTransacción
+
+	function CondicionFisica($Parametros)
+	{
+		// Tomando los datos
+		$id_cliente = $Parametros['Cliente'];
+		$Resultado  = $Parametros['Resultado'];
+
+		//Tomando los datos del cliente
+		//Buscando la información del cliente para hacer el test
+		$consultar  = new Consultar();
+		$result	    = $consultar->_ConsultarClientesPorId($id_cliente);	
+		//tomando sexo y edad
+		$edad	    = $result['num_edad'];
+		$sexo	    = $result['de_genero'];
+		$DescPrueba = "Condicion Física";
+		$Condicion  = "";
+		$exito      = 0;
+		$desc_prueba = "Condicion Física";
+		// tomando los datos de la prueba
+		$Prueba      = R::findOne( 'sgtipospruebas', ' nm_prueba = ? ', [ 'Condición Física' ] );
+		$id_prueba   = $Prueba->id;
+		$res_prueba  = "";
+		$fh_creacion = date("Y-m-d"); //fecha del día de hoy
+		$id_inst     = $_SESSION['usuario']['id'];
+
+		if($sexo=="MASCULINO")	
+		{
+			$Condicion = EvaluacionMasculinaCondicionFisica($edad,$Resultado); //resultado de la prueba
+			//En esta línea se agregan el resultado de la prueba, se obtienen los datos necesarios y se devuelve el array para
+			//devolver a la pantalla principal.
+			if($Condicion=="Fuera de rango")
+			{
+				
+			}
+			else
+			{	
+				
+				// Agregando los datos
+				$porcentaje = PorcentajeAcordeResultado($Condicion);
+				$res_prueba = GuardarResultadoPruebas($id_inst,$id_cliente,$id_prueba,$desc_prueba,$Condicion,$porcentaje,$fh_creacion,$Resultado);
+				$exito      = (is_numeric($res_prueba))?1:0;
+			}
+		}//if
+		else
+		{
+			$Condicion = EvaluacionFemeninaCondicionFisica($edad,$ResultadoEvaluado); //resultado de la prueba
+			//En esta línea se agregan el resultado de la prueba, se obtienen los datos necesarios y se devuelve el array para
+			//devolver a la pantalla principal.
+			if($Condicion=="Fuera de rango")
+			{
+				
+			}
+
+			else
+			{
+				// Agregando los datos
+				$porcentaje = PorcentajeAcordeResultado($Condicion);
+				$res_prueba = GuardarResultadoPruebas($id_inst,$id_cliente,$id_prueba,$desc_prueba,$Condicion,$porcentaje,$fh_creacion,$Resultado);
+				$exito      = (is_numeric($res_prueba))?1:0;
+			}
+			
+		}
+		
+		$datos = array("exito"=>$exito,"res_prueba"=>$res_prueba);
+		return $datos;
+	}//CondicionFisica
+
+	function ObtenerIdPrueba($prueba)
+	{
+		$Prueba      = R::findOne( 'sgtipospruebas', ' nm_prueba = ? ', [$prueba] );
+		$id_prueba   = $Prueba->id;
+		return $id_prueba;
+	}//ObtenerIdPrueba
+
+	function Resultados($Parametros)
+	{
+		$nb_prueba = $Parametros['prueba'];
+		$cliente   = $Parametros['cliente'];
+		//Tomando el id de la prueba
+		$prueba    = R::findOne("sgtipospruebas","nm_prueba=?",[$nb_prueba]);
+		$id_prueba = $prueba->id;
+
+		//Buscando los resultados del cliente
+		$consultar  = new Consultar();
+		$resultados = $consultar->_ConsultarResultadosPruebas($id_prueba,$cliente);
+		$cantidad   = count($resultados);
+		$exito      = ($cantidad>0)?1:0;
+		$cantidadTo = 3-$cantidad;
+
+		// Obteniendo el consejo
+
+
+		if($cantidadTo<3)
+		{
+			for($i=0; $i<$cantidadTo; $i++)
+			{
+				$dato = array("desc_prueba"=>0,"fecha"=>0,"id"=>0,"id_cliente"=>$cliente,
+								  "id_instructor"=>0,"porcentaje"=>0,"resultado"=>0,
+								  "resultado_numerico"=>0,"tipo_prueba"=>0);
+				array_push($resultados,$dato);
+			}//for
+		}//if
+
+		// Obteniendo el consejo.
+		$resporcen = ResultadoAcordePorcentaje($resultados[0]['porcentaje']);
+		$datoscons = $consultar->_ConsultarConsejoAcordeResultado($id_prueba,$resporcen);
+		$consejo   = $datoscons['consejo'];
+
+		$datos = array("exito"=>$exito,"resultados"=>$resultados,"consejo"=>$consejo);
+		return $datos;
+	}//Resultados
+
+	function ResultadoAcordePorcentaje($porcentaje)
+	{
+		$resultado = 0;
+		switch($resultado)	
+		{
+			case 100: $resultado = 'Atleta'; break;
+			case 80:  $resultado = 'Excelente';  break;
+			case 60:  $resultado = 'Bueno';  break;
+			case 40:  $resultado = 'Promedio';  break;
+			case 20:  $resultado = 'Pobre' ;  break;
+		}//switch
+		
+		return $resultado;
+	}//ResultadoAcordePorcentaje
+
+	function Fuerza($Parametros)
+	{
+		// Tomando los datos
+		$id_cliente   = $Parametros['Cliente'];
+		$repeticiones = $Parametros['repeticiones'];
+
+		//Tomando los datos del cliente
+		//Buscando la información del cliente para hacer el test
+		$consultar  = new Consultar();
+		$result	    = $consultar->_ConsultarClientesPorId($id_cliente);	
+		//tomando sexo y edad
+		$edad	    = $result['num_edad'];
+		$sexo	    = $result['de_genero'];
+		$DescPrueba = "Fuerza";
+
+		// tomando los datos de la prueba
+		$id_prueba   = ObtenerIdPrueba("Fuerza");
+		$res_prueba  = "";
+		$fh_creacion = date("Y-m-d"); //fecha del día de hoy
+		$id_inst     = $_SESSION['usuario']['id'];
+
+		if($sexo=="MASCULINO")	
+		{
+			$Condicion  = EvaluacionMasculinaFuerza($edad,$repeticiones); //resultado de la prueba
+			$porcentaje = PorcentajeAcordeResultadoFuerza($Condicion);
+			$res_prueba = GuardarResultadoPruebas($id_inst,$id_cliente,$id_prueba,$DescPrueba,$Condicion,$porcentaje,$fh_creacion,$repeticiones);
+			$exito      = (is_numeric($res_prueba))?1:0;
+		}//if
+		else
+		{
+			$Condicion  = EvaluacionFemeninaFuerza($edad,$repeticiones); //resultado de la prueba
+			$porcentaje = PorcentajeAcordeResultadoFuerza($Condicion);
+			$res_prueba = GuardarResultadoPruebas($id_inst,$id_cliente,$id_prueba,$DescPrueba,$Condicion,$porcentaje,$fh_creacion,$repeticiones);
+			$exito      = (is_numeric($res_prueba))?1:0;
+		}
+		
+		$datos = array("exito"=>$exito);
+		return $datos;
+	}//Fuerza
+
+	function EvaluacionFuerza($id_instructor,$id_Cliente,$Condicion,$repeticiones)
+	{
+		$agregar   = new Agregar();
+		$consultar = new Consultar();
+		//En esta línea se agregan el resultado de la prueba, se obtienen los datos necesarios y se devuelve el array para
+			//devolver a la pantalla principal.
+			
+			//Tomando los valores para guardar el resultado de la prueba en la BD
+			$TipoPrueba		  = 6;
+			$DescPrueba		  = "Fuerza";
+			$porcentajeActual = PorcentajeAcordeResultadoFuerza($Condicion);
+			//Guardando los resultados de la prueba
+			$resultado = $agregar->_AgregarResultadoPrueba($id_instructor, $id_Cliente, $TipoPrueba, $DescPrueba, $Condicion, $porcentajeActual,$repeticiones);
+			
+			//Obteniendo pruebas de los últimos 3 meses para saber el resultado de la persona en las gráficas
+			$resultadoPruebas = $consultar->_ConsultarResultadosPruebas(6,$id_Cliente);
+			
+			//Creando un array con los resultados de las pruebas
+			$arrayResultados = array();
+			
+			//tomando los resultados
+			for($i=0; $i<3; $i++)
+			{
+				$fila=$resultadoPruebas->fetch_assoc();
+				$NumPrueba="Prueba".$i;
+				//Tomando los valores para asignarlos al array.
+				
+				//Si los valores vienen null, se les asigna 0 para que al llegar al lado del cliente se asigne otro valor y se cargue la gráfica
+				$fecha=($fila['fecha']!=null)?ConvertirTimeStamp($fila['fecha']):0; //Devolviendo un string con la fecha con el método de la línea 148
+				$porcentaje = ($fila['Porcentaje']!=null)?$fila['Porcentaje']:0;
+				$resultado  = $fila['Resultado'];
+				$Prueba		= array("Resultado"=>$resultado,"Porcentaje"=>$porcentaje, "Fecha"=>$fecha);	
+				array_push ($arrayResultados,$Prueba);
+			}
+			//print_r($arrayResultados);
+			
+			//Tomando el consejo de la evaluación física
+			$resultConsejo = $consultar->_ConsultarConsejoAcordeResultado(6,$Condicion); //El número es el tipo de prueba
+			$filaConsejo   = $resultConsejo->fetch_assoc();
+			$consejo	   = $filaConsejo['Consejo'];
+			//DEvolviendo parámetros para la notificación				
+			$salidaJson	   = array("Condicion"=>$Condicion, "Resultado"=>$repeticiones, "id_cliente"=>$id_Cliente,"Resultados"=>$arrayResultados,
+			"TipoPrueba"=>$TipoPrueba, "Consejo"=>$consejo, "Porcentaje"=>$porcentajeActual);
+			return $salidaJson;	
+	}//AgregarResultadosYDevolverInformacionFuerza
+
+	function EvaluacionMasculinaFuerza($edad, $resultado)
+	{
+		$res="";
+		switch($edad)
+			{
+				//se declara res vacío, si cae en alguno de los rangos de edad, se debe verificar que 
+				//resultado fue, si no es se asigna cadena vacía y se sigue buscando.
+								
+				//case de las edades
+				case $edad >=18 && $edad<=29:
+				
+						if($res=="" && $resultado>54) 					   $res="Atleta";
+						if($res=="" && $resultado>=45 && $resultado<=54)   $res="Excelente";	
+						if($res=="" && $resultado>=35 && $resultado<=44)   $res="Bueno";	
+						if($res=="" && $resultado>=20 && $resultado<=34)   $res="Promedio";
+						if($res=="" && $resultado<20)					   $res="Pobre";
+				break;
+				
+				case $edad >=30 && $edad<=39:
+					if($res=="" && $resultado>44)							$res="Atleta";
+					if($res=="" && $resultado>=35 && $resultado<=44)		$res="Excelente";
+					if($res=="" && $resultado>=24 && $resultado<=34)		$res="Bueno";
+					if($res=="" && $resultado>=15 && $resultado<=24)		$res="Promedio";
+					if($res=="" && $resultado<15)							$res="Pobre";
+				break;
+					
+				case $edad >=40 && $edad<=49:
+					if($res=="" && $resultado>39)							$res="Atleta";
+					if($res=="" && $resultado>=30 && $resultado<=39)		$res="Excelente";
+					if($res=="" && $resultado>=20 && $resultado<=29)		$res="Bueno";
+					if($res=="" && $resultado>=12 && $resultado<=19)		$res="Promedio";
+					if($res=="" && $resultado<12)							$res="Pobre";
+				break;
+				
+				case $edad >=50 && $edad<=59:
+					if($res=="" && $resultado>34)							$res="Atleta";
+					if($res=="" && $resultado>=25 && $resultado<=34)		$res="Excelente";
+					if($res=="" && $resultado>=15 && $resultado<=24)		$res="Bueno";
+					if($res=="" && $resultado>=8 && $resultado<=14)			$res="Promedio";
+					if($res=="" && $resultado<8)							$res="Pobre";
+				break;
+				
+				case $edad >=60:
+					if($res=="" && $resultado>29)							$res="Atleta";
+					if($res=="" && $resultado>=20 && $resultado<=29)		$res="Excelente";
+					if($res=="" && $resultado>=10 && $resultado<=19)		$res="Bueno";
+					if($res=="" && $resultado>=5 && $resultado<=9)			$res="Promedio";
+					if($res=="" && $resultado<5)							$res="Pobre";
+				break;
+				
+			}//switch
+			$condicion=$res;
+			return $condicion;
+	}//EvaluacionMasculinaFuerza
+	
+	function EvaluacionFemeninaFuerza($edad, $resultado)
+	{
+		$res="";
+		switch($edad)
+			{
+				//se declara res vacío, si cae en alguno de los rangos de edad, se debe verificar que 
+				//resultado fue, si no es se asigna cadena vacía y se sigue buscando.
+								
+				//case de las edades
+				case $edad >=18 && $edad<=29:
+				
+						if($res=="" && $resultado>48) 					   $res="Atleta";
+						if($res=="" && $resultado>=34 && $resultado<=48)   $res="Excelente";	
+						if($res=="" && $resultado>=17 && $resultado<=33)   $res="Bueno";	
+						if($res=="" && $resultado>=6  && $resultado<=16)   $res="Promedio";
+						if($res=="" && $resultado<6)					   $res="Pobre";
+				break;
+				
+				case $edad >=30 && $edad<=39:
+					if($res=="" && $resultado>39)						   $res="Atleta";
+					if($res=="" && $resultado>=25 && $resultado<=39)	   $res="Excelente";
+					if($res=="" && $resultado>=12 && $resultado<=24)	   $res="Bueno";
+					if($res=="" && $resultado>=4 && $resultado<=11)		   $res="Promedio";
+					if($res=="" && $resultado<4)						   $res="Pobre";
+				break;
+					
+				case $edad >=40 && $edad<=49:
+					if($res=="" && $resultado>34)						   $res="Atleta";
+					if($res=="" && $resultado>=20 && $resultado<=34)	   $res="Excelente";
+					if($res=="" && $resultado>=8 && $resultado<=19)		   $res="Bueno";
+					if($res=="" && $resultado>=3 && $resultado<=7)		   $res="Promedio";
+					if($res=="" && $resultado<3)						   $res="Pobre";
+				break;
+				
+				case $edad >=50 && $edad<=59:
+					if($res=="" && $resultado>29)						   $res="Atleta";
+					if($res=="" && $resultado>=15 && $resultado<=29)	   $res="Excelente";
+					if($res=="" && $resultado>=6  && $resultado<=14)	   $res="Bueno";
+					if($res=="" && $resultado>=2  && $resultado<=5)		   $res="Promedio";
+					if($res=="" && $resultado<2)						   $res="Pobre";
+				break;
+				
+				case $edad >=60:
+					if($res=="" && $resultado>19)						   $res="Atleta";
+					if($res=="" && $resultado>=5 && $resultado<=19)		   $res="Excelente";
+					if($res=="" && $resultado>=3 && $resultado<=4)		   $res="Bueno";
+					if($res=="" && $resultado>=1 && $resultado<=2)		   $res="Promedio";
+					if($res=="" && $resultado<1)						   $res="Pobre";
+				break;
+				
+			}//switch
+			$condicion = $res;
+			return $condicion;
+	}//EvaluacionMasculinaStamina
+
+	///Funciones de Stamina////
+	function Stamina($Parametros)
+	{
+		// Tomando los datos
+		$id_cliente   = $Parametros['Cliente'];
+		$repeticiones = $Parametros['repeticiones'];
+		//Tomando los datos del cliente
+		//Buscando la información del cliente para hacer el test
+		$consultar  = new Consultar();
+		$result	    = $consultar->_ConsultarClientesPorId($id_cliente);	
+		//tomando sexo y edad
+		$edad	    = $result['num_edad'];
+		$sexo	    = $result['de_genero'];
+		$DescPrueba = "Stamina";
+
+		// tomando los datos de la prueba
+		$id_prueba   = ObtenerIdPrueba("Stamina");
+		$res_prueba  = "";
+		date_default_timezone_set("America/Chihuahua");
+		$fh_creacion = date("Y-m-d"); //fecha del día de hoy
+		$id_inst     = $_SESSION['usuario']['id'];
+		
+		if($sexo=="MASCULINO")	
+		{
+			$Condicion  = EvaluacionMasculinaStamina($edad,$repeticiones); //resultado de la prueba
+			$porcentaje = PorcentajeAcordeResultado($Condicion);
+			$res_prueba = GuardarResultadoPruebas($id_inst,$id_cliente,$id_prueba,$DescPrueba,$Condicion,$porcentaje,$fh_creacion,$repeticiones);
+			$exito      = (is_numeric($res_prueba))?1:0;
+		}//if
+		else
+		{
+			$Condicion = EvaluacionFemeninaStamina($edad,$repeticiones); //resultado de la prueba
+			$porcentaje = PorcentajeAcordeResultado($Condicion);
+			$res_prueba = GuardarResultadoPruebas($id_inst,$id_cliente,$id_prueba,$DescPrueba,$Condicion,$porcentaje,$fh_creacion,$repeticiones);
+			$exito      = (is_numeric($res_prueba))?1:0;
+		}
+		$datos = array("exito"=>$exito);
+		return $datos;
+	}//Stamina
+	
+	function EvaluacionMasculinaStamina($edad, $resultado)
+	{
+		$res="";
+		switch($edad)
+			{
+				//se declara res vacío, si cae en alguno de los rangos de edad, se debe verificar que 
+				//resultado fue, si no es se asigna cadena vacía y se sigue buscando.
+								
+				//case de las edades
+				case $edad >=18 && $edad<=25:
+				
+						if($res=="" && $resultado<79) 					   $res="Atleta";
+						if($res=="" && $resultado>=79 && $resultado<=89)   $res="Excelente";	
+						if($res=="" && $resultado>=90 && $resultado<=105)  $res="Bueno";	
+						if($res=="" && $resultado>=106 && $resultado<=128) $res="Promedio";
+						if($res=="" && $resultado>128)					   $res="Pobre";
+				break;
+				
+				case $edad >=26 && $edad<=35:
+					if($res=="" && $resultado<81)						   $res = "Atleta";
+					if($res=="" && $resultado>=81 && $resultado<=89)	   $res = "Excelente";
+					if($res=="" && $resultado>=90 && $resultado<=107)	   $res = "Bueno";
+					if($res=="" && $resultado>=108 && $resultado<=128)	   $res = "Promedio";
+					if($res=="" && $resultado>128)						   $res = "Pobre";
+				break;
+					
+				case $edad >=36 && $edad<=45:
+					if($res=="" && $resultado<83)$res="Atleta";
+					if($res=="" && $resultado>=83 && $resultado<=96)$res="Excelente";
+					if($res=="" && $resultado>=97 && $resultado<=112)$res="Bueno";
+					if($res=="" && $resultado>=113 && $resultado<=130)$res="Promedio";
+					if($res=="" && $resultado>130)$res="Pobre";
+				break;
+				
+				case $edad >=46 && $edad<=55:
+					if($res=="" && $resultado<87)$res="Atleta";
+					if($res=="" && $resultado>=87 && $resultado<=97)$res="Excelente";
+					if($res=="" && $resultado>=98 && $resultado<=116)$res="Bueno";
+					if($res=="" && $resultado>=117 && $resultado<=132)$res="Promedio";
+					if($res=="" && $resultado>132)$res="Pobre";
+				break;
+				
+				case $edad >=56 && $edad<=65:
+					if($res=="" && $resultado<86)$res="Atleta";
+					if($res=="" && $resultado>=86 && $resultado<=97)$res="Excelente";
+					if($res=="" && $resultado>=98 && $resultado<=112)$res="Bueno";
+					if($res=="" && $resultado>=113 && $resultado<=129)$res="Promedio";
+					if($res=="" && $resultado>129)$res="Pobre";
+				break;
+				
+				case $edad >65:
+					if($res=="" && $resultado<88)$res="Atleta";
+					if($res=="" && $resultado>=88 && $resultado<=96)$res="Excelente";
+					if($res=="" && $resultado>=97 && $resultado<=113)$res="Bueno";
+					if($res=="" && $resultado>=114 && $resultado<=130)$res="Promedio";
+					if($res=="" && $resultado>130)$res="Pobre";
+				break;
+				
+			}//switch
+			$condicion=$res;
+			return $condicion;
+	}//EvaluacionMasculinaStamina
+	
+	function EvaluacionFemeninaStamina($edad, $resultado)
+	{
+		$res="";
+		switch($edad)
+			{
+				//se declara res vacío, si cae en alguno de los rangos de edad, se debe verificar que 
+				//resultado fue, si no es se asigna cadena vacía y se sigue buscando.
+								
+				//case de las edades
+				case $edad >=18 && $edad<=25:
+				
+						if($res=="" && $resultado<85) 					    $res = "Atleta";
+						if($res=="" && $resultado>=85  && $resultado<=98)   $res = "Excelente";	
+						if($res=="" && $resultado>=99  && $resultado<=117)  $res = "Bueno";	
+						if($res=="" && $resultado>=118 && $resultado<=140)  $res = "Promedio";
+						if($res=="" && $resultado>140)					    $res = "Pobre";
+				break;
+				
+				case $edad >=26 && $edad<=35:
+					if($res=="" && $resultado<88)							$res = "Atleta";
+					if($res=="" && $resultado>=88 && $resultado<=99)		$res = "Excelente";
+					if($res=="" && $resultado>=100 && $resultado<=119)		$res = "Bueno";
+					if($res=="" && $resultado>=120 && $resultado<=138)		$res = "Promedio";
+					if($res=="" && $resultado>138)							$res = "Pobre";
+				break;
+					
+				case $edad >=36 && $edad<=45:
+					if($res=="" && $resultado<90)							$res = "Atleta";
+					if($res=="" && $resultado>=90 && $resultado<=102)		$res = "Excelente";
+					if($res=="" && $resultado>=103 && $resultado<=118)		$res = "Bueno";
+					if($res=="" && $resultado>=119 && $resultado<=140)		$res = "Promedio";
+					if($res=="" && $resultado>140)							$res = "Pobre";
+				break;
+				
+				case $edad >=46 && $edad<=55:
+					if($res=="" && $resultado<94)							$res = "Atleta";
+					if($res=="" && $resultado>=94 && $resultado<=104)		$res = "Excelente";
+					if($res=="" && $resultado>=105 && $resultado<=120)		$res = "Bueno";
+					if($res=="" && $resultado>=121 && $resultado<=135)		$res = "Promedio";
+					if($res=="" && $resultado>135)							$res = "Pobre";
+				break;
+				
+				case $edad >=56 && $edad<=65:
+					if($res=="" && $resultado<95)							$res = "Atleta";
+					if($res=="" && $resultado>=95 && $resultado<=104)		$res = "Excelente";
+					if($res=="" && $resultado>=105 && $resultado<=118)		$res = "Bueno";
+					if($res=="" && $resultado>=119 && $resultado<=139)		$res = "Promedio";
+					if($res=="" && $resultado>139)							$res = "Pobre";
+				break;
+				
+				case $edad >65:
+					if($res=="" && $resultado<90)							$res = "Atleta";
+					if($res=="" && $resultado>=90 && $resultado<=102)		$res = "Excelente";
+					if($res=="" && $resultado>=103 && $resultado<=122)		$res = "Bueno";
+					if($res=="" && $resultado>=123 && $resultado<=134)		$res = "Promedio";
+					if($res=="" && $resultado>134)							$res = "Pobre";
+				break;
+				
+			}//switch
+			$condicion = $res;
+			return $condicion;
+	}//EvaluacionMasculinaStamina
+
+	//Apartado de Resistencia//	
+	function Resistencia($Parametros)
+	{
+		// Tomando los datos
+		$id_cliente   = $Parametros['Cliente'];
+		$repeticiones = $Parametros['repeticiones'];
+		//Tomando los datos del cliente
+		//Buscando la información del cliente para hacer el test
+		$consultar  = new Consultar();
+		$result	    = $consultar->_ConsultarClientesPorId($id_cliente);	
+		//tomando sexo y edad
+		$edad	    = $result['num_edad'];
+		$sexo	    = $result['de_genero'];
+		$DescPrueba = "Resistencia";
+
+		// tomando los datos de la prueba
+		$id_prueba   = ObtenerIdPrueba("Resistencia");
+		$res_prueba  = "";
+		date_default_timezone_set("America/Chihuahua");
+		$fh_creacion = date("Y-m-d"); //fecha del día de hoy
+		$id_inst     = $_SESSION['usuario']['id'];
+
+		if($sexo=="MASCULINO")	
+		{
+			$Condicion  = EvaluacionMasculinaResistencia($edad,$repeticiones); //resultado de la prueba
+			$porcentaje = PorcentajeAcordeResultado($Condicion);
+			$res_prueba = GuardarResultadoPruebas($id_inst,$id_cliente,$id_prueba,$DescPrueba,$Condicion,$porcentaje,$fh_creacion,$repeticiones);
+			$exito      = (is_numeric($res_prueba))?1:0;
+		}//if
+		else
+		{
+			$Condicion  = EvaluacionFemeninaResistencia($edad,$repeticiones); //resultado de la prueba
+			$porcentaje = PorcentajeAcordeResultado($Condicion);
+			$res_prueba = GuardarResultadoPruebas($id_inst,$id_cliente,$id_prueba,$DescPrueba,$Condicion,$porcentaje,$fh_creacion,$repeticiones);
+			$exito      = (is_numeric($res_prueba))?1:0;
+		}
+		$datos = array("exito"=>$exito);
+		return $datos;
+	}//Resistencia
+	
+	function  EvaluacionMasculinaResistencia($edad, $resultado)
+	{
+		$res="";
+		switch($edad)
+			{
+				//se declara res vacío, si cae en alguno de los rangos de edad, se debe verificar que 
+				//resultado fue, si no es se asigna cadena vacía y se sigue buscando.
+								
+				//case de las edades
+				case $edad >=15 && $edad<=19:
+						if($res=="" && $resultado>=25) 					   $res="Atleta";
+						if($res=="" && $resultado>=23 && $resultado<=24)   $res="Excelente";	
+						if($res=="" && $resultado>=21 && $resultado<=22)   $res="Bueno";	
+						if($res=="" && $resultado>=16 && $resultado<=20)   $res="Promedio";
+						if($res=="" && $resultado<16)					   $res="Pobre";
+				break;
+				
+				case $edad >=20 && $edad<=29:
+					if($res=="" && $resultado>=25) 					   $res="Atleta";
+					if($res=="" && $resultado>=23 && $resultado<=24)   $res="Excelente";	
+					if($res=="" && $resultado>=21 && $resultado<=22)   $res="Bueno";	
+					if($res=="" && $resultado>=13 && $resultado<=20)   $res="Promedio";
+					if($res=="" && $resultado<13)					   $res="Pobre";
+				break;
+					
+				case $edad >=30 && $edad<=39:
+					if($res=="" && $resultado>=25) 					   $res="Atleta";
+					if($res=="" && $resultado>=23 && $resultado<=24)   $res="Excelente";	
+					if($res=="" && $resultado>=21 && $resultado<=22)   $res="Bueno";	
+					if($res=="" && $resultado>=13 && $resultado<=20)   $res="Promedio";
+					if($res=="" && $resultado<13)					   $res="Pobre";
+
+				break;
+				
+				case $edad >=40 && $edad<=49:
+					if($res=="" && $resultado>=25) 					   $res="Atleta";
+					if($res=="" && $resultado>=22 && $resultado<=24)   $res="Excelente";	
+					if($res=="" && $resultado>=16 && $resultado<=21)   $res="Bueno";	
+					if($res=="" && $resultado>=11 && $resultado<=15)   $res="Promedio";
+					if($res=="" && $resultado<11)					   $res="Pobre";
+				break;
+				
+				case $edad >=50 && $edad<=59:
+					if($res=="" && $resultado>=25) 					   $res="Atleta";
+					if($res=="" && $resultado>=20 && $resultado<=24)   $res="Excelente";	
+					if($res=="" && $resultado>=14 && $resultado<=19)   $res="Bueno";	
+					if($res=="" && $resultado>=9  && $resultado<=13)   $res="Promedio";
+					if($res=="" && $resultado<9)					   $res="Pobre";
+				break;
+				
+				case $edad >=60 && $edad<=69:
+					if($res=="" && $resultado>=25) 					   $res="Atleta";
+					if($res=="" && $resultado>=16 && $resultado<=24)   $res="Excelente";	
+					if($res=="" && $resultado>=10 && $resultado<=15)   $res="Bueno";	
+					if($res=="" && $resultado>=4  && $resultado<=9)    $res="Promedio";
+					if($res=="" && $resultado<4)					   $res="Pobre";
+				break;
+				
+			}//switch
+			$condicion=$res;
+			return $condicion;
+	}// evaluación masculina resistencia
+	
+	function  EvaluacionFemeninaResistencia($edad, $resultado)
+	{
+		$res="";
+		switch($edad)
+			{
+				//se declara res vacío, si cae en alguno de los rangos de edad, se debe verificar que 
+				//resultado fue, si no es se asigna cadena vacía y se sigue buscando.
+								
+				//case de las edades
+				case $edad >=15 && $edad<=19:
+					if($res=="" && $resultado>=25) 					   $res="Atleta";
+					if($res=="" && $resultado>=23 && $resultado<=24)   $res="Excelente";	
+					if($res=="" && $resultado>=21 && $resultado<=22)   $res="Bueno";	
+					if($res=="" && $resultado>=16 && $resultado<=20)   $res="Promedio";
+					if($res=="" && $resultado<16)					   $res="Pobre";
+				break;
+				
+				case $edad >=20 && $edad<=29:
+					if($res=="" && $resultado>=25) 					   $res="Atleta";
+					if($res=="" && $resultado>=23 && $resultado<=24)   $res="Excelente";	
+					if($res=="" && $resultado>=19 && $resultado<=22)   $res="Bueno";	
+					if($res=="" && $resultado>=13 && $resultado<=18)   $res="Promedio";
+					if($res=="" && $resultado<13)					   $res="Pobre";
+				break;
+					
+				case $edad >=30 && $edad<=39:
+					if($res=="" && $resultado>=25) 					   $res="Atleta";
+					if($res=="" && $resultado>=22 && $resultado<=24)   $res="Excelente";	
+					if($res=="" && $resultado>=16 && $resultado<=21)   $res="Bueno";	
+					if($res=="" && $resultado>=11 && $resultado<=15)   $res="Promedio";
+					if($res=="" && $resultado<11)					   $res="Pobre";
+
+				break;
+				
+				case $edad >=40 && $edad<=49:
+					if($res=="" && $resultado>=25) 					   $res="Atleta";
+					if($res=="" && $resultado>=21 && $resultado<=24)   $res="Excelente";	
+					if($res=="" && $resultado>=13 && $resultado<=20)   $res="Bueno";	
+					if($res=="" && $resultado>=6  && $resultado<=12)   $res="Promedio";
+					if($res=="" && $resultado<6)					   $res="Pobre";
+				break;
+				
+				case $edad >=50 && $edad<=59:
+					if($res=="" && $resultado>=25) 					   $res="Atleta";
+					if($res=="" && $resultado>=16 && $resultado<=24)   $res="Excelente";	
+					if($res=="" && $resultado>=9  && $resultado<=15)   $res="Bueno";	
+					if($res=="" && $resultado>=4  && $resultado<=8)    $res="Promedio";
+					if($res=="" && $resultado<4)					   $res="Pobre";
+				break;
+				
+				case $edad >=60 && $edad<=69:
+					if($res=="" && $resultado>=18) 					   $res="Atleta";
+					if($res=="" && $resultado>=11 && $resultado<=17)   $res="Excelente";	
+					if($res=="" && $resultado>=6  && $resultado<=10)   $res="Bueno";	
+					if($res=="" && $resultado>=2  && $resultado<=5)    $res="Promedio";
+					if($res=="" && $resultado<2)					   $res="Pobre";
+				break;
+				
+			}//switch
+			$condicion=$res;
+			return $condicion;
+	}// evaluación masculina resistencia
 
 	//Funciones viejas
 	/////Funciones de medida de peso //////
@@ -782,49 +1436,7 @@
 			return $salidaJson;
 	}
 
-	function CondicionFisica($id_Cliente,$ResultadoEvaluado,$id_instructor)
-	{
-		$consultar = new Consultar(); 
-		
-		//Buscando la información del cliente para hacer el test
-		$consultar = new Consultar();
-		$result	   = $consultar->_ConsultarClientesPorId($id_Cliente);	
-		$fila	   = $result->fetch_assoc();
-		//tomando sexo y edad
-		$edad	   = $fila['num_edad'];
-		$sexo	   = $fila['de_genero'];
-		$DescPrueba = "Condicion Física";
-		if($sexo=="MASCULINO")	
-		{
-			$Condicion = EvaluacionMasculinaCondicionFisica($edad,$ResultadoEvaluado); //resultado de la prueba
-			//En esta línea se agregan el resultado de la prueba, se obtienen los datos necesarios y se devuelve el array para
-			//devolver a la pantalla principal.
-			if($Condicion=="Fuera de rango")
-			{
-				$salidaJson=array("Tipo_Prueba"=>1, "Resultado"=>$Condicion, "id_cliente"=>$id_Cliente,"id_instructor"=>$id_instructor,
-				"Resultado_Evaluado"=>$ResultadoEvaluado);
-			}
-			else
-			{	
-				$salidaJson = AgregadoYfuncionesDeCondicionFisica($id_instructor,$id_Cliente,$Condicion,$ResultadoEvaluado,$DescPrueba); 
-			}
-			return $salidaJson;
-		}//if
-		else
-		{
-			$Condicion = EvaluacionFemeninaCondicionFisica($edad,$ResultadoEvaluado); //resultado de la prueba
-			//En esta línea se agregan el resultado de la prueba, se obtienen los datos necesarios y se devuelve el array para
-			//devolver a la pantalla principal.
-			if($Condicion=="Fuera de rango")
-			{
-				$salidaJson=array("Tipo_Prueba"=>1, "Resultado"=>$Condicion, "id_cliente"=>$id_Cliente,"id_instructor"=>$id_instructor,
-				"Resultado_Evaluado"=>$ResultadoEvaluado);
-			}
-			else{$salidaJson=AgregadoYfuncionesDeCondicionFisica($id_instructor,$id_Cliente,$Condicion,$ResultadoEvaluado,$DescPrueba); }
-			return $salidaJson;
-		}
-		
-	}//CondicionFisica
+	
 	
 
 	//Función para determinar el rango de edades en el que se encuentra la persona
@@ -988,6 +1600,8 @@
 		
 		return $porcentaje;
 	}//PorcentajeAcordeResultado
+
+	
 	
 	function AgregadoYfuncionesDeCondicionFisica($id_instructor,$id_Cliente,$Condicion,$ResultadoEvaluado,$DescPrueba)
 	{
@@ -1200,161 +1814,7 @@
 	}
 	
 	
-	///Funciones de Stamina////
-	function Stamina($id_Cliente,$repeticiones, $id_instructor)
-	{
-		//Buscando los datos del cliente
-		$consultar=new Consultar();
-		
-		$result = $consultar->_ConsultarClientesPorId($id_Cliente);
-		$fila	= $result->fetch_assoc();
-		//tomando sexo y edad
-		$edad = $fila['num_edad'];
-		$sexo = $fila['de_genero'];
-		
-		if($sexo=="MASCULINO")	
-		{
-			$Condicion  = EvaluacionMasculinaStamina($edad,$repeticiones); //resultado de la prueba
-			$salidaJson = AgregarResultadosYDevolverInformacionStamina($id_instructor,$id_Cliente,$Condicion,$repeticiones);
-			return $salidaJson;
-		}//if
-		else
-		{
-			$Condicion = EvaluacionFemeninaStamina($edad,$repeticiones); //resultado de la prueba
-			//En esta línea se agregan el resultado de la prueba, se obtienen los datos necesarios y se devuelve el array para
-			//devolver a la pantalla principal.
-			$salidaJson = AgregarResultadosYDevolverInformacionStamina($id_instructor,$id_Cliente,$Condicion,$repeticiones); 
-			return $salidaJson;
-		}
-		
-		
-	}//Stamina
 	
-	function EvaluacionMasculinaStamina($edad, $resultado)
-	{
-		$res="";
-		switch($edad)
-			{
-				//se declara res vacío, si cae en alguno de los rangos de edad, se debe verificar que 
-				//resultado fue, si no es se asigna cadena vacía y se sigue buscando.
-								
-				//case de las edades
-				case $edad >=18 && $edad<=25:
-				
-						if($res=="" && $resultado<79) 					   $res="Atleta";
-						if($res=="" && $resultado>=79 && $resultado<=89)   $res="Excelente";	
-						if($res=="" && $resultado>=90 && $resultado<=105)  $res="Bueno";	
-						if($res=="" && $resultado>=106 && $resultado<=128) $res="Promedio";
-						if($res=="" && $resultado>128)					   $res="Pobre";
-				break;
-				
-				case $edad >=26 && $edad<=35:
-					if($res=="" && $resultado<81)						   $res = "Atleta";
-					if($res=="" && $resultado>=81 && $resultado<=89)	   $res = "Excelente";
-					if($res=="" && $resultado>=90 && $resultado<=107)	   $res = "Bueno";
-					if($res=="" && $resultado>=108 && $resultado<=128)	   $res = "Promedio";
-					if($res=="" && $resultado>128)						   $res = "Pobre";
-				break;
-					
-				case $edad >=36 && $edad<=45:
-					if($res=="" && $resultado<83)$res="Atleta";
-					if($res=="" && $resultado>=83 && $resultado<=96)$res="Excelente";
-					if($res=="" && $resultado>=97 && $resultado<=112)$res="Bueno";
-					if($res=="" && $resultado>=113 && $resultado<=130)$res="Promedio";
-					if($res=="" && $resultado>130)$res="Pobre";
-				break;
-				
-				case $edad >=46 && $edad<=55:
-					if($res=="" && $resultado<87)$res="Atleta";
-					if($res=="" && $resultado>=87 && $resultado<=97)$res="Excelente";
-					if($res=="" && $resultado>=98 && $resultado<=116)$res="Bueno";
-					if($res=="" && $resultado>=117 && $resultado<=132)$res="Promedio";
-					if($res=="" && $resultado>132)$res="Pobre";
-				break;
-				
-				case $edad >=56 && $edad<=65:
-					if($res=="" && $resultado<86)$res="Atleta";
-					if($res=="" && $resultado>=86 && $resultado<=97)$res="Excelente";
-					if($res=="" && $resultado>=98 && $resultado<=112)$res="Bueno";
-					if($res=="" && $resultado>=113 && $resultado<=129)$res="Promedio";
-					if($res=="" && $resultado>129)$res="Pobre";
-				break;
-				
-				case $edad >65:
-					if($res=="" && $resultado<88)$res="Atleta";
-					if($res=="" && $resultado>=88 && $resultado<=96)$res="Excelente";
-					if($res=="" && $resultado>=97 && $resultado<=113)$res="Bueno";
-					if($res=="" && $resultado>=114 && $resultado<=130)$res="Promedio";
-					if($res=="" && $resultado>130)$res="Pobre";
-				break;
-				
-			}//switch
-			$condicion=$res;
-			return $condicion;
-	}//EvaluacionMasculinaStamina
-	
-	function EvaluacionFemeninaStamina($edad, $resultado)
-	{
-		$res="";
-		switch($edad)
-			{
-				//se declara res vacío, si cae en alguno de los rangos de edad, se debe verificar que 
-				//resultado fue, si no es se asigna cadena vacía y se sigue buscando.
-								
-				//case de las edades
-				case $edad >=18 && $edad<=25:
-				
-						if($res=="" && $resultado<85) 					    $res = "Atleta";
-						if($res=="" && $resultado>=85  && $resultado<=98)   $res = "Excelente";	
-						if($res=="" && $resultado>=99  && $resultado<=117)  $res = "Bueno";	
-						if($res=="" && $resultado>=118 && $resultado<=140)  $res = "Promedio";
-						if($res=="" && $resultado>140)					    $res = "Pobre";
-				break;
-				
-				case $edad >=26 && $edad<=35:
-					if($res=="" && $resultado<88)							$res = "Atleta";
-					if($res=="" && $resultado>=88 && $resultado<=99)		$res = "Excelente";
-					if($res=="" && $resultado>=100 && $resultado<=119)		$res = "Bueno";
-					if($res=="" && $resultado>=120 && $resultado<=138)		$res = "Promedio";
-					if($res=="" && $resultado>138)							$res = "Pobre";
-				break;
-					
-				case $edad >=36 && $edad<=45:
-					if($res=="" && $resultado<90)							$res = "Atleta";
-					if($res=="" && $resultado>=90 && $resultado<=102)		$res = "Excelente";
-					if($res=="" && $resultado>=103 && $resultado<=118)		$res = "Bueno";
-					if($res=="" && $resultado>=119 && $resultado<=140)		$res = "Promedio";
-					if($res=="" && $resultado>140)							$res = "Pobre";
-				break;
-				
-				case $edad >=46 && $edad<=55:
-					if($res=="" && $resultado<94)							$res = "Atleta";
-					if($res=="" && $resultado>=94 && $resultado<=104)		$res = "Excelente";
-					if($res=="" && $resultado>=105 && $resultado<=120)		$res = "Bueno";
-					if($res=="" && $resultado>=121 && $resultado<=135)		$res = "Promedio";
-					if($res=="" && $resultado>135)							$res = "Pobre";
-				break;
-				
-				case $edad >=56 && $edad<=65:
-					if($res=="" && $resultado<95)							$res = "Atleta";
-					if($res=="" && $resultado>=95 && $resultado<=104)		$res = "Excelente";
-					if($res=="" && $resultado>=105 && $resultado<=118)		$res = "Bueno";
-					if($res=="" && $resultado>=119 && $resultado<=139)		$res = "Promedio";
-					if($res=="" && $resultado>139)							$res = "Pobre";
-				break;
-				
-				case $edad >65:
-					if($res=="" && $resultado<90)							$res = "Atleta";
-					if($res=="" && $resultado>=90 && $resultado<=102)		$res = "Excelente";
-					if($res=="" && $resultado>=103 && $resultado<=122)		$res = "Bueno";
-					if($res=="" && $resultado>=123 && $resultado<=134)		$res = "Promedio";
-					if($res=="" && $resultado>134)							$res = "Pobre";
-				break;
-				
-			}//switch
-			$condicion = $res;
-			return $condicion;
-	}//EvaluacionMasculinaStamina
 	
 	function AgregarResultadosYDevolverInformacionStamina($id_instructor,$id_Cliente,$Condicion,$repeticiones)
 	{
@@ -1414,191 +1874,8 @@
 		return $result;
 	}
 	
-	//Métodos de la FUERZA//
-	function Fuerza($id_Cliente,$repeticiones, $id_instructor)
-	{
-		//Buscando los datos del cliente
-		$consultar=new Consultar();
-		
-		
-		$result=$consultar->_ConsultarClientesPorId($id_Cliente);
-		$fila=$result->fetch_assoc();
-		//tomando sexo y edad
-		$edad=$fila['num_edad'];
-		$sexo=$fila['de_genero'];
-		if($sexo=="MASCULINO")	
-		{
-			$Condicion  = EvaluacionMasculinaFuerza($edad,$repeticiones); //resultado de la prueba
-			$salidaJson = AgregarResultadosYDevolverInformacionFuerza($id_instructor,$id_Cliente,$Condicion,$repeticiones);
-			return $salidaJson;
-		}//if
-		else
-		{
-			$Condicion  = EvaluacionFemeninaFuerza($edad,$repeticiones); //resultado de la prueba
-			//En esta línea se agregan el resultado de la prueba, se obtienen los datos necesarios y se devuelve el array para
-			//devolver a la pantalla principal.
-			$salidaJson	= AgregarResultadosYDevolverInformacionFuerza($id_instructor,$id_Cliente,$Condicion,$repeticiones); 
-			return $salidaJson;
-		}
-		
-		
-	}//Fuerza
 	
-	function EvaluacionMasculinaFuerza($edad, $resultado)
-	{
-		$res="";
-		switch($edad)
-			{
-				//se declara res vacío, si cae en alguno de los rangos de edad, se debe verificar que 
-				//resultado fue, si no es se asigna cadena vacía y se sigue buscando.
-								
-				//case de las edades
-				case $edad >=18 && $edad<=29:
-				
-						if($res=="" && $resultado>54) 					   $res="Atleta";
-						if($res=="" && $resultado>=45 && $resultado<=54)   $res="Excelente";	
-						if($res=="" && $resultado>=35 && $resultado<=44)   $res="Bueno";	
-						if($res=="" && $resultado>=20 && $resultado<=34)   $res="Promedio";
-						if($res=="" && $resultado<20)					   $res="Pobre";
-				break;
-				
-				case $edad >=30 && $edad<=39:
-					if($res=="" && $resultado>44)							$res="Atleta";
-					if($res=="" && $resultado>=35 && $resultado<=44)		$res="Excelente";
-					if($res=="" && $resultado>=24 && $resultado<=34)		$res="Bueno";
-					if($res=="" && $resultado>=15 && $resultado<=24)		$res="Promedio";
-					if($res=="" && $resultado<15)							$res="Pobre";
-				break;
-					
-				case $edad >=40 && $edad<=49:
-					if($res=="" && $resultado>39)							$res="Atleta";
-					if($res=="" && $resultado>=30 && $resultado<=39)		$res="Excelente";
-					if($res=="" && $resultado>=20 && $resultado<=29)		$res="Bueno";
-					if($res=="" && $resultado>=12 && $resultado<=19)		$res="Promedio";
-					if($res=="" && $resultado<12)							$res="Pobre";
-				break;
-				
-				case $edad >=50 && $edad<=59:
-					if($res=="" && $resultado>34)							$res="Atleta";
-					if($res=="" && $resultado>=25 && $resultado<=34)		$res="Excelente";
-					if($res=="" && $resultado>=15 && $resultado<=24)		$res="Bueno";
-					if($res=="" && $resultado>=8 && $resultado<=14)			$res="Promedio";
-					if($res=="" && $resultado<8)							$res="Pobre";
-				break;
-				
-				case $edad >=60:
-					if($res=="" && $resultado>29)							$res="Atleta";
-					if($res=="" && $resultado>=20 && $resultado<=29)		$res="Excelente";
-					if($res=="" && $resultado>=10 && $resultado<=19)		$res="Bueno";
-					if($res=="" && $resultado>=5 && $resultado<=9)			$res="Promedio";
-					if($res=="" && $resultado<5)							$res="Pobre";
-				break;
-				
-			}//switch
-			$condicion=$res;
-			return $condicion;
-	}//EvaluacionMasculinaFuerza
 	
-	function EvaluacionFemeninaFuerza($edad, $resultado)
-	{
-		$res="";
-		switch($edad)
-			{
-				//se declara res vacío, si cae en alguno de los rangos de edad, se debe verificar que 
-				//resultado fue, si no es se asigna cadena vacía y se sigue buscando.
-								
-				//case de las edades
-				case $edad >=18 && $edad<=29:
-				
-						if($res=="" && $resultado>48) 					   $res="Atleta";
-						if($res=="" && $resultado>=34 && $resultado<=48)   $res="Excelente";	
-						if($res=="" && $resultado>=17 && $resultado<=33)   $res="Bueno";	
-						if($res=="" && $resultado>=6  && $resultado<=16)   $res="Promedio";
-						if($res=="" && $resultado<6)					   $res="Pobre";
-				break;
-				
-				case $edad >=30 && $edad<=39:
-					if($res=="" && $resultado>39)						   $res="Atleta";
-					if($res=="" && $resultado>=25 && $resultado<=39)	   $res="Excelente";
-					if($res=="" && $resultado>=12 && $resultado<=24)	   $res="Bueno";
-					if($res=="" && $resultado>=4 && $resultado<=11)		   $res="Promedio";
-					if($res=="" && $resultado<4)						   $res="Pobre";
-				break;
-					
-				case $edad >=40 && $edad<=49:
-					if($res=="" && $resultado>34)						   $res="Atleta";
-					if($res=="" && $resultado>=20 && $resultado<=34)	   $res="Excelente";
-					if($res=="" && $resultado>=8 && $resultado<=19)		   $res="Bueno";
-					if($res=="" && $resultado>=3 && $resultado<=7)		   $res="Promedio";
-					if($res=="" && $resultado<3)						   $res="Pobre";
-				break;
-				
-				case $edad >=50 && $edad<=59:
-					if($res=="" && $resultado>29)						   $res="Atleta";
-					if($res=="" && $resultado>=15 && $resultado<=29)	   $res="Excelente";
-					if($res=="" && $resultado>=6  && $resultado<=14)	   $res="Bueno";
-					if($res=="" && $resultado>=2  && $resultado<=5)		   $res="Promedio";
-					if($res=="" && $resultado<2)						   $res="Pobre";
-				break;
-				
-				case $edad >=60:
-					if($res=="" && $resultado>19)						   $res="Atleta";
-					if($res=="" && $resultado>=5 && $resultado<=19)		   $res="Excelente";
-					if($res=="" && $resultado>=3 && $resultado<=4)		   $res="Bueno";
-					if($res=="" && $resultado>=1 && $resultado<=2)		   $res="Promedio";
-					if($res=="" && $resultado<1)						   $res="Pobre";
-				break;
-				
-			}//switch
-			$condicion = $res;
-			return $condicion;
-	}//EvaluacionMasculinaStamina
-	
-	function AgregarResultadosYDevolverInformacionFuerza($id_instructor,$id_Cliente,$Condicion,$repeticiones)
-	{
-		$agregar   = new Agregar();
-		$consultar = new Consultar();
-		//En esta línea se agregan el resultado de la prueba, se obtienen los datos necesarios y se devuelve el array para
-			//devolver a la pantalla principal.
-			
-			//Tomando los valores para guardar el resultado de la prueba en la BD
-			$TipoPrueba		  = 6;
-			$DescPrueba		  = "Fuerza";
-			$porcentajeActual = PorcentajeAcordeResultadoFuerza($Condicion);
-			//Guardando los resultados de la prueba
-			$resultado = $agregar->_AgregarResultadoPrueba($id_instructor, $id_Cliente, $TipoPrueba, $DescPrueba, $Condicion, $porcentajeActual,$repeticiones);
-			
-			//Obteniendo pruebas de los últimos 3 meses para saber el resultado de la persona en las gráficas
-			$resultadoPruebas = $consultar->_ConsultarResultadosPruebas(6,$id_Cliente);
-			
-			//Creando un array con los resultados de las pruebas
-			$arrayResultados = array();
-			
-			//tomando los resultados
-			for($i=0; $i<3; $i++)
-			{
-				$fila=$resultadoPruebas->fetch_assoc();
-				$NumPrueba="Prueba".$i;
-				//Tomando los valores para asignarlos al array.
-				
-				//Si los valores vienen null, se les asigna 0 para que al llegar al lado del cliente se asigne otro valor y se cargue la gráfica
-				$fecha=($fila['fecha']!=null)?ConvertirTimeStamp($fila['fecha']):0; //Devolviendo un string con la fecha con el método de la línea 148
-				$porcentaje = ($fila['Porcentaje']!=null)?$fila['Porcentaje']:0;
-				$resultado  = $fila['Resultado'];
-				$Prueba		= array("Resultado"=>$resultado,"Porcentaje"=>$porcentaje, "Fecha"=>$fecha);	
-				array_push ($arrayResultados,$Prueba);
-			}
-			//print_r($arrayResultados);
-			
-			//Tomando el consejo de la evaluación física
-			$resultConsejo = $consultar->_ConsultarConsejoAcordeResultado(6,$Condicion); //El número es el tipo de prueba
-			$filaConsejo   = $resultConsejo->fetch_assoc();
-			$consejo	   = $filaConsejo['Consejo'];
-			//DEvolviendo parámetros para la notificación				
-			$salidaJson	   = array("Condicion"=>$Condicion, "Resultado"=>$repeticiones, "id_cliente"=>$id_Cliente,"Resultados"=>$arrayResultados,
-			"TipoPrueba"=>$TipoPrueba, "Consejo"=>$consejo, "Porcentaje"=>$porcentajeActual);
-			return $salidaJson;	
-	}//AgregarResultadosYDevolverInformacionFuerza
 	
 	function PorcentajeAcordeResultadoFuerza($resultado)
 	{
@@ -1615,159 +1892,7 @@
 		return $porcentaje;
 	}//PorcentajeAcordeResultado
 	
-	//Apartado de Resistencia//	
-	function Resistencia($id_Cliente,$repeticiones, $id_instructor)
-	{
-		//Buscando los datos del cliente
-		$consultar = new Consultar();
-		
-		
-		$result = $consultar->_ConsultarClientesPorId($id_Cliente);
-		$fila	= $result->fetch_assoc();
-		//tomando sexo y edad
-		$edad	= $fila['num_edad'];
-		$sexo	= $fila['de_genero'];
-		if($sexo=="MASCULINO")	
-		{
-			$Condicion  = EvaluacionMasculinaResistencia($edad,$repeticiones); //resultado de la prueba
-			$salidaJson = AgregarResultadosYDevolverInformacionResistencia($id_instructor,$id_Cliente,$Condicion,$repeticiones);
-			return $salidaJson;
-		}//if
-		else
-		{
-			$Condicion  = EvaluacionFemeninaResistencia($edad,$repeticiones); //resultado de la prueba
-			//En esta línea se agregan el resultado de la prueba, se obtienen los datos necesarios y se devuelve el array para
-			//devolver a la pantalla principal.
-			$salidaJson = AgregarResultadosYDevolverInformacionResistencia($id_instructor,$id_Cliente,$Condicion,$repeticiones); 
-			return $salidaJson;
-		}
-	}//Resistencia
 	
-	function  EvaluacionMasculinaResistencia($edad, $resultado)
-	{
-		$res="";
-		switch($edad)
-			{
-				//se declara res vacío, si cae en alguno de los rangos de edad, se debe verificar que 
-				//resultado fue, si no es se asigna cadena vacía y se sigue buscando.
-								
-				//case de las edades
-				case $edad >=15 && $edad<=19:
-						if($res=="" && $resultado>=25) 					   $res="Atleta";
-						if($res=="" && $resultado>=23 && $resultado<=24)   $res="Excelente";	
-						if($res=="" && $resultado>=21 && $resultado<=22)   $res="Bueno";	
-						if($res=="" && $resultado>=16 && $resultado<=20)   $res="Promedio";
-						if($res=="" && $resultado<16)					   $res="Pobre";
-				break;
-				
-				case $edad >=20 && $edad<=29:
-					if($res=="" && $resultado>=25) 					   $res="Atleta";
-					if($res=="" && $resultado>=23 && $resultado<=24)   $res="Excelente";	
-					if($res=="" && $resultado>=21 && $resultado<=22)   $res="Bueno";	
-					if($res=="" && $resultado>=13 && $resultado<=20)   $res="Promedio";
-					if($res=="" && $resultado<13)					   $res="Pobre";
-				break;
-					
-				case $edad >=30 && $edad<=39:
-					if($res=="" && $resultado>=25) 					   $res="Atleta";
-					if($res=="" && $resultado>=23 && $resultado<=24)   $res="Excelente";	
-					if($res=="" && $resultado>=21 && $resultado<=22)   $res="Bueno";	
-					if($res=="" && $resultado>=13 && $resultado<=20)   $res="Promedio";
-					if($res=="" && $resultado<13)					   $res="Pobre";
-
-				break;
-				
-				case $edad >=40 && $edad<=49:
-					if($res=="" && $resultado>=25) 					   $res="Atleta";
-					if($res=="" && $resultado>=22 && $resultado<=24)   $res="Excelente";	
-					if($res=="" && $resultado>=16 && $resultado<=21)   $res="Bueno";	
-					if($res=="" && $resultado>=11 && $resultado<=15)   $res="Promedio";
-					if($res=="" && $resultado<11)					   $res="Pobre";
-				break;
-				
-				case $edad >=50 && $edad<=59:
-					if($res=="" && $resultado>=25) 					   $res="Atleta";
-					if($res=="" && $resultado>=20 && $resultado<=24)   $res="Excelente";	
-					if($res=="" && $resultado>=14 && $resultado<=19)   $res="Bueno";	
-					if($res=="" && $resultado>=9  && $resultado<=13)   $res="Promedio";
-					if($res=="" && $resultado<9)					   $res="Pobre";
-				break;
-				
-				case $edad >=60 && $edad<=69:
-					if($res=="" && $resultado>=25) 					   $res="Atleta";
-					if($res=="" && $resultado>=16 && $resultado<=24)   $res="Excelente";	
-					if($res=="" && $resultado>=10 && $resultado<=15)   $res="Bueno";	
-					if($res=="" && $resultado>=4  && $resultado<=9)    $res="Promedio";
-					if($res=="" && $resultado<4)					   $res="Pobre";
-				break;
-				
-			}//switch
-			$condicion=$res;
-			return $condicion;
-	}// evaluación masculina resistencia
-	
-	function  EvaluacionFemeninaResistencia($edad, $resultado)
-	{
-		$res="";
-		switch($edad)
-			{
-				//se declara res vacío, si cae en alguno de los rangos de edad, se debe verificar que 
-				//resultado fue, si no es se asigna cadena vacía y se sigue buscando.
-								
-				//case de las edades
-				case $edad >=15 && $edad<=19:
-					if($res=="" && $resultado>=25) 					   $res="Atleta";
-					if($res=="" && $resultado>=23 && $resultado<=24)   $res="Excelente";	
-					if($res=="" && $resultado>=21 && $resultado<=22)   $res="Bueno";	
-					if($res=="" && $resultado>=16 && $resultado<=20)   $res="Promedio";
-					if($res=="" && $resultado<16)					   $res="Pobre";
-				break;
-				
-				case $edad >=20 && $edad<=29:
-					if($res=="" && $resultado>=25) 					   $res="Atleta";
-					if($res=="" && $resultado>=23 && $resultado<=24)   $res="Excelente";	
-					if($res=="" && $resultado>=19 && $resultado<=22)   $res="Bueno";	
-					if($res=="" && $resultado>=13 && $resultado<=18)   $res="Promedio";
-					if($res=="" && $resultado<13)					   $res="Pobre";
-				break;
-					
-				case $edad >=30 && $edad<=39:
-					if($res=="" && $resultado>=25) 					   $res="Atleta";
-					if($res=="" && $resultado>=22 && $resultado<=24)   $res="Excelente";	
-					if($res=="" && $resultado>=16 && $resultado<=21)   $res="Bueno";	
-					if($res=="" && $resultado>=11 && $resultado<=15)   $res="Promedio";
-					if($res=="" && $resultado<11)					   $res="Pobre";
-
-				break;
-				
-				case $edad >=40 && $edad<=49:
-					if($res=="" && $resultado>=25) 					   $res="Atleta";
-					if($res=="" && $resultado>=21 && $resultado<=24)   $res="Excelente";	
-					if($res=="" && $resultado>=13 && $resultado<=20)   $res="Bueno";	
-					if($res=="" && $resultado>=6  && $resultado<=12)   $res="Promedio";
-					if($res=="" && $resultado<6)					   $res="Pobre";
-				break;
-				
-				case $edad >=50 && $edad<=59:
-					if($res=="" && $resultado>=25) 					   $res="Atleta";
-					if($res=="" && $resultado>=16 && $resultado<=24)   $res="Excelente";	
-					if($res=="" && $resultado>=9  && $resultado<=15)   $res="Bueno";	
-					if($res=="" && $resultado>=4  && $resultado<=8)    $res="Promedio";
-					if($res=="" && $resultado<4)					   $res="Pobre";
-				break;
-				
-				case $edad >=60 && $edad<=69:
-					if($res=="" && $resultado>=18) 					   $res="Atleta";
-					if($res=="" && $resultado>=11 && $resultado<=17)   $res="Excelente";	
-					if($res=="" && $resultado>=6  && $resultado<=10)   $res="Bueno";	
-					if($res=="" && $resultado>=2  && $resultado<=5)    $res="Promedio";
-					if($res=="" && $resultado<2)					   $res="Pobre";
-				break;
-				
-			}//switch
-			$condicion=$res;
-			return $condicion;
-	}// evaluación masculina resistencia
 	
 	function AgregarResultadosYDevolverInformacionResistencia($id_instructor,$id_Cliente,$Condicion,$repeticiones)
 	{

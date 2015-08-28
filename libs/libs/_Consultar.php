@@ -1417,6 +1417,27 @@
 			return $info;		
 	}//_ConsultarId_EjercicioClientePorId_PosicionEjercicio
 
+	function _ConsultarResultadosPruebas($tipo_prueba, $id_cliente)
+	{
+		$query='
+			select * from sgpruebas pruebas 
+			where tipo_prueba= ? 
+			and id_cliente=?  order by pruebas.fecha DESC limit 3
+		';
+		R::freeze(1);
+			R::begin();
+			    try{
+			       $info = R::getAll($query,[$tipo_prueba,$id_cliente]);
+			        R::commit();
+			    }
+			    catch(Exception $e) {
+			       $info =  R::rollback();
+			       $info = "Error";
+			    }
+			R::close();
+			return $info;
+	}
+
 	function _ConsultarResultadosPruebaslight($tipo_prueba, $id_cliente)
 	{
 		$query='
@@ -1783,17 +1804,7 @@
 	
 	
 		
-	function _ConsultarResultadosPruebas($tipo_prueba, $id_cliente)
-	{
-		$query='
-			select * from sg_pruebas pruebas 
-			where Tipo_Prueba="'.$tipo_prueba.'" 
-			and id_cliente="'.$id_cliente.'" order by pruebas.fecha DESC limit 3
-		';
-		$con=Conectar::_con();
-		$result=$con->query($query) or die("Error en: $query ".mysqli_error($query));
-		return $result;
-	}
+	
 	
 	
 	function _ConsultarResultadosPruebasIMM1($tipo_prueba, $id_cliente) //consulta el último biotest para imm se necesitan 16 campos.

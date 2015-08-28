@@ -322,6 +322,38 @@ var miModulo = angular.module("Methods", []);
 			}//switch
 		}
 
+		this.ResultadoPrueba = function(Porcentaje,id)
+		{
+			console.log(Porcentaje);
+			console.log(id);
+			switch(Porcentaje)
+			{
+				case '100':
+					$(id).addClass("progress-bar-success");
+					$(id).css("width","100%");
+				break;
+				
+				case '80':
+					$(id).addClass("progress-bar-success");
+					$(id).css("width","60%");
+				break;
+
+				case '60':
+					$(id).css("width","60%");
+				break;
+				
+				case '40':
+					$(id).addClass("progress-bar-warning");
+					$(id).css("width","40%");
+				break;
+
+				case '20':
+					$(id).addClass("progress-bar-danger");
+					$(id).css("width","20%");
+				break;
+			}//switch
+		}
+
 		this.ClaseBiotestResult = function(condicion,id)
 		{
 			switch(condicion)
