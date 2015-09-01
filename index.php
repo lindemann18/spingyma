@@ -12,7 +12,10 @@
 <script src="js/dirPagination.js"></script>
 <script src="js/angular-cookies.min.js"></script>
 <script src="js/bootbox.min.js" type="text/javascript"></script>
+<script src="js/charts/highcharts.js"></script>
+<script src="js/charts/exporting.js"></script> 
 <script src="js/highcharts-ng.js" type="text/javascript"></script>
+
 <!-- Controlers-->
 <script src="js/users.js"></script>
 <script src="js/methods.js"></script>

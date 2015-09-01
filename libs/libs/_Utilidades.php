@@ -222,6 +222,266 @@ class Utilidades
 		return json_encode($datos);
 	}//ReportePdf
 
+	function ReportePdfultra($id_cliente)
+	{
+
+		$consultar = new Consultar();
+		//Conseguir información de todas las pruebas
+		$Prueba     = R::findOne( 'sgtipospruebas', ' nm_prueba = ? ', [ 'Peso' ] );
+		$id_peso    = $Prueba->id;
+
+		$resultPeso = $consultar->_ConsultarResultadosPruebasReporte($id_peso,$id_cliente);
+		$num_rows   = count($resultPeso);
+		$Peso       = array();
+		//tomando los resultados de peso
+
+		for($i=0; $i<$num_rows; $i++)
+		{
+			$fila  				= $resultPeso[$i];
+			$resultado_numerico = $fila['resultado_numerico'];
+			$des_prueba 		= $fila['desc_prueba'];
+			$Cond 				= $fila['resultado'];
+			$fh_creacion 		= $fila['fh_creacion'];
+			$porcentaje         = $fila['porcentaje'];
+			$resultConsejo 		= $consultar->_ConsultarConsejoAcordeResultado($id_peso,$Cond);
+			$consejo	   		= $resultConsejo['consejo'];
+			$resultadosPeso     = $this->PesoResultados($porcentaje);
+			$Barra				= $resultadosPeso['Barra'];
+			$Longitud			= $resultadosPeso['Longitud'];
+			$prueba_peso        = array("resultado_numerico"=>$resultado_numerico,
+										"des_prueba"=>$des_prueba,"resultado"=>$Cond,
+										"fecha"=>$fh_creacion,
+										"Porcentaje"=>$porcentaje,"consejo"=>$consejo,
+										"Barra"=>$Barra,"Longitud"=>$Longitud);
+			array_push($Peso,$prueba_peso);
+		}//for
+
+		if($num_rows<3)
+		{
+			$repetir = 3-$num_rows;
+			for($i=0; $i<$repetir; $i++)
+			{
+				$prueba_peso        = array("resultado_numerico"=>0,
+										"des_prueba"=>0,"resultado"=>0,
+										"fecha"=>"Biotest No Hecho",
+										"Porcentaje"=>0,"consejo"=>0,
+										"Barra"=>0,"Longitud"=>0);
+			array_push($Peso,$prueba_peso);
+			}//for
+		}//if
+
+		//tomando los resultados de IMC
+		$Prueba     = R::findOne( 'sgtipospruebas', ' nm_prueba = ? ', [ 'Imc' ] );
+		$id_imc     = $Prueba->id;
+
+		$resultImc  = $consultar->_ConsultarResultadosPruebasReporte($id_imc,$id_cliente);
+		$rows_imc   = count($resultImc);
+		$Imc        = array();
+
+		for($i=0; $i<$rows_imc; $i++)
+		{
+			$fila  				= $resultImc[$i];
+			$resultado_numerico = $fila['resultado_numerico'];
+			$des_prueba 		= $fila['desc_prueba'];
+			$Cond 				= $fila['resultado'];
+			$fh_creacion 		= $fila['fh_creacion'];
+			$porcentaje         = $fila['porcentaje'];
+			$resultConsejo 		= $consultar->_ConsultarConsejoAcordeResultado($id_imc,$Cond);
+			$consejo	   		= $resultConsejo['consejo'];
+			$resultadosPeso     = $this->PesoResultados($porcentaje);
+			$Barra				= $resultadosPeso['Barra'];
+			$Longitud			= $resultadosPeso['Longitud'];
+			$prueba_imc         = array("resultado_numerico"=>$resultado_numerico,
+										"des_prueba"=>$des_prueba,"resultado"=>$Cond,
+										"fh_creacion"=>$fh_creacion,
+										"porcentaje"=>$porcentaje,"consejo"=>$consejo,
+										"Barra"=>$Barra,"Longitud"=>$Longitud);
+			array_push($Imc,$prueba_imc);
+		}//for
+		if($rows_imc<3)
+		{
+			$repetir = 3-$rows_imc;
+			for($i=0; $i<$repetir; $i++)
+			{
+				$prueba_imc        = array("resultado_numerico"=>0,
+										"des_prueba"=>0,"resultado"=>0,
+										"fh_creacion"=>"Biotest No Hecho",
+										"porcentaje"=>0,"consejo"=>0,
+										"Barra"=>0,"Longitud"=>0);
+			array_push($Imc,$prueba_imc);
+			}//for
+		}//if
+
+		//tomando los resultados de IMM
+		$Prueba     = R::findOne( 'sgtipospruebas', ' nm_prueba = ? ', [ 'Imm' ] );
+		$id_imm     = $Prueba->id;
+		$ResultadosIMM = $consultar->_ConsultarResultadosPruebasIMM($id_imm,$id_cliente);
+		$num_rowsIMM   = count($ResultadosIMM);
+		$IMM		   = array();
+		$IMM2		   = array();
+		
+		print_r($ResultadosIMM);
+		if($num_rowsIMM<12)
+		{
+			//Guardando en el primer array para asegurarnos si el usuario ha hecho más de un biotest.
+			for($i=0; $i<$num_rowsIMM; $i++)
+			{
+				$filaIMM 	 = $ResultadosIMM[$i];
+				$desc_prueba = $filaIMM['desc_prueba'];
+				$resultado   = $filaIMM['resultado_numerico'];
+				$fecha       = $filaIMM['fh_creacion'];
+				$pruebaimm   = array("desc_prueba"=>$desc_prueba, "resultado"=>$resultado, "fecha"=>$fecha);
+				array_push($IMM, $pruebaimm);
+				$desc_prueba2 = 0;
+				$resultado2   = 0;
+				$fecha2       = 0;
+				$pruebaimm2   = array("desc_prueba"=>$desc_prueba, "resultado"=>$resultado, "fecha"=>$fecha);
+				array_push($IMM2, $pruebaimm2);
+			}//for
+		}//if
+		else
+		{
+			$fechaprueba = $ResultadosIMM[0]['fh_creacion'];
+			for($i=0; $i<12; $i++)
+			{
+				$fechaimm = $ResultadosIMM[$i]['fh_creacion'];
+				if($fechaprueba==$fechaimm)
+				{
+					array_push($IMM,$ResultadosIMM[$i]);
+				}else{array_push($IMM2,$ResultadosIMM[$i]);}
+			}//for
+		}
+
+		$IMMLibre  = $this->DespejarValoresArrayIMM($IMM);
+		$IMMLibre2 = $this->DespejarValoresArrayIMM($IMM2);
+
+		//Tomando las diferencias de los resultados.
+		//Perímetro Espalda.
+		$Espalda     = $IMMLibre['Espalda'];
+		$Espalda2    = $IMMLibre2['Espalda'];
+		$Res_per_esp = 0;
+		$Resesp		 = $Espalda-$Espalda2;
+		if($Espalda==$Resesp)$Res_per_esp="Primer Biotest"; //Da la misma cantidad por que se le resta un 0 y no hay cambios.
+		if($Resesp>0 && $Espalda!=$Resesp)$Res_per_esp="Disminuiste: ".$Resesp;
+		if($Resesp==0)$Res_per_esp="Sin Cambios";
+		if($Resesp<0)$Res_per_esp="Aumentaste: ".($Resesp*-1);
+
+		//Perímetro Pecho.
+		$Pecho     = $IMMLibre['Pecho'];
+		$Pecho2    = $IMMLibre2['Pecho'];
+		$Res_Pec   = 0;
+		$Respech	 = $Pecho-$Pecho2;
+		if($Pecho==$Respech)$Res_Pec="Primer Biotest"; //Da la misma cantidad por que se le resta un 0 y no hay cambios.
+		if($Respech>0 && $Pecho!=$Respech)$Res_Pec="Disminuiste: ".$Respech;
+		if($Respech==0)$Res_Pec="Sin Cambios";
+		if($Respech<0)$Res_Pec="Aumentaste: ".($Respech*-1);
+
+		//Perímetro Abdomen.
+		$Abdomen     = $IMMLibre['Abdomen'];
+		$Abdomen2    = $IMMLibre2['Abdomen'];
+		$Res_abd     = 0;
+		$Resabd	 = $Abdomen-$Abdomen2;
+		if($Abdomen==$Resabd)$Res_abd="Primer Biotest"; //Da la misma cantidad por que se le resta un 0 y no hay cambios.
+		if($Resabd>0 && $Abdomen!=$Resabd)$Res_abd="Disminuiste: ".$Resabd;
+		if($Resabd==0)$Res_abd="Sin Cambios";
+		if($Resabd<0)$Res_abd="Aumentaste: ".($Resabd*-1);
+
+		//Perímetro Cadera.
+		$Cadera     = $IMMLibre['Cadera'];
+		$Cadera2    = $IMMLibre2['Cadera'];
+		$Res_cad     = 0;
+		$Rescad	 = $Cadera-$Cadera2;
+		if($Cadera==$Rescad)$Res_cad="Primer Biotest"; //Da la misma cantidad por que se le resta un 0 y no hay cambios.
+		if($Rescad>0 && $Cadera!=$Rescad)$Res_cad="Disminuiste: ".$Rescad;
+		if($Rescad==0)$Res_cad="Sin Cambios";
+		if($Rescad<0)$Res_cad="Aumentaste: ".($Rescad*-1);
+
+		//Perímetro Brazo.
+		$Brazo     = $IMMLibre['Brazo'];
+		$Brazo2    = $IMMLibre2['Brazo'];
+		$Res_bra     = 0;
+		$Resbra	 = $Brazo-$Brazo2;
+		if($Brazo==$Resbra)$Res_bra="Primer Biotest"; //Da la misma cantidad por que se le resta un 0 y no hay cambios.
+		if($Resbra>0 && $Brazo!=$Resbra)$Res_bra="Disminuiste: ".$Res_bra;
+		if($Resbra==0)$Res_bra="Sin Cambios";
+		if($Resbra<0)$Res_bra="Aumentaste: ".($Resbra*-1);
+
+		//Perímetro Muslo.
+		$Muslo     = $IMMLibre['Muslo'];
+		$Muslo2    = $IMMLibre2['Muslo'];
+		$Res_mus     = 0;
+		$Resmus	 = $Muslo-$Muslo2;
+		if($Muslo==$Resmus)$Res_mus="Primer Biotest"; //Da la misma cantidad por que se le resta un 0 y no hay cambios.
+		if($Resmus>0 && $Muslo!=$Resmus)$Res_mus="Disminuiste: ".$Res_mus;
+		if($Resmus==0)$Res_mus="Sin Cambios";
+		if($Resmus<0)$Res_mus="Aumentaste: ".($Resmus*-1);
+
+		// Condición
+		$Pruebacond = R::findOne( 'sgtipospruebas', ' nm_prueba = ? ', ['Condición Física']);
+		$id_cond   = $Pruebacond->id;
+
+		$resultcond = $consultar->_ConsultarResultadosPruebasReporte($id_cond,$id_cliente);
+		$rows_cond  = count($resultImc);
+		$condicion  = $this->GenerarArrayResultados($resultcond,$rows_cond,$id_cond);
+
+
+		// Resistencia
+		$Pruebares   = R::findOne( 'sgtipospruebas', ' nm_prueba = ? ', ['Resistencia']);
+		$id_resis    = $Pruebares->id;
+
+		$resultresis = $consultar->_ConsultarResultadosPruebasReporte($id_resis,$id_cliente);
+		$rows_resi   = count($resultresis);
+		$Resistencia = $this->GenerarArrayResultados($resultresis,$rows_resi,$id_resis);
+
+
+		$resultadosIMM = array("Espalda"=>$Res_per_esp,"Pecho"=>$Res_Pec,
+							   "Abdomen"=>$Res_abd,"Cadera"=>$Res_cad,
+							   "Brazo"=>$Res_bra,"Muslo"=>$Res_mus,
+							   "condicion"=>$condicion,"Resistencia"=>$Resistencia);
+	}
+
+
+	function GenerarArrayResultados($result,$num_rows,$id_prueba)
+	{
+		$contenido = array();
+		$consultar = new Consultar();
+		for($i=0; $i<$num_rows; $i++)
+		{
+			$fila  				= $result[$i];
+			$resultado_numerico = $fila['resultado_numerico'];
+			$des_prueba 		= $fila['desc_prueba'];
+			$Cond 				= $fila['resultado'];
+			$fh_creacion 		= $fila['fh_creacion'];
+			$porcentaje         = $fila['porcentaje'];
+			$resultConsejo 		= $consultar->_ConsultarConsejoAcordeResultado($id_prueba,$Cond);
+			$consejo	   		= $resultConsejo['consejo'];
+			$resultadosPeso     = $this->PesoResultados($porcentaje);
+			$Barra				= $resultadosPeso['Barra'];
+			$Longitud			= $resultadosPeso['Longitud'];
+			$prueba       	    = array("resultado_numerico"=>$resultado_numerico,
+										"des_prueba"=>$des_prueba,"resultado"=>$Cond,
+										"fecha"=>$fh_creacion,
+										"Porcentaje"=>$porcentaje,"consejo"=>$consejo,
+										"Barra"=>$Barra,"Longitud"=>$Longitud);
+			array_push($contenido,$prueba);
+		}//for
+		
+		if($num_rows<3)
+		{
+			$repetir = 3-$num_rows;
+			for($i=0; $i<$repetir; $i++)
+			{
+				$prueba          = array("resultado_numerico"=>0,
+										"des_prueba"=>0,"resultado"=>0,
+										"fecha"=>"Biotest No Hecho",
+										"Porcentaje"=>0,"consejo"=>0,
+										"Barra"=>0,"Longitud"=>0);
+			array_push($contenido,$prueba);
+			}//for
+		}//if
+		return $contenido;
+	}
+
 	function ReportePdf2($id_cliente)
 	{
 		

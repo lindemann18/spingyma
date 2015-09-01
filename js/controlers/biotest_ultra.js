@@ -89,11 +89,93 @@ $scope.condicion = {Resultado:"",Cliente:"",Accion:""};
 $scope.fuerza    = {repeticiones:"",Cliente:"",Accion:""};
 $scope.Stamina   = {repeticiones:"",Cliente:"",Accion:""};
 $scope.Resist    = {repeticiones:"",Cliente:"",Accion:""};
+$scope.flexib    = {repeticiones:"",Cliente:"",Accion:""};
+$scope.masa      = {pecho:"",abdomen:"",cadera:"",brazo:"",muslo:"",Cliente:"",Accion:""};
 $scope.btndes    = true;
 //Evaluando lo que se debe hacer dependiendo de la acción.
 
 
 //funciones
+$scope.EvaluarIMM = function()
+{
+  bootbox.confirm("Desea Aplicar el test de IMM?", function(result) {
+    console.log(result);
+      if(result==true)
+      {
+        $scope.$apply(function(){
+            $scope.masa.Accion  = "IMM";
+            $scope.masa.Cliente = $scope.cliente;
+            var params            = JSON.stringify($scope.masa);
+            $scope.btndes         = false;
+            var url = 'modulos/BiotestUltra/Funciones.php';
+           $http({method: "post",url: url,data: $.param({Params:params}), 
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+          })
+           .success(function(data, status, headers, config) 
+           {            
+               exito = data.exito;
+                if(exito==1)
+                {
+                  $scope.btndes = true;
+                  //Se redirige al apartado de resultados.
+                  $location.path('/BiotestUltraResult').search({Cliente:$scope.cliente,Action:$scope.Action});
+                }else
+                {
+                  $methodsService.alerta(2,"algo falló, disculpe las molestias"); 
+                  $scope.btndes = true;
+                  $scope.url    = "modulos/BiotestUltra/paginas/error_prueba.html";
+                  $scope.prueba = 6;
+                  $scope.error  = "Ha ocurrido un error, verique los datos ingresados y vuelva a intentarlo. repeticiones: "+$scope.Resist.repeticiones;
+                }
+            })  
+           .error(function(data, status, headers, config){
+            $methodsService.alerta(2,"algo falló, disculpe las molestias");
+           });
+        });//apply
+      }//if
+    });//boot box
+}
+
+$scope.EvaluarFlexibilidad = function()
+{
+  bootbox.confirm("Desea Aplicar el test de Stamina?", function(result) {
+    console.log(result);
+      if(result==true)
+      {
+        $scope.$apply(function(){
+            $scope.flexib.Accion  = "Flexibilidad";
+            $scope.flexib.Cliente = $scope.cliente;
+            var params            = JSON.stringify($scope.flexib);
+            $scope.btndes         = false;
+            var url = 'modulos/BiotestUltra/Funciones.php';
+           $http({method: "post",url: url,data: $.param({Params:params}), 
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+          })
+           .success(function(data, status, headers, config) 
+           {            
+               exito = data.exito;
+                if(exito==1)
+                {
+                  $scope.btndes = true;
+                  //Se redirige al apartado de resultados.
+                  $location.path('/BiotestUltraResult').search({Cliente:$scope.cliente,Action:$scope.Action});
+                }else
+                {
+                  $methodsService.alerta(2,"algo falló, disculpe las molestias"); 
+                  $scope.btndes = true;
+                  $scope.url    = "modulos/BiotestUltra/paginas/error_prueba.html";
+                  $scope.prueba = 6;
+                  $scope.error  = "Ha ocurrido un error, verique los datos ingresados y vuelva a intentarlo. repeticiones: "+$scope.Resist.repeticiones;
+                }
+            })  
+           .error(function(data, status, headers, config){
+            $methodsService.alerta(2,"algo falló, disculpe las molestias");
+           });
+        });//apply
+      }//if
+    });//bootbox
+}//EvaluarFlexibilidad
+
 $scope.EvaluarResistencia = function()
 {
     bootbox.confirm("Desea Aplicar el test de Stamina?", function(result) {
@@ -517,6 +599,66 @@ $scope.Evaluar = function(action)
            .error(function(data, status, headers, config){$methodsService.alerta(2,"algo falló, disculpe las molestias");});
       break;
 
+      case 6:
+        Arr = new Object();
+          Arr['id']     = $scope.cliente;
+          Arr['Prueba'] = "Flexibilidad";
+          Arr['Accion'] = "UltimoBiotestCliente";
+          var params    = JSON.stringify(Arr);
+          var url = 'modulos/BiotestUltra/Funciones.php';
+           $http({method: "post",url: url,data: $.param({Params:params}), 
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+          })
+           .success(function(data, status, headers, config) 
+           {            
+                $scope.permiso      = data.permiso;
+                $scope.PermisoU     = data.PermisoU;
+                $scope.Dias_trans   = data.Dias_trans;
+                $scope.Dias_transUl = data.Dias_transUl;
+
+                if($scope.permiso==1 && $scope.PermisoU==1)
+                {
+                  $scope.url = "modulos/BiotestUltra/paginas/Flexibilidad.html";
+                }//if
+                else
+                {
+                  $scope.bioerror = "Han transcurrido "+$scope.Dias_transUl+" días desde el último biotest debe esperar 15 días para ambas pruebas como mínimo para aplicar nuevamente el biotest.";
+                  $scope.url      = "modulos/BiotestUltra/paginas/error.html";
+                }
+            })  
+           .error(function(data, status, headers, config){$methodsService.alerta(2,"algo falló, disculpe las molestias");});
+      break;
+
+      case 7:
+        Arr = new Object();
+          Arr['id']     = $scope.cliente;
+          Arr['Prueba'] = "Imm";
+          Arr['Accion'] = "UltimoBiotestCliente";
+          var params    = JSON.stringify(Arr);
+          var url = 'modulos/BiotestUltra/Funciones.php';
+           $http({method: "post",url: url,data: $.param({Params:params}), 
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+          })
+           .success(function(data, status, headers, config) 
+           {            
+                $scope.permiso      = data.permiso;
+                $scope.PermisoU     = data.PermisoU;
+                $scope.Dias_trans   = data.Dias_trans;
+                $scope.Dias_transUl = data.Dias_transUl;
+
+                if($scope.permiso==1 && $scope.PermisoU==1)
+                {
+                  $scope.url = "modulos/BiotestUltra/paginas/Masa.html";
+                }//if
+                else
+                {
+                  $scope.bioerror = "Han transcurrido "+$scope.Dias_transUl+" días desde el último biotest debe esperar 15 días para ambas pruebas como mínimo para aplicar nuevamente el biotest.";
+                  $scope.url      = "modulos/BiotestUltra/paginas/error.html";
+                }
+            })  
+           .error(function(data, status, headers, config){$methodsService.alerta(2,"algo falló, disculpe las molestias");});
+      break;
+
     }//switch
 }//Evaluar
 
@@ -626,7 +768,20 @@ $scope.Evaluar($scope.Action);
   //Buscando los resultados de la prueba de peso
   $scope.cliente      = $routeParams.Cliente;
   $scope.Action       = $routeParams.Action;
-   
+  
+  // Funciones
+  $scope.EnviarResultados = function()   
+  {
+    bootbox.confirm("Desea enviar los resultados?", function(result) {
+    console.log(result);
+      if(result==true)
+      {
+        $scope.$apply(function(){
+            
+        });//apply
+      }//if
+    });//bootbbox
+  }
 
   $scope.DefinePrueba = function(action)
   { 
@@ -653,12 +808,22 @@ $scope.Evaluar($scope.Action);
           prueba        = "Resistencia";
           $scope.prueba = 6;
         break;
+
+        case  6:
+          prueba        = "Flexibilidad";
+          $scope.prueba = 7;
+        break;
+
+        case  6:
+          prueba        = "IMM";
+          $scope.prueba = 8;
+        break;
+
       }//switch
       return prueba;
   }//DefinePrueba
 
   $scope.nombrePrueba = $scope.DefinePrueba($scope.Action);
-
   // Buscando Los resultados.
   var Arr = new Object();
   Arr['cliente'] = $scope.cliente;
@@ -676,7 +841,7 @@ $scope.Evaluar($scope.Action);
         //Tomando los datos.
         exito  = data.exito;
         exito  = parseInt(exito);
-         alert("yo");
+         
         if(exito==1)
         {
             // Tomando los datos.
@@ -696,11 +861,11 @@ $scope.Evaluar($scope.Action);
             
             datosfec2  = $scope.resultados[1].fecha;
             if(datosfec2!=0){datosfec2= datosfec2.split(" "); fecha2 = datosfec2[0]}
-            else{fecha2 = 0;}
+            else{fecha2 = "biotest no hecho";}
 
             datosfec3  = $scope.resultados[2].fecha;
             if(datosfec3!=0){datosfec3= datosfec3.split(" "); fecha = datosfec3[0]}
-            else{fecha = 0;}
+            else{fecha = "biotest no hecho";}
 
             TituloPrueba = $scope.nombrePrueba;
 

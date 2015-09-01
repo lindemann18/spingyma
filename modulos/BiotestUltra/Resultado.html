@@ -1,3 +1,4 @@
+
 <style type="text/css">
 #ContainerConsejo{background-color: #f4f4f4; }
 .Buttons{margin-top: 3%;}
@@ -99,8 +100,11 @@
                             <div class="col-md-3"></div>
                             <div class="col-md-6">
                                 <div class="col-md-3"></div>
-                                <div class="col-md-6">
+                                <div class="col-md-6" ng-show="prueba!=8">
                                     <button class="btn btn-success col-md-12" ng-click="SiguientePrueba(prueba)">Continuar</button>
+                                </div>
+                                <div class="col-md-6" ng-show="prueba==8">
+                                    <button class="btn btn-success col-md-12" ng-click="EnviarResultados()">Enviar Resultados</button>
                                 </div>
                             </div>
                             
@@ -118,8 +122,6 @@
 </aside>
 
 </div>
+  
 
- 
 
-<script src="js/charts/highcharts.js"></script>
-<script src="js/charts/exporting.js"></script>    
