@@ -63,9 +63,6 @@
 		break;
 
 		//Casos viejos
-		
-		
-		
 		case 'IMC':
 			$id_Cliente	   = $Parametros['Id_Cliente'];
 			$Altura		   = $Parametros['Altura'];
@@ -74,10 +71,6 @@
 			$salidaJson	   = IMC($id_Cliente,$Altura,$id_instructor,$peso);
 			echo json_encode($salidaJson);
 		break;
-		
-		
-		
-		
 		case 'ReportePdf':
 			$id_Cliente =  $Parametros['Id_Cliente'];
 			$salidaJson = ReportePdf($id_Cliente);
@@ -1292,25 +1285,51 @@
 
 	function IMM($Parametros)
 	{
-		$id_cliente   = $Parametros['Cliente'];
-		$repeticiones = $Parametros['repeticiones'];
+		$cliente      = $Parametros['Cliente'];
 		$espalda 	  = $Parametros['espalda'];
 		$pecho   	  = $Parametros['pecho'];
 		$abdomen 	  = $Parametros['abdomen'];
 		$cadera  	  = $Parametros['cadera'];
 		$brazo   	  = $Parametros['brazo'];
 		$muslo   	  = $Parametros['muslo'];
-		
+		$Diagnostico  = "No Aplica";
+
 		//Tomando los datos del cliente
 		//Buscando la información del cliente para hacer el test
-		$consultar  = new Consultar();
+		$consultar    = new Consultar();
 
 		// tomando los datos de la prueba
-		$id_prueba   = ObtenerIdPrueba("Imm");
-		$res_prueba  = "";
+		$id_pruebaimm = ObtenerIdPrueba("Imm");
+		$res_prueba   = "";
 		date_default_timezone_set("America/Chihuahua");
-		$fh_creacion = date("Y-m-d"); //fecha del día de hoy
-		$id_inst     = $_SESSION['usuario']['id'];	
+		$fh_creacion  = date("Y-m-d"); //fecha del día de hoy
+		$id_inst      = $_SESSION['usuario']['id'];	
+
+		$desc_mus     = "IMM - Muslo";
+		$desc_espalda = "IMM - Espalda";
+		$desc_pecho   = "IMM - Pecho";
+		$desc_abd     = "IMM - Abdomen";
+		$desc_cad     = "IMM - Cadera";
+		$desc_bra     = "IMM - Brazo";
+
+		// Guardando los resultados light
+		$respuesta    = GuardarResultadoPruebasLight($id_inst,$cliente,$id_pruebaimm,$desc_espalda,$Diagnostico,0,$fh_creacion,$espalda);
+		$respuesta    = GuardarResultadoPruebasLight($id_inst,$cliente,$id_pruebaimm,$desc_pecho,$Diagnostico,0,$fh_creacion,$pecho);
+		$respuesta    = GuardarResultadoPruebasLight($id_inst,$cliente,$id_pruebaimm,$desc_abd,$Diagnostico,0,$fh_creacion,$abdomen);
+		$respuesta    = GuardarResultadoPruebasLight($id_inst,$cliente,$id_pruebaimm,$desc_cad,$Diagnostico,0,$fh_creacion,$cadera);
+		$respuesta    = GuardarResultadoPruebasLight($id_inst,$cliente,$id_pruebaimm,$desc_bra,$Diagnostico,0,$fh_creacion,$brazo);
+		$respuesta    = GuardarResultadoPruebasLight($id_inst,$cliente,$id_pruebaimm,$desc_mus,$Diagnostico,0,$fh_creacion,$muslo);
+
+		// Guardando los resultados del biotest ultra.
+		$respuesta    = GuardarResultadoPruebas($id_inst,$cliente,$id_pruebaimm,$desc_espalda,$Diagnostico,0,$fh_creacion,$espalda);
+		$respuesta    = GuardarResultadoPruebas($id_inst,$cliente,$id_pruebaimm,$desc_pecho,$Diagnostico,0,$fh_creacion,$pecho);
+		$respuesta    = GuardarResultadoPruebas($id_inst,$cliente,$id_pruebaimm,$desc_abd,$Diagnostico,0,$fh_creacion,$abdomen);
+		$respuesta    = GuardarResultadoPruebas($id_inst,$cliente,$id_pruebaimm,$desc_cad,$Diagnostico,0,$fh_creacion,$cadera);
+		$respuesta    = GuardarResultadoPruebas($id_inst,$cliente,$id_pruebaimm,$desc_bra,$Diagnostico,0,$fh_creacion,$brazo);
+		$respuesta    = GuardarResultadoPruebas($id_inst,$cliente,$id_pruebaimm,$desc_mus,$Diagnostico,0,$fh_creacion,$muslo);
+
+		$datos = array("exito"=>1);
+		return $datos;
 
 	} //Imm
 

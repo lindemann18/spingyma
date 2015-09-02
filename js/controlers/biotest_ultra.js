@@ -90,7 +90,7 @@ $scope.fuerza    = {repeticiones:"",Cliente:"",Accion:""};
 $scope.Stamina   = {repeticiones:"",Cliente:"",Accion:""};
 $scope.Resist    = {repeticiones:"",Cliente:"",Accion:""};
 $scope.flexib    = {repeticiones:"",Cliente:"",Accion:""};
-$scope.masa      = {pecho:"",abdomen:"",cadera:"",brazo:"",muslo:"",Cliente:"",Accion:""};
+$scope.masa      = {espalda:"",pecho:"",abdomen:"",cadera:"",brazo:"",muslo:"",Cliente:"",Accion:""};
 $scope.btndes    = true;
 //Evaluando lo que se debe hacer dependiendo de la acción.
 
@@ -103,8 +103,8 @@ $scope.EvaluarIMM = function()
       if(result==true)
       {
         $scope.$apply(function(){
-            $scope.masa.Accion  = "IMM";
-            $scope.masa.Cliente = $scope.cliente;
+            $scope.masa.Accion    = "IMM";
+            $scope.masa.Cliente   = $scope.cliente;
             var params            = JSON.stringify($scope.masa);
             $scope.btndes         = false;
             var url = 'modulos/BiotestUltra/Funciones.php';
@@ -113,12 +113,12 @@ $scope.EvaluarIMM = function()
           })
            .success(function(data, status, headers, config) 
            {            
-               exito = data.exito;
+              exito = data.exito;
                 if(exito==1)
                 {
                   $scope.btndes = true;
                   //Se redirige al apartado de resultados.
-                  $location.path('/BiotestUltraResult').search({Cliente:$scope.cliente,Action:$scope.Action});
+                  $location.path('/BiotestUltraResultimm').search({Cliente:$scope.cliente,Action:$scope.Action});
                 }else
                 {
                   $methodsService.alerta(2,"algo falló, disculpe las molestias"); 
@@ -666,7 +666,7 @@ $scope.Evaluar($scope.Action);
 
 })
 
-.controller('ResultadosUltraBiotestPeso',function($scope,$http,$location,$methodsService,$routeParams){
+.controller('ResultadosUltraBiotestPeso',function($scope,$http,$location,$methodsService,$routeParams,$timeout){
 
   //Buscando los resultados de la prueba de peso
   $scope.cliente = $routeParams.Cliente;
@@ -846,6 +846,7 @@ $scope.Evaluar($scope.Action);
         {
             // Tomando los datos.
             // Asignando la primera barra de resultados
+
             $scope.resultados = data.resultados;
             $scope.porcentaje = $scope.resultados[0].porcentaje;
             $methodsService.ResultadoPrueba($scope.porcentaje,"#ProgresBar");
@@ -967,6 +968,245 @@ $scope.Evaluar($scope.Action);
    }//SiguientePrueba
 
 })//ResultadosUltraBiotestPeso
+
+.controller('ResultadosUltraBiotestimm',function($scope,$http,$location,$methodsService,$routeParams){
+
+  //Buscando los resultados de la prueba de peso
+  $scope.cliente      = $routeParams.Cliente;
+  $scope.Action       = $routeParams.Action;
+
+  var params          = $methodsService.Json("ResultadosBiotest",$scope.cliente);
+  
+  //Funciones
+  $scope.enviar = function()
+  {
+    bootbox.confirm("Desea regresar a clientes?", function(result) {
+        if(result==true)
+        {
+          $scope.$apply(function(){
+          var params = $methodsService.Json("EnviarResultados",$scope.cliente);
+          var url = 'modulos/Biotest/Funciones.php';
+           $http({method: "post",url: url,data: $.param({Params:params}), 
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+          })
+           .success(function(data, status, headers, config) 
+           {            
+                
+            })  
+           .error(function(data, status, headers, config){
+            $methodsService.alerta(2,"algo falló, disculpe las molestias");
+           });
+        });
+        }//if
+      });
+  }//enviar
+
+  var url = 'modulos/Biotest/Funciones.php';
+   $http({method: "post",url: url,data: $.param({Params:params}), 
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+  })
+   .success(function(data, status, headers, config) 
+   {            
+        console.log(data);  
+        //Tomando los datos.
+        exitoimc  = data.exitoimc;
+        exitoPeso = data.exitoPeso;
+        exitoimm  = data.exitoimm;
+        switch(true)
+        {
+          case exitoPeso==1 && exitoimc==1 && exitoimm==1:
+            //Pegando los resultados.
+            $scope.peso   = data.peso;
+            $scope.imc    = data.imc;
+            $scope.imm    = data.imm;
+            $scope.immAnt   = data.immAnt;
+
+            
+            //Perímetro brazo relajado
+            Espalda       = "IMM - Espalda";
+            $scope.Per_Espalda    = "";
+            //Perímetro brazo_flexionado
+            Pecho       = "IMM - Pecho";
+            $scope.Per_Pecho    = "";
+            //Perímetro Femoral
+            Abdomen     = "IMM - Abdomen";
+            $scope.Per_Abdomen    = "";
+            //Perímetro de pantorrilla
+            Cadera      = "IMM - Cadera";
+            $scope.Per_Cadera   = "";
+            //Perímetro Cintura
+            Brazo       = "IMM - Brazo";
+            $scope.CantidadBrazo = "";
+            //Perímetro Cadera
+            Muslo     = "IMM - Muslo";
+            $scope.CantidadMuslo = "";
+          
+          //Se hace en un ciclo por que no se sabe en que orden vienen.
+          for(i=0; i<6; i++)
+          {
+            //Tomando los valores de las pruebas a partir del nombre de las mismas.
+            switch($scope.imm[i].desc_prueba)
+            {
+              case "IMM - Espalda": 
+                $scope.Per_Espalda   = parseInt($scope.imm[i].resultado_numerico);
+              break;
+              case 'IMM - Pecho': 
+                $scope.Per_Pecho     = parseInt($scope.imm[i].resultado_numerico);
+              break;
+              case 'IMM - Abdomen': 
+                $scope.Per_Abdomen   = parseInt($scope.imm[i].resultado_numerico);
+              break;
+              case 'IMM - Cadera': 
+                $scope.Per_Cadera    = parseInt($scope.imm[i].resultado_numerico);
+              break;
+              case 'IMM - Brazo': 
+                $scope.CantidadBrazo = parseInt($scope.imm[i].resultado_numerico);
+              break;
+              case 'IMM - Muslo': 
+                $scope.CantidadMuslo = parseInt($scope.imm[i].resultado_numerico);
+              break;
+              
+            }//switch
+            
+          }//for
+
+          //2dos resultados de IMM
+          //Tomando los valores de Pruebas 2, que son las pruebas más antiguas del mes pasado.
+          //Perímetro Per_Espalda2
+          $scope.Per_Espalda2   = "";
+          //Perímetro Per_Pecho2
+          $scope.Per_Pecho2    = "";
+          //Perímetro de Per_Abdomen2
+          $scope.Per_Abdomen2   = "";
+          //Perímetro Per_Cadera2
+          $scope.Per_Cadera2    = "";
+          //Perímetro CantidadBrazo2
+          $scope.CantidadBrazo2 = "";
+          //Perímetro CantidadMuslo2
+          $scope.CantidadMuslo2 = "";
+          
+          //Se hace en un ciclo por que no se sabe en que orden vienen.
+          $scope.Fecha2=($scope.immAnt[0].fh_creacion!=0)?$scope.immAnt[0].fh_creacion:"BioTest No hecho"; //Fecha para todas las primeras 8 pruebas.
+          
+          // Si vienen en 0 cualquiera de la descripción de las pruebas es el primer biotest, de no ser así es el 2do o cualquier otro.
+          // Para efecto de que se vean las pruebas se asignan en 0 todos los valores dado que no hay otro punto de comparación.
+          
+          if($scope.immAnt[0].desc_prueba == 0)
+          {
+            $scope.Per_Espalda2   = 0;
+            $scope.Per_Pecho2   = 0;
+            $scope.Per_Abdomen2   = 0;
+            $scope.Per_Cadera2    = 0;
+            $scope.CantidadBrazo2 = 0;
+            $scope.CantidadMuslo2 = 0;
+          }
+          else
+          {
+            for(i=0; i<6; i++)
+            {
+              //Tomando los valores de las pruebas a partir del nombre de las mismas.
+              switch($scope.immAnt[i].desc_prueba)
+              {
+                case "IMM - Espalda": 
+                  $scope.Per_Espalda2   = parseInt($scope.immAnt[i].resultado_numerico);
+                break;
+                case 'IMM - Pecho': 
+                  $scope.Per_Pecho2     = parseInt($scope.immAnt[i].resultado_numerico);
+                break;
+                case 'IMM - Abdomen': 
+                  $scope.Per_Abdomen2   = parseInt($scope.immAnt[i].resultado_numerico);
+                break;
+                case 'IMM - Cadera': 
+                  $scope.Per_Cadera2    = parseInt($scope.immAnt[i].resultado_numerico);
+                break;
+                case 'IMM - Brazo': 
+                  $scope.CantidadBrazo2 = parseInt($scope.immAnt[i].resultado_numerico);
+                break;
+                case 'IMM - Muslo': 
+                  $scope.CantidadMuslo2 = parseInt($scope.immAnt[i].resultado_numerico);
+                break;
+                
+              }//switch
+              
+            }//for
+            
+          }//else
+          $scope.chartConfig = {
+             xAxis: {
+                categories: ['Espalda', 'Pecho', 'Abdomen', 'Cadera', 'Brazo','Muslo'],
+                title: {
+                    text: null
+                }
+            },
+            options: {chart: {type: 'bar'}},
+               series: [{name: $scope.Fecha,color: "#00a65a",data: [$scope.Per_Espalda,$scope.Per_Pecho,$scope.Per_Abdomen,$scope.Per_Cadera,$scope.CantidadBrazo,$scope.CantidadMuslo]}, 
+                    {name: $scope.Fecha2,color:"#428bca",data: [$scope.Per_Espalda2,$scope.Per_Pecho2,$scope.Per_Abdomen2,$scope.Per_Cadera2,$scope.CantidadBrazo2,$scope.CantidadMuslo2]}],
+              title: {text: "IMM"},loading: false
+            
+          };
+
+          //Definiendo los cambios entre los resultados de IMM
+          // Espalda
+          Reses=$scope.Per_Espalda-$scope.Per_Espalda2;
+          if($scope.Per_Espalda==Reses)ResEspalda="Primer Biotest";
+          if(Reses>0 && $scope.Per_Espalda!=Reses)ResEspalda="Aumentaste: "+Reses;
+          if(Reses==0)ResEspalda="Sin Cambios";
+          if(Reses<0)ResEspalda="Disminuiste: "+(Reses*-1);
+          console.log(ResEspalda);
+          $scope.ResEsp = ResEspalda;
+
+          //Pecho
+          Respe=$scope.Per_Pecho-$scope.Per_Pecho2;
+          if($scope.Per_Pecho==Respe)resPecho="Primer Biotest";
+          if(Respe>0 && $scope.Per_Pecho!=Respe)resPecho="Aumentaste: "+Respe;
+          if(Respe==0)resPecho="Sin Cambios";
+          if(Respe<0)resPecho="Disminuiste: "+(Respe*-1);
+          $scope.ResPe = resPecho;
+
+          //Abdomen
+          Resab=$scope.Per_Abdomen-$scope.Per_Abdomen2;
+          if($scope.Per_Abdomen==Resab)resAbdomen="Primer Biotest";
+          if(Resab>0 && $scope.Per_Abdomen!=Resab)resAbdomen="Aumentaste: "+Resab;
+          if(Resab==0)resAbdomen="Sin Cambios";
+          if(Resab<0)resAbdomen="Disminuiste: "+(Resab*-1);
+          $scope.ResAb = resAbdomen;
+
+          //Cadera
+          Rescad=$scope.Per_Cadera-$scope.Per_Cadera2;
+          if($scope.Per_Cadera==Rescad)resCadera="Primer Biotest";
+          if(Rescad>0 && $scope.Per_Cadera!=Rescad)resCadera="Aumentaste: "+Rescad;
+          if(Rescad==0)resCadera="Sin Cambios";
+          if(Rescad<0)resCadera="Disminuiste: "+(Rescad*-1);
+          $scope.Resca = resCadera;
+
+          //Brazo
+          resbraz=$scope.CantidadBrazo-$scope.CantidadBrazo2;
+          if($scope.CantidadBrazo==resbraz)resBrazo="Primer Biotest";
+          if(resbraz>0 && $scope.CantidadBrazo!=resbraz)resBrazo="Aumentaste: "+resbraz;
+          if(resbraz==0)resBrazo="Sin Cambios";
+          if(resbraz<0)resBrazo="Disminuiste: "+(resbraz*-1);
+          $scope.Resbr = resBrazo;
+
+          //Muslo
+          resmusl=$scope.CantidadMuslo-$scope.CantidadMuslo2;
+          if($scope.CantidadMuslo==resmusl)resmuslo="Primer Biotest";
+          if(resmusl>0 && $scope.CantidadMuslo!=resmusl)resmuslo="Aumentaste: "+resmusl;
+          if(resmusl==0)resmuslo="Sin Cambios";
+          if(resmusl<0)resmuslo="Disminuiste: "+(resmusl*-1);
+          $scope.resmus = resmuslo;
+          
+          break;
+
+          case exitoPeso!=1 || exitoimc!=1 || exitoimm!=1:
+            //Dirigiendo a la página de errores del test
+          break;
+        }//switch
+    })  
+ .error(function(data, status, headers, config){
+  $methodsService.alerta(2,"algo falló, disculpe las molestias");
+ });
+
+})
 
 .directive('onlyDigits', function () {
     return {

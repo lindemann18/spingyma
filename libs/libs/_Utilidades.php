@@ -320,7 +320,6 @@ class Utilidades
 		$IMM		   = array();
 		$IMM2		   = array();
 		
-		print_r($ResultadosIMM);
 		if($num_rowsIMM<12)
 		{
 			//Guardando en el primer array para asegurarnos si el usuario ha hecho más de un biotest.
@@ -351,9 +350,9 @@ class Utilidades
 				}else{array_push($IMM2,$ResultadosIMM[$i]);}
 			}//for
 		}
-
-		$IMMLibre  = $this->DespejarValoresArrayIMM($IMM);
-		$IMMLibre2 = $this->DespejarValoresArrayIMM($IMM2);
+		
+		$IMMLibre  = $this->DespejarValoresArrayIMM2($IMM);
+		$IMMLibre2 = $this->DespejarValoresArrayIMM2($IMM2);
 
 		//Tomando las diferencias de los resultados.
 		//Perímetro Espalda.
@@ -416,32 +415,72 @@ class Utilidades
 		if($Resmus==0)$Res_mus="Sin Cambios";
 		if($Resmus<0)$Res_mus="Aumentaste: ".($Resmus*-1);
 
+		$resultadosIMM = array("Espalda"=>$Res_per_esp,"Pecho"=>$Res_Pec,
+							   "Abdomen"=>$Res_abd,"Cadera"=>$Res_cad,
+							   "Brazo"=>$Res_bra,"Muslo"=>$Res_mus);
+
 		// Condición
 		$Pruebacond = R::findOne( 'sgtipospruebas', ' nm_prueba = ? ', ['Condición Física']);
 		$id_cond   = $Pruebacond->id;
 
-		$resultcond = $consultar->_ConsultarResultadosPruebasReporte($id_cond,$id_cliente);
+		$resultcond = $consultar->_ConsultarResultadosPruebasReporteUltra($id_cond,$id_cliente);
 		$rows_cond  = count($resultImc);
-		$condicion  = $this->GenerarArrayResultados($resultcond,$rows_cond,$id_cond);
+		$condicion  = $this->GenerarArrayResultadosUltra($resultcond,$rows_cond,$id_cond);
 
 
 		// Resistencia
 		$Pruebares   = R::findOne( 'sgtipospruebas', ' nm_prueba = ? ', ['Resistencia']);
 		$id_resis    = $Pruebares->id;
 
-		$resultresis = $consultar->_ConsultarResultadosPruebasReporte($id_resis,$id_cliente);
+		$resultresis = $consultar->_ConsultarResultadosPruebasReporteUltra($id_resis,$id_cliente);
 		$rows_resi   = count($resultresis);
-		$Resistencia = $this->GenerarArrayResultados($resultresis,$rows_resi,$id_resis);
+		$Resistencia = $this->GenerarArrayResultadosUltra($resultresis,$rows_resi,$id_resis);
 
+		// Resistencia
+		$Pruebares   = R::findOne( 'sgtipospruebas', ' nm_prueba = ? ', ['Resistencia']);
+		$id_resis    = $Pruebares->id;
 
-		$resultadosIMM = array("Espalda"=>$Res_per_esp,"Pecho"=>$Res_Pec,
-							   "Abdomen"=>$Res_abd,"Cadera"=>$Res_cad,
-							   "Brazo"=>$Res_bra,"Muslo"=>$Res_mus,
-							   "condicion"=>$condicion,"Resistencia"=>$Resistencia);
+		$resultresis = $consultar->_ConsultarResultadosPruebasReporteUltra($id_resis,$id_cliente);
+		$rows_resi   = count($resultresis);
+		$Resistencia = $this->GenerarArrayResultadosUltra($resultresis,$rows_resi,$id_resis);
+
+		// Stamina
+		$Pruebastam  = R::findOne( 'sgtipospruebas', ' nm_prueba = ? ', ['Stamina']);
+		$id_stam     = $Pruebastam->id;
+
+		$resultstam  = $consultar->_ConsultarResultadosPruebasReporteUltra($id_stam,$id_cliente);
+		$rows_stam   = count($resultstam);
+		$Stamina     = $this->GenerarArrayResultadosUltra($resultstam,$rows_stam,$id_stam);
+
+		// Fuerza
+		$Pruebafuer  = R::findOne( 'sgtipospruebas', ' nm_prueba = ? ', ['Fuerza']);
+		$id_fuerza   = $Pruebafuer->id;
+
+		$resultfuer  = $consultar->_ConsultarResultadosPruebasReporteUltra($id_fuerza,$id_cliente);
+		$rows_fuerza = count($resultfuer);
+		$Fuerza      = $this->GenerarArrayResultadosUltra($resultfuer,$rows_fuerza,$id_fuerza);
+
+		// Flexibilidad
+		$Pruebaflexi = R::findOne( 'sgtipospruebas', ' nm_prueba = ? ', ['Flexibilidad']);
+		$id_flexi    = $Pruebaflexi->id;
+
+		$resultflexi  = $consultar->_ConsultarResultadosPruebasReporteUltra($id_flexi,$id_cliente);
+		$rows_flexi   = count($resultflexi);
+		$Flexibilidad = $this->GenerarArrayResultadosUltra($resultflexi,$rows_flexi,$id_flexi);
+							   
+
+		$datos = array("Peso"=>$Peso,"Imc"=>$Imc,
+			           "IMM"=>$IMMLibre,"IMM2"=>$IMMLibre2,
+			           "resultadosIMM"=>$resultadosIMM,
+			           "condicion"=>$condicion,"Resistencia"=>$Resistencia,
+			           "Stamina"=>$Stamina,"Fuerza"=>$Fuerza,
+			           "Flexibilidad"=>$Flexibilidad);
+
+		return json_encode($datos);
 	}
 
 
-	function GenerarArrayResultados($result,$num_rows,$id_prueba)
+	function GenerarArrayResultadosUltra($result,$num_rows,$id_prueba)
 	{
 		$contenido = array();
 		$consultar = new Consultar();
@@ -451,7 +490,7 @@ class Utilidades
 			$resultado_numerico = $fila['resultado_numerico'];
 			$des_prueba 		= $fila['desc_prueba'];
 			$Cond 				= $fila['resultado'];
-			$fh_creacion 		= $fila['fh_creacion'];
+			$fh_creacion 		= $fila['fecha'];
 			$porcentaje         = $fila['porcentaje'];
 			$resultConsejo 		= $consultar->_ConsultarConsejoAcordeResultado($id_prueba,$Cond);
 			$consejo	   		= $resultConsejo['consejo'];
@@ -974,7 +1013,7 @@ class Utilidades
 			switch($IMM[$i]['desc_prueba'])
 			{
 				case "IMM - Espalda": 
-					$Espalda 	     = $IMM[$i]['resultado_numerico'];
+					$Espalda 	 = $IMM[$i]['resultado_numerico'];
 				break;
 				case 'IMM - Pecho': 
 					$Pecho   = $IMM[$i]['resultado_numerico'];
@@ -996,6 +1035,50 @@ class Utilidades
 		}//for
 		
 		$fecha = $IMM[0]['fh_creacion'];
+		$fecha = $this->ConvertirTimeStamp($fecha);
+		$IMMLibre = array("Espalda"=>$Espalda,"Pecho"=>$Pecho,"Abdomen"=>$Abdomen,
+						 "Cadera"=>$Cadera,"Brazo"=>$Brazo,"Muslo"=>$Muslo,"fecha"=>$fecha);	
+		return $IMMLibre;
+	}//DespejarValoresArrayIMM
+
+	function DespejarValoresArrayIMM2($IMM)
+	{
+		//Se hace un ciclo para saber que es lo que viene y tomar los datos correctamente.
+		$Espalda = 0;
+		$Pecho   = 0;
+		$Abdomen = 0;
+		$Cadera  = 0;
+		$Brazo   = 0;
+		$Muslo   = 0;
+
+		for($i=0; $i<6; $i++)
+		{
+			//Tomando los valores de las pruebas a partir del nombre de las mismas.
+			switch($IMM[$i]['desc_prueba'])
+			{
+				case "IMM - Espalda": 
+					$Espalda 	 = $IMM[$i]['resultado'];
+				break;
+				case 'IMM - Pecho': 
+					$Pecho   = $IMM[$i]['resultado'];
+				break;
+				case 'IMM - Abdomen': 
+					$Abdomen     = $IMM[$i]['resultado'];
+				break;
+				case 'IMM - Cadera': 
+					$Cadera = $IMM[$i]['resultado'];
+				break;
+				case 'IMM - Brazo': 
+					$Brazo = $IMM[$i]['resultado'];
+				break;
+				case 'IMM - Muslo': 
+					$Muslo  = $IMM[$i]['resultado'];
+				break;
+				
+			}//switch				
+		}//for
+		
+		$fecha = $IMM[0]['fecha'];
 		$fecha = $this->ConvertirTimeStamp($fecha);
 		$IMMLibre = array("Espalda"=>$Espalda,"Pecho"=>$Pecho,"Abdomen"=>$Abdomen,
 						 "Cadera"=>$Cadera,"Brazo"=>$Brazo,"Muslo"=>$Muslo,"fecha"=>$fecha);	

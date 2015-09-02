@@ -1561,39 +1561,74 @@
 		}//_ConsultarInformacionClientePorRutinaId
 		
 		function _ConsultarResultadosPruebasReporte($id_prueba, $id_cliente)
-	{
-		$query = '
-		SELECT distinct
-		/* Condición física */
-		Con_Fis.resultado_numerico, 
-		Con_Fis.desc_prueba, 
-		Con_Fis.resultado, 
-		Con_Fis.fh_creacion,
-		Con_Fis.porcentaje
-		/* Condición física*/
+		{
+			$query = '
+			SELECT distinct
+			/* Condición física */
+			Con_Fis.resultado_numerico, 
+			Con_Fis.desc_prueba, 
+			Con_Fis.resultado, 
+			Con_Fis.fh_creacion,
+			Con_Fis.porcentaje
+			/* Condición física*/
 
-		FROM sgpruebaslight Pruebas
-		LEFT JOIN 
-		(
-		select distinct * from sgpruebaslight Prueb 
-		where tipo_prueba=?
-		and id_cliente=?  order by Prueb.fh_creacion DESC limit 3 
-		) Con_Fis ON (Pruebas.id_cliente=Con_Fis.id_cliente)
-		where Pruebas.id_cliente = ?  order by fh_creacion desc
-		';	
-		R::freeze(1);
-			R::begin();
-			    try{
-			       $info = R::getAll($query,[$id_prueba,$id_cliente,$id_cliente]);
-			        R::commit();
-			    }
-			    catch(Exception $e) {
-			       $info =  R::rollback();
-			       $info = "Error";
-			    }
-			R::close();
-			return $info;	
-	}//_ConsultarResultadosPruebasReporte
+			FROM sgpruebaslight Pruebas
+			LEFT JOIN 
+			(
+			select distinct * from sgpruebaslight Prueb 
+			where tipo_prueba=?
+			and id_cliente=?  order by Prueb.fh_creacion DESC limit 3 
+			) Con_Fis ON (Pruebas.id_cliente=Con_Fis.id_cliente)
+			where Pruebas.id_cliente = ?  order by fh_creacion desc
+			';	
+			R::freeze(1);
+				R::begin();
+				    try{
+				       $info = R::getAll($query,[$id_prueba,$id_cliente,$id_cliente]);
+				        R::commit();
+				    }
+				    catch(Exception $e) {
+				       $info =  R::rollback();
+				       $info = "Error";
+				    }
+				R::close();
+				return $info;	
+		}//_ConsultarResultadosPruebasReporte
+
+		function _ConsultarResultadosPruebasReporteUltra($id_prueba, $id_cliente)
+		{
+			$query = '
+			SELECT distinct
+			/* Condición física */
+			Con_Fis.resultado_numerico, 
+			Con_Fis.desc_prueba, 
+			Con_Fis.resultado, 
+			DATE(Con_Fis.fecha) as fecha,
+			Con_Fis.porcentaje
+			/* Condición física*/
+
+			FROM sgpruebas Pruebas
+			LEFT JOIN 
+			(
+			select distinct * from sgpruebas Prueb 
+			where tipo_prueba=?
+			and id_cliente=?  order by Prueb.fecha DESC limit 3 
+			) Con_Fis ON (Pruebas.id_cliente=Con_Fis.id_cliente)
+			where Pruebas.id_cliente = ?  order by fecha desc
+			';	
+			R::freeze(1);
+				R::begin();
+				    try{
+				       $info = R::getAll($query,[$id_prueba,$id_cliente,$id_cliente]);
+				        R::commit();
+				    }
+				    catch(Exception $e) {
+				       $info =  R::rollback();
+				       $info = "Error";
+				    }
+				R::close();
+				return $info;	
+		}//_ConsultarResultadosPruebasReporte
 
 	function _ConsultarConsejoAcordeResultado($tipo_prueba, $resultado)
 	{
