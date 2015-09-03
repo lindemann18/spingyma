@@ -49,7 +49,7 @@ $Muslo    = $IMM['Muslo'];
 
 // DAtos de IMM2
 //Tomando los datos del IMM2.
-$IMM2 		 	  = $decode['IMM2'];
+$IMM2 		 = $decode['IMM2'];
 $fechaimm2 = $IMM2['fecha'];
 $Espalda2  = $IMM2['Espalda'];
 $Pecho2    = $IMM2['Pecho'];
@@ -78,6 +78,36 @@ $nombre_completo = utf8_decode($nb_nombre." ".$nb_apellidos);
 		//Fecha actual
 date_default_timezone_set("Mexico/General");
 $fecha_actual = date("Y-m-d"); //fecha del día de hoy
+
+$progress    = "
+         <div class=\"progress\">
+             <div class=\"progress-bar progress-bar-danger\" role=\"progressbar\" aria-valuenow=\"40\" 
+               aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 20%\">
+              Bajo&nbsp;&nbsp;
+             </div>
+          
+             <div class=\"progress-bar progress-bar-warning\" role=\"progressbar\" aria-valuenow=\"40\" 
+              aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 20%\">
+              Promedio&nbsp;&nbsp;
+             </div>
+            
+          <div class=\"progress-bar\" role=\"progressbar\" aria-valuenow=\"40\" aria-valuemin=\"0\"
+               aria-valuemax=\"100\" style=\"width: 20%\">
+               Bueno&nbsp;&nbsp;
+           </div>
+           
+            <div class=\"progress-bar progress-bar-success\" role=\"progressbar\" aria-valuenow=\"40\" 
+                aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 20%\">
+              Excelente&nbsp;&nbsp;
+            </div>
+            
+           <div class=\"progress-bar progress-bar-success\" role=\"progressbar\" aria-valuenow=\"40\" 
+              aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 20%\">
+              Atleta&nbsp;&nbsp;
+           </div>
+      
+    </div><!-- Progress -->
+    ";
 
 // PUT YOUR HTML IN A VARIABLE
 $my_html = "<html>
@@ -146,7 +176,16 @@ body{    padding-top: 0px !important;}
  		</div>
  	</div><!-- Datos -->
 
-	
+	 <div class=\"progress\" style=\"margin-top:5%;\">
+        <div class=\"progress-bar ".$BarraPeso."\" role=\"progressbar\" aria-valuenow=\"60\" aria-valuemin=\"0\"
+         aria-valuemax=\"100\" id=\"ProgresBarResultado\" style=\"".$LongitudPeso."\">
+        <span class=\"sr-only\">60% Complete</span>
+      </div>
+    </div><!--progress -->
+    
+    <!-- Barra de comparación-->
+  ".$progress."
+
     <div class=\"\" style=\"border: 1px solid #ccc\">
         <div  id=\"chart_div\" style=\" width:800px;\" align=\"center\"></div>    
     </div><!-- ContainerGraphic -->
@@ -169,7 +208,16 @@ body{    padding-top: 0px !important;}
     </div>
   </div><!-- Datos -->
 
-  
+    <div class=\"progress\" style=\"margin-top:5%;\">
+        <div class=\"progress-bar ".$BarraImc."\" role=\"progressbar\" aria-valuenow=\"60\" aria-valuemin=\"0\"
+         aria-valuemax=\"100\" id=\"ProgresBarResultado\" style=\"".$LongitudImc."\">
+        <span class=\"sr-only\">60% Complete</span>
+      </div>
+    </div><!--progress -->
+    
+    <!-- Barra de comparación-->
+  ".$progress."
+
     <div class=\"ContainerGraphic\" style=\"border: 1px solid #ccc; height:320px;\">
         <div  id=\"chart_imc\" style=\" width:800px;\" align=\"center\"></div>    
     </div><!-- ContainerGraphic -->
@@ -205,7 +253,7 @@ body{    padding-top: 0px !important;}
                 <label class=\"text-center col-sm-12 col-xs-12\">Cadera: ".$Cadera2."</label>
              </div>
             <div class=\"col-sm-21 col-xs-12 Per_Brazo pull-right\">
-                <label class=\"text-center col-sm-12 col-xs-12 right\">Brazo: ".$Brazo2."></label>
+                <label class=\"text-center col-sm-12 col-xs-12 right\">Brazo: ".$Brazo2."</label>
              </div>
             <div class=\"col-sm-12 col-xs-12 Per_Brazo_Fle pull-right\">
                 <label class=\"text-center col-sm-12 col-xs-12\">Muslo: ".$Muslo2."</label>

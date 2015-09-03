@@ -131,7 +131,7 @@ class Utilidades
 				$desc_prueba2 = 0;
 				$resultado2   = 0;
 				$fecha2       = 0;
-				$pruebaimm2   = array("desc_prueba"=>$desc_prueba, "resultado"=>$resultado, "fecha"=>$fecha);
+				$pruebaimm2   = array("desc_prueba"=>$desc_prueba2, "resultado"=>$resultado2, "fecha"=>$fecha2);
 				array_push($IMM2, $pruebaimm2);
 			}//for
 		}//if
@@ -494,7 +494,7 @@ class Utilidades
 			$porcentaje         = $fila['porcentaje'];
 			$resultConsejo 		= $consultar->_ConsultarConsejoAcordeResultado($id_prueba,$Cond);
 			$consejo	   		= $resultConsejo['consejo'];
-			$resultadosPeso     = $this->PesoResultados($porcentaje);
+			$resultadosPeso     = $this->ResultadosBarra($porcentaje);
 			$Barra				= $resultadosPeso['Barra'];
 			$Longitud			= $resultadosPeso['Longitud'];
 			$prueba       	    = array("resultado_numerico"=>$resultado_numerico,
@@ -929,6 +929,41 @@ class Utilidades
 			return $result;
 	}//CondicionFisicaResultados
 	
+	function ResultadosBarra($porcentaje)
+	{
+		//Obteniendo tamaño de la barra de progreso.
+		$Barra 	  = '';
+		$longitud = "";
+			switch($porcentaje)
+			{
+				case '100':
+					$Barra    = "progress-bar-success";
+					$longitud = "width:100%";
+				break;
+				
+				case '80':
+					$Barra    ="progress-bar-success";
+					$longitud = "width:80%";
+				break;
+				
+				case '60':
+					$longitud = "width:60%";
+				break;
+				
+				case '40':
+					$Barra    ="progress-bar-warning";
+					$longitud = "width:40%";
+				break;
+				
+				case '20':
+					$Barra    ="progress-bar-danger";
+					$longitud = "width:20%";
+				break;
+			}//switch
+		$result = array("Barra"=>$Barra, "Longitud"=>$longitud);
+		return $result;
+	}
+
 	function PesoResultados($Porcentaje)
 	{
 		$Barra 	  = '';
@@ -1013,29 +1048,29 @@ class Utilidades
 			switch($IMM[$i]['desc_prueba'])
 			{
 				case "IMM - Espalda": 
-					$Espalda 	 = $IMM[$i]['resultado_numerico'];
+					$Espalda 	 = $IMM[$i]['resultado'];
 				break;
 				case 'IMM - Pecho': 
-					$Pecho   = $IMM[$i]['resultado_numerico'];
+					$Pecho   = $IMM[$i]['resultado'];
 				break;
 				case 'IMM - Abdomen': 
-					$Abdomen     = $IMM[$i]['resultado_numerico'];
+					$Abdomen     = $IMM[$i]['resultado'];
 				break;
 				case 'IMM - Cadera': 
-					$Cadera = $IMM[$i]['resultado_numerico'];
+					$Cadera = $IMM[$i]['resultado'];
 				break;
 				case 'IMM - Brazo': 
-					$Brazo = $IMM[$i]['resultado_numerico'];
+					$Brazo = $IMM[$i]['resultado'];
 				break;
 				case 'IMM - Muslo': 
-					$Muslo  = $IMM[$i]['resultado_numerico'];
+					$Muslo  = $IMM[$i]['resultado'];
 				break;
 				
 			}//switch				
 		}//for
 		
-		$fecha = $IMM[0]['fh_creacion'];
-		$fecha = $this->ConvertirTimeStamp($fecha);
+		$fecha = $IMM[0]['fecha'];
+		$fecha = ($fecha!=0)?$this->ConvertirTimeStamp($fecha):"Biotest No hecho";
 		$IMMLibre = array("Espalda"=>$Espalda,"Pecho"=>$Pecho,"Abdomen"=>$Abdomen,
 						 "Cadera"=>$Cadera,"Brazo"=>$Brazo,"Muslo"=>$Muslo,"fecha"=>$fecha);	
 		return $IMMLibre;

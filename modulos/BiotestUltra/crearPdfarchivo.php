@@ -140,6 +140,36 @@ $nombre_completo = utf8_decode($nb_nombre." ".$nb_apellidos);
 date_default_timezone_set("Mexico/General");
 $fecha_actual = date("Y-m-d"); //fecha del día de hoy
 
+$progress    = "
+         <div class=\"progress\">
+             <div class=\"progress-bar progress-bar-danger\" role=\"progressbar\" aria-valuenow=\"40\" 
+               aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 20%\">
+              Bajo&nbsp;&nbsp;
+             </div>
+          
+             <div class=\"progress-bar progress-bar-warning\" role=\"progressbar\" aria-valuenow=\"40\" 
+              aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 20%\">
+              Promedio&nbsp;&nbsp;
+             </div>
+            
+          <div class=\"progress-bar\" role=\"progressbar\" aria-valuenow=\"40\" aria-valuemin=\"0\"
+               aria-valuemax=\"100\" style=\"width: 20%\">
+               Bueno&nbsp;&nbsp;
+           </div>
+           
+            <div class=\"progress-bar progress-bar-success\" role=\"progressbar\" aria-valuenow=\"40\" 
+                aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 20%\">
+              Excelente&nbsp;&nbsp;
+            </div>
+            
+           <div class=\"progress-bar progress-bar-success\" role=\"progressbar\" aria-valuenow=\"40\" 
+              aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 20%\">
+              Atleta&nbsp;&nbsp;
+           </div>
+      
+    </div><!-- Progress -->
+    ";
+
 
 // PUT YOUR HTML IN A VARIABLE
 $my_html = "<html>
@@ -208,7 +238,16 @@ body{    padding-top: 0px !important;}
  		</div>
  	</div><!-- Datos -->
 
-	
+	   <div class=\"progress\" style=\"margin-top:5%;\">
+        <div class=\"progress-bar ".$BarraPeso."\" role=\"progressbar\" aria-valuenow=\"60\" aria-valuemin=\"0\"
+         aria-valuemax=\"100\" id=\"ProgresBarResultado\" style=\"".$LongitudPeso."\">
+        <span class=\"sr-only\">60% Complete</span>
+      </div>
+    </div><!--progress -->
+    
+    <!-- Barra de comparación-->
+  ".$progress."
+
     <div class=\"\" style=\"border: 1px solid #ccc\">
         <div  id=\"chart_div\" style=\" width:800px;\" align=\"center\"></div>    
     </div><!-- ContainerGraphic -->
@@ -231,7 +270,16 @@ body{    padding-top: 0px !important;}
     </div>
   </div><!-- Datos -->
 
-  
+    
+    <div class=\"progress\" style=\"margin-top:5%;\">
+        <div class=\"progress-bar ".$BarraImc."\" role=\"progressbar\" aria-valuenow=\"60\" aria-valuemin=\"0\"
+         aria-valuemax=\"100\" id=\"ProgresBarResultado\" style=\"".$LongitudImc."\">
+        <span class=\"sr-only\">60% Complete</span>
+      </div>
+    </div><!--progress -->
+    
+    <!-- Barra de comparación-->
+  ".$progress."
     <div class=\"ContainerGraphic\" style=\"border: 1px solid #ccc; height:320px;\">
         <div  id=\"chart_imc\" style=\" width:800px;\" align=\"center\"></div>    
     </div><!-- ContainerGraphic -->
@@ -239,9 +287,9 @@ body{    padding-top: 0px !important;}
 </div><!--containerbar -->  
 
 <!-- Condicion Física-->
- <div class=\" containerbarPeso Grafica\" id=\"ContainerBar\" style=\"margin-bottom:80px;\"> 
+<div class=\" containerbar Grafica\" id=\"ContainerBar\" style=\"margin-bottom:80px;\"> 
   <div class=\"col-md-12 col-xs-12 col-sm-12 Cabecera\">
-    <h1 class=\"text-left\">Condici&oacute;n F&iacute;sica</h1>
+    <h1 class=\"text-left\">Condicion Fisica</h1>
   </div>
   
   <div class=\"  Datos\">
@@ -254,15 +302,24 @@ body{    padding-top: 0px !important;}
     </div>
   </div><!-- Datos -->
 
+    <div class=\"progress\" style=\"margin-top:5%; margin-bottom:3%;\">
+        <div class=\"progress-bar ".$Barracon."\" role=\"progressbar\" aria-valuenow=\"60\" aria-valuemin=\"0\"
+         aria-valuemax=\"100\" id=\"ProgresBarResultado\" style=\"".$Longitudcon."\">
+        <span class=\"sr-only\">60% Complete</span>
+      </div>
+    </div><!--progress -->
+    
+    <!-- Barra de comparación-->
+  ".$progress."
   
     <div class=\"ContainerGraphic\" style=\"border: 1px solid #ccc; height:320px;\">
-        <div  id=\"chart_con\" style=\" width:800px;\" align=\"center\"></div>    
+        <div  id=\"chart_con\" style=\" width:800px; margin-left:15%;\" align=\"center\"></div>    
     </div><!-- ContainerGraphic -->
     
 </div><!--containerbar -->  
 
 <!-- Resistencia-->
- <div class=\" containerbarPeso Grafica\" id=\"ContainerBar\" style=\"margin-bottom:320px;\"> 
+ <div class=\" containerbar Grafica\" id=\"ContainerBar\" style=\"margin-bottom:320px;\"> 
   <div class=\"col-md-12 col-xs-12 col-sm-12 Cabecera\">
     <h1 class=\"text-left\">Resistencia</h1>
   </div>
@@ -275,11 +332,20 @@ body{    padding-top: 0px !important;}
         ".$Consejores."
       </p>
     </div>
-  </div><!-- Datos -->	
+  </div><!-- Datos -->
 
-  
+    <div class=\"progress\" style=\"margin-top:5%;\">
+        <div class=\"progress-bar ".$Barrares."\" role=\"progressbar\" aria-valuenow=\"60\" aria-valuemin=\"0\"
+         aria-valuemax=\"100\" id=\"ProgresBarResultado\" style=\"".$Longitudres."\">
+        <span class=\"sr-only\">60% Complete</span>
+      </div>
+    </div><!--progress -->
+    
+    <!-- Barra de comparación-->
+  ".$progress."
+
     <div class=\"ContainerGraphic\" style=\"border: 1px solid #ccc; height:320px;\">
-        <div  id=\"chart_res\" style=\" width:800px;\" align=\"center\"></div>    
+        <div  id=\"chart_res\" style=\" width:800px; margin-left:15%;\" align=\"center\"></div>    
     </div><!-- ContainerGraphic -->
     
 </div><!--containerbar -->  
@@ -294,16 +360,25 @@ body{    padding-top: 0px !important;}
   <div class=\"  Datos\">
     
 
-    <div class=\" Consejo\" align=\"center\" style=\"height:100px;\">
+    <div class=\" Consejo\" align=\"center\">
       <p class=\"text-center\">
         ".$Consejosta."
       </p>
     </div>
   </div><!-- Datos -->
 
-  
-    <div class=\"ContainerGraphic\" style=\"border: 1px solid #ccc; height:350px;\">
-        <div  id=\"chart_sta\" style=\" width:800px;\" align=\"center\"></div>    
+    <div class=\"progress\" style=\"margin-top:5%;\">
+        <div class=\"progress-bar ".$Barrasta."\" role=\"progressbar\" aria-valuenow=\"60\" aria-valuemin=\"0\"
+         aria-valuemax=\"100\" id=\"ProgresBarResultado\" style=\"".$Longitudsta."\">
+        <span class=\"sr-only\">60% Complete</span>
+      </div>
+    </div><!--progress -->
+    
+    <!-- Barra de comparación-->
+  ".$progress."
+
+    <div class=\"ContainerGraphic\" style=\"border: 1px solid #ccc; height:320px;\">
+        <div  id=\"chart_sta\" style=\" width:800px; margin-left:15%;\" align=\"center\"></div>    
     </div><!-- ContainerGraphic -->
     
 </div><!--containerbar -->  

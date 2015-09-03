@@ -133,32 +133,32 @@ require("phpToPDF.php");
 		
 		$progress    = "
 			   <div class=\"progress\">
-                                                 <div class=\"progress-bar progress-bar-danger\" role=\"progressbar\" aria-valuenow=\"40\" 
-                                                	 aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 20%\">
-                                               		Pobre&nbsp;&nbsp;
-                                                 </div>
-                                             	
-                                                 <div class=\"progress-bar progress-bar-warning\" role=\"progressbar\" aria-valuenow=\"40\" 
-                                                 	aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 20%\">
-                                               		Promedio&nbsp;&nbsp;
-                                                 </div>
-                                                
-                                              <div class=\"progress-bar\" role=\"progressbar\" aria-valuenow=\"40\" aria-valuemin=\"0\"
-                                                   aria-valuemax=\"100\" style=\"width: 20%\">
-                                                   Bueno&nbsp;&nbsp;
-                                               </div>
-                                               
-                                                <div class=\"progress-bar progress-bar-success\" role=\"progressbar\" aria-valuenow=\"40\" 
-                                                    aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 20%\">
-                                                	Excelente&nbsp;&nbsp;
-                                                </div>
-                                                
-                                               <div class=\"progress-bar progress-bar-success\" role=\"progressbar\" aria-valuenow=\"40\" 
-                                               		aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 20%\">
-                                               		Atleta&nbsp;&nbsp;
-                                               </div>
-												
-                                        </div><!-- Progress -->
+             <div class=\"progress-bar progress-bar-danger\" role=\"progressbar\" aria-valuenow=\"40\" 
+            	 aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 20%\">
+           		Pobre&nbsp;&nbsp;
+             </div>
+         	
+             <div class=\"progress-bar progress-bar-warning\" role=\"progressbar\" aria-valuenow=\"40\" 
+             	aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 20%\">
+           		Promedio&nbsp;&nbsp;
+             </div>
+            
+          <div class=\"progress-bar\" role=\"progressbar\" aria-valuenow=\"40\" aria-valuemin=\"0\"
+               aria-valuemax=\"100\" style=\"width: 20%\">
+               Bueno&nbsp;&nbsp;
+           </div>
+           
+            <div class=\"progress-bar progress-bar-success\" role=\"progressbar\" aria-valuenow=\"40\" 
+                aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 20%\">
+            	Excelente&nbsp;&nbsp;
+            </div>
+            
+           <div class=\"progress-bar progress-bar-success\" role=\"progressbar\" aria-valuenow=\"40\" 
+           		aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 20%\">
+           		Atleta&nbsp;&nbsp;
+           </div>
+			
+    </div><!-- Progress -->
 		";
 		//Fecha actual
 date_default_timezone_set("Mexico/General");
@@ -219,7 +219,7 @@ $my_html = "<html>
                                         </div><!--progress -->
                                         
                                         <!-- Barra de comparación-->
-                                     ".$progress."
+                                     	".$progress."
                                         <p class=\"text-center \">".$ConsejoPeso."</p>
 										<div id=\"chart_peso\" style=\"height:270px; width:800px;\"align=\"center\"></div>
 										<h1>&nbsp;</h1> <!-- para hacer el espacio y bajarlo-->
