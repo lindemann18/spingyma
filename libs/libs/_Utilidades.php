@@ -147,6 +147,7 @@ class Utilidades
 				}else{array_push($IMM2,$ResultadosIMM[$i]);}
 			}//for
 		}
+
 		$IMMLibre  = $this->DespejarValoresArrayIMM($IMM);
 		$IMMLibre2 = $this->DespejarValoresArrayIMM($IMM2);
 
@@ -484,6 +485,7 @@ class Utilidades
 	{
 		$contenido = array();
 		$consultar = new Consultar();
+		
 		for($i=0; $i<$num_rows; $i++)
 		{
 			$fila  				= $result[$i];
@@ -1048,28 +1050,28 @@ class Utilidades
 			switch($IMM[$i]['desc_prueba'])
 			{
 				case "IMM - Espalda": 
-					$Espalda 	 = $IMM[$i]['resultado'];
+					$Espalda 	 = $IMM[$i]['resultado_numerico'];
 				break;
 				case 'IMM - Pecho': 
-					$Pecho   = $IMM[$i]['resultado'];
+					$Pecho   = $IMM[$i]['resultado_numerico'];
 				break;
 				case 'IMM - Abdomen': 
-					$Abdomen     = $IMM[$i]['resultado'];
+					$Abdomen     = $IMM[$i]['resultado_numerico'];
 				break;
 				case 'IMM - Cadera': 
-					$Cadera = $IMM[$i]['resultado'];
+					$Cadera = $IMM[$i]['resultado_numerico'];
 				break;
 				case 'IMM - Brazo': 
-					$Brazo = $IMM[$i]['resultado'];
+					$Brazo = $IMM[$i]['resultado_numerico'];
 				break;
 				case 'IMM - Muslo': 
-					$Muslo  = $IMM[$i]['resultado'];
+					$Muslo  = $IMM[$i]['resultado_numerico'];
 				break;
 				
 			}//switch				
 		}//for
 		
-		$fecha = $IMM[0]['fecha'];
+		$fecha = $IMM[0]['fh_creacion'];
 		$fecha = ($fecha!=0)?$this->ConvertirTimeStamp($fecha):"Biotest No hecho";
 		$IMMLibre = array("Espalda"=>$Espalda,"Pecho"=>$Pecho,"Abdomen"=>$Abdomen,
 						 "Cadera"=>$Cadera,"Brazo"=>$Brazo,"Muslo"=>$Muslo,"fecha"=>$fecha);	
@@ -1113,7 +1115,7 @@ class Utilidades
 			}//switch				
 		}//for
 		
-		$fecha = $IMM[0]['fecha'];
+		$fecha = $IMM[0]['fh_creacion'];
 		$fecha = ($fecha!=0)?$this->ConvertirTimeStamp($fecha):"Biotest No hecho";
 		$IMMLibre = array("Espalda"=>$Espalda,"Pecho"=>$Pecho,"Abdomen"=>$Abdomen,
 						 "Cadera"=>$Cadera,"Brazo"=>$Brazo,"Muslo"=>$Muslo,"fecha"=>$fecha);	

@@ -66,6 +66,30 @@ var url = 'modulos/Clientes/Funciones.php';
   $scope.cliente = $routeParams.Cliente;
   $scope.dias    = 0;
   //Funciones
+  $scope.enviar = function()
+  {
+    bootbox.confirm("Desea enviar los resultados del biotest?", function(result) {
+    console.log(result);
+      if(result==true)
+      {
+        $scope.$apply(function(){
+        var params = $methodsService.Json("UltimoBiotestCliente",$scope.cliente);
+        var url = 'modulos/BiotestUltra/crearPdfarchivo.php?Id_Cliente='+$scope.cliente;
+         $http({method: "post",url: url,data: $.param({Params:params}), 
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        })
+         .success(function(data, status, headers, config) 
+         {     
+
+          })  
+         .error(function(data, status, headers, config){
+          $methodsService.alerta(2,"algo falló, disculpe las molestias");
+          });
+      });
+      }//if
+    });
+  }//enviar
+
   $scope.Aplicar = function()
   {
       bootbox.confirm("Desea aplicar el biotest a este cliente?", function(result) {
