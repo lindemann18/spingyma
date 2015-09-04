@@ -334,7 +334,7 @@ class Utilidades
 				$desc_prueba2 = 0;
 				$resultado2   = 0;
 				$fecha2       = 0;
-				$pruebaimm2   = array("desc_prueba"=>$desc_prueba, "resultado"=>$resultado, "fecha"=>$fecha);
+				$pruebaimm2   = array("desc_prueba"=>$desc_prueba2, "resultado"=>$resultado2, "fecha"=>$fecha2);
 				array_push($IMM2, $pruebaimm2);
 			}//for
 		}//if
@@ -1114,7 +1114,7 @@ class Utilidades
 		}//for
 		
 		$fecha = $IMM[0]['fecha'];
-		$fecha = $this->ConvertirTimeStamp($fecha);
+		$fecha = ($fecha!=0)?$this->ConvertirTimeStamp($fecha):"Biotest No hecho";
 		$IMMLibre = array("Espalda"=>$Espalda,"Pecho"=>$Pecho,"Abdomen"=>$Abdomen,
 						 "Cadera"=>$Cadera,"Brazo"=>$Brazo,"Muslo"=>$Muslo,"fecha"=>$fecha);	
 		return $IMMLibre;

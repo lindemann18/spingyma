@@ -83,7 +83,7 @@ angular.module('AppUsuarios',['ngRoute','angularUtils.directives.dirPagination',
 				  			// Eliminando al usuario seleccionado.
 				  			params = $methodsService.Json("EliminarUsuario",$scope.usertr);
 				  			//Enviando por ajax la peetición
-				  			var url = 'modulos/usuarios/Funciones.php';
+				  			var url = 'modulos/Usuarios/Funciones.php';
 							 $http({method: "post",url: url,data: $.param({Params:params}), 
 							  headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
 							})
@@ -122,7 +122,7 @@ angular.module('AppUsuarios',['ngRoute','angularUtils.directives.dirPagination',
 		Arr           = new Object();
         Arr['Accion'] = "BuscarUsuarios";
         params        = JSON.stringify(Arr);
-        var url = 'modulos/usuarios/Funciones.php';
+        var url = 'modulos/Usuarios/Funciones.php';
          $http({method: "post",url: url,data: $.param({Params:params}), 
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
         })
@@ -175,7 +175,7 @@ angular.module('AppUsuarios',['ngRoute','angularUtils.directives.dirPagination',
 				  			//Enviando el usuario a editar.
 							$scope.usuario.Accion = "EditarUsuario";
 							params        = JSON.stringify($scope.usuario);
-							var url = 'modulos/usuarios/Funciones.php';
+							var url = 'modulos/Usuarios/Funciones.php';
 							 $http({method: "post",url: url,data: $.param({Params:params}), 
 							  headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
 							})
@@ -204,7 +204,7 @@ angular.module('AppUsuarios',['ngRoute','angularUtils.directives.dirPagination',
 	 
 	//Generando el json a enviar.
 	params = $methodsService.Json("BuscarInfoClientePorId",$scope.id);
-	var url = 'modulos/usuarios/Funciones.php';
+	var url = 'modulos/Usuarios/Funciones.php';
          $http({method: "post",url: url,data: $.param({Params:params}), 
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
         })
@@ -241,7 +241,7 @@ angular.module('AppUsuarios',['ngRoute','angularUtils.directives.dirPagination',
 		  			//enviando por ajax la información.
 		  			$scope.usuario.Accion = "AgregarUsuario";
 					params        = JSON.stringify($scope.usuario);
-					var url = 'modulos/usuarios/Funciones.php';
+					var url = 'modulos/Usuarios/Funciones.php';
 					 $http({method: "post",url: url,data: $.param({Params:params}), 
 					  headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
 					})

@@ -87,7 +87,7 @@
 		Arr['Accion'] 	= "LoginUsuario";
 		params 			= JSON.stringify(Arr);
 
-     	var url = 'modulos/usuarios/Funciones.php';
+     	var url = 'modulos/Usuarios/Funciones.php';
         $http({
 	      method: "post",
 		      url: url,

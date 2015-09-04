@@ -350,38 +350,8 @@ body{    padding-top: 0px !important;}
     
 </div><!--containerbar -->  
 
-
-<!-- Stamina-->
- <div class=\" containerbar Grafica\" id=\"ContainerBar\" style=\"margin-bottom:320px;\"> 
-  <div class=\"col-md-12 col-xs-12 col-sm-12 Cabecera\">
-    <h1 class=\"text-left\">Stamina</h1>
-  </div>
   
-  <div class=\"  Datos\">
-    
-
-    <div class=\" Consejo\" align=\"center\">
-      <p class=\"text-center\">
-        ".$Consejosta."
-      </p>
-    </div>
-  </div><!-- Datos -->
-
-    <div class=\"progress\" style=\"margin-top:5%;\">
-        <div class=\"progress-bar ".$Barrasta."\" role=\"progressbar\" aria-valuenow=\"60\" aria-valuemin=\"0\"
-         aria-valuemax=\"100\" id=\"ProgresBarResultado\" style=\"".$Longitudsta."\">
-        <span class=\"sr-only\">60% Complete</span>
-      </div>
-    </div><!--progress -->
-    
-    <!-- Barra de comparación-->
-  ".$progress."
-
-    <div class=\"ContainerGraphic\" style=\"border: 1px solid #ccc; height:320px;\">
-        <div  id=\"chart_sta\" style=\" width:800px; margin-left:15%;\" align=\"center\"></div>    
-    </div><!-- ContainerGraphic -->
-    
-</div><!--containerbar -->  
+ 
 
 <!-- Fuerza-->
  <div class=\" containerbar Grafica\" id=\"ContainerBar\" style=\"margin-bottom:80;\"> 
@@ -398,16 +368,55 @@ body{    padding-top: 0px !important;}
       </p>
     </div>
   </div><!-- Datos -->
-
+    
+     <div class=\"progress\" style=\"margin-top:5%; margin-bottom:3%;\">
+        <div class=\"progress-bar ".$Barrafue."\" role=\"progressbar\" aria-valuenow=\"60\" aria-valuemin=\"0\"
+         aria-valuemax=\"100\" id=\"ProgresBarResultado\" style=\"".$Longitudfue."\">
+        <span class=\"sr-only\">60% Complete</span>
+      </div>
+    </div><!--progress -->
+    
+    <!-- Barra de comparación-->
+  ".$progress."
   
     <div class=\"ContainerGraphic\" style=\"border: 1px solid #ccc; height:320px;\">
-        <div  id=\"chart_fue\" style=\" width:800px;\" align=\"center\"></div>    
+        <div  id=\"chart_fue\" style=\" width:800px; margin-left:15%;\" align=\"center\"></div>    
     </div><!-- ContainerGraphic -->
     
 </div><!--containerbar -->  
 
 
+<!-- Stamina-->
+ <div class=\" containerbar Grafica\" id=\"ContainerBar\" style=\"margin-bottom:80;\"> 
+  <div class=\"col-md-12 col-xs-12 col-sm-12 Cabecera\">
+    <h1 class=\"text-left\">Stamina</h1>
+  </div>
+  
+  <div class=\"  Datos\">
+    
 
+    <div class=\" Consejo\" align=\"center\">
+      <p class=\"text-center\">
+        ".$Consejosta."
+      </p>
+    </div>
+  </div><!-- Datos -->
+    
+     <div class=\"progress\" style=\"margin-top:5%; margin-bottom:3%;\">
+        <div class=\"progress-bar ".$Barrasta."\" role=\"progressbar\" aria-valuenow=\"60\" aria-valuemin=\"0\"
+         aria-valuemax=\"100\" id=\"ProgresBarResultado\" style=\"".$Longitudsta."\">
+        <span class=\"sr-only\">60% Complete</span>
+      </div>
+    </div><!--progress -->
+    
+    <!-- Barra de comparación-->
+  ".$progress."
+  
+    <div class=\"ContainerGraphic\" style=\"border: 1px solid #ccc; height:320px;\">
+        <div  id=\"chart_sta\" style=\" width:800px; margin-left:15%;\" align=\"center\"></div>    
+    </div><!-- ContainerGraphic -->
+    
+</div><!--containerbar -->  
 
  <!-- IMM-->
 <div class=\"col-md-12 containerbar  \" > 
@@ -577,8 +586,8 @@ body{    padding-top: 0px !important;}
         var options3  = {'title':'IMM','width':700,'height':350};
         var options4  = {'title':'Condicion Fisica','width':730,'height':300};
         var options5  = {'title':'Resistencia','width':730,'height':300};
-        var options6  = {'title':'Stamina','width':600,'height':300};
-        var options7  = {'title':'Fuerza','width':730,'height':300};
+        var options6  = {'title':'Stamina','width':700,'height':300};
+        var options7  = {'title':'Fuerza','width':700,'height':300};
 
         var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
         chart.draw(data, options);
@@ -592,6 +601,8 @@ body{    padding-top: 0px !important;}
         chart.draw(data5, options5);
         var chart = new google.visualization.BarChart(document.getElementById('chart_sta'));
         chart.draw(data6, options6);
+        var chart = new google.visualization.BarChart(document.getElementById('chart_fue'));
+        chart.draw(data7, options7);
         
     }
     </script>  
@@ -611,7 +622,7 @@ $my_html_footer="
           &nbsp; 
   </div>
   <div style=\"float:left; width:33%; text-align:center;\">
-         Page phptopdf_on_page_number of phptopdf_pages_total
+         Pagina phptopdf_on_page_number De phptopdf_pages_total
   </div>
   <div style=\"float:left; width:33%; text-align:right;\">
           &nbsp;
