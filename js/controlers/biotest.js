@@ -1,8 +1,11 @@
 angular.module('AppBiotest',['ngRoute','angularUtils.directives.dirPagination','Methods','ngCookies',"highcharts-ng"])
 
 .controller('MenuBiotest',function($scope,$http,$location,$methodsService,$routeParams){
-	$scope.Cliente = $routeParams.Cliente;
-
+	// Variables
+	$scope.Cliente  = $routeParams.Cliente;
+	$scope.showsend = false;
+	$scope.errormsj = "";
+	$scope.fallo    = 2;
 	//Funciones
 	$scope.enviar = function()
 	{
@@ -13,12 +16,18 @@ angular.module('AppBiotest',['ngRoute','angularUtils.directives.dirPagination','
 	  		$scope.$apply(function(){
 				var params = $methodsService.Json("UltimoBiotestCliente",$scope.cliente);
 				var url = 'modulos/Biotest/crearPdfarchivo.php?Id_Cliente='+$scope.Cliente;
+				$scope.showsend = true;
 				 $http({method: "post",url: url,data: $.param({Params:params}), 
 				  headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
 				})
 				 .success(function(data, status, headers, config) 
 				 {     
-
+				 		exito 			= data.exito;
+				 		$scope.showsend = false;
+				 		if(exito==1)
+				 		{
+				 			$scope.fallo = 0; 
+				 		}else{$scope.fallo=1; $scope.errormsj = "Error de mailing";}
 				  })  
 				 .error(function(data, status, headers, config){
 				 	$methodsService.alerta(2,"algo falló, disculpe las molestias");

@@ -2720,7 +2720,7 @@
 
 		/* DAtos de la tabla días*/
 		dias.nb_dia,
-
+		dias.id as id_dia,
 		/* Datos de sg_musculos*/
 		Musc.nb_musculo,
 

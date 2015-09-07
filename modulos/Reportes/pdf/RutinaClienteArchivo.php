@@ -30,7 +30,15 @@
 	//Fecha actual
 	date_default_timezone_set("Mexico/General");
 	$fecha_actual = date("Y-m-d"); //fecha del día de hoy
-				
+
+	// Contenedores de los ejercicios de los días
+	$lunes	   = array();
+	$martes    = array();
+	$miercoles = array();
+	$jueves    = array();
+	$viernes   = array();
+	$sabado	   = array();
+	$domingo   = array();				
 				
 	//Tomando los datos
 	$ejercicios="";
@@ -38,18 +46,116 @@
 	for($i=0; $i<$num_rows; $i++)
 	{
 		$filaInfo = $result[$i];
-		$ejercicios.="
-		<tr class=\"text-center\" align=\"center\">
-			<td class=\"text-center\">".$filaInfo['num_maquina']."</td>
-			<td class=\"text-center\">".$filaInfo['nb_ejercicio']."</td>
-			<td class=\"text-center\">".$filaInfo['nb_tiporutina']."</td>
-			<td class=\"text-center\">".$filaInfo['nb_dia']."</td>
-			<td class=\"text-center\">".$filaInfo['num_circuitos']."</td>
-			<td class=\"text-center\">".$filaInfo['num_repeticiones']."</td>
-			<td class=\"text-center\">".$filaInfo['ejercicio_relacion']."</td>
-		</tr>";
+		
+		// insertando al respectivo array
+		switch($filaInfo['id_dia'])
+		{
+			case 1:
+				array_push($lunes,$filaInfo);
+			break;
+			case 2:
+				array_push($martes,$filaInfo);
+			break;
+			case 3:
+				array_push($miercoles,$filaInfo);
+			break;
+			case 4:
+				array_push($jueves,$filaInfo);
+			break;
+			case 5:
+				array_push($viernes,$filaInfo);
+			break;
+			case 6:
+				array_push($sabado,$filaInfo);
+			break;
+			case 7:
+				array_push($domingo,$filaInfo);
+			break;
+		}//switch
 	}//for				
 	
+
+	//Creando los agregados de cada día
+	$can_lunes = count($lunes);
+	$lun_content = "";
+	$mar_content = "";
+	$mie_content = "";
+	$jue_content = "";
+	$vie_content = "";
+	$sab_content = "";
+	$dom_content = "";
+
+	foreach ($lunes as $lun) {
+		$lun_content.= "
+		<tr class=\"text-center\" align=\"center\">
+			<td class=\"text-center\">".$lun['num_maquina']."</td>
+			<td class=\"text-center\">".$lun['nb_ejercicio']."</td>
+			<td class=\"text-center\">".$lun['num_circuitos']."</td>
+			<td class=\"text-center\">".$lun['num_repeticiones']."</td>
+		</tr>";
+	}
+
+	foreach ($martes as $mar) {
+		$mar_content.= "
+		<tr class=\"text-center\" align=\"center\">
+			<td class=\"text-center\">".$mar['num_maquina']."</td>
+			<td class=\"text-center\">".$mar['nb_ejercicio']."</td>
+			<td class=\"text-center\">".$mar['num_circuitos']."</td>
+			<td class=\"text-center\">".$mar['num_repeticiones']."</td>
+		</tr>";
+	}
+
+	foreach ($miercoles as $mie) {
+		$mie_content.= "
+		<tr class=\"text-center\" align=\"center\">
+			<td class=\"text-center\">".$mie['num_maquina']."</td>
+			<td class=\"text-center\">".$mie['nb_ejercicio']."</td>
+			<td class=\"text-center\">".$mie['num_circuitos']."</td>
+			<td class=\"text-center\">".$mie['num_repeticiones']."</td>
+		</tr>";
+	}
+
+	foreach ($jueves as $jue) {
+		$jue_content.= "
+		<tr class=\"text-center\" align=\"center\">
+			<td class=\"text-center\">".$jue['num_maquina']."</td>
+			<td class=\"text-center\">".$jue['nb_ejercicio']."</td>
+			<td class=\"text-center\">".$jue['num_circuitos']."</td>
+			<td class=\"text-center\">".$jue['num_repeticiones']."</td>
+		</tr>";
+	}
+
+	foreach ($viernes as $vie) {
+		$vie_content.= "
+		<tr class=\"text-center\" align=\"center\">
+			<td class=\"text-center\">".$vie['num_maquina']."</td>
+			<td class=\"text-center\">".$vie['nb_ejercicio']."</td>
+			<td class=\"text-center\">".$vie['num_circuitos']."</td>
+			<td class=\"text-center\">".$vie['num_repeticiones']."</td>
+		</tr>";
+	}
+
+	foreach ($sabado as $sab) {
+		$sab_content.= "
+		<tr class=\"text-center\" align=\"center\">
+			<td class=\"text-center\">".$sab['num_maquina']."</td>
+			<td class=\"text-center\">".$sab['nb_ejercicio']."</td>
+			<td class=\"text-center\">".$sab['num_circuitos']."</td>
+			<td class=\"text-center\">".$sab['num_repeticiones']."</td>
+		</tr>";
+	}
+
+	foreach ($domingo as $dom) {
+		$dom_content.= "
+		<tr class=\"text-center\" align=\"center\">
+			<td class=\"text-center\">".$dom['num_maquina']."</td>
+			<td class=\"text-center\">".$dom['nb_ejercicio']."</td>
+			<td class=\"text-center\">".$dom['num_circuitos']."</td>
+			<td class=\"text-center\">".$dom['num_repeticiones']."</td>
+		</tr>";
+	}
+
+
 	// Extend the TCPDF class to create custom Header and Footer
 		class MYPDF extends TCPDF {
 		
@@ -296,40 +402,153 @@
 				.text-center{text-align:center;}
 			</style>
 
-			<div style="width:100%">
+			<div style="width:100%;">
 				<h1 style="text-align:center;">'.$nombre_completo.'</h1>
 				<h3 style="text-align:center;">Fecha: '.$fecha_actual.'</h3>
 				<p>Desde <strong>SPINGYM</strong> deseamos que disfrutes tu tiempo aquí, por eso te mandamos tu rutina. 
 				   Recuerda que las rutinas seguidas debidamente tienen un lapso de duración máximo de 1 mes.
 				   Renueva frecuente tu rutina con tu entrenador favorito.
 				</p>
-				<p>
-					La relación indica el orden de ejecución de los ejercicios, recuerda seguirlos como te los ha asignado tu
-					entrenador para un mejor resultado.
-				</p>
 				<h3 style="text-align:center; color:#cd2027;">Vive Spin Gym!</h3>
 			</div>
 				
 			
 			<body style="width:1024px; font-size:15px">
+				<div align="center" style="width: 600px;" id="lunes">
+					<h3>Lunes</h3>
 					<div style="width:1000px">
-					<table class=\"table table-striped \" width="100%" cellspacing="0" cellpadding="55%" style="font-size: 11.5px" border="1"> 
-				  <thead>
-					<tr width="100%" >
-						<th align="center" >MAQUINA</th>
-						<th align="center">EJERCICIO</th>
-						<th align="center">TIPO RUTINA</th>
-						<th align="center">DIA</th>
-						<th align="center">CIRCUITOS</th>
-						<th align="center">REPETICIONES</th>
-						<th align="center">RELACION</th>
-					</tr>
-				  </thead>
-				  <tbody>
-						'.$ejercicios.'
-				  </tbody>
-				</table>
-				</div>
+						<table class=\"table table-striped \" width="100%" cellspacing="0" cellpadding="55%" style="font-size: 11.5px" border="1"> 
+						  <thead>
+							<tr width="100%" >
+								<th align="center" >MAQUINA</th>
+								<th align="center">EJERCICIO</th>
+								<th align="center">CIRCUITOS</th>
+								<th align="center">REPETICIONES</th>
+							</tr>
+						  </thead>
+						  <tbody>
+								'.$lun_content.'
+						  </tbody>
+						</table>
+					</div>
+				</div><!-- Lunes -->
+				
+				<br>
+
+				<div align="center" style="width: 600px;" id="Martes">
+					<h3>Martes</h3>
+					<div style="width:800px">
+						<table class=\"table table-striped \" width="100%" cellspacing="0" cellpadding="55%" style="font-size: 11.5px" border="1"> 
+						  <thead>
+							<tr width="100%" >
+								<th align="center" >MAQUINA</th>
+								<th align="center">EJERCICIO</th>
+								<th align="center">CIRCUITOS</th>
+								<th align="center">REPETICIONES</th>
+							</tr>
+						  </thead>
+						  <tbody>
+								'.$mar_content.'
+						  </tbody>
+						</table>
+					</div>
+				</div><!-- Martes -->
+				
+
+				<div align="center" style="width: 600px;" id="Miercoles">
+					<h3>Miercoles</h3>
+					<div style="width:1000px;">
+						<table class=\"table table-striped \" width="100%" cellspacing="0" cellpadding="55%" style="font-size: 11.5px" border="1"> 
+						  <thead>
+							<tr width="100%" >
+								<th align="center" >MAQUINA</th>
+								<th align="center">EJERCICIO</th>
+								<th align="center">CIRCUITOS</th>
+								<th align="center">REPETICIONES</th>
+							</tr>
+						  </thead>
+						  <tbody>
+								'.$mie_content.'
+						  </tbody>
+						</table>
+					</div>
+				</div><!-- Miercoles -->
+
+				<div align="center" style="width: 600px;" id="Jueves">
+					<h3>Jueves</h3>
+					<div style="width:1000px;">
+						<table class=\"table table-striped \" width="100%" cellspacing="0" cellpadding="55%" style="font-size: 11.5px" border="1"> 
+						  <thead>
+							<tr width="100%" >
+								<th align="center" >MAQUINA</th>
+								<th align="center">EJERCICIO</th>
+								<th align="center">CIRCUITOS</th>
+								<th align="center">REPETICIONES</th>
+							</tr>
+						  </thead>
+						  <tbody>
+								'.$jue_content.'
+						  </tbody>
+						</table>
+					</div>
+				</div><!-- Jueves -->
+
+				<div align="center" style="width: 600px;" id="Viernes">
+					<h3>Viernes</h3>
+					<div style="width:1000px;">
+						<table class=\"table table-striped \" width="100%" cellspacing="0" cellpadding="55%" style="font-size: 11.5px" border="1"> 
+						  <thead>
+							<tr width="100%" >
+								<th align="center" >MAQUINA</th>
+								<th align="center">EJERCICIO</th>
+								<th align="center">CIRCUITOS</th>
+								<th align="center">REPETICIONES</th>
+							</tr>
+						  </thead>
+						  <tbody>
+								'.$vie_content.'
+						  </tbody>
+						</table>
+					</div>
+				</div><!-- Viernes -->
+
+				<div align="center" style="width: 600px;" id="Sabado">
+					<h3>Sabado</h3>
+					<div style="width:1000px;">
+						<table class=\"table table-striped \" width="100%" cellspacing="0" cellpadding="55%" style="font-size: 11.5px" border="1"> 
+						  <thead>
+							<tr width="100%" >
+								<th align="center" >MAQUINA</th>
+								<th align="center">EJERCICIO</th>
+								<th align="center">CIRCUITOS</th>
+								<th align="center">REPETICIONES</th>
+							</tr>
+						  </thead>
+						  <tbody>
+								'.$sab_content.'
+						  </tbody>
+						</table>
+					</div>
+				</div><!-- Sabado -->
+
+				<div align="center" style="width: 600px;" id="Domingo">
+					<h3>Domingo</h3>
+					<div style="width:1000px;">
+						<table class=\"table table-striped \" width="100%" cellspacing="0" cellpadding="55%" style="font-size: 11.5px" border="1"> 
+						  <thead>
+							<tr width="100%" >
+								<th align="center" >MAQUINA</th>
+								<th align="center">EJERCICIO</th>
+								<th align="center">CIRCUITOS</th>
+								<th align="center">REPETICIONES</th>
+							</tr>
+						  </thead>
+						  <tbody>
+								'.$dom_content.'
+						  </tbody>
+						</table>
+					</div>
+				</div><!-- Domingo -->
 			</body>
 		';
 				
@@ -347,8 +566,8 @@
 		//Close and output PDF document
 		//Datos del pdf, nombre, ubicación y demás.
 
-		$nombrepdf = $id_cliente."file".".pdf"; 	//Local
-		$pdf->Output("../../../pdf/".$nombrepdf, 'I');
+		$nombrepdf = $id_cliente."Rutina".".pdf"; 	//Local
+		$pdf->Output("../../../pdf/".$nombrepdf, 'F');
 	
 ?>
 
