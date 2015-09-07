@@ -415,7 +415,7 @@ phptopdf($pdf_options);
 require '../../includes/PhpMailer/PHPMailerAutoload.php';
 require '../../includes/PhpMailer/class.smtp.php';
 
-$mailFile     = "/Spinpgym/pdf/".$nombrepdf;
+$mailFile     = "/spingyma/pdf/".$nombrepdf;
 $mail  = new PHPMailer();
 $body="<b>This mail is sent using PHP Mailer</b>";#HTML tags can be included
 $mail->IsSMTP();
@@ -430,8 +430,8 @@ $mail->Subject    = "Resultados Biotest SpinGym";
 $mail->AddAddress($de_email);
 //$mail->SMTPDebug  = 2; 
 $mail->Body    = 'Desde SpinGym queremos que disfrutes tu tiempo aqu&iacute;, para tu comidad te mandamos tus resultados a tu correo. Vive SpinGym';
-$mail->AddAttachment($_SERVER['DOCUMENT_ROOT']."/".$mailFile,"Rutina.Pdf");
-$mail->WordWrap   = 50;
+//$mail->AddAttachment($_SERVER['DOCUMENT_ROOT']."/".$mailFile,"Rutina.Pdf");
+$mail->AddAttachment($_SERVER['DOCUMENT_ROOT'].$mailFile,"Rutina.Pdf");$mail->WordWrap   = 50;
 $mail->AddAddress($de_email, "SpinGym");
 $mail->IsHTML(true); // send as HTML
 
@@ -439,7 +439,7 @@ if(!$mail->Send())
 {
   unlink($_SERVER['DOCUMENT_ROOT']."/".$mailFile); //Eliminando archivo
   //Redirigir a la página
-  $salidaJson=array("exito"=>1);
+  $salidaJson=array("exito"=>0);
   echo json_encode($salidaJson);
 }
 else
@@ -447,7 +447,7 @@ else
   //unlink($pdfpath); //Eliminando archivo local
   unlink($_SERVER['DOCUMENT_ROOT']."/".$mailFile); //Eliminando archivo host
   //Redirigir a la página
-  $salidaJson=array("exito"=>0);
+  $salidaJson=array("exito"=>1);
   echo json_encode($salidaJson);
 }
 
