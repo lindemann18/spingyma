@@ -9,6 +9,9 @@ $con        = $conexion->_con(); //Variable de conexión
 $id_cliente   = $_GET['Id_Cliente'];
 $consultar   = new Consultar();
 $Utilidades  = new Utilidades();
+
+//Se debe verificar si el cliente
+
 $json_return = $Utilidades->ReportePdfultra($id_cliente);
 $decode      = json_decode($json_return,true);
 
@@ -652,7 +655,45 @@ $pdfpath="C:/xampp/htdocs/Spinpgym/pdf/".$nombrepdf;
 phptopdf($pdf_options);
 
 //Mandar el PDF al mail
+//Mandar el PDF al mail
+require '../../includes/PhpMailer/PHPMailerAutoload.php';
+require '../../includes/PhpMailer/class.smtp.php';
 
+$mailFile     = "/spingyma/pdf/".$nombrepdf;
+$mail  = new PHPMailer();
+$body="<b>This mail is sent using PHP Mailer</b>";#HTML tags can be included
+$mail->IsSMTP();
+// $mail->SMTPDebug  = 2; 
+$mail->Host = "mail.ashernetz.net:2525";  // Servidor de Salida.
+$mail->SMTPAuth = true; 
+$mail->Username = "ashernetz@ashernetz.net";  // Correo Electrónico
+$mail->Password = "Chuvaca800"; // Contraseña
+$mail->From = "ashernetz@ashernetz.net";
+$mail->FromName = "SpinGym";
+$mail->Subject    = "Resultados Biotest SpinGym";
+$mail->AddAddress($de_email);
+//$mail->SMTPDebug  = 2; 
+$mail->Body    = 'Desde SpinGym queremos que disfrutes tu tiempo aqu&iacute;, para tu comidad te mandamos tus resultados a tu correo. Vive SpinGym';
+//$mail->AddAttachment($_SERVER['DOCUMENT_ROOT']."/".$mailFile,"Rutina.Pdf");
+$mail->AddAttachment($_SERVER['DOCUMENT_ROOT'].$mailFile,"Rutina.Pdf");$mail->WordWrap   = 50;
+$mail->AddAddress($de_email, "SpinGym");
+$mail->IsHTML(true); // send as HTML
+
+if(!$mail->Send())
+{
+  unlink($_SERVER['DOCUMENT_ROOT']."/".$mailFile); //Eliminando archivo
+  //Redirigir a la página
+  $salidaJson=array("exito"=>0);
+  echo json_encode($salidaJson);
+}
+else
+{
+  //unlink($pdfpath); //Eliminando archivo local
+  unlink($_SERVER['DOCUMENT_ROOT']."/".$mailFile); //Eliminando archivo host
+  //Redirigir a la página
+  $salidaJson=array("exito"=>1);
+  echo json_encode($salidaJson);
+}
 
 
 ?>

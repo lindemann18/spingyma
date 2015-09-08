@@ -1393,6 +1393,13 @@
 		return $ejercicios;
 	}
 
+	function _ConsultarExistenciaRegistrosLight($id_cliente)
+	{
+		$query= 'SELECT * FROM sgpruebaslight where id_cliente =? ';
+		$result = $this->EjecutarTransaccionSinglerow($query,$id_cliente);
+		return $result;
+	}//_ConsultarExistenciaRegistrosLight
+
 	function _ConsultarId_EjercicioClientePorId_PosicionEjercicio($id_Rutina, $id_Posicion)
 	{
 		$query= '

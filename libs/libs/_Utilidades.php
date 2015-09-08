@@ -126,12 +126,12 @@ class Utilidades
 				$desc_prueba = $filaIMM['desc_prueba'];
 				$resultado   = $filaIMM['resultado_numerico'];
 				$fecha       = $filaIMM['fh_creacion'];
-				$pruebaimm   = array("desc_prueba"=>$desc_prueba, "resultado"=>$resultado, "fecha"=>$fecha);
+				$pruebaimm   = array("desc_prueba"=>$desc_prueba, "resultado"=>$resultado, "fh_creacion"=>$fecha);
 				array_push($IMM, $pruebaimm);
 				$desc_prueba2 = 0;
 				$resultado2   = 0;
 				$fecha2       = 0;
-				$pruebaimm2   = array("desc_prueba"=>$desc_prueba2, "resultado"=>$resultado2, "fecha"=>$fecha2);
+				$pruebaimm2   = array("desc_prueba"=>$desc_prueba2, "resultado"=>$resultado2, "fh_creacion"=>$fecha2);
 				array_push($IMM2, $pruebaimm2);
 			}//for
 		}//if
@@ -147,6 +147,7 @@ class Utilidades
 				}else{array_push($IMM2,$ResultadosIMM[$i]);}
 			}//for
 		}
+		print_r($IMM);
 		$IMMLibre  = $this->DespejarValoresArrayIMM($IMM);
 		$IMMLibre2 = $this->DespejarValoresArrayIMM($IMM2);
 
@@ -1070,7 +1071,7 @@ class Utilidades
 			}//switch				
 		}//for
 		
-		$fecha = $IMM[0]['fecha'];
+		$fecha = $IMM[0]['fh_creacion'];
 		$fecha = ($fecha!=0)?$this->ConvertirTimeStamp($fecha):"Biotest No hecho";
 		$IMMLibre = array("Espalda"=>$Espalda,"Pecho"=>$Pecho,"Abdomen"=>$Abdomen,
 						 "Cadera"=>$Cadera,"Brazo"=>$Brazo,"Muslo"=>$Muslo,"fecha"=>$fecha);	

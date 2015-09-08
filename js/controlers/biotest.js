@@ -14,6 +14,7 @@ angular.module('AppBiotest',['ngRoute','angularUtils.directives.dirPagination','
 	  	if(result==true)
 	  	{
 	  		$scope.$apply(function(){
+	  			$scope.fallo    = 2;
 				var params = $methodsService.Json("UltimoBiotestCliente",$scope.cliente);
 				var url = 'modulos/Biotest/crearPdfarchivo.php?Id_Cliente='+$scope.Cliente;
 				$scope.showsend = true;
@@ -27,7 +28,7 @@ angular.module('AppBiotest',['ngRoute','angularUtils.directives.dirPagination','
 				 		if(exito==1)
 				 		{
 				 			$scope.fallo = 0; 
-				 		}else{$scope.fallo=1; $scope.errormsj = "Error de mailing";}
+				 		}else{$scope.fallo=1; $scope.errormsj = data.Error;}
 				  })  
 				 .error(function(data, status, headers, config){
 				 	$methodsService.alerta(2,"algo falló, disculpe las molestias");
