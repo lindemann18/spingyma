@@ -156,28 +156,35 @@ $scope.EjecutarTest = function()
 .controller('ResultadosBiotest',function($scope,$http,$location,$methodsService,$routeParams,$cookies){
 	$scope.cliente = $routeParams.cliente;
 	var params         = $methodsService.Json("ResultadosBiotest",$scope.cliente);
-	
+	$scope.showsend   = false;	
 	//Funciones
 	$scope.enviar = function()
 	{
-		bootbox.confirm("Desea regresar a clientes?", function(result) {
-		  	if(result==true)
-		  	{
-		  		$scope.$apply(function(){
-					var params = $methodsService.Json("EnviarResultados",$scope.cliente);
-					var url = 'modulos/Biotest/Funciones.php';
-					 $http({method: "post",url: url,data: $.param({Params:params}), 
-					  headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-					})
-					 .success(function(data, status, headers, config) 
-					 {          	
-					   		
-					  })  
-					 .error(function(data, status, headers, config){
-					 	$methodsService.alerta(2,"algo falló, disculpe las molestias");
-					 });
-				});
-		  	}//if
+		bootbox.confirm("Desea enviar los resultados del biotest?", function(result) {
+		console.log(result);
+	  	if(result==true)
+	  	{
+	  		$scope.$apply(function(){
+	  			$scope.fallo    = 2;
+				var url = 'modulos/Biotest/crearPdfarchivo.php?Id_Cliente='+$scope.cliente;
+				$scope.showsend = true;
+				 $http({method: "post",url: url,data: $.param({Params:params}), 
+				  headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+				})
+				 .success(function(data, status, headers, config) 
+				 {     
+				 		exito 			= data.exito;
+				 		$scope.showsend = false;
+				 		if(exito==1)
+				 		{
+				 			$scope.fallo = 0; 
+				 		}else{$scope.fallo=1; $scope.errormsj = data.Error;}
+				  })  
+				 .error(function(data, status, headers, config){
+				 	$methodsService.alerta(2,"algo falló, disculpe las molestias");
+ 					});
+			});
+	  	}//if
 	  	});
 	}//enviar
 

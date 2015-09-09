@@ -290,19 +290,12 @@
 	function RegistrarForm($Parametros)
 	{
 		$id         = $Parametros['id'];
-
 		// verificando si el cliente ya tiene un registro previo del formulario
 		// o es el primer registro del mismo.
 		$consultar = new Consultar();
 		$resultado = $consultar->_ConsultarSiClienteHizoElFormulario($id);
 		$cantidad  = count($resultado);
 		if($cantidad>0)
-		{
-			// si entra aquí es que no existe ningún registro y es la primavera vez
-			// que hace el formulario, se procede a registrar.
-			$respuestas = R::dispense("sgformulario");
-		}//if
-		else
 		{
 			//si entra aquí es por que ya hizo el formulario y va a editar valores.
 			$campos     = R::find('sgformulario','id_cliente=?',[$id]);
@@ -311,7 +304,15 @@
 
 			$id_form    = $Parametros['id_form'];
 			$respuestas = R::load("sgformulario",$id_form);
+
+		}//if
+		else
+		{
+			// si entra aquí es que no existe ningún registro y es la primavera vez
+			// que hace el formulario, se procede a registrar.
+			$respuestas = R::dispense("sgformulario");
 		}//eñse
+
 		//Cargando los valores
 		$respuestas->condicion_cardiaca 	   = $Parametros['condicion_cardiaca'];
 		$respuestas->condicion_pecho    	   = $Parametros['condicion_pecho'];
@@ -342,7 +343,6 @@
 		$respuestas->intensidad_ejercicio4 	   = $Parametros['intensidad_ejercicio4'];
 		$respuestas->intensidad_ejercicio5 	   = $Parametros['intensidad_ejercicio5'];
 		$respuestas->programa_ejercicio 	   = $Parametros['programa_ejercicio'];
-		$respuestas->actividades_deseables 	   = $Parametros['actividades_deseables'];
 		$respuestas->actividades_indeseables   = $Parametros['actividades_indeseables'];
 		$respuestas->deporte_frecuente 	       = $Parametros['deporte_frecuente'];
 		$respuestas->minutos_dia 	           = $Parametros['minutos_dia'];

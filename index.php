@@ -276,7 +276,7 @@
 	    })
 	    .when('/Biotest',{
 	    	controller: 'BiotestC',
-	      	templateUrl:'modulos/Biotest/Biotest.html'
+	      	templateUrl:'modulos/Biotest/biotest.html'
 	    })
 
 	    .when('/BiotestError',{
