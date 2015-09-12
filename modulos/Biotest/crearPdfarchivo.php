@@ -136,7 +136,8 @@ if($amount_reg>0)
     .ResultImg{background-image: url(../../css/img/grafica.jpg);
             background-repeat: no-repeat;}
     .Logo {margin-top:30px;}
-    .spinlogo{margin-left:170px;}
+    .spinlogo{margin-left:95px;}
+    .spinlogo img {width:200px; height:45px;}
     .FechasDatos{margin-left:145px; width:300px}
     .vacio{height: 200px;}    
     #datos{width:300px; float:right}  

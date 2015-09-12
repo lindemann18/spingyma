@@ -126,12 +126,12 @@ class Utilidades
 				$desc_prueba = $filaIMM['desc_prueba'];
 				$resultado   = $filaIMM['resultado_numerico'];
 				$fecha       = $filaIMM['fh_creacion'];
-				$pruebaimm   = array("desc_prueba"=>$desc_prueba, "resultado"=>$resultado, "fh_creacion"=>$fecha);
+				$pruebaimm   = array("desc_prueba"=>$desc_prueba, "resultado_numerico"=>$resultado, "fh_creacion"=>$fecha);
 				array_push($IMM, $pruebaimm);
 				$desc_prueba2 = 0;
 				$resultado2   = 0;
 				$fecha2       = 0;
-				$pruebaimm2   = array("desc_prueba"=>$desc_prueba2, "resultado"=>$resultado2, "fh_creacion"=>$fecha2);
+				$pruebaimm2   = array("desc_prueba"=>$desc_prueba2, "resultado_numerico"=>$resultado2, "fh_creacion"=>$fecha2);
 				array_push($IMM2, $pruebaimm2);
 			}//for
 		}//if
@@ -147,9 +147,11 @@ class Utilidades
 				}else{array_push($IMM2,$ResultadosIMM[$i]);}
 			}//for
 		}
-		print_r($IMM);
+		
 		$IMMLibre  = $this->DespejarValoresArrayIMM($IMM);
 		$IMMLibre2 = $this->DespejarValoresArrayIMM($IMM2);
+		
+
 
 		//Tomando las diferencias de los resultados.
 		//Perímetro Espalda.
@@ -1050,22 +1052,22 @@ class Utilidades
 			switch($IMM[$i]['desc_prueba'])
 			{
 				case "IMM - Espalda": 
-					$Espalda 	 = $IMM[$i]['resultado'];
+					$Espalda 	 = $IMM[$i]['resultado_numerico'];
 				break;
 				case 'IMM - Pecho': 
-					$Pecho   = $IMM[$i]['resultado'];
+					$Pecho   = $IMM[$i]['resultado_numerico'];
 				break;
 				case 'IMM - Abdomen': 
-					$Abdomen     = $IMM[$i]['resultado'];
+					$Abdomen     = $IMM[$i]['resultado_numerico'];
 				break;
 				case 'IMM - Cadera': 
-					$Cadera = $IMM[$i]['resultado'];
+					$Cadera = $IMM[$i]['resultado_numerico'];
 				break;
 				case 'IMM - Brazo': 
-					$Brazo = $IMM[$i]['resultado'];
+					$Brazo = $IMM[$i]['resultado_numerico'];
 				break;
 				case 'IMM - Muslo': 
-					$Muslo  = $IMM[$i]['resultado'];
+					$Muslo  = $IMM[$i]['resultado_numerico'];
 				break;
 				
 			}//switch				
