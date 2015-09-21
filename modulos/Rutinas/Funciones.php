@@ -1,4 +1,5 @@
 <?php
+	session_start();
 	include("../../libs/libs.php");
 	$Params=(isset($_GET['Params']))?$_GET['Params']:$_POST['Params'];
 	$Parametros = json_decode($Params,true);
@@ -507,9 +508,10 @@
 
 		//Generando el objeto de la tabla
 		$tipo_rutina = R::dispense("sgtiposrutina");
-		$tipo_rutina->nb_tiporutina   = $nb_tiporutina;
-		$tipo_rutina->desc_tiporutina = $desc_tiporutina;
-		$tipo_rutina->sn_activo       = 1;
+		$tipo_rutina->nb_tiporutina      = $nb_tiporutina;
+		$tipo_rutina->desc_tiporutina    = $desc_tiporutina;
+		$tipo_rutina->sn_activo          = 1;
+		$tipo_rutina->id_usuarioregistro = $_SESSION['usuario']['id'];
 		$exito = 0;
 		//Agregando tipo rutina
 		R::freeze(1);
@@ -519,6 +521,7 @@
 		        R::commit();
 		    }
 		    catch(Exception $e) {
+		    	print_r($e->getMessage());
 		       $respuesta =  R::rollback();
 		       $respuesta = "Error";
 		    }
@@ -614,8 +617,7 @@
 
 	function AgregarMusculo($Parametros)
 	{
-		session_start();
-
+		
 		//Crendo el objeto de la tabla
 		R::freeze(1);
 		$exito 						  = 0;
@@ -818,7 +820,7 @@
 		$maquina        = ($Parametros['maquina']!=0)?$Parametros['maquina']:"";
 
 		//tomando el id del usuario que lo creó.
-		session_start();
+		
 		$id_usuario     = $_SESSION['usuario']['id'];
 
 		//creando el objeto y asignando los valores al objeto de la tabla
@@ -1132,7 +1134,7 @@
 	function AgregarRutina($Parametros)
 	{
 		//Creando la rutina
-		session_start();
+		
 		date_default_timezone_set("America/Chihuahua");
 		$fh_creacion                = date("Y-m-d"); //fecha del día de hoy
 		$id_usuario 			    = $_SESSION['usuario']['id'];
@@ -1180,7 +1182,7 @@
 	function RegistrarEjerciciosRutinas($Parametros)
 	{
 		//Tomando los datos
-		session_start();
+		
 		if(isset($Parametros['id_rutina']))
 		{
 			$id_rutina = $Parametros['id_rutina'];
@@ -1237,7 +1239,7 @@
 	function RegistrarEjerciciosRutinasEditar($Parametros)
 	{
 		//Tomando los datos
-		session_start();
+		
 		if(isset($Parametros['id_rutina']))
 		{
 			$id_rutina = $Parametros['id_rutina'];
@@ -2109,7 +2111,7 @@
 	
 	function AgregarRutina1($Parametros)
 	{
-		session_start();
+		
 		$agregar 			= new Agregar();
 		$nb_rutina			= $Parametros['nb_rutina'];
 		$id_CategoriaRutina	= $Parametros['id_CategoriaRutina'];			

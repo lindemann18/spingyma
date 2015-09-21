@@ -177,10 +177,19 @@
 		$usuario->num_celular      = $Parametros['num_celular'];
 		$usuario->de_colonia       = $Parametros['de_colonia'];
 		$usuario->de_domicilio     = $Parametros['de_domicilio'];
-		$usuario->num_codigoPostal = $Parametros['num_codigoPostal'];
-		$usuario->Permisos         = $Parametros['Permisos'];
+		$usuario->num_codigopostal = $Parametros['num_codigoPostal'];
+		$usuario->permisos         = $Parametros['Permisos'];
 		$usuario->sn_activo        = 1;
-		$id 					   = R::store($usuario);
+		R::begin();
+		    try{
+		       $id = R::store($usuario);
+		        R::commit();
+		    }
+		    catch(Exception $e) {
+		       $id =  R::rollback();
+		       print_r($e);
+		    }
+		R::close();
 		if(is_numeric($id))
 		{
 			$agregado = 1;

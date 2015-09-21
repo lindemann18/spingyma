@@ -5,8 +5,8 @@
 ?>
 <!-- js -->
 <script src="js/jquery-1.11.1.min.js"></script>
-<script src="js/bootstrap.min.js" type="text/javascript"></script>
-<script src="js/angular.min.js"></script>
+<script src="js/bootstrap.min.js" ></script>
+<script src="js/angular.js"></script>
 <script src="js/angular-route.min.js"></script>
 <script src="js/angular-locale_es-mx.js"></script>
 <script src="js/dirPagination.js"></script>
@@ -100,7 +100,7 @@
 	    	controller: 'AgregarCategorias',
 	      	templateUrl:'modulos/Utilidades/Categoria_Registrar.html'
 	    })
-	    .when('/EditarCategoria',{
+	    .when('/EditarCMaquinas',{
 	    	controller: 'EditarCategorias',
 	      	templateUrl:'modulos/Utilidades/Categoria_Editar.html'
 	    })

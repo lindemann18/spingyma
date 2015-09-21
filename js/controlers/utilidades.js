@@ -528,7 +528,7 @@ angular.module('AppUtilidades',['ngRoute','angularUtils.directives.dirPagination
 				  	if(result==true)
 				  	{
 				  		$scope.$apply(function(){
-				  			$location.path('/EditarCategoria').search({maq: $scope.cattr});
+				  			$location.path('/EditarCMaquinas').search({maq: $scope.cattr});
 						});
 				  		
 				  	}//if

@@ -1,4 +1,5 @@
 <?php
+	session_start();
 	include("../../libs/libs.php");
 	$Params=(isset($_GET['Params']))?$_GET['Params']:$_POST['Params'];
 	
@@ -183,7 +184,7 @@
 		$cuerpo = $consultar->_ConsultarCuerposPorNombre($Parametros['id_cuerpo']);
 
 		//Scando el id del usuario que registra
-		session_start();
+		
 		$id_usuario = $_SESSION['usuario']['id'];
 
 		//Asignadno los valores
@@ -290,6 +291,7 @@
 	function RegistrarForm($Parametros)
 	{
 		$id         = $Parametros['id'];
+		$id_usuario = $_SESSION['usuario']['id'];
 		// verificando si el cliente ya tiene un registro previo del formulario
 		// o es el primer registro del mismo.
 		$consultar = new Consultar();
@@ -313,6 +315,7 @@
 			$respuestas = R::dispense("sgformulario");
 		}//eñse
 
+		
 		//Cargando los valores
 		$respuestas->condicion_cardiaca 	   = $Parametros['condicion_cardiaca'];
 		$respuestas->condicion_pecho    	   = $Parametros['condicion_pecho'];
@@ -348,8 +351,12 @@
 		$respuestas->minutos_dia 	           = $Parametros['minutos_dia'];
 		$respuestas->dias_semana 	           = $Parametros['dias_semana'];
 		$respuestas->resultado_ejercicio 	   = $Parametros['resultado_ejercicio'];
+		$respuestas->id_instructor 			   = $id_usuario;
+		$respuestas->id_cliente 			   = $id;
+		$respuestas->actividades_deseables 	   = " ";
 		R::freeze(1);
-		$respuesta = R::store($respuestas);
+		//$respuesta = R::store($respuestas);
+		$respuesta = EjecutarTransaccion($respuestas);
 		$exito     = (is_numeric($respuesta))?1:0;
 		$datos     = array("exito"=>$exito);
 		return $datos;
@@ -653,6 +660,7 @@
 		        R::commit();
 		    }
 		    catch(Exception $e) {
+		    	print_r($e->getMessage());
 		       $respuesta =  R::rollback();
 		       $respuesta = "Error";
 		    }
@@ -731,7 +739,6 @@
 	function RegistrarEjerciciosRutinas($Parametros)
 	{
 		//Tomando los datos
-		session_start();
 		if(isset($Parametros['id_rutina']))
 		{
 			$id_rutina = $Parametros['id_rutina'];
@@ -851,7 +858,7 @@
 	function AgregarRutina($Parametros)
 	{
 		//Creando la rutina
-		session_start();
+		
 		date_default_timezone_set("America/Chihuahua");
 		$fh_creacion                = date("Y-m-d"); //fecha del día de hoy
 		$id_usuario 			    = $_SESSION['usuario']['id'];
@@ -879,7 +886,7 @@
 	function AsignarRutinaCliente($Parametros)
 	{
 		date_default_timezone_set("Mexico/General");
-		session_start();
+		
 
 		//Tomando los valores
 		$id_instructor  = $_SESSION['usuario']['id'];

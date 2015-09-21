@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50620
 File Encoding         : 65001
 
-Date: 2015-09-02 20:25:49
+Date: 2015-09-16 20:42:21
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -648,7 +648,7 @@ CREATE TABLE `sgejerciciosrutina` (
   `ejercicio_relacion` varchar(10) CHARACTER SET utf8mb4 DEFAULT NULL,
   `sn_activo` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3810 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3861 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sgejerciciosrutina
@@ -2738,6 +2738,57 @@ INSERT INTO `sgejerciciosrutina` VALUES ('3806', '171', '1', '5', '159', '3', '3
 INSERT INTO `sgejerciciosrutina` VALUES ('3807', '172', '1', '5', '159', '3', '3', '51', null, null, null, null, null, '1');
 INSERT INTO `sgejerciciosrutina` VALUES ('3808', '2', '1', '6', '159', '3', '1', '52', null, null, null, null, null, '1');
 INSERT INTO `sgejerciciosrutina` VALUES ('3809', '2', '1', '7', '159', '3', '1', '53', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3810', '169', '1', '1', '160', '2', '3', '3', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3811', '170', '1', '1', '160', '2', '3', '4', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3812', '174', '1', '1', '160', '2', '3', '5', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3813', '176', '1', '1', '160', '2', '3', '6', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3814', '178', '1', '1', '160', '2', '3', '1', null, null, '4', '15', null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3815', '180', '1', '1', '160', '2', '3', '2', null, null, '2', '10', null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3816', '143', '1', '1', '160', '2', '5', '7', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3817', '144', '1', '1', '160', '2', '5', '8', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3818', '145', '1', '1', '160', '2', '5', '9', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3819', '146', '1', '1', '160', '2', '5', '10', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3820', '148', '1', '1', '160', '2', '5', '11', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3821', '150', '1', '1', '160', '2', '5', '12', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3822', '247', '1', '1', '160', '2', '9', '13', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3823', '250', '1', '1', '160', '2', '9', '14', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3824', '251', '1', '1', '160', '2', '9', '15', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3825', '252', '1', '1', '160', '2', '9', '16', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3826', '253', '1', '1', '160', '2', '9', '17', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3827', '254', '1', '1', '160', '2', '9', '18', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3828', '255', '1', '1', '160', '2', '9', '19', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3829', '256', '1', '1', '160', '2', '9', '20', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3830', '257', '1', '1', '160', '2', '9', '21', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3831', '260', '1', '1', '160', '2', '9', '22', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3832', '190', '1', '2', '160', '2', '10', '26', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3833', '191', '1', '2', '160', '2', '10', '24', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3834', '192', '1', '2', '160', '2', '10', '25', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3835', '193', '1', '2', '160', '2', '10', '27', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3836', '194', '1', '2', '160', '2', '10', '28', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3837', '195', '1', '2', '160', '2', '10', '23', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3838', '196', '1', '2', '160', '2', '10', '29', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3839', '197', '1', '2', '160', '2', '10', '30', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3840', '198', '1', '2', '160', '2', '10', '31', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3841', '285', '1', '2', '160', '2', '11', '32', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3842', '10', '1', '2', '160', '2', '12', '33', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3843', '11', '1', '2', '160', '2', '12', '34', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3844', '12', '1', '2', '160', '2', '12', '35', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3845', '13', '1', '2', '160', '2', '12', '36', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3846', '15', '1', '2', '160', '2', '12', '37', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3847', '16', '1', '2', '160', '2', '12', '38', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3848', '293', '1', '3', '160', '2', '2', '39', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3849', '299', '1', '3', '160', '2', '2', '40', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3850', '288', '1', '4', '160', '2', '11', '41', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3851', '48', '1', '5', '160', '2', '4', '42', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3852', '49', '1', '5', '160', '2', '4', '43', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3853', '50', '1', '5', '160', '2', '4', '44', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3854', '51', '1', '5', '160', '2', '4', '45', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3855', '52', '1', '5', '160', '2', '4', '46', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3856', '54', '1', '5', '160', '2', '4', '47', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3857', '55', '1', '5', '160', '2', '4', '48', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3858', '68', '1', '5', '160', '2', '4', '49', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3859', '2', '1', '6', '160', '2', '1', '50', null, null, null, null, null, '1');
+INSERT INTO `sgejerciciosrutina` VALUES ('3860', '2', '1', '7', '160', '2', '1', '51', null, null, null, null, null, '1');
 
 -- ----------------------------
 -- Table structure for `sgejerciciosrutinacliente`
@@ -2759,88 +2810,13 @@ CREATE TABLE `sgejerciciosrutinacliente` (
   `ejercicio_relacion` varchar(10) DEFAULT NULL,
   `sn_activo` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=78 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=80 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sgejerciciosrutinacliente
 -- ----------------------------
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('1', '120', '1', '1', '1', '1', '6', '1', '', '', '4', '15', '', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('2', '246', '1', '1', '1', '1', '9', '2', '', '', '3', '15', '', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('3', '245', '1', '1', '1', '1', '9', '3', '', '', '3', '15', '', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('4', '122', '1', '1', '1', '1', '6', '4', '', '', '3', '15', '', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('5', '163', '1', '1', '1', '1', '5', '5', '', '', '3', '15', '', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('6', '159', '1', '1', '1', '1', '5', '6', '', '', '3', '15', '', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('7', '181', '1', '1', '1', '1', '3', '7', '', '', '3', '15', '', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('8', '216', '1', '1', '1', '1', '3', '8', '', '', '3', '15', '', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('9', '95', '1', '1', '1', '1', '4', '9', '', '', '3', '15', '', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('10', '196', '1', '1', '1', '1', '10', '10', '', '', '3', '15', '', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('11', '73', '1', '1', '1', '1', '4', '11', '', '', '3', '15', '', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('12', '199', '1', '1', '1', '1', '10', '12', '', '', '3', '15', '', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('13', '226', '1', '1', '1', '1', '4', '13', '', '', '3', '15', '', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('14', '4', '1', '1', '1', '1', '12', '14', '', '', '3', '15', '', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('15', '26', '1', '1', '1', '1', '12', '15', '', '', '3', '15', '', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('16', '245', '1', '2', '1', '1', '9', '16', '', '', '3', '15', 'a1', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('17', '246', '1', '2', '1', '1', '9', '17', '', '', '3', '15', 'a2', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('18', '120', '1', '2', '1', '1', '6', '18', '', '', '3', '15', 'b1', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('19', '122', '1', '2', '1', '1', '6', '19', '', '', '3', '15', 'b2', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('20', '159', '1', '2', '1', '1', '5', '20', '', '', '3', '15', 'c1', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('21', '163', '1', '2', '1', '1', '5', '21', '', '', '3', '15', 'c2', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('22', '181', '1', '2', '1', '1', '3', '22', '', '', '3', '15', 'd1', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('23', '216', '1', '2', '1', '1', '3', '23', '', '', '3', '15', 'd2', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('24', '196', '1', '2', '1', '1', '10', '24', '', '', '3', '15', 'e1', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('25', '199', '1', '2', '1', '1', '10', '25', '', '', '3', '15', 'e2', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('26', '73', '1', '2', '1', '1', '4', '26', '', '', '3', '15', 'f1', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('27', '95', '1', '2', '1', '1', '4', '27', '', '', '3', '15', 'f2', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('28', '226', '1', '2', '1', '1', '4', '28', '', '', '3', '15', 'g1', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('29', '4', '1', '2', '1', '1', '12', '29', '', '', '3', '15', 'h1', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('30', '26', '1', '2', '1', '1', '12', '30', '', '', '3', '15', 'i1', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('31', '245', '1', '3', '1', '1', '9', '31', '', '', '3', '15', 'a1', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('32', '246', '1', '3', '1', '1', '9', '32', '', '', '3', '15', 'a2', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('33', '120', '1', '3', '1', '1', '6', '33', '', '', '3', '15', 'b1', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('34', '122', '1', '3', '1', '1', '6', '34', '', '', '3', '15', 'b2', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('35', '159', '1', '3', '1', '1', '5', '35', '', '', '3', '15', 'c1', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('36', '163', '1', '3', '1', '1', '5', '36', '', '', '3', '15', 'c2', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('37', '181', '1', '3', '1', '1', '3', '37', '', '', '3', '15', 'd1', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('38', '216', '1', '3', '1', '1', '3', '38', '', '', '3', '15', 'd2', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('39', '196', '1', '3', '1', '1', '10', '39', '', '', '3', '15', 'e1', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('40', '199', '1', '3', '1', '1', '10', '40', '', '', '3', '15', 'e2', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('41', '73', '1', '3', '1', '1', '4', '41', '', '', '3', '15', 'f1', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('42', '95', '1', '3', '1', '1', '4', '42', '', '', '3', '15', 'f2', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('43', '226', '1', '3', '1', '1', '4', '43', '', '', '3', '15', 'g1', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('44', '4', '1', '3', '1', '1', '12', '44', '', '', '3', '15', 'h1', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('45', '26', '1', '3', '1', '1', '12', '45', '', '', '3', '15', 'i1', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('46', '245', '1', '4', '1', '1', '9', '46', '', '', '3', '15', 'a1', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('47', '246', '1', '4', '1', '1', '9', '47', '', '', '3', '15', 'a2', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('48', '120', '1', '4', '1', '1', '6', '48', '', '', '3', '15', 'b1', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('49', '122', '1', '4', '1', '1', '6', '49', '', '', '3', '15', 'b2', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('50', '159', '1', '4', '1', '1', '5', '50', '', '', '3', '15', 'c1', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('51', '163', '1', '4', '1', '1', '5', '51', '', '', '3', '15', 'c2', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('52', '181', '1', '4', '1', '1', '3', '52', '', '', '3', '15', 'd1', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('53', '216', '1', '4', '1', '1', '3', '53', '', '', '3', '15', 'd2', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('54', '196', '1', '4', '1', '1', '10', '54', '', '', '3', '15', 'e1', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('55', '199', '1', '4', '1', '1', '10', '55', '', '', '3', '15', 'e2', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('56', '73', '1', '4', '1', '1', '4', '56', '', '', '3', '15', 'f1', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('57', '95', '1', '4', '1', '1', '4', '57', '', '', '3', '15', 'f2', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('58', '226', '1', '4', '1', '1', '4', '58', '', '', '3', '15', 'g1', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('59', '4', '1', '4', '1', '1', '12', '59', '', '', '3', '15', 'h1', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('60', '26', '1', '4', '1', '1', '12', '60', '', '', '3', '15', 'i1', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('61', '122', '1', '5', '1', '1', '6', '61', '', '', '3', '15', 'b2', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('62', '246', '1', '5', '1', '1', '9', '62', '', '', '3', '15', 'a2', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('63', '120', '1', '5', '1', '1', '6', '63', '', '', '3', '15', 'b1', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('64', '245', '1', '5', '1', '1', '9', '64', '', '', '3', '15', 'a1', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('65', '159', '1', '5', '1', '1', '5', '65', '', '', '3', '15', 'c1', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('66', '163', '1', '5', '1', '1', '5', '66', '', '', '3', '15', 'c2', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('67', '181', '1', '5', '1', '1', '3', '67', '', '', '3', '15', 'd1', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('68', '216', '1', '5', '1', '1', '3', '68', '', '', '3', '15', 'd2', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('69', '196', '1', '5', '1', '1', '10', '69', '', '', '3', '15', 'e1', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('70', '199', '1', '5', '1', '1', '10', '70', '', '', '3', '15', 'e2', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('71', '73', '1', '5', '1', '1', '4', '71', '', '', '3', '15', 'f1', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('72', '95', '1', '5', '1', '1', '4', '72', '', '', '3', '15', 'f2', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('73', '226', '1', '5', '1', '1', '4', '73', '', '', '3', '15', 'g1', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('74', '4', '1', '5', '1', '1', '12', '74', '', '', '3', '15', 'h1', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('75', '26', '1', '5', '1', '1', '12', '75', '', '', '3', '15', 'i1', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('76', '2', '1', '6', '1', '1', '1', '76', '', '', '3', '15', '-', '1');
-INSERT INTO `sgejerciciosrutinacliente` VALUES ('77', '2', '1', '7', '1', '1', '1', '77', '', '', '3', '15', '-', '1');
+INSERT INTO `sgejerciciosrutinacliente` VALUES ('78', '178', '1', '1', '2', '2', '3', '1', '', '', '4', '15', null, '1');
+INSERT INTO `sgejerciciosrutinacliente` VALUES ('79', '180', '1', '1', '2', '2', '3', '2', '', '', '2', '10', null, '1');
 
 -- ----------------------------
 -- Table structure for `sgformulario`
@@ -2886,12 +2862,12 @@ CREATE TABLE `sgformulario` (
   `dias_semana` varchar(500) NOT NULL,
   `resultado_ejercicio` varchar(500) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=66 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sgformulario
 -- ----------------------------
-INSERT INTO `sgformulario` VALUES ('4', '1', '2', '1', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'Desayuno  muy rico', 'comida rica', 'cena rica', 'fruta', '2', 'Si, dieta de la manzana.', '2', '2', '3', '0', '0', '1', 'Todas', 'Ninguna', 'Ninguna', '200', '6', 'Ponerme muy guapo.');
+INSERT INTO `sgformulario` VALUES ('4', '1', '2', '1', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'Desayuno  muy rico', 'comida rica', 'cena rica', 'fruta', '2', 'Si, dieta de la manzana.', '2', '2', '3', '0', '0', '1', 'Todas', 'Ninguna', 'Ninguna', '250', '6', 'Ponerme muy guapo.');
 INSERT INTO `sgformulario` VALUES ('5', '1', '11', '0', '0', '1', '0', '0', '1', '0', '0', '0', '0', '0', '0', '0', '0', '3', '0', '0', 'desayuno', 'comida', 'cena', 'fruta', '2', 'no', '1', '1', '1', '0', '0', '0', 'Todas', 'Ninguna', 'no', '100', '5', 'estar guapo');
 INSERT INTO `sgformulario` VALUES ('6', '1', '17', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1', '0', '0', '0', '0', '0', '0', '0', 'desyunoreg', 'comida', 'cena', 'fruta', '2', 'ásdasdas', '3', '3', '0', '0', '0', '0', 'todas', 'ninguna', 'soccer', '120', '6', 'Estar saludable');
 INSERT INTO `sgformulario` VALUES ('7', '9', '14', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'desayuno rico', 'comida rica', 'cena rica', 'fruta', '2 veces', 'no', '3', '3', '0', '0', '0', '0', 'todas', 'ninguna', 'gym', '120', '7', 'estar marcado.');
@@ -2944,6 +2920,9 @@ INSERT INTO `sgformulario` VALUES ('53', '1', '109', '0', '0', '0', '1', '0', '0
 INSERT INTO `sgformulario` VALUES ('54', '1', '110', '0', '0', '0', '0', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1', '1', 'HUEVO, PAN , LICUADO DE AVENA ', 'ENSALADA CON PROTEIN (POLLO)', 'ORIGEN ANIMAL O ARROZ', 'FRUTA Y VERDURA', 'TODOS LOS DIAS', 'SI', '0', '0', '1', '0', '0', '0', 'ARTES MARCIALES Y PESAS', 'TAE BOO', 'NO', '1 HORA ', '5 ', 'BAJAR DE PESO (QUEMAR GRASA), REDUCIR TALLAS');
 INSERT INTO `sgformulario` VALUES ('55', '1', '111', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'SANDWICH, HUEVO , JAMON ', 'ENSALADA CO PROTEINA', 'ENSALADA O CEREAL', 'FRUTAS Y FRUTOS SECOS', 'TODOS LOS DIAS', 'SI', '0', '2', '0', '0', '0', '0', 'CAMINAR ', 'NADAR', 'SOFTBOL', '1 HORA', '5', 'CONDICION Y MEJOR SALUD');
 INSERT INTO `sgformulario` VALUES ('62', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '5', '0', '0', 'EF', 'RF', 'FREF', 'RGF', 'RF', 'RF', '0', '3', '0', '0', '0', '0', 'N', 'N', 'N', '12\'', '5', 'Musculatura.');
+INSERT INTO `sgformulario` VALUES ('63', '0', '0', '1', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'Desayuno  muy rico', 'comida rica', 'cena rica', 'fruta', '2', 'Si, dieta de la manzana.', '2', '2', '3', '0', '0', '1', 'Todas', 'Ninguna', 'Ninguna', '200', '6', 'Ponerme muy guapo.');
+INSERT INTO `sgformulario` VALUES ('64', '0', '0', '1', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'Desayuno  muy rico', 'comida rica', 'cena rica', 'fruta', '2', 'Si, dieta de la manzana.', '2', '2', '3', '0', '0', '1', 'Todas', 'Ninguna', 'Ninguna', '220', '6', 'Ponerme muy guapo.');
+INSERT INTO `sgformulario` VALUES ('65', '0', '0', '1', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'Desayuno  muy rico', 'comida rica', 'cena rica', 'fruta', '2', 'Si, dieta de la manzana.', '2', '2', '3', '0', '0', '1', 'Todas', 'Ninguna', 'Ninguna', '250', '6', 'Ponerme muy guapo.');
 
 -- ----------------------------
 -- Table structure for `sggenerosrutina`
@@ -3713,7 +3692,7 @@ CREATE TABLE `sgpruebaslight` (
   `porcentaje` int(11) DEFAULT NULL,
   `fh_creacion` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=65 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=73 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of sgpruebaslight
@@ -3748,6 +3727,14 @@ INSERT INTO `sgpruebaslight` VALUES ('61', '1', '13', '4', 'IMM - Abdomen', '102
 INSERT INTO `sgpruebaslight` VALUES ('62', '1', '13', '4', 'IMM - Cadera', '119', 'No Aplica', '0', '2015-09-02');
 INSERT INTO `sgpruebaslight` VALUES ('63', '1', '13', '4', 'IMM - Brazo', '102', 'No Aplica', '0', '2015-09-02');
 INSERT INTO `sgpruebaslight` VALUES ('64', '1', '13', '4', 'IMM - Muslo', '98', 'No Aplica', '0', '2015-09-02');
+INSERT INTO `sgpruebaslight` VALUES ('65', '1', '48', '3', 'IMC', '24', 'Peso Ideal', '100', '2015-09-08');
+INSERT INTO `sgpruebaslight` VALUES ('66', '1', '48', '2', 'Peso', '78', 'Peso Ideal', '100', '2015-09-08');
+INSERT INTO `sgpruebaslight` VALUES ('67', '1', '48', '4', 'IMM - Espalda', '128', 'No Aplica', '0', '2015-09-08');
+INSERT INTO `sgpruebaslight` VALUES ('68', '1', '48', '4', 'IMM - Pecho', '123', 'No Aplica', '0', '2015-09-08');
+INSERT INTO `sgpruebaslight` VALUES ('69', '1', '48', '4', 'IMM - Abdomen', '231', 'No Aplica', '0', '2015-09-08');
+INSERT INTO `sgpruebaslight` VALUES ('70', '1', '48', '4', 'IMM - Cadera', '23', 'No Aplica', '0', '2015-09-08');
+INSERT INTO `sgpruebaslight` VALUES ('71', '1', '48', '4', 'IMM - Brazo', '123', 'No Aplica', '0', '2015-09-08');
+INSERT INTO `sgpruebaslight` VALUES ('72', '1', '48', '4', 'IMM - Muslo', '213', 'No Aplica', '0', '2015-09-08');
 
 -- ----------------------------
 -- Table structure for `sgrutinas`
@@ -3765,7 +3752,7 @@ CREATE TABLE `sgrutinas` (
   `sn_activo` int(11) NOT NULL DEFAULT '1',
   `fh_creacion` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=160 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=161 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sgrutinas
@@ -3855,6 +3842,7 @@ INSERT INTO `sgrutinas` VALUES ('130', '1', '1', '3', null, null, 'HMTJAMEN1V1',
 INSERT INTO `sgrutinas` VALUES ('156', '1', '3', '2', '1', null, 'Rutina Pruebosa', 'lkajdslajdas', '1', '2015-07-19');
 INSERT INTO `sgrutinas` VALUES ('158', '1', '2', '3', '2', null, 'Rutina De prueba', 'adsdjakdalk', '1', '2015-07-19');
 INSERT INTO `sgrutinas` VALUES ('159', '1', '3', '2', '2', '2', 'Rutina del mal', 'alksjdlkad', '1', '2015-08-12');
+INSERT INTO `sgrutinas` VALUES ('160', '1', '2', '3', '2', '3', 'RUtina de stan', 'Es mi rutina chingona.', '1', '2015-09-08');
 
 -- ----------------------------
 -- Table structure for `sgrutinasclientes`
@@ -3871,12 +3859,12 @@ CREATE TABLE `sgrutinasclientes` (
   `fh_creacion` varchar(150) NOT NULL,
   `sn_activo` int(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sgrutinasclientes
 -- ----------------------------
-INSERT INTO `sgrutinasclientes` VALUES ('1', '1', '1', '2', '1', 'HMJECN1V2', 'HOMBRE O MUJER JOVEN ECTOMORFO NIVEL 1 VERSION 2', '2015-08-12', '1');
+INSERT INTO `sgrutinasclientes` VALUES ('2', '1', '2', '14', '2', 'RUtina de stan', 'Es mi rutina chingona.', '2015-09-08', '1');
 
 -- ----------------------------
 -- Table structure for `sgtipocuerpo`
@@ -3983,7 +3971,7 @@ CREATE TABLE `sgusuarios` (
 -- ----------------------------
 -- Records of sgusuarios
 -- ----------------------------
-INSERT INTO `sgusuarios` VALUES ('1', 'Chuvaca', 'chuvaca', 'Spin', 'Gym', 'MASCULINO', '26', 'ashernetz@hotmail.com', '(667) 214-7897', '(667) 214-7897', '1', '1', '1', '1', ' 1', '1', '1', '1', null, null);
+INSERT INTO `sgusuarios` VALUES ('1', 'spingym', 'spingym123', 'Spin', 'Gym', 'MASCULINO', '26', 'ashernetz@hotmail.com', '(667) 214-7897', '(667) 214-7897', '1', '1', '1', '1', ' 1', '1', '1', '1', '1', '1');
 INSERT INTO `sgusuarios` VALUES ('2', 'Pedro', 'pedro', 'Pedro', 'Flores Cabanillas', 'Masculino', '28', 'pedro@icariasoft.com', '67564564', '65456465', '1', '1', '1', '1', '1', '1', '1', '1', null, null);
 INSERT INTO `sgusuarios` VALUES ('9', 'jesus_ibanez', 'Michi Machapita', 'jesus', 'perez', 'MASCULINO', '26', 'ashernetz@hotmail.com', '(667) 214-7830', '(667) 214-7897', '0', '0', '0', 'Montebello', 'cañadas cañadas', '80227', '0', '1', null, null);
 INSERT INTO `sgusuarios` VALUES ('14', 'Michi', 'machapita', 'michelle', 'soots medina', 'FEMENINO', '23', 'ashernetz@hotmail.com', '(123) 123-1312', '(123) 123-1231', '0', '0', '0', 'Montebello', 'cañadas\ncañadas', '80227', '0', '0', null, null);

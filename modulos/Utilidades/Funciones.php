@@ -205,7 +205,7 @@
 		$maquina->nb_maquina   = $Parametros['nb_maquina'];
 		$maquina->desc_maquina = $Parametros['desc_maquina'];
 		$maquina->num_maquina  = $Parametros['num_maquina'];
-		$maquina->id_categoriamaquina = $Parametros['id_CategoriaMaquina'];
+		$maquina->id_categoriamaquina = $Parametros['id_categoriamaquina'];
 		//Editando la máquina
 		R::begin();
 		    try{
@@ -253,7 +253,7 @@
 		        R::commit();
 		    }
 		    catch(Exception $e) {
-		       $respuesta =  R::rollback();
+		    	$respuesta =  R::rollback();
 		       $respuesta = "algo falló";
 		    }
 		R::close();
@@ -332,8 +332,9 @@
 		$id        = $Parametros['id'];
 		$consultar = new Consultar();
 		$cat       = $consultar->_BuscarCategoriaPorId($id);
+
 		$cantidad  = count($cat);
-		$exist     = 0;
+		$existe    = 0;
 		if($cantidad>0 && $cat!=""){$existe = 1;}
 		$datos     = array("existe"=>$existe,"cat"=>$cat);
 		return $datos;

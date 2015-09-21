@@ -552,7 +552,7 @@ $scope.Evaluar = function(action)
 
               if($scope.permiso==1 && $scope.PermisoU==1)
               {
-                $scope.url = "modulos/BiotestUltra/paginas/fuerza.html";
+                $scope.url = "modulos/BiotestUltra/paginas/Fuerza.html";
               }//if
               else
               {
@@ -1169,6 +1169,8 @@ $scope.Evaluar($scope.Action);
             
           };
 
+          console.log($scope.chartConfig);
+
           //Definiendo los cambios entre los resultados de IMM
           // Espalda
           Reses=$scope.Per_Espalda-$scope.Per_Espalda2;
@@ -1176,7 +1178,7 @@ $scope.Evaluar($scope.Action);
           if(Reses>0 && $scope.Per_Espalda!=Reses)ResEspalda="Aumentaste: "+Reses;
           if(Reses==0)ResEspalda="Sin Cambios";
           if(Reses<0)ResEspalda="Disminuiste: "+(Reses*-1);
-          console.log(ResEspalda);
+          
           $scope.ResEsp = ResEspalda;
 
           //Pecho
