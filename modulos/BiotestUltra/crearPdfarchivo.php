@@ -203,6 +203,8 @@ body{    padding-top: 0px !important;}
 .ResultadosIMM{margin-top: 5%; border: 1px solid #ccc;margin-left: 8%;padding: 4%; width:100%}
 .ContainerGraphic2{ margin-left: 8%; margin-top: 2%;}
 .Consejo{width:450px; }
+.spinlogo{margin-left:95px;}
+.spinlogo img {width:200px; height:45px;}
 .ContainerGraphic{height:360px; margin-top:25px;}
 .ResultadoIMM{width:100%;}
 #chart_div{margin-left:15%;}
@@ -229,7 +231,6 @@ body{    padding-top: 0px !important;}
  					<img src=\"http://imagizer.imageshack.us/v2/128x32q90/673/NaZt1l.png\">
  				</div>
  				<div class=\" FechasDatos \">
- 					<h5 class=\"text-left\">Resultados De <strong>Biotest</strong></h5>
           <h5 class=\"text-left\" style=\"margin-left:20px\">Biotest: <strong>".$fecha_actual."</strong></h5>
         </div>
  		</div>
@@ -659,16 +660,16 @@ phptopdf($pdf_options);
 require '../../includes/PhpMailer/PHPMailerAutoload.php';
 require '../../includes/PhpMailer/class.smtp.php';
 
-$mailFile     = "/spingyma/pdf/".$nombrepdf;
+$mailFile     = "/spingym/pdf/".$nombrepdf;
 $mail  = new PHPMailer();
 $body="<b>This mail is sent using PHP Mailer</b>";#HTML tags can be included
 $mail->IsSMTP();
 // $mail->SMTPDebug  = 2; 
-$mail->Host = "mail.ashernetz.net:2525";  // Servidor de Salida.
+$mail->Host = "mail.ashernetz.com:2525";  // Servidor de Salida.
 $mail->SMTPAuth = true; 
-$mail->Username = "ashernetz@ashernetz.net";  // Correo Electrónico
-$mail->Password = "Chuvaca800"; // Contraseña
-$mail->From = "ashernetz@ashernetz.net";
+$mail->Username = "spingym@ashernetz.com";  // Correo Electrónico
+$mail->Password = "spingym123"; // Contraseña
+$mail->From = "spingym@ashernetz.com";
 $mail->FromName = "SpinGym";
 $mail->Subject    = "Resultados Biotest SpinGym";
 $mail->AddAddress($de_email);

@@ -172,7 +172,6 @@ if($amount_reg>0)
               <img src=\"http://imagizer.imageshack.us/v2/128x32q90/673/NaZt1l.png\">
             </div>
             <div class=\" FechasDatos \">
-              <h5 class=\"text-left\">Resultados De <strong>Biotest</strong></h5>
               <h5 class=\"text-left\" style=\"margin-left:20px\">Biotest: <strong>".$fecha_actual."</strong></h5>
             </div>
         </div>
@@ -423,16 +422,16 @@ if($amount_reg>0)
     require '../../includes/PhpMailer/PHPMailerAutoload.php';
     require '../../includes/PhpMailer/class.smtp.php';
 
-    $mailFile     = "/spingyma/pdf/".$nombrepdf;
+    $mailFile     = "/spingym/pdf/".$nombrepdf;
     $mail  = new PHPMailer();
     $body="<b>This mail is sent using PHP Mailer</b>";#HTML tags can be included
     $mail->IsSMTP();
     // $mail->SMTPDebug  = 2; 
-    $mail->Host = "mail.ashernetz.net:2525";  // Servidor de Salida.
+    $mail->Host = "mail.ashernetz.com:2525";  // Servidor de Salida.
     $mail->SMTPAuth = true; 
-    $mail->Username = "ashernetz@ashernetz.net";  // Correo Electrónico
-    $mail->Password = "Chuvaca800"; // Contraseña
-    $mail->From = "ashernetz@ashernetz.net";
+    $mail->Username = "spingym@ashernetz.com";  // Correo Electrónico
+    $mail->Password = "spingym123"; // Contraseña
+    $mail->From = "spingym@ashernetz.com";
     $mail->FromName = "SpinGym";
     $mail->Subject    = "Resultados Biotest SpinGym";
     $mail->AddAddress($de_email);

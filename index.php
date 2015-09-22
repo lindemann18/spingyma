@@ -12,8 +12,10 @@
 <script src="js/dirPagination.js"></script>
 <script src="js/angular-cookies.min.js"></script>
 <script src="js/bootbox.min.js" type="text/javascript"></script>
-
+<script src="http://code.highcharts.com/adapters/standalone-framework.js"></script>
+<script src="js/charts/highcharts.js" type="text/javascript"></script>
 <script src="js/highcharts-ng.js" type="text/javascript"></script>
+
 
 <!-- Controlers-->
 <script src="js/users.js"></script>
@@ -159,7 +161,7 @@
 
 	    .when('/AgregarRutina2',{
 	    	controller: 'RutinaAgregar2',
-	      	templateUrl:'modulos/Rutinas/Rutinas_Registrar2.html'
+	      	templateUrl:'modulos/Rutinas/Rutinas_registrar2.html'
 	    })
 
 	    .when('/RutinaComp',{

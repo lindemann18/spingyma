@@ -548,6 +548,7 @@
 		//Buscando los resultados del cliente
 		$consultar  = new Consultar();
 		$resultados = $consultar->_ConsultarResultadosPruebas($id_prueba,$cliente);
+		
 		$cantidad   = count($resultados);
 		$exito      = ($cantidad>0)?1:0;
 		$cantidadTo = 3-$cantidad;

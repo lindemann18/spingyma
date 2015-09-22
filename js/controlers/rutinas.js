@@ -1376,8 +1376,6 @@ params = $methodsService.Json("EjerciciosRutinaOrden",$scope.Rut);
             tr+='<td id="ValRu'+eje.id_ejercicio+'" class="Circuitos">'+circuitos+'</td>';
             tr+='<td>'+eje.nb_dia+'</td><td>'+eje.nb_tiporutina+'</td>';
             tr+='<td>'+eje.nb_musculo+'</td><td>'+eje.nb_nombre+eje.nb_apellidos+'</td>';
-            tr+='<td>'+eje.fh_creacion+'</td>';
-            tr+='<td id="ValRe'+eje.id_ejercicio+'" class="Relacion">'+rel+'</td></tr>';
             $("#tablecontent").append(tr);
           }//for
           $('#listados').editableTableWidget();

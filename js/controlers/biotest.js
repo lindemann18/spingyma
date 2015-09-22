@@ -153,7 +153,7 @@ $scope.EjecutarTest = function()
 
 })//ErrorBiotest
 
-.controller('ResultadosBiotest',function($scope,$http,$location,$methodsService,$routeParams,$cookies){
+.controller('ResultadosBiotest',function($scope,$http,$location,$methodsService,$routeParams,$cookies,$timeout){
 	$scope.cliente = $routeParams.cliente;
 	var params         = $methodsService.Json("ResultadosBiotest",$scope.cliente);
 	$scope.showsend   = false;	
@@ -202,6 +202,7 @@ $scope.EjecutarTest = function()
 	   		switch(true)
 	   		{
 	   			case exitoPeso==1 && exitoimc==1 && exitoimm==1:
+	   				$timeout( function(){
 	   				//Pegando los resultados.
 	   				$scope.peso 	= data.peso;
 	   				$scope.imc  	= data.imc;
@@ -435,7 +436,7 @@ $scope.EjecutarTest = function()
 					if(resmusl==0)resmuslo="Sin Cambios";
 					if(resmusl<0)resmuslo="Disminuiste: "+(resmusl*-1);
 					$scope.resmus = resmuslo;
-					
+					},3000);
 	   			break;
 
 	   			case exitoPeso!=1 || exitoimc!=1 || exitoimm!=1:

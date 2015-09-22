@@ -814,7 +814,7 @@ $scope.Evaluar($scope.Action);
       switch(actint)
       {
         case 2:
-          prueba        = "Condición Física";
+          prueba        = "Condicion Fisica";
           $scope.prueba = 3;
         break;
 
@@ -870,7 +870,7 @@ $scope.Evaluar($scope.Action);
         {
             // Tomando los datos.
             // Asignando la primera barra de resultados
-
+            
             $scope.resultados = data.resultados;
             $scope.porcentaje = $scope.resultados[0].porcentaje;
             $methodsService.ResultadoPrueba($scope.porcentaje,"#ProgresBar");
@@ -907,7 +907,9 @@ $scope.Evaluar($scope.Action);
                     data: [resultado2]
                 }, {name: fecha3,color:"#f56954",data: [resultado3]}],
                 title: {text: TituloPrueba},loading: false};
+                
         }//if
+
 
         switch(true)
         {
@@ -968,6 +970,7 @@ $scope.Evaluar($scope.Action);
 
             break;
           }//switch
+
     })  
    .error(function(data, status, headers, config){
     $methodsService.alerta(2,"algo falló, disculpe las molestias");
