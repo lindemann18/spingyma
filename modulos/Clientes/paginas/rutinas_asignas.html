@@ -19,18 +19,18 @@
     </thead>
     <tbody>
         <!-- Filtros -->
-                <div class="col-md-12 Filtros pleft">
-                    <div class="row">
-                        <div class="col-xs-4">
-                      <label for="search">Búsqueda:</label>
-                      <input ng-model="q" id="search" class="form-control" placeholder="Filtrado">
-                    </div>
-                    <div class="col-xs-2">
-                      <label for="search">Ejercicios Por Página:</label>
-                      <input type="number" min="1" max="100" class="form-control" ng-model="pageSize">
-                    </div>
-                    </div><!-- row -->
-                </div><!-- filtros -->
+        <div class="col-md-12 Filtros pleft">
+            <div class="row">
+                <div class="col-xs-4">
+              <label for="search">Búsqueda:</label>
+              <input ng-model="q" id="search" class="form-control" placeholder="Filtrado">
+            </div>
+            <div class="col-xs-2">
+              <label for="search">Ejercicios Por Página:</label>
+              <input type="number" min="1" max="100" class="form-control" ng-model="pageSize">
+            </div>
+            </div><!-- row -->
+        </div><!-- filtros -->
         <tr dir-paginate="rut in rutinas | filter:q | itemsPerPage: pageSize" current-page="currentPage"  class="text-center" id="{{'table'+rut.id_rutina}}" ng-click="Selecciontr(this)" class="text-center">
                 <td>{{rut.id_rutina}}</td>
                 <td>{{rut.nb_rutina}}</td>
