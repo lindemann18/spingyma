@@ -759,7 +759,7 @@
 		for($i=0; $i<$cantidad; $i++)
 		{
 			$ejercicio = $ejerciciosAgregar[$i];
-			$posicion  = $consultar->_ConsultarPosicionEjercicioRutina($id_rutina);
+			$posicion  = $consultar->_ConsultarPosicionEjercicioRutinaCliente($id_rutina);
 			$id_posicionejercicio = $posicion['id_posicionejercicio'];
 			//creando la variable he ingresando los datos.
 			$ejercicioAg = R::dispense("sgejerciciosrutinacliente");
@@ -770,7 +770,10 @@
 			$ejercicioAg->id_rutina              = $id_rutina;
 			$ejercicioAg->id_usuariocreacion     = $id_usuario;
 			$ejercicioAg->id_posicionejercicio   = $id_posicionejercicio;
+			$ejercicioAg->nb_ejerciciorutina     = " ";
+			$ejercicioAg->desc_ejerciciorutina   = " ";
 			$ejercicioAg->sn_activo  	         = 1;
+
 			//Guardando el ejercicio
 			$respuesta = EjecutarTransaccion($ejercicioAg);
 			if(is_numeric($respuesta))
@@ -942,6 +945,8 @@
 					$ejerciciocliente->num_repeticiones = $ejercicio['num_repeticiones'];
 					$ejerciciocliente->ejercicio_relacion = $ejercicio['ejercicio_relacion'];
 					$ejerciciocliente->sn_activo = 1;
+					$ejerciciocliente->nb_ejerciciorutina = " ";
+					$ejerciciocliente->desc_ejerciciorutina = " ";
 					$ejercicioid = EjecutarTransaccion($ejerciciocliente);
 					if(is_numeric($ejercicioid))
 					{

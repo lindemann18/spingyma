@@ -1083,7 +1083,17 @@
 	{
 		 $query = '
 			select IFNULL(MAX(id_posicionejercicio+1),1) as "id_posicionejercicio" 
-			from sgejerciciosrutina where id_Rutina = ?
+			from sgejerciciosrutina where id_rutina = ?
+		';
+		$posicion = $this->EjecutarTransaccionSinglerow($query,$id_rutina);
+		return $posicion;
+	}//_ConsultarPosicionEjercicioRutina
+
+	function _ConsultarPosicionEjercicioRutinaCliente($id_rutina)
+	{
+		 $query = '
+			select IFNULL(MAX(id_posicionejercicio+1),1) as "id_posicionejercicio" 
+			from sgejerciciosrutinacliente where id_rutina = ?
 		';
 		$posicion = $this->EjecutarTransaccionSinglerow($query,$id_rutina);
 		return $posicion;
@@ -1093,7 +1103,7 @@
 	{
 		 $query = '
 			select IFNULL(MAX(id_posicionejercicio),0) as "id_posicionejercicio" 
-			from sgejerciciosrutina where id_Rutina = ? AND id_dia= ?
+			from sgejerciciosrutina where id_rutina = ? AND id_dia= ?
 		';
 
 		R::begin();
@@ -1113,7 +1123,7 @@
 	{
 		 $query = '
 			select IFNULL(MAX(id_posicionejercicio),0) as "id_posicionejercicio" 
-			from sgejerciciosrutina where id_Rutina = ? AND id_dia= ?-1
+			from sgejerciciosrutina where id_rutina = ? AND id_dia= ?-1
 		';
 		R::begin();
 			    try{
@@ -1198,7 +1208,7 @@
 			LEFT JOIN sgmaquinas Maq ON
 			Ejer.id_maquina = Maq.id
 
-			where Rut.id= ? AND Eje.id_Rutina= ? AND Eje.sn_activo=1 
+			where Rut.id= ? AND Eje.id_rutina= ? AND Eje.sn_activo=1 
 			ORDER BY dias.id,Eje.id_posicionejercicio asc, id_ejercicio asc
 		';
 		R::begin();
@@ -1223,7 +1233,7 @@
 		Rut.id_posicionejercicio,
 		Rut.id_dia  
 		FROM sgejerciciosrutina  Rut
-		where Rut.id_Rutina= ? and Rut.id_PosicionEjercicio=? and Rut.sn_activo=1
+		where Rut.id_rutina= ? and Rut.id_PosicionEjercicio=? and Rut.sn_activo=1
 		';
 		R::freeze(1);
 		R::begin();
@@ -2374,7 +2384,7 @@
 		Cat.nb_CategoriaRutina as categoria
 		
 		from sg_ejerciciosrutina Ejer
-		INNER JOIN sg_rutinas Rut on Rut.id_rutina = Ejer.id_Rutina
+		INNER JOIN sg_rutinas Rut on Rut.id_rutina = Ejer.id_rutina
 		INNER JOIN sg_ejercicios Eje ON Eje.id = Ejer.id_Ejercicio
 		INNER JOIN sg_categoriasrutina  Cat ON Rut.id_CategoriaRutina = Cat.id
 		where id_Ejercicio = "'.$id_ejercicio.'" and Rut.sn_activo = 1
@@ -2396,7 +2406,7 @@
 		Clie.nb_apellidos	
 		
 		from sg_ejerciciosrutinacliente Ejer
-		INNER JOIN sg_rutinasclientes Rut on Rut.id_rutinaCliente = Ejer.id_Rutina
+		INNER JOIN sg_rutinasclientes Rut on Rut.id_rutinaCliente = Ejer.id_rutina
 		INNER JOIN sg_ejercicios Eje ON Eje.id = Ejer.id_Ejercicio
 		INNER JOIN sg_categoriasrutina  Cat ON Rut.id_CategoriaRutina = Cat.id
 		INNER JOIN sg_clientes Clie	ON Rut.id_cliente = Clie.id_cliente
@@ -2769,7 +2779,7 @@
 		LEFT JOIN sgmaquinas Maq ON
 		Ejer.id_maquina = Maq.id
 
-		where Rut.id=? AND Eje.id_Rutina=? AND Eje.sn_activo=1 
+		where Rut.id=? AND Eje.id_rutina=? AND Eje.sn_activo=1 
 		ORDER BY dias.id,Eje.id_posicionejercicio asc, id_ejercicio asc
 			';
 		R::freeze(1);
@@ -2832,7 +2842,7 @@
 			/* JOINS*/
 			INNER JOIN 
 			sg_ejerciciosrutinacliente Eje
-			ON Eje.id_Rutina
+			ON Eje.id_rutina
 			
 			INNER JOIN sg_categoriasrutina CatRu
 			ON CatRu.id=Rut.id_CategoriaRutina
@@ -2910,7 +2920,7 @@
 			
 			/* JOINS*/
 			INNER JOIN sg_ejerciciosrutina Eje
-			ON Eje.id_Rutina=Rut.id_rutina
+			ON Eje.id_rutina=Rut.id_rutina
 			
 			INNER JOIN sg_categoriasrutina Cat
 			ON Cat.id=Eje.id_CategoriaRutina
@@ -2927,22 +2937,6 @@
 		$result=$con->query($query) or die("Error en: $query ".mysqli_error($query));
 		return $result;
 	}//_ConsultarEjerciciosRutinasPorDiaYPorIdRutina
-	
-	
-	
-	function _ConsultarPosicionEjercicioRutinaCliente($id_rutina)
-	{
-		$query = '
-			select IFNULL(MAX(id_PosicionEjercicio+1),1) as "id_PosicionEjercicio" 
-			from sg_ejerciciosrutinacliente where id_Rutina = "'.$id_rutina.'"
-		';
-		$con=Conectar::_con();
-		$result=$con->query($query) or die("Error en: $query ".mysqli_error($query));
-		return $result;
-		
-	}//_ConsultarPosicionEjercicioRutinaCliente
-	
-	
 	
 	
 	
