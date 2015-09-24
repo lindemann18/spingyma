@@ -1,4 +1,5 @@
 <?php
+	session_start();
 	include("../../libs/libs.php");
 	$Params 	= $_POST['Params'];
 	$Parametros = json_decode($Params,true);
@@ -12,6 +13,11 @@
 
 		case 'LoginUsuario':
 			$salidaJson = LoginUsuario($Parametros);
+			echo json_encode($salidaJson);
+		break;
+
+		case 'ValidaDatos':
+			$salidaJson = ValidaDatos($Parametros);
 			echo json_encode($salidaJson);
 		break;
 
@@ -57,12 +63,22 @@
 		else
 		{
 			$existe = 1;
-			session_start();
 			$_SESSION['usuario'] = $userLogin;
 		}
 		$datos = array("existe"=>$existe,"user"=>$userLogin);
 		return $datos;
 	}//LoginUsuario
+
+	function ValidaDatos($Parametros)
+	{
+		// Tomando los datos
+		$nombre       = $_SESSION['usuario']['nb_nombre'];
+		$nb_apellidos = $_SESSION['usuario']['nb_apellidos'];
+		$permisos     = $_SESSION['usuario']['permisos'];
+		$nb_completo  = $nombre." ".$nb_apellidos;
+		$datos = array("nombre"=>$nb_completo,"permisos"=>$permisos);
+		return $datos;
+	}//ValidaDatos
 
 	function BuscarUsuarios($Parametros)
 	{

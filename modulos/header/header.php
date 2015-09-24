@@ -208,7 +208,7 @@
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="glyphicon glyphicon-user"></i>
                                 <!-- Nombre de la parte de logout-->
-                                <span>Nombre <i class="caret"></i></span>
+                                <span id="name_user"> <i class="caret"></i></span>
                             </a>
                             <ul class="dropdown-menu">
                                 <!-- User image -->

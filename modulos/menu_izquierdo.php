@@ -38,7 +38,7 @@
                                 <i class="fa fa-users"></i> <span>Clientes</span>
                             </a>
                         </li>
-                       <li id="m-clientes">
+                       <li id="m-bioultra">
                             <a href="#/Biotestultra">
                                 <i class="fa fa-bar-chart-o"></i>
                                 <span>BioTest Ultra</span>

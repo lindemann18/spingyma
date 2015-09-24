@@ -1,5 +1,28 @@
 angular.module('AppUsuarios',['ngRoute','angularUtils.directives.dirPagination','Methods'])
 
+	.controller('Inicio',function($scope,$http,$location,$methodsService){
+		params = $methodsService.Json("ValidaDatos",$scope.usertr);
+		//Enviando por ajax la peetición
+		var url = 'modulos/Usuarios/Funciones.php';
+	 $http({method: "post",url: url,data: $.param({Params:params}), 
+	  headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+	})
+	 .success(function(data, status, headers, config) 
+	 {          	
+	   		$scope.nombre   = data.nombre;
+	   		$scope.permisos = parseInt(data.permisos);
+
+	   		$methodsService.Permisos($scope.permisos,$scope.nombre);
+
+	  })  
+	 .error(function(data, status, headers, config){
+	 	$methodsService.alerta(2,"algo falló, disculpe las molestias");
+	 });
+
+
+	})
+	
+
 	.controller('Users',function($scope,$http,$location,$methodsService){
 
 		//Variables

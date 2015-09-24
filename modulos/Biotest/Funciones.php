@@ -224,23 +224,31 @@
 			$Prueba       = R::findOne( 'sgtipospruebas', ' nm_prueba = ? ', [ 'Imm' ] );
 			$id_pruebaimm = $Prueba->id;
 			
-			
-
-			//Agregando los datos de las medidas.
 			$Diagnostico  = "No Aplica";
 			$desc_espalda = "IMM - Espalda";
-			$respuesta    = GuardarResultadoPruebasLight($id_inst,$cliente,$id_pruebaimm,$desc_espalda,$Diagnostico,0,$fh_creacion,$espalda);
 			$desc_pecho   = "IMM - Pecho";
-			$respuesta    = GuardarResultadoPruebasLight($id_inst,$cliente,$id_pruebaimm,$desc_pecho,$Diagnostico,0,$fh_creacion,$pecho);
 			$desc_abd     = "IMM - Abdomen";
-			$respuesta    = GuardarResultadoPruebasLight($id_inst,$cliente,$id_pruebaimm,$desc_abd,$Diagnostico,0,$fh_creacion,$abdomen);
 			$desc_cad     = "IMM - Cadera";
-			$respuesta    = GuardarResultadoPruebasLight($id_inst,$cliente,$id_pruebaimm,$desc_cad,$Diagnostico,0,$fh_creacion,$cadera);
 			$desc_bra     = "IMM - Brazo";
-			$respuesta    = GuardarResultadoPruebasLight($id_inst,$cliente,$id_pruebaimm,$desc_bra,$Diagnostico,0,$fh_creacion,$brazo);
 			$desc_mus     = "IMM - Muslo";
+
+			// Guardando los resultados light
+			
+			$respuesta    = GuardarResultadoPruebasLight($id_inst,$cliente,$id_pruebaimm,$desc_espalda,$Diagnostico,0,$fh_creacion,$espalda);
+			$respuesta    = GuardarResultadoPruebasLight($id_inst,$cliente,$id_pruebaimm,$desc_pecho,$Diagnostico,0,$fh_creacion,$pecho);
+			$respuesta    = GuardarResultadoPruebasLight($id_inst,$cliente,$id_pruebaimm,$desc_abd,$Diagnostico,0,$fh_creacion,$abdomen);
+			$respuesta    = GuardarResultadoPruebasLight($id_inst,$cliente,$id_pruebaimm,$desc_cad,$Diagnostico,0,$fh_creacion,$cadera);
+			$respuesta    = GuardarResultadoPruebasLight($id_inst,$cliente,$id_pruebaimm,$desc_bra,$Diagnostico,0,$fh_creacion,$brazo);
 			$respuesta    = GuardarResultadoPruebasLight($id_inst,$cliente,$id_pruebaimm,$desc_mus,$Diagnostico,0,$fh_creacion,$muslo);
 			
+			// Guardando los resultados del biotest ultra.
+			$respuesta    = GuardarResultadoPruebas($id_inst,$cliente,$id_pruebaimm,$desc_espalda,$Diagnostico,0,$fh_creacion,$espalda);
+			$respuesta    = GuardarResultadoPruebas($id_inst,$cliente,$id_pruebaimm,$desc_pecho,$Diagnostico,0,$fh_creacion,$pecho);
+			$respuesta    = GuardarResultadoPruebas($id_inst,$cliente,$id_pruebaimm,$desc_abd,$Diagnostico,0,$fh_creacion,$abdomen);
+			$respuesta    = GuardarResultadoPruebas($id_inst,$cliente,$id_pruebaimm,$desc_cad,$Diagnostico,0,$fh_creacion,$cadera);
+			$respuesta    = GuardarResultadoPruebas($id_inst,$cliente,$id_pruebaimm,$desc_bra,$Diagnostico,0,$fh_creacion,$brazo);
+			$respuesta    = GuardarResultadoPruebas($id_inst,$cliente,$id_pruebaimm,$desc_mus,$Diagnostico,0,$fh_creacion,$muslo);
+
 		}//if
 		else
 		{
@@ -436,6 +444,7 @@
 			$Prueba      = R::findOne( 'sgtipospruebas', ' nm_prueba = ? ', [ 'Imc' ] );
 			$id_prueba   = $Prueba->id;
 			$desc_prueba = "IMC";
+			$respuesta   = GuardarResultadoPruebas($id_inst,$cliente,$id_prueba,$desc_prueba,$Diagnostico,$porcentaje,$fh_creacion,$imc);
 			$respuesta   = GuardarResultadoPruebasLight($id_inst,$cliente,$id_prueba,$desc_prueba,$Diagnostico,$porcentaje,$fh_creacion,$imc);
 
 			//Tomando los resultados del cliente de esa prueba.
@@ -459,6 +468,7 @@
 			$Prueba      = R::findOne( 'sgtipospruebas', ' nm_prueba = ? ', [ 'Peso' ] );
 			$id_prueba   = $Prueba->id;
 			$desc_prueba = "Peso";
+			$respuesta   = GuardarResultadoPruebas($id_inst,$cliente,$id_prueba,$desc_prueba,$Diagnostico,$porcentaje,$fh_creacion,$peso);
 			$respuesta   = GuardarResultadoPruebasLight($id_inst,$cliente,$id_prueba,$desc_prueba,$Diagnostico,$porcentaje,$fh_creacion,$peso);
 
 			//Tomando los resultados del cliente de esa prueba.
@@ -467,6 +477,21 @@
 		$datosimc    = array("resultado_numerico"=>$peso,"Diagnostico"=>$Diagnostico,"resultados"=>$resultadoPruebas);
 		return $datosimc;
 	}//Peso
+
+	function GuardarResultadoPruebas($id_inst,$cliente,$id_prueba,$desc_prueba,$Diagnostico,$porcentaje,$fh_creacion,$imc)
+	{
+		$pruebastore 					 = R::dispense("sgpruebas");
+		$pruebastore->id_instructor      = $id_inst;
+		$pruebastore->id_cliente         = $cliente;
+		$pruebastore->tipo_prueba        = $id_prueba;
+		$pruebastore->desc_prueba        = $desc_prueba;
+		$pruebastore->resultado_numerico = $imc;
+		$pruebastore->resultado          = $Diagnostico;
+		$pruebastore->porcentaje         = $porcentaje;
+		$pruebastore->fecha  		     = $fh_creacion;
+		$respuesta = EjecutarTransaccion($pruebastore);
+		return $respuesta;
+	}//GuardarResultadoPruebas
 
 	function GuardarResultadoPruebasLight($id_inst,$cliente,$id_prueba,$desc_prueba,$Diagnostico,$porcentaje,$fh_creacion,$imc)
 	{

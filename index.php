@@ -59,6 +59,7 @@
 	{
 	    $routeProvider
 	    .when('/',{
+	      controller: 'Inicio',
 	      templateUrl:'modulos/inicio.html'
 
 	    })

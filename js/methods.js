@@ -429,4 +429,14 @@ var miModulo = angular.module("Methods", []);
 		    return size;
 		}//sizeObject
 
+		this.Permisos = function (permiso,nombre)
+		{
+			$("#name_user").text(nombre);
+			if(permiso!=1)
+			{
+				$("#m-usuarios").css("display","none");
+				$("#m-reportes").css("display","none");
+			}
+		}//Permisos
+
     })	
