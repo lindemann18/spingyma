@@ -1,5 +1,5 @@
             <!-- Left side column. contains the logo and sidebar -->
-            <aside class="left-side sidebar-offcanvas">
+            <aside class="left-side sidebar-offcanvas" ng-controller="menu">
                 <!-- sidebar: style can be found in sidebar.less -->
                 <section class="sidebar">
                     <!-- Sidebar user panel -->
@@ -8,7 +8,7 @@
                             <img src="img/avatar3.png" class="img-circle" alt="User Image" />
                         </div>--> <!--imagen de avagar, no se necesita -->
                         <div class="pull-left info">
-                            <p>Hola, </p>
+                            <p>Hola, <span id="name_saludo"></span></p>
 
                             <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
                         </div>

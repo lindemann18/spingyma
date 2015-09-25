@@ -1,6 +1,6 @@
 angular.module('AppUsuarios',['ngRoute','angularUtils.directives.dirPagination','Methods'])
-
-	.controller('Inicio',function($scope,$http,$location,$methodsService){
+	
+	.controller('menu',function($scope,$http,$location,$methodsService){
 		params = $methodsService.Json("ValidaDatos",$scope.usertr);
 		//Enviando por ajax la peetición
 		var url = 'modulos/Usuarios/Funciones.php';
@@ -18,6 +18,10 @@ angular.module('AppUsuarios',['ngRoute','angularUtils.directives.dirPagination',
 	 .error(function(data, status, headers, config){
 	 	$methodsService.alerta(2,"algo falló, disculpe las molestias");
 	 });
+	})
+
+	.controller('Inicio',function($scope,$http,$location,$methodsService){
+		
 
 
 	})
@@ -151,7 +155,7 @@ angular.module('AppUsuarios',['ngRoute','angularUtils.directives.dirPagination',
         })
          .success(function(data, status, headers, config) 
          { 
-         	console.log(data);
+
            		existe = data.existe;
            		if(existe!=1)
            		{
@@ -233,6 +237,10 @@ angular.module('AppUsuarios',['ngRoute','angularUtils.directives.dirPagination',
         })
          .success(function(data, status, headers, config) 
          {          	
+
+         		
+				
+
            		existe = data.existe;
            		if(existe!=0)
            		{

@@ -431,11 +431,14 @@ var miModulo = angular.module("Methods", []);
 
 		this.Permisos = function (permiso,nombre)
 		{
-			$("#name_user").text(nombre);
+			$("#name_user").text(nombre);   // Pegando el bnombre
+			$("#name_saludo").text(nombre); // Pegando el bnombre
+			
+			// Ocultando las secciones a las que no se tiene permiso.
 			if(permiso!=1)
 			{
-				$("#m-usuarios").css("display","none");
-				$("#m-reportes").css("display","none");
+				$("#m-usuarios").remove();
+				$("#m-reportes").remove();
 			}
 		}//Permisos
 

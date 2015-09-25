@@ -74,7 +74,7 @@
 		// Tomando los datos
 		$nombre       = $_SESSION['usuario']['nb_nombre'];
 		$nb_apellidos = $_SESSION['usuario']['nb_apellidos'];
-		$permisos     = $_SESSION['usuario']['permisos'];
+		$permisos     = $_SESSION['usuario']['Permisos'];
 		$nb_completo  = $nombre." ".$nb_apellidos;
 		$datos = array("nombre"=>$nb_completo,"permisos"=>$permisos);
 		return $datos;
