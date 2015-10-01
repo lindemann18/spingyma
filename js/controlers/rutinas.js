@@ -1370,12 +1370,11 @@ params = $methodsService.Json("EjerciciosRutinaOrden",$scope.Rut);
             repet     = (eje.num_repeticiones!=null)?eje.num_repeticiones:0;
             rel       = (eje.ejercicio_relacion!=null)?eje.ejercicio_relacion:"";
             var tr = '<tr class="text-center" id="'+eje.id_rutina+'">';
-            tr+='<td>'+eje.id_posicionejercicio+'</td><td>'+eje.nb_rutina+'</td>';
-            tr+='<td>'+eje.desc_rutina+'</td><td>'+eje.nb_categoriarutina+'</td>';
+            tr+='<td>'+eje.id_posicionejercicio+'</td>';
             tr+='<td>'+eje.nb_ejercicio+'</td><td id="Val'+eje.id_ejercicio+'" class="Repeticiones">'+repet+'</td>';
             tr+='<td id="ValRu'+eje.id_ejercicio+'" class="Circuitos">'+circuitos+'</td>';
             tr+='<td>'+eje.nb_dia+'</td><td>'+eje.nb_tiporutina+'</td>';
-            tr+='<td>'+eje.nb_musculo+'</td><td>'+eje.nb_nombre+eje.nb_apellidos+'</td>';
+            tr+='<td>'+eje.nb_musculo+'</td>';
             $("#tablecontent").append(tr);
           }//for
           $('#listados').editableTableWidget();

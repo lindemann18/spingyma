@@ -1,6 +1,12 @@
 <style type="text/css">
 	.ListaInstructores {margin-left: 4%; margin-top: 0%; visibility:hidden}
-	.size {font-size: 12.5px;}
+	.size {font-size: 15px;}
+    .jumbotron{border-radius: 18px;}
+    .infocont{color:#fff; background-color: #D14841; margin: 1%;     margin-bottom: 2%; border-radius: 13px;}
+    .infodesc{color:#fff; background-color: #D14841; margin-left: 20%;     margin-bottom: 2%; border-radius: 13px;}
+    .user{}
+    .first{margin-left: 13%;}
+    .DescIco{margin-left: 47%;}
 </style>
 
 
@@ -44,20 +50,41 @@
                 </div>
             </div><!-- /.box-header -->
               <div class="box-body table-responsive" id="TablaDatos">
+                <div class="col-md-11">
+                    <legend class="text-center">Información</legend>
+                    <div class="row">
+                        <div class="col-lg-3 infocont first col-xs-12">
+                        <h4 class="text-center">Rutina</h4>
+                        <i class="fa fa-star fa-3x col-md-offset-5"></i>
+                        <p class="text-center">{{ejercicios[0].nb_rutina}}</p>
+                    </div> 
+                    <div class="col-lg-3 infocont User col-xs-12">
+                        <h4 class="text-center">Entrenador</h4>
+                        <i class="fa fa-user fa-3x col-md-offset-5"></i>
+                        <p class="text-center">{{ejercicios[0].nb_nombre+" "+ejercicios[0].nb_apellidos}}</p>
+                    </div> 
+                    <div class="col-lg-3 infocont col-xs-12">
+                        <h4 class="text-center">Categoria</h4>
+                        <i class="fa fa-book fa-3x col-md-offset-5"></i>
+                        <p class="text-center">{{ejercicios[0].nb_categoriarutina}}</p>
+                    </div> 
+                    <div class="col-lg-8  infodesc col-xs-12">
+                        <h4 class="text-center">Descripción</h4>
+                        <i class="fa  fa-commenting-o fa-3x DescIco" align="center"></i>
+                        <p class="text-center">{{ejercicios[0].desc_rutina}}</p>
+                    </div>
+                    </div>
+                </div>
                 <table id="listados" class="table table-bordered table-striped col-xs-11 col-sm-11 size" >
                     <thead>
                         <tr>
 	                       	<th class="text-center"> CODIGO </th>
-	                        <th class="text-center">RUTINA</th>
-	                        <th class="text-center">DESCRIPCION</th>
-	                        <th class="text-center">CATEGORIA</th>
 	                        <th class="text-center">EJERCICIO</th>
 	                        <th class="text-center">REPETICIONES</th>
 	                        <th class="text-center">SERIES</th>
 	                        <th class="text-center">DIA</th>
 	                        <th class="text-center">TIPO RUTINA</th>
 	                        <th class="text-center">MUSCULO</th>
-	                        <th class="text-center">USUARIO</th>
                         </tr>
                     </thead>
                     <tbody id="tablecontent">
@@ -65,16 +92,12 @@
                 <tfoot>
                     <tr>
                         <th class="text-center"> CODIGO </th>
-                        <th class="text-center">RUTINA</th>
-                        <th class="text-center">DESCRIPCION</th>
-                        <th class="text-center">CATEGORIA</th>
                         <th class="text-center">EJERCICIO</th>
                         <th class="text-center">REPETICIONES</th>
                         <th class="text-center">SERIES</th>
                         <th class="text-center">DIA</th>
                         <th class="text-center">TIPO RUTINA</th>
                         <th class="text-center">MUSCULO</th>
-                        <th class="text-center">USUARIO</th>
                     </tr>
                 </tfoot>
             </table>

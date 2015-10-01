@@ -1324,7 +1324,7 @@ params = $methodsService.Json("EjerciciosRutinaOrden",$scope.Rut);
         {
            $scope.ejercicios = data.ejercicios;
            var cantidad      = $scope.ejercicios.length;
-
+           console.log(data.ejercicios);
           //definiendo los ejercicios por dia.
           for(i=0; i<cantidad; i++)
           {
