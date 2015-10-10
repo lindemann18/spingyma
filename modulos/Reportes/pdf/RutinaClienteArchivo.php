@@ -1,10 +1,12 @@
 <?php
 	include("../../../libs/libs.php");
+	require '../../../includes/PhpMailer/PHPMailerAutoload.php';
+	require '../../../includes/PhpMailer/class.smtp.php';
 	$conexion   = new ConexionBean(); //Variable de conexión
 	$con        = $conexion->_con(); //Variable de conexión
 	require_once('tcpdf_include.php');
 	
-	$id_cliente = $_GET['id_cliente'];
+	$id_cliente = $_POST['id_cliente'];
 
 	// Consultando el id de la rutina por el cliente.
 	$rutina    = R::findOne("sgrutinasclientes","id_cliente= ?",[$id_cliente]);
@@ -16,15 +18,16 @@
 	$result   = $consultar->_ConsultarInformacionRutinaPreFinalClientePorId($id_rutina);
 	$num_rows = count($result);
 	
-	//Consultar información del cliente acorde la rutina
-	$filaCliente = $consultar->_ConsultarInformacionClientePorRutinaId($id_rutina);
+	//Consultar información del cliente
+	$cliente = R::findOne("sgclientes","WHERE id = ?",[$id_cliente]);
+	
 	
 	
 	//Datos del cliente
-	$nb_nombre 	  	 = $filaCliente['nb_cliente'];
-	$nb_apellidos 	 = $filaCliente['nb_apellidos'];
-	$de_email	  	 = $filaCliente['de_email'];
-	$id_cliente		 = $filaCliente['id_cliente'];
+	$nb_nombre 	  	 = $cliente->nb_cliente;
+	$nb_apellidos 	 = $cliente->nb_apellidos;
+	$de_email	  	 = $cliente->de_email;
+	$id_cliente		 = $cliente->id_cliente;
 	$nombre_completo = ($nb_nombre." ".$nb_apellidos);		
 	
 	//Fecha actual
@@ -566,9 +569,44 @@
 		//Close and output PDF document
 		//Datos del pdf, nombre, ubicación y demás.
 
-		$nombrepdf = $id_cliente."Rutina".".pdf"; 	//Local
-		$pdf->Output("../../../pdf/".$nombrepdf, 'F');
-	
+$nombrepdf = $id_cliente."Rutina".".pdf"; 	//Local
+$pdf->Output("../../../pdf/".$nombrepdf, 'F');
+$mailFile     = "/spingym/pdf/".$nombrepdf;
+$mail  = new PHPMailer();
+$body="<b>This mail is sent using PHP Mailer</b>";#HTML tags can be included
+$mail->IsSMTP();
+//$mail->SMTPDebug  = 2; 
+$mail->Host = "mail.ashernetz.com:2525";  // Servidor de Salida.
+$mail->SMTPAuth = true; 
+$mail->Username = "spingym@ashernetz.com";  // Correo Electrónico
+$mail->Password = "spingym123"; // Contraseña
+$mail->From = "spingym@ashernetz.com";
+$mail->FromName = "SpinGym";
+$mail->Subject    = "Resultados Biotest SpinGym";
+$mail->AddAddress($de_email);
+//$mail->SMTPDebug  = 2; 
+$mail->Body    = 'Desde SpinGym queremos que disfrutes tu tiempo aqu&iacute;, para tu comodidad te enviamos tus rutina a tu correo. Vive SpinGym';
+//$mail->AddAttachment($_SERVER['DOCUMENT_ROOT']."/".$mailFile,"Rutina.Pdf");
+$mail->AddAttachment($_SERVER['DOCUMENT_ROOT'].$mailFile,"Rutina.Pdf");$mail->WordWrap   = 50;
+$mail->AddAddress($de_email, "SpinGym");
+$mail->IsHTML(true); // send as HTML
+
+if(!$mail->Send())
+{
+  unlink($_SERVER['DOCUMENT_ROOT']."/".$mailFile); //Eliminando archivo
+  //Redirigir a la página
+  $salidaJson=array("exito"=>0);
+  echo json_encode($salidaJson);
+}
+else
+{
+  //unlink($pdfpath); //Eliminando archivo local
+  unlink($_SERVER['DOCUMENT_ROOT']."/".$mailFile); //Eliminando archivo host
+  //Redirigir a la página
+  $salidaJson=array("exito"=>1);
+  echo json_encode($salidaJson);
+}
+
 ?>
 
 

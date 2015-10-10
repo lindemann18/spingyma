@@ -1077,7 +1077,7 @@ $scope.RutinaPrefinal = function()
 //Tomadno los datos
 $scope.id_rutina     = $routeParams.Rut;
 $scope.cliente 		 = $routeParams.Cliente;
-var params     		 = $methodsService.Json("InfoRutinaCliente",$scope.id_rutina);
+var params     		 = $methodsService.Json("InfoRutinaCliente",$scope.cliente);
 
 var url = 'modulos/Clientes/Funciones.php';
 $http({method: "post",url: url,data: $.param({Params:params}), 
@@ -1086,8 +1086,9 @@ headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
 .success(function(data, status, headers, config) 
 {          	
 	//Pegando los datos en las tblas.
-	exito = data.exito;
-        if(exito==1)
+		$scope.exito = parseInt(data.exito);
+		console.log(data);
+        if($scope.exito==1)
         {
           $scope.ejercicios = data.ejercicios;
           var cantidad      = $scope.ejercicios.length;
@@ -1164,7 +1165,8 @@ headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
 // Variables
 $scope.Rut     = $routeParams.Rut;
 $scope.Cliente = $routeParams.Cliente;	
-
+$scope.send    = false;
+$scope.fallo   = 2;
 //Funciones
 
 $scope.EnviarRutina = function()
@@ -1174,14 +1176,21 @@ $scope.EnviarRutina = function()
 	  	if(result==true)
 	  	{
 	  		$scope.$apply(function(){
-	  			alert("hola");
-	  			var url = 'modulos/Clientes/CrearPdf.php';
-			     $http({method: "post",url: url,data: $.param({id_rutina:$scope.Rut}), 
+	  			$scope.send  = true;
+	  			$scope.fallo = 2;
+	  			var url 	 = 'modulos/Reportes/pdf/RutinaClienteArchivo.php';
+			     $http({method: "post",url: url,data: $.param({id_cliente:$scope.Cliente}), 
 			      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
 			    })
 			     .success(function(data, status, headers, config) 
 			     {            
-			       
+			       	$scope.send = false;
+			       	exito 			= data.exito;
+				 		$scope.showsend = false;
+				 		if(exito==1)
+				 		{
+				 			$scope.fallo = 0; 
+				 		}else{$scope.fallo=1; $scope.errormsj = data.Error;}
 			         
 			      })  
 			     .error(function(data, status, headers, config){

@@ -385,10 +385,20 @@
 	function InfoRutinaCliente($Parametros)
 	{
 		$id         = $Parametros['id'];
-		$consultar  = new Consultar();
-		$ejercicios = $consultar->_ConsultarInformacionRutinaPreFinalClientePorId($id);
-		$cantidad   = count($ejercicios);
-		$exito      = ($cantidad>0)?1:0;
+		$exito      = 0;
+		$ejercicios = "";
+		//verificando si el cliente tiene una rutina asignada.
+		$datosRut   = R::findOne("sgrutinasclientes","where id_cliente  = ?",[$id]);
+		$cantidad_r = count($datosRut);
+		if($cantidad_r>0)
+		{
+			$id_rutina = $datosRut->id;
+			$consultar  = new Consultar();
+			$ejercicios = $consultar->_ConsultarInformacionRutinaPreFinalClientePorId($id_rutina);
+			$cantidad   = count($ejercicios);
+			$exito      = ($cantidad>0)?1:0;
+		}
+
 		$datos      = array("exito"=>$exito,"ejercicios"=>$ejercicios);
 		return $datos;
 	}//InfoRutinaCliente

@@ -95,11 +95,32 @@
                                 </tr>
                             </tfoot>
                         </table>
-                        <div class="row">
+                         <div class="col-md-12 Loading" ng-show="send!=false">
+                            <h1 class="text-center">Enviando</h1>
+                            <div class="sk-spinner sk-spinner-wandering-cubes">
+                              <div class="sk-cube1"></div>
+                              <div class="sk-cube2"></div>
+                            </div>
+                        </div><!-- loading-->
+                        
+                        <div class="alert alert-success col-md-11 alerta" ng-show="fallo==0">
+                              <strong>Perfecto!</strong> Los resultados se han enviado
+                            </div>
+
+                            <div class="alert alert-danger col-md-11 alerta" ng-show="fallo==1">
+                              <strong>Alerta!</strong> Los resultados No se han enviado. <br>
+                              Error: {{errormsj}}
+                            </div>
+                        </div><!-- /.box-header -->
+
+
+                        <div class="row" ng-hide="send==true">
                         	<div class="col-sm-12"><h3 class="box-title">Acciones</h3></div>
                         	<div class="col-sm-1 Arriba"><button class="btn btn-success btn-sm" ng-click="FinalizarRutina()"><i class="fa fa-plus"></i> Finalizar Rutina</button></div>
                         	<div class="col-sm-1 Arriba Izquierda"><button class="btn btn-info btn-sm" ng-click="EnviarRutina()"><i class="fa fa-plus"></i> Enviar Rutina</button></div>
                         </div>
+                        
+                       
                 </div>
             </div>
         </div>
