@@ -129,22 +129,25 @@
 	function EditarConsejo($Parametros)
 	{
 		R::freeze(1);
-		$id = $Parametros['id'];
+		$id 		  = $Parametros['id'];
 		$consejotexto = $Parametros['Consejo'];
-		$ConsejoOb = R::load("sgconsejos",$id);
+		$ConsejoOb    = R::load("sgconsejos",$id);
 		$ConsejoOb->consejo = $consejotexto;
-
+		$error       = 0;
+		$msj         = "";
 		R::begin();
 			    try{
 			       $respuesta = R::store($ConsejoOb);
 			        R::commit();
 			    }
 			    catch(Exception $e) {
+			    	$error = 1;
+			    	$msj   = $e->getMessage;
 			       $respuesta =  R::rollback();
 			    }
 			R::close();
 		
-		$datos = array("respuesta"=>$respuesta);
+		$datos = array("respuesta"=>$respuesta,"error"=>$error,"msj"=>$msj);
 		return $datos;
 	}//Editarconsejo
 

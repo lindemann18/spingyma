@@ -150,15 +150,15 @@ angular.module('AppUtilidades',['ngRoute','angularUtils.directives.dirPagination
 			         .success(function(data, status, headers, config) 
 			         {     console.log(data);
 			         		//Verificando la respuesta, si es igual al id,t odo salió bien.
-					   		respuesta = data.respuesta;
-					   		if(respuesta===1)
+					   		error = data.error;
+					   		if(error===0)
 					   		{
 					   			$methodsService.alerta(1,"Consejo editado!");
 					   		}//if
 					   		else
 					   		{
-					   			$methodsService.alerta(2,"algo falló, disculpe las molestias");
-					   		}
+					   			$methodsService.alerta(2,"algo falló, disculpe las molestias "+data.msj);
+					   		} 
 			          })  
 			         .error(function(data, status, headers, config){
 			         	$methodsService.alerta(2,"algo falló, disculpe las molestias");
