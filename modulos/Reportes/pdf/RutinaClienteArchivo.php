@@ -239,8 +239,9 @@
 		$html = '
 		
 			<style>
+				.dia{text-align:left; background-color:#D14841; color:#fff; height:100px; margin-bottom:80px !important; padding:20px;}
 				table {border-collapse: collapse;border-spacing: 0;}
-				table {max-width: 100%; background-color: #e7e8ea;}
+				table {max-width: 100%; background-color: #e7e8ea;background-color: #fff; color:#9E9E9E;}
 				thead {display: table-header-group;}
 			  	tr,img {page-break-inside: avoid;}
 				th {text-align: left;}
@@ -418,9 +419,10 @@
 			
 			<body style="width:1024px; font-size:15px">
 				<div align="center" style="width: 600px;" id="lunes">
-					<h3>Lunes</h3>
-					<div style="width:1000px">
-						<table class=\"table table-striped \" width="100%" cellspacing="0" cellpadding="55%" style="font-size: 11.5px" border="1"> 
+					<h3 class="dia">Lunes</h3>
+					<div></div>
+					<div style="width:1000px; ">
+						<table class=\"table table-striped \" width="100%" cellspacing="0" cellpadding="55%" style="font-size: 11.5px; margin-top:25px !important;" border="0"> 
 						  <thead>
 							<tr width="100%" >
 								<th align="center" >MAQUINA</th>
@@ -439,9 +441,10 @@
 				<br>
 
 				<div align="center" style="width: 600px;" id="Martes">
-					<h3>Martes</h3>
+					<h3 class="dia">Martes</h3>
+					<div></div>
 					<div style="width:800px">
-						<table class=\"table table-striped \" width="100%" cellspacing="0" cellpadding="55%" style="font-size: 11.5px" border="1"> 
+						<table class=\"table table-striped \" width="100%" cellspacing="0" cellpadding="55%" style="font-size: 11.5px" border="0"> 
 						  <thead>
 							<tr width="100%" >
 								<th align="center" >MAQUINA</th>
@@ -459,9 +462,10 @@
 				
 
 				<div align="center" style="width: 600px;" id="Miercoles">
-					<h3>Miercoles</h3>
+					<h3 class="dia">Miercoles</h3>
+					<div></div>
 					<div style="width:1000px;">
-						<table class=\"table table-striped \" width="100%" cellspacing="0" cellpadding="55%" style="font-size: 11.5px" border="1"> 
+						<table class=\"table table-striped \" width="100%" cellspacing="0" cellpadding="55%" style="font-size: 11.5px" border="0"> 
 						  <thead>
 							<tr width="100%" >
 								<th align="center" >MAQUINA</th>
@@ -478,9 +482,10 @@
 				</div><!-- Miercoles -->
 
 				<div align="center" style="width: 600px;" id="Jueves">
-					<h3>Jueves</h3>
+					<h3 class="dia">Jueves</h3>
+					<div></div>
 					<div style="width:1000px;">
-						<table class=\"table table-striped \" width="100%" cellspacing="0" cellpadding="55%" style="font-size: 11.5px" border="1"> 
+						<table class=\"table table-striped \" width="100%" cellspacing="0" cellpadding="55%" style="font-size: 11.5px" border="0"> 
 						  <thead>
 							<tr width="100%" >
 								<th align="center" >MAQUINA</th>
@@ -497,9 +502,10 @@
 				</div><!-- Jueves -->
 
 				<div align="center" style="width: 600px;" id="Viernes">
-					<h3>Viernes</h3>
+					<h3 class="dia">Viernes</h3>
+					<div></div>
 					<div style="width:1000px;">
-						<table class=\"table table-striped \" width="100%" cellspacing="0" cellpadding="55%" style="font-size: 11.5px" border="1"> 
+						<table class=\"table table-striped \" width="100%" cellspacing="0" cellpadding="55%" style="font-size: 11.5px" border="0"> 
 						  <thead>
 							<tr width="100%" >
 								<th align="center" >MAQUINA</th>
@@ -516,9 +522,10 @@
 				</div><!-- Viernes -->
 
 				<div align="center" style="width: 600px;" id="Sabado">
-					<h3>Sabado</h3>
+					<h3 class="dia">Sabado</h3>
+					<div></div>
 					<div style="width:1000px;">
-						<table class=\"table table-striped \" width="100%" cellspacing="0" cellpadding="55%" style="font-size: 11.5px" border="1"> 
+						<table class=\"table table-striped \" width="100%" cellspacing="0" cellpadding="55%" style="font-size: 11.5px" border="0"> 
 						  <thead>
 							<tr width="100%" >
 								<th align="center" >MAQUINA</th>
@@ -535,9 +542,10 @@
 				</div><!-- Sabado -->
 
 				<div align="center" style="width: 600px;" id="Domingo">
-					<h3>Domingo</h3>
+					<h3 class="dia">Domingo</h3>
+					<div></div>
 					<div style="width:1000px;">
-						<table class=\"table table-striped \" width="100%" cellspacing="0" cellpadding="55%" style="font-size: 11.5px" border="1"> 
+						<table class=\"table table-striped \" width="100%" cellspacing="0" cellpadding="55%" style="font-size: 11.5px" border="0"> 
 						  <thead>
 							<tr width="100%" >
 								<th align="center" >MAQUINA</th>
